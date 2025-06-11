@@ -55,7 +55,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const showPlaybackControls = computed(() => {
-    return isSpectating.value && [GameStatus.FINISHED, GameStatus.ARCHIVED].includes(gameStore.status);
+    return isSpectating.value && [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(gameStore.status);
   });
 
   const canGoToPreviousState = computed(() => {
