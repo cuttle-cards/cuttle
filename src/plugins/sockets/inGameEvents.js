@@ -10,7 +10,6 @@ import { sleep } from '@/util/sleep';
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
   const gameHistoryStore = useGameHistoryStore();
-
   const targetRoute = newRoute ?? router.currentRoute.value;
 
   const { gameId: urlGameId } = targetRoute.params;
@@ -36,14 +35,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.updateReady(evData.pNum);
       return;
     }
-    case SocketEvent.DEAL: {
-      // Update state
-      if (isSpectating) {
-        gameStore.myPNum = 0; // always spectate as p0
-      }
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
-    }
+    case SocketEvent.DEAL:
     case SocketEvent.DRAW:
     case SocketEvent.PASS:
     case SocketEvent.POINTS:
@@ -51,6 +43,10 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.LOAD_FIXTURE:
     case SocketEvent.JACK:
     case SocketEvent.DELETE_DECK:
+    case SocketEvent.CONCEDE:
+      if (isSpectating) {
+        gameStore.myPNum = 0; // always spectate as p0
+      }
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
