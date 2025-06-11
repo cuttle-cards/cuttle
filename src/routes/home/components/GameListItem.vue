@@ -143,17 +143,7 @@ export default {
         this.$router.push(`/game/${this.gameId}`);
         return;
       }
-      this.gameStore
-        .requestSpectate(this.gameId)
-        .then(() => {
-          this.joiningGame = false;
-          this.$router.push(`/spectate/${this.gameId}?gameStateIndex=-1`);
-        })
-        .catch((error) => {
-          this.joiningGame = false;
-          this.$emit('error', this.t(error?.message ?? error));
-          this.gameListStore.gameFinished(this.gameId);
-        });
+      this.$router.push(`/spectate/${this.gameId}?gameStateIndex=-1`);
     },
   },
 };
