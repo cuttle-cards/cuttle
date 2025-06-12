@@ -1,5 +1,6 @@
 // Request to make a move
 const CustomErrorType = require('../../errors/customErrorType');
+const NotFoundError = require('../../errors/notFoundError');
 const ForbiddenError = require('../../errors/forbiddenError');
 const BadRequestError = require('../../errors/badRequestError');
 const ConflictError = require('../../errors/conflictError');
@@ -14,11 +15,17 @@ module.exports = async function (req, res) {
     const { saveGamestate, createSocketEvent, unpackGamestate } = sails.helpers.gameStates;
     const { execute, validate } = sails.helpers.gameStates.moves[req.body.moveType];
     game = await sails.helpers.lockGame(req.params.gameId);
-    const gameState = unpackGamestate(game.gameStates.at(-1));
 
+
+    
     //////////////////////
     // Validate Request //
     //////////////////////
+    if (!game) {
+      throw new NotFoundError(`Could not find game ${ req.params.gameId }`);
+    }
+
+    const gameState = unpackGamestate(game.gameStates.at(-1));
     // Game must be in progress
     if (!game?.gameStates?.length || !gameState) {
       throw new BadRequestError({ message: 'Game has not yet started' });
@@ -68,6 +75,8 @@ module.exports = async function (req, res) {
 
     const message = err?.message ?? err ?? 'Error making move';
     switch (err?.code) {
+      case CustomErrorType.NOT_FOUND:
+        return res.status(404).json({ message });
       case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       case CustomErrorType.BAD_REQUEST:
