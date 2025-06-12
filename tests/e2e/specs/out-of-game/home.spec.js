@@ -283,6 +283,9 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         cy.url().should('contain', `/spectate/${gameId}?gameStateIndex=-1`);
         cy.get('[data-player-hand-card]').should('have.length', 5);
+
+        cy.vueRoute('/spectate-list');
+        cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
       });
     });
 
