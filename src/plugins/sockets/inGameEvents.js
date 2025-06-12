@@ -44,6 +44,8 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.JACK:
     case SocketEvent.DELETE_DECK:
     case SocketEvent.CONCEDE:
+    case SocketEvent.RE_LOGIN:
+    case SocketEvent.SPECTATOR_JOINED:
       if (isSpectating) {
         gameStore.myPNum = 0; // always spectate as p0
       }
@@ -181,10 +183,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = null;
       break;
     }
-    case SocketEvent.RE_LOGIN:
-    case SocketEvent.SPECTATOR_JOINED:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);
