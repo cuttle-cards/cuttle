@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
     const gameState = unpackGamestate(game.gameStates.at(-1));
     // Game must be in progress
     if (!game?.gameStates?.length || !gameState) {
-      throw new BadRequestError({ message: 'Game has not yet started' });
+      throw new BadRequestError('Game has not yet started');
     }
 
     // Requesting user must be in this game
