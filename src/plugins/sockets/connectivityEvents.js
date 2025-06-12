@@ -12,6 +12,7 @@ export async function handleConnect() {
   // Request latest game state if socket reconnects during game
   switch (router.currentRoute.value.name) {
     case ROUTE_NAME_GAME: {
+      debugger;
       authStore.authenticated = null;
       await authStore.requestStatus(router.currentRoute.value);
       const gameId = Number(router.currentRoute.value.params.gameId);
@@ -19,7 +20,6 @@ export async function handleConnect() {
       const response = await gameStore.requestGameState(gameId, gameStateIndex);
       if (response?.victory?.gameOver && response.game.rematchGame) {
         await gameStore.requestGameState(response.game.rematchGame);
-        gameStore.myPNum = (gameStore.myPNum + 1) % 2;
         router.push({ name: ROUTE_NAME_GAME, params: { gameId: response.game.rematchGame } });
       }
       return;
