@@ -468,8 +468,6 @@ export const useGameStore = defineStore('game', {
       try {
         this.resetState();
         const res = await this.makeSocketRequest(slug, {});
-        this.myPNum = 0;
-        this.id = gameId;
         return handleInGameEvents(res.body, route);
       } catch (err) {
         const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
