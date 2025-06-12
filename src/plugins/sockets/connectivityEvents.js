@@ -12,7 +12,6 @@ export async function handleConnect() {
   // Request latest game state if socket reconnects during game
   switch (router.currentRoute.value.name) {
     case ROUTE_NAME_GAME: {
-      debugger;
       authStore.authenticated = null;
       await authStore.requestStatus(router.currentRoute.value);
       const gameId = Number(router.currentRoute.value.params.gameId);
