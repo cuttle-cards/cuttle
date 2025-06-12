@@ -313,8 +313,11 @@ export default {
         } catch (err) {
           this.$router.push({
             name: 'Home',
-            query: { gameId: rematchGameId, error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`
-            } });
+            query: {
+              gameId: rematchGameId,
+              error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`
+            },
+          });
         }
       }
       return;
