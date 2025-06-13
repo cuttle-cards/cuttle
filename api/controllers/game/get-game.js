@@ -1,5 +1,6 @@
 const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
+const GameStatus = require('../../../utils/GameStatus.json');
 
 module.exports = async function(req, res) {
   const { gameId } = req.params;
@@ -25,7 +26,11 @@ module.exports = async function(req, res) {
 
     const {  unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
 
-    const gameStateIndex = Number(req.query.gameStateIndex ?? -1);
+    let gameStateIndex = Number(req.query.gameStateIndex);
+    const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+    gameStateIndex = isValidGameStateIndex ? gameStateIndex :
+      [ GameStatus.FINISHED, GameStatus.ARCHIVED ]
+        .includes(game.status) ? 0 : -1;
     const packedGameState = game.gameStates.at(gameStateIndex);
 
     if (!packedGameState) {

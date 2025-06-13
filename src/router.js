@@ -69,7 +69,10 @@ const getGameState = async (to) => {
   const gameStore = useGameStore();
   const gameId = parseInt(to.params.gameId);
   gameStore.id = gameId;
-  const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
+
+  let gameStateIndex = Number(to.query.gameStateIndex);
+  const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+  gameStateIndex = isValidGameStateIndex ? gameStateIndex : -1;
   try {
     const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
     if (response?.victory?.gameOver && response.game.rematchGame) {
@@ -86,11 +89,8 @@ const getGameState = async (to) => {
 const setupSpectate = async (to) => {
   const gameStore = useGameStore();
   const gameId = Number(to.params.gameId);
-  const { gameStateIndex } = to.query;
-  const isValidGameStateIndex = 
-    gameStateIndex !== undefined && 
-    Number.isInteger(Number(gameStateIndex)) && 
-    (Number(gameStateIndex) === -1 || Number(gameStateIndex) >= 0);
+  const gameStateIndex = Number(to.query.gameStateIndex);
+  const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
   try {
     await gameStore.requestSpectate(gameId, gameStateIndex, to);
     if (isValidGameStateIndex) {
