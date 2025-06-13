@@ -625,7 +625,7 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
   const rankedIconVisibility = rematchWasDeclined ? 'not.exist' : 'be.visible';
-  const bannerMessage = matchIsOver ? 'Good Match!' : rematchWasDeclined ? 'Player left - click to go home.' : 'Continue Spectating?';
+  const bannerMessage = rematchWasDeclined ? 'Player left - click to go home.' : matchIsOver ? 'Good Match!'  : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', bannerMessage)

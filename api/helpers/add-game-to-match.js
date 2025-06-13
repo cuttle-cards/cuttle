@@ -28,8 +28,8 @@ module.exports = {
       if (game.match) {
         const match = await Match.findOne(game.match).populate('games');
         match.games = match.games.filter((matchGame) => matchGame.id <= game.id);
-        const p1Wins = match.games.filter((matchGame) => matchGame.winner = match.player1);
-        const p2Wins = match.games.filter((matchGame) => matchGame.winner = match.player2);
+        const p1Wins = match.games.filter((matchGame) => matchGame.winner === match.player1).length;
+        const p2Wins = match.games.filter((matchGame) => matchGame.winner === match.player2).length;
 
         // Compute winner based on games played prior to current game
         match.winner = p1Wins >= 2 ? 

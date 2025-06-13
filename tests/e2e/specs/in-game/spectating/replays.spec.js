@@ -496,6 +496,10 @@ describe('Rewatching finished games', () => {
 
           cy.get('[data-cy=gameover-rematch]').click();
           cy.url().should('include', `spectate/${rematchGameId}?gameStateIndex=0`);
+
+          cy.get('[data-cy=skip-forward]').click();
+          cy.url().should('include', `spectate/${rematchGameId}?gameStateIndex=-1`);
+          assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true, rematchWasDeclined: true });
         });
       });
 
