@@ -516,8 +516,8 @@ export function assertStalemate(score = null) {
     });
 }
 
-export function setupGameBetweenTwoUnseenPlayers(gameName) {
-  cy.createGameOpponent(gameName).then(({ gameId }) => {
+export function setupGameBetweenTwoUnseenPlayers(gameName, isRanked = false) {
+  cy.createGameOpponent(gameName, isRanked).then(({ gameId }) => {
     cy.wrap(gameId).as(`${gameName}GameId`);
     cy.recoverSessionOpponent(playerOne);
     cy.subscribeOpponent(gameId);

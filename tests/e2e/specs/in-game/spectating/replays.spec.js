@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { setupGameBetweenTwoUnseenPlayers, assertGameState, assertGameOverAsSpectator, assertSnackbar } from '../../../support/helpers';
-import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
+import { myUser, playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
+import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import GameStatus from '../../../../../utils/GameStatus.json';
 
 dayjs.extend(utc);
@@ -455,6 +456,79 @@ describe('Rewatching finished games', () => {
         cy.wait(1000);
         cy.get('#game-over-dialog').should('not.exist');
       });
+    });
+  });
+
+  describe('Rewatching ranked matches', () => {
+    it('Rewatches a ranked match', () => {
+      cy.wipeDatabase();
+      cy.visit('/');
+  
+      // Set up season
+      const [ , diamondsSeason ] = seasonFixtures;
+      diamondsSeason.startTime = dayjs.utc().subtract(2, 'week')
+        .subtract(1, 'day')
+        .toDate();
+      diamondsSeason.endTime = dayjs.utc().add(11, 'weeks')
+        .toDate();
+      cy.loadSeasonFixture([ diamondsSeason ]);
+      // Sign up to players and store their id's for comparison to match data
+      cy.signupOpponent(playerOne).as('playerOneId');
+      cy.signupOpponent(playerThree).as('playerThreeId');
+      // Opponent will be player 2 (the last one we log in as)
+      cy.signupOpponent(playerTwo)
+        .as('playerTwoId')
+        .then(function () {
+          // Create match from last week, which current games don't count towards
+          const oldMatchBetweenPlayers = {
+            player1: this.playerOneId,
+            player2: this.playerTwoId,
+            winner: this.playerOneId,
+            startTime: dayjs.utc().subtract(1, 'week')
+              .subtract(1, 'day')
+              .toDate(),
+            endTime: dayjs.utc().subtract(1, 'week')
+              .subtract(1, 'day')
+              .toDate(),
+          };
+  
+          const currentMatchWithDifferentOpponent = {
+            player1: this.playerOneId,
+            player2: this.playerThreeId,
+            winner: null,
+            startTime: dayjs.utc().subtract(1, 'hour')
+              .toDate(),
+            endTime: dayjs.utc().subtract(1, 'hour')
+              .toDate(),
+          };
+  
+          cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
+        });
+
+      setupGameBetweenTwoUnseenPlayers('replay', true);
+      cy.get('@replayGameId').then((gameId) => {
+        cy.recoverSessionOpponent(playerOne);
+        cy.concedeOpponent(gameId);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+        cy.recoverSessionOpponent(playerTwo);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+        cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+          cy.recoverSessionOpponent(playerOne);
+          cy.concedeOpponent(rematchGameId);
+          cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+          cy.recoverSessionOpponent(playerTwo);
+          cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+
+          cy.visit('/');
+          cy.signupPlayer(myUser);
+          cy.vueRoute(`/spectate/${gameId}`);
+
+          cy.get('[data-cy=skip-forward]').click();
+          assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
+          cy.reload();
+        });
+      });
+
     });
   });
 
