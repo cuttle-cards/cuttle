@@ -469,7 +469,7 @@ describe('Rewatching finished games', () => {
       setupSeasons();
     });
 
-    it.only('Rewatches a ranked match', () => {
+    it('Rewatches a ranked match', () => {
 
       setupGameBetweenTwoUnseenPlayers('replay', true);
       cy.get('@replayGameId').then((gameId) => {
