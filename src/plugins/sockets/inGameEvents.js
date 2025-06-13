@@ -46,9 +46,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.CONCEDE:
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
-      if (isSpectating) {
-        gameStore.myPNum = 0; // always spectate as p0
-      }
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
