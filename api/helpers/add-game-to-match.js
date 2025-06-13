@@ -25,7 +25,22 @@ module.exports = {
       const player1Id = game.p0?.id ?? game.p0;
       const player2Id = game.p1?.id ?? game.p1;
 
+      if (game.match) {
+        const match = await Match.findOne(game.match).populate('games');
+        match.games = match.games.filter((matchGame) => matchGame.id <= game.id);
+        const p1Wins = match.games.filter((matchGame) => matchGame.winner === match.player1).length;
+        const p2Wins = match.games.filter((matchGame) => matchGame.winner === match.player2).length;
+
+        // Compute winner based on games played prior to current game
+        match.winner = p1Wins >= 2 ? 
+          match.player1 : p2Wins >= 2 ?
+            match.player2 : null;
+
+        return exits.success(match);
+      }
+
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1Id, player2Id);
+
       if (!relevantMatch) {
         return exits.error(new Error('Could not add game to match'));
       }

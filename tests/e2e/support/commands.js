@@ -225,9 +225,10 @@ Cypress.Commands.add('loginPlayer', (player) => {
   cy.log(`Logged in as player ${player.username}`);
 });
 
-Cypress.Commands.add('createGameOpponent', (name) => {
+Cypress.Commands.add('createGameOpponent', (name, isRanked = false) => {
   cy.makeSocketRequest('game', '', {
     gameName: name,
+    isRanked
   });
 });
 

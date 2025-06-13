@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { setupGameBetweenTwoUnseenPlayers, assertGameState, assertGameOverAsSpectator, assertSnackbar } from '../../../support/helpers';
+import {
+  setupSeasons,
+  setupGameBetweenTwoUnseenPlayers,
+  assertGameState,
+  assertGameOverAsSpectator,
+  assertSnackbar
+} from '../../../support/helpers';
 import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 import GameStatus from '../../../../../utils/GameStatus.json';
@@ -455,6 +461,48 @@ describe('Rewatching finished games', () => {
         cy.wait(1000);
         cy.get('#game-over-dialog').should('not.exist');
       });
+    });
+  });
+
+  describe('Rewatching ranked matches', () => {
+    beforeEach(() => {
+      setupSeasons();
+    });
+
+    it('Rewatches a ranked match', () => {
+
+      setupGameBetweenTwoUnseenPlayers('replay', true);
+      cy.get('@replayGameId').then((gameId) => {
+        cy.recoverSessionOpponent(playerOne);
+        cy.concedeOpponent(gameId);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+        cy.recoverSessionOpponent(playerTwo);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+        cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+          cy.recoverSessionOpponent(playerOne);
+          cy.concedeOpponent(rematchGameId);
+          cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+          cy.recoverSessionOpponent(playerTwo);
+          cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+
+          cy.visit('/');
+          cy.signupPlayer(myUser);
+          cy.vueRoute(`/spectate/${gameId}`);
+
+          cy.get('[data-cy=skip-forward]').click();
+          assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
+          cy.reload();
+          assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
+
+          cy.get('[data-cy=gameover-rematch]').click();
+          cy.url().should('include', `spectate/${rematchGameId}?gameStateIndex=0`);
+
+          cy.get('[data-cy=skip-forward]').click();
+          cy.url().should('include', `spectate/${rematchGameId}?gameStateIndex=-1`);
+          assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true, rematchWasDeclined: true });
+        });
+      });
+
     });
   });
 
