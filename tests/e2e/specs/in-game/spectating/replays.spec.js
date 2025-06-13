@@ -460,7 +460,7 @@ describe('Rewatching finished games', () => {
   });
 
   describe('Rewatching ranked matches', () => {
-    it('Rewatches a ranked match', () => {
+    beforeEach(() => {
       cy.wipeDatabase();
       cy.visit('/');
   
@@ -504,6 +504,9 @@ describe('Rewatching finished games', () => {
   
           cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
         });
+    });
+
+    it.only('Rewatches a ranked match', () => {
 
       setupGameBetweenTwoUnseenPlayers('replay', true);
       cy.get('@replayGameId').then((gameId) => {
