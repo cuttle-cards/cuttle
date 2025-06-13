@@ -1,7 +1,6 @@
 import GameStatus from '../../../../../utils/GameStatus.json';
 import { assertLoss, assertVictory, assertStalemate, setupSeasons } from '../../../support/helpers';
-import { seasonFixtures } from '../../../fixtures/statsFixtures';
-import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
+import { playerOne } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
