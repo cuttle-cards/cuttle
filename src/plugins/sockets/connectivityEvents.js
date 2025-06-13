@@ -15,7 +15,7 @@ export async function handleConnect() {
       authStore.authenticated = null;
       await authStore.requestStatus(router.currentRoute.value);
       const gameId = Number(router.currentRoute.value.params.gameId);
-      const gameStateIndex = Number(router.currentRoute.value.query.gameStateIndex ?? -1);
+      const gameStateIndex = gameHistoryStore.currentGameStateIndex;
       const response = await gameStore.requestGameState(gameId, gameStateIndex);
       if (response?.victory?.gameOver && response.game.rematchGame) {
         await gameStore.requestGameState(response.game.rematchGame);
