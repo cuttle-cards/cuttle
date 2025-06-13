@@ -85,8 +85,7 @@ const getGameState = async (to) => {
 
 const setupSpectate = async (to) => {
   const gameStore = useGameStore();
-  let { gameId } = to.params;
-  gameId = Number(gameId);
+  const gameId = Number(to.params.gameId);
   const { gameStateIndex } = to.query;
   const isValidGameStateIndex = 
     gameStateIndex !== undefined && 
