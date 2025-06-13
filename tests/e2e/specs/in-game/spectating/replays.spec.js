@@ -269,7 +269,7 @@ function createAndPlayGameWithOneOffs() {
     cy.recoverSessionOpponent(playerTwo);
     cy.resolveOpponent(gameId);
 
-    cy.concedeOpponent(gameId); // TODO
+    cy.concedeOpponent(gameId);
     cy.recoverSessionOpponent(playerOne);
     cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
     cy.recoverSessionOpponent(playerTwo);
