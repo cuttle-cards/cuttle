@@ -94,7 +94,6 @@ const setupSpectate = async (to) => {
     (Number(gameStateIndex) === -1 || Number(gameStateIndex) >= 0);
   try {
     await gameStore.requestSpectate(gameId, gameStateIndex, to);
-    gameStore.id = gameId;
     if (isValidGameStateIndex) {
       return;
     }
