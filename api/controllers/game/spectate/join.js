@@ -7,7 +7,8 @@ module.exports = async function (req, res) {
   try {
     const [ spectator, game ] = await Promise.all([
       User.findOne({ id: req.session.usr }),
-      Game.findOne(gameId).populate('gameStates')
+      Game.findOne(gameId)
+        .populate('gameStates')
         .populate('p0')
         .populate('p1'),
     ]);
@@ -20,15 +21,19 @@ module.exports = async function (req, res) {
       return res.status(404).json({ message: `Can't find game ${gameId}` });
     }
 
-    // Can't spectate if you're a player in the game
+    // Can't spectate if you're a player in an ongoing game
     const { p0, p1 } = game;
-    if ([ p0?.id, p1?.id ].includes(( id ) => id === spectator.id)) {
+    if (game.status === GameStatus.STARTED && [ p0?.id, p1?.id ].includes(spectator.id)) {
       return res.forbidden({ message: 'home.snackbar.cannotSpectate' });
     }
 
-    // Can't spectate if the game is not active
-    if (game.status !== GameStatus.STARTED || !p0 || !p1) {
+    // Can't spectate if the game hasn't started
+    if (game.status === GameStatus.CREATED || !p0 || !p1) {
       return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
+    }
+
+    if (!game.gameStates.length) {
+      return res.badRequest({ message: 'home.snackbar.spectateNoGamestates' });
     }
 
     // Subscribe socket to game
@@ -44,15 +49,29 @@ module.exports = async function (req, res) {
     }
 
     const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-    const gameState = unpackGamestate(game.gameStates.at(-1));
+    // Default to first gamestate for finished games, last for live ones
+    let gameStateIndex = Number(req.query.gameStateIndex);
+    const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+    gameStateIndex = isValidGameStateIndex ? gameStateIndex :
+      [ GameStatus.FINISHED, GameStatus.ARCHIVED ]
+        .includes(game.status) ? 0 : -1;
+    const packedGameState = game.gameStates.at(gameStateIndex);
+    if (!packedGameState) {
+      return res
+        .status(404)
+        .json({
+          message: `Could not find game state ${gameStateIndex} for game ${game.id}`
+        });
+    }
+    const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvent = await createSocketEvent(game, gameState);
     Game.publish([ game.id ], socketEvent);
 
 
-    return res.ok(socketEvent.game);
+    return res.ok(socketEvent);
 
   } catch (err) {
 
-    return res.badRequest(err);
+    return res.serverError(err);
   }
 };

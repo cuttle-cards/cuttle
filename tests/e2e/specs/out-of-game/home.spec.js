@@ -1,4 +1,4 @@
-import { assertSnackbar } from '../../support/helpers';
+import { assertSnackbar, setupGameBetweenTwoUnseenPlayers } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -23,17 +23,7 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h5', `${gameState.name}`);
 }
 
-function setupGameBetweenTwoUnseenPlayers(gameName) {
-  cy.createGameOpponent(gameName).then(({ gameId }) => {
-    cy.wrap(gameId).as(`${gameName}GameId`);
-    cy.recoverSessionOpponent(playerOne);
-    cy.subscribeOpponent(gameId);
-    cy.readyOpponent(gameId);
-    cy.recoverSessionOpponent(playerTwo);
-    cy.subscribeOpponent(gameId);
-    cy.readyOpponent(gameId);
-  });
-}
+
 
 describe('Home - Page Content', () => {
   beforeEach(setup);
@@ -291,13 +281,12 @@ describe('Home - Game List', () => {
           .its('cuttle.authStore')
           .then((store) => store.reconnectSocket());
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-        assertSnackbar('Unable to spectate game', 'error', 'newgame');
-        // Spectate button should now be disabled
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        cy.url().should('contain', `/spectate/${gameId}?gameStateIndex=-1`);
+        cy.get('[data-player-hand-card]').should('have.length', 5);
+
+        cy.vueRoute('/spectate-list');
+        cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
       });
-      // Refresh page -- no games available to spectate
-      cy.reload();
-      cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {

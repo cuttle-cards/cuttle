@@ -342,7 +342,7 @@
             :class="{ 'my-turn': gameStore.isPlayersTurn }"
           >
             <UsernameToolTip
-              v-if="$vuetify.display.smAndUp"
+              v-if="$vuetify.display.smAndUp && !gameHistoryStore.showPlaybackControls"
               id="player-username-container"
               key="player-username"
               :username="gameStore.playerUsername"
@@ -417,6 +417,7 @@
         @target="beginTargeting"
       />
       <GameDialogs @clear-selection="clearSelection" @handle-error="handleError" />
+      <PlaybackControls v-if="gameHistoryStore.showPlaybackControls" />
     </template>
   </div>
 </template>
@@ -426,6 +427,7 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -437,6 +439,7 @@ import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vu
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/routes/game/components/dialogs/components/ScrapDialog.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
+import PlaybackControls from './components/PlaybackControls.vue';
 
 export default {
   name: 'GameView',
@@ -452,6 +455,7 @@ export default {
     UsernameToolTip,
     BaseSnackbar,
     SpectatorListMenu,
+    PlaybackControls,
   },
   setup() {
     const { t } = useI18n();
@@ -475,10 +479,9 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     isSpectating() {
-      return this.gameStore.isSpectating;
+      return this.gameHistoryStore.isSpectating;
     },
     menuWrapperStyle() {
       return {
@@ -502,9 +505,9 @@ export default {
           return 140;
       }
     },
-    /////////////////////////////////////////////
+    ////////////////////////////////////////////
     // Game, Deck, Log, Scrap, and Spectators //
-    ///////////////////////////////////////////
+    ////////////////////////////////////////////
     deck() {
       return this.gameStore.deck;
     },
@@ -512,7 +515,7 @@ export default {
       return this.gameStore.scrap;
     },
     logs() {
-      return this.gameStore.log;
+      return this.gameHistoryStore.log;
     },
     deckLength() {
       let res = this.deck.length;

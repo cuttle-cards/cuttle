@@ -1,4 +1,6 @@
+import GameStatus from '../../../utils/GameStatus.json';
 import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
@@ -7,13 +9,12 @@ import { sleep } from '@/util/sleep';
 // Handles socket updates of game data
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
-
+  const gameHistoryStore = useGameHistoryStore();
   const targetRoute = newRoute ?? router.currentRoute.value;
 
   const { gameId: urlGameId } = targetRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
   const isSpectating = targetRoute.name === ROUTE_NAME_SPECTATE;
-
   // No-op if the event's gameId doesn't match the url
   if (
     ![ SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH ].includes(
@@ -34,15 +35,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.updateReady(evData.pNum);
       return;
     }
-    case SocketEvent.DEAL: {
-      // Update state
-      if (isSpectating) {
-        gameStore.myPNum = 0; // always spectate as p0
-        gameStore.isSpectating = true;
-      }
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
-    }
+    case SocketEvent.DEAL:
     case SocketEvent.DRAW:
     case SocketEvent.PASS:
     case SocketEvent.POINTS:
@@ -50,6 +43,9 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.LOAD_FIXTURE:
     case SocketEvent.JACK:
     case SocketEvent.DELETE_DECK:
+    case SocketEvent.CONCEDE:
+    case SocketEvent.RE_LOGIN:
+    case SocketEvent.SPECTATOR_JOINED:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
@@ -151,7 +147,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = true;
       gameStore.rematchGameId = evData.gameId;
       // stop early if spectating and haven't yet chosen to continue spectating
-      if (gameStore.isSpectating && !gameStore.iWantToContinueSpectating) {
+      if (gameHistoryStore.isSpectating && !gameStore.iWantToContinueSpectating) {
         return;
       }
 
@@ -160,30 +156,30 @@ export async function handleInGameEvents(evData, newRoute = null) {
 
       const { gameId: oldGameId } = targetRoute.params;
 
+      const route = {
+        name: targetRoute.name,
+        params: {
+          gameId: evData.gameId,
+        },
+      };
       if (targetRoute.name === ROUTE_NAME_SPECTATE) {
-        await gameStore.requestSpectate(evData.gameId);
+        await gameStore.requestSpectate(evData.gameId, null, route);
+        route.query = {
+          gameStateIndex: gameStore.status === GameStatus.STARTED ? -1 : 0,
+        };
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
         gameStore.myPNum = null;
         gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
       }
 
-      router.push({
-        name: targetRoute.name,
-        params: {
-          gameId: evData.gameId,
-        },
-      });
+      router.push(route);
 
       gameStore.iWantToContinueSpectating = false;
       gameStore.p0Rematch = null;
       gameStore.p1Rematch = null;
       break;
     }
-    case SocketEvent.RE_LOGIN:
-    case SocketEvent.SPECTATOR_JOINED:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);

@@ -1,4 +1,5 @@
 import { SnackBarError } from '../fixtures/snackbarError';
+import { playerOne, playerTwo } from '../fixtures/userFixtures';
 
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {
@@ -515,7 +516,19 @@ export function assertStalemate(score = null) {
     });
 }
 
-export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked }) {
+export function setupGameBetweenTwoUnseenPlayers(gameName) {
+  cy.createGameOpponent(gameName).then(({ gameId }) => {
+    cy.wrap(gameId).as(`${gameName}GameId`);
+    cy.recoverSessionOpponent(playerOne);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+    cy.recoverSessionOpponent(playerTwo);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+  });
+}
+
+export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked, rematchWasDeclined }) {
   let headingDataCy;
   let headingText;
   let selectedScore;
@@ -560,11 +573,13 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
   cy.get(selectedScore).should('have.class', 'selected');
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
-  const bannerMessage = matchIsOver ? 'Good Match!' : 'Continue Spectating?';
+  const rankedIconVisibility = rematchWasDeclined ? 'not.exist' : 'be.visible';
+  const bannerMessage = matchIsOver ? 'Good Match!' : rematchWasDeclined ? 'Player left - click to go home.' : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', bannerMessage)
-    .find(`[data-cy=${isRankedIcon}]`);
+    .find(`[data-cy=${isRankedIcon}]`)
+    .should(rankedIconVisibility);
 }
 
 export function rematchPlayerAsSpectator(userFixture, rematch = true) {

@@ -165,6 +165,16 @@ export const resolveNine = {
       turnStalemateWasRequestedByP1: -1,
       twos: [],
       winner: null,
+      gameStates: [
+        {
+          discardedCards: [],
+          moveType: 'resolve',
+          playedBy: 1,
+          playedCard: null,
+          resolved: '9C',
+          targetCard: 'JC',
+        },
+      ],
     },
     victory: {
       conceded: false,
