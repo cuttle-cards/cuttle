@@ -6,7 +6,7 @@
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} {{ t('home.players') }}
+          {{ playersText }}
         </p>
       </v-col>
       <v-col lg="6" class="list-item__button pr-md-0">
@@ -61,23 +61,15 @@ export default {
       type: String,
       default: '',
     },
-    p0ready: {
-      type: Number,
-      default: 0,
-    },
-    p1ready: {
-      type: Number,
-      default: 0,
+    players: {
+      type: Array,
+      required: true,
     },
     gameId: {
       type: Number,
       required: true,
     },
     status: {
-      type: Number,
-      required: true,
-    },
-    numPlayers: {
       type: Number,
       required: true,
     },
@@ -106,11 +98,18 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore, useAuthStore, useGameListStore),
-    numPlayersReady() {
-      return this.p0ready + this.p1ready;
-    },
-    readyText() {
-      return `${this.numPlayers} / 2`;
+    playersText() {
+      const numPlayers = this.players.length;
+      switch (numPlayers) {
+        case 0:
+          return 'Empty';
+        case 1:
+          return `vs ${this.players[0].username}`;
+        case 2:
+          return `${this.players[0].username} vs ${this.players[1].username}`;
+        default:
+          return '';
+      }
     },
     joinButtonText() {
       return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
@@ -124,7 +123,7 @@ export default {
       };
     },
     gameIsFull() {
-      return this.numPlayers >= 2 || this.status !== GameStatus.CREATED;
+      return this.players.length >= 2 || this.status !== GameStatus.CREATED;
     },
   },
   methods: {
