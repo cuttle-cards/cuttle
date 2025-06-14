@@ -2,6 +2,23 @@ import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
+function assertCardIsFrozen(card) {
+  const cardSelector = `[data-player-hand-card=${card.rank}-${card.suit}]`;
+  cy.get(cardSelector)
+    .should('have.class', 'frozen')
+    .click();
+
+
+  // Card overlay should have the frozen state shown visually
+  cy.get(`[data-player-overlay-card=${card.rank}-${card.suit}]`).should('have.class', 'frozen');
+  // Frozen move choice cards should be disabled and display frozen text.
+  cy.get('[data-move-choice=points]')
+    .should('have.class', 'v-card--disabled')
+    .contains('This card is frozen')
+    .click({ force: true }); // Break out into separate test case
+  assertSnackbar(SnackBarError.FROZEN_CARD);
+}
+
 describe('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
@@ -580,21 +597,9 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
       });
 
-      // Card should have the frozen state shown visually
-      cy.get('[data-player-hand-card=7-0]').should('have.class', 'frozen');
-      // Player attempts to play the returned seven immediately for points
-      cy.get('[data-player-hand-card=7-0]').click();
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      assertSnackbar(SnackBarError.FROZEN_CARD);
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
 
-      cy.log('Correctly prevented player from re-playing frozen jack next turn');
-      // Player attempts to play the returned seven immediately for scuttle
+      // Player then tries to scuttle
       cy.get('[data-player-hand-card=7-0]').click();
       // Card overlay should have the frozen state shown visually
       cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
@@ -672,7 +677,7 @@ describe('Playing NINES', () => {
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click();
       assertSnackbar(SnackBarError.FROZEN_CARD);
-      cy.log('Correctly prevented player from re-playing frozen jack next turn');
+      cy.log('Correctly prevented player from re-playing frozen card next turn');
 
       cy.get('[data-player-hand-card=10-1]').click();
       cy.get('[data-move-choice=points]').click();
@@ -706,6 +711,66 @@ describe('Playing NINES', () => {
         scrap: [ Card.NINE_OF_CLUBS ],
       });
     }); // End 9 on jack
+
+    it('Keeps card frozen after requesting a stalemate', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.NINE_OF_CLUBS ],
+        p0Points: [ Card.THREE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.SEVEN_OF_CLUBS ],
+        p1FaceCards: [],
+        topCard: Card.TEN_OF_CLUBS,
+      });
+
+      // opponent plays nine to return seven to player's hand
+      cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, 'point');
+
+      // Player resolves
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [ Card.THREE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.SEVEN_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Player requests stalemate; opponent rejects
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+
+      // Opponent rejects stalemate
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      cy.rejectStalemateOpponent();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
+
+      // Bounced card is frozen
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
+
+      // Still frozen after reload
+      cy.reload();
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [ Card.THREE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.SEVEN_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+    });
 
     it('Clears players frozen card after resolving one-off', () => {
       cy.loadGameFixture(1, {
