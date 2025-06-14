@@ -2,6 +2,23 @@ import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
+function assertCardIsFrozen(card) {
+  const cardSelector = `[data-player-hand-card=${card.rank}-${card.suit}]`;
+  cy.get(cardSelector)
+    .should('have.class', 'frozen')
+    .click();
+
+
+  // Card overlay should have the frozen state shown visually
+  cy.get(`[data-player-overlay-card=${card.rank}-${card.suit}]`).should('have.class', 'frozen');
+  // Frozen move choice cards should be disabled and display frozen text.
+  cy.get('[data-move-choice=points]')
+    .should('have.class', 'v-card--disabled')
+    .contains('This card is frozen')
+    .click({ force: true }); // Break out into separate test case
+  assertSnackbar(SnackBarError.FROZEN_CARD);
+}
+
 describe('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
@@ -707,7 +724,7 @@ describe('Playing NINES', () => {
       });
     }); // End 9 on jack
 
-    it.only('Keeps card frozen after requesting a stalemate', () => {
+    it('Keeps card frozen after requesting a stalemate', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.NINE_OF_CLUBS ],
         p0Points: [ Card.THREE_OF_CLUBS ],
@@ -750,33 +767,12 @@ describe('Playing NINES', () => {
       cy.rejectStalemateOpponent();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
-
       // Bounced card is frozen
-      cy.get('[data-player-hand-card=7-0]').should('have.class', 'frozen');
-      // Player attempts to play the returned seven immediately for points
-      cy.get('[data-player-hand-card=7-0]').click();
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      assertSnackbar(SnackBarError.FROZEN_CARD);
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
 
+      // Still frozen after reload
       cy.reload();
-
-      cy.get('[data-player-hand-card=7-0]').should('have.class', 'frozen');
-      // Player attempts to play the returned seven immediately for points
-      cy.get('[data-player-hand-card=7-0]').click();
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      assertSnackbar(SnackBarError.FROZEN_CARD);
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
 
       assertGameState(1, {
         p0Hand: [],
