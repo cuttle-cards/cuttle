@@ -502,11 +502,31 @@ describe('Rewatching finished games', () => {
           assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true, rematchWasDeclined: true });
         });
       });
-
     });
   });
 
-  
+  describe('Creating highlight clips', () => {
+    it.only('Copies the url of the current move as highlight clip', () => {
+      cy.setupGameAsP0();
+
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      });
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    });
+  });
+
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {
       cy.loadFinishedGameFixtures([
