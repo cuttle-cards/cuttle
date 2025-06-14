@@ -597,21 +597,9 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
       });
 
-      // Card should have the frozen state shown visually
-      cy.get('[data-player-hand-card=7-0]').should('have.class', 'frozen');
-      // Player attempts to play the returned seven immediately for points
-      cy.get('[data-player-hand-card=7-0]').click();
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      assertSnackbar(SnackBarError.FROZEN_CARD);
+      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
 
-      cy.log('Correctly prevented player from re-playing frozen jack next turn');
-      // Player attempts to play the returned seven immediately for scuttle
+      // Player then tries to scuttle
       cy.get('[data-player-hand-card=7-0]').click();
       // Card overlay should have the frozen state shown visually
       cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
