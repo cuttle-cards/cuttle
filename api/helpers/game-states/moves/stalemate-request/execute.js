@@ -41,10 +41,6 @@ module.exports = {
       ...requestedMove,
       playedBy,
       phase: GamePhase.CONSIDERING_STALEMATE,
-      playedCard: null,
-      targetCard: null,
-      discardedCards: [],
-      resolved: null,
     };
 
     return exits.success(result);
