@@ -1,5 +1,3 @@
-const MoveType = require('../../../utils/MoveType.json');
-
 module.exports = {
   friendlyName: 'unpack GameState',
 
