@@ -41,5 +41,9 @@ module.exports = {
       type: 'number',
       defaultsTo: 1000,
     },
+    identities: {
+      collection: 'identity',
+      via: 'user'
+    }
   }, // end attributes
 }; // end exports
