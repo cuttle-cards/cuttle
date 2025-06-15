@@ -16,11 +16,16 @@
       </template>
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
-        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
+        <v-list-item data-cy="rules-open" prepend-icon="mdi-information" @click="shownDialog = 'rules'">
           {{ t('game.menus.gameMenu.rules') }}
         </v-list-item>
         <!-- Stop Spectating -->
-        <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
+        <v-list-item
+          v-if="isSpectating"
+          data-cy="stop-spectating"
+          prepend-icon="mdi-home"
+          @click.stop="stopSpectate"
+        >
           {{ t('game.menus.gameMenu.home') }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
