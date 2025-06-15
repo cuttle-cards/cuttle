@@ -549,7 +549,7 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=clip-highlight]').should('be.visible');
     });
 
-    it('Copies the current state url when watching a replay', () => {
+    it('Copies the current state url when spectating live', () => {
       setupGameBetweenTwoUnseenPlayers('replay');
   
       cy.get('@replayGameId').then((gameId) => {
@@ -607,7 +607,7 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it.only('Copies clip highlight link while spectating a finished game', () => {
+    it('Copies clip highlight link while spectating a finished game', () => {
       createAndPlayGameWithOneOffs();
       cy.get('@replayGameId').then((gameId) => {
         cy.loadGameFixture(0, {
