@@ -524,6 +524,7 @@ describe('Rewatching finished games', () => {
       cy.get('#game-menu').should('be.visible');
       cy.get('[data-cy=clip-highlight]').click();
 
+      // Clipboard should have spectate link to current gameState
       cy.window()
         .its('cuttle.gameStore')
         .then((game) => {
@@ -535,6 +536,17 @@ describe('Rewatching finished games', () => {
             });
         });
 
+      // Menu item should show contents are copied
+      cy.get('[data-cy=highlight-copied]')
+        .should('be.visible')
+        .click();
+      cy.get('#game-menu').should('not.exist');
+
+      // highlight-copied should switch back on re-opening menu
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=highlight-copied]').should('not.exist');
+      cy.get('[data-cy=clip-highlight]').should('be.visible');
       // cy.get('[data-player-hand-card=1-0]').click();
       // cy.get('[data-move-choice=oneOff]').click();
 
