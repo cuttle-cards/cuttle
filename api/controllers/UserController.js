@@ -100,4 +100,58 @@ module.exports = {
       return res.badRequest(err);
     }
   },
+
+  discordRedirect: async function (_, res) {
+    try {
+      const url = new URL('https://discord.com/api/oauth2/authorize');
+
+      url.searchParams.set('response_type', 'code');
+      url.searchParams.set('client_id', process.env.DISCORD_CLIENT_ID);
+      url.searchParams.set('scope', 'identify email guilds.members.read');
+      url.searchParams.set('redirect_uri', `${process.env.CALLBACK_URL_BASE}/auth/discord/callback`);
+      url.searchParams.set('prompt', 'none');
+      url.searchParams.set('state', 'CREATE SECRET HERE');
+
+      res.set('Cache-Control', 'private, no-cache');
+      return res.redirect(url.href);
+    } catch (err) {
+      sails.log.error('Failed to redirect to Discord:', err);
+      return res.serverError('Internal Server Error');
+    }
+  },
+
+  discordCallBack: async function (req, res) {
+    const { code } = req.query;
+    const { state } = req.query;
+
+    // await verifySecret(state);
+
+    if (!code) {
+      return res.badRequest('Missing code');
+    }
+
+    const params = {
+      client_id: process.env.DISCORD_CLIENT_ID,
+      client_secret: process.env.DISCORD_CLIENT_SECRET,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: `${process.env.CALLBACK_URL_BASE}/auth/discord/callback`,
+    };
+
+    const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(params),
+    });
+
+    const tokenData = await tokenRes.json();
+
+    if(!tokenData) {throw new Error('Failed to retrieve token');}
+    const accessToken = tokenData.access_token;
+
+  
+  }
+  
 };
