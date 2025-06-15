@@ -66,6 +66,12 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     return currentGameStateIndex.value >= 0 && currentGameStateIndex.value < gameStates.value.length - 1;
   });
 
+  const clipUrl = computed(() => {
+    const gameId = gameStore.id;
+    const gameStateIndex = isSpectating.value ? currentGameStateIndex.value : gameStates.value.length - 1;
+    return `https://cuttle.cards/specate/${gameId}?gameStateIndex=${gameStateIndex}`;
+  });
+
   return {
     gameStates,
     isSpectating,
@@ -76,5 +82,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     showPlaybackControls,
     canGoToPreviousState,
     canGoToNextState,
+    clipUrl,
   };
 });

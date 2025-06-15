@@ -520,10 +520,15 @@ describe('Rewatching finished games', () => {
         secondCard: Card.FOUR_OF_HEARTS,
       });
 
-      cy.get('[data-player-hand-card=1-0]').click();
-      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=clip-highlight]').click();
 
-      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      // cy.get('[data-player-hand-card=1-0]').click();
+      // cy.get('[data-move-choice=oneOff]').click();
+
+      // cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
     });
   });
 

@@ -32,6 +32,17 @@
             {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
         </template>
+        <v-list-item
+          v-if="!clipCopiedToClipboard"
+          data-cy="clip-highlight"
+          prepend-icon="mdi-movie-open"
+          @click.stop="clipHighlight"
+        >
+          Clip Highlight
+        </v-list-item>
+        <v-list-item v-else data-cy="highlight-copied" prepend-icon="mdi-check-bold">
+          Highlight Link Copied
+        </v-list-item>
         <TheLanguageSelector />
         <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
           {{ t('game.menus.gameMenu.refresh') }}
@@ -76,8 +87,9 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
-import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -104,11 +116,11 @@ export default {
       shownDialog:'',
       showGameMenu: false,      
       loading: false,
+      clipCopiedToClipboard: false,
     };
   },
   computed: {
-    ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     showEndGameDialog:{
       get() {
         return this.showConcedeDialog || this.showStalemateDialog;
@@ -179,6 +191,14 @@ export default {
       this.loading = false;
       this.shownDialog = '';
     },
+    async clipHighlight() {
+      try {
+        await navigator.clipboard.writeText(this.gameHistoryStore.clipUrl);
+        this.clipCopiedToClipboard = true;
+      } catch (err) {
+
+      }
+    },
     async stopSpectate() {
       try {
         this.loading = true;
@@ -192,6 +212,11 @@ export default {
       await this.authStore.reconnectSocket();
     }
   },
+  watch: {
+    showGameMenu() {
+      this.clipCopiedToClipboard = false;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
