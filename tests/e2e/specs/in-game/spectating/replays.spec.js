@@ -549,7 +549,7 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=clip-highlight]').should('be.visible');
     });
 
-    it.only('Copies the current state url when watching a replay', () => {
+    it('Copies the current state url when watching a replay', () => {
       setupGameBetweenTwoUnseenPlayers('replay');
   
       cy.get('@replayGameId').then((gameId) => {
@@ -607,8 +607,61 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it('Copies clip highlight link while spectating a live game', () => {
-      cy.setupGameAsSpectator();
+    it.only('Copies clip highlight link while spectating a finished game', () => {
+      createAndPlayGameWithOneOffs();
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+            Card.TEN_OF_HEARTS,
+            Card.TEN_OF_SPADES,
+            Card.ACE_OF_CLUBS
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_CLUBS,
+            Card.THREE_OF_DIAMONDS
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=3`);
+
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=clip-highlight]').click();
+
+        // Clipboard should have spectate link to current gameState
+        cy.window().then((win) => {
+          const currentOrigin = win.location.origin;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
+        });
+
+        // Menu item should show contents are copied
+        cy.get('[data-cy=highlight-copied]')
+          .should('be.visible')
+          .click();
+        cy.get('#game-menu').should('not.exist');
+  
+        // highlight-copied should switch back on re-opening menu
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=highlight-copied]').should('not.exist');
+        cy.get('[data-cy=clip-highlight]').should('be.visible');
+      });
     });
   });
 
