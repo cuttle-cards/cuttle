@@ -588,7 +588,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=-1`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
@@ -605,6 +605,10 @@ describe('Rewatching finished games', () => {
         cy.get('[data-cy=highlight-copied]').should('not.exist');
         cy.get('[data-cy=clip-highlight]').should('be.visible');
       });
+    });
+
+    it('Copies clip highlight link while spectating a live game', () => {
+      cy.setupGameAsSpectator();
     });
   });
 

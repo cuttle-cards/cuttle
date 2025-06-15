@@ -69,7 +69,9 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   const clipUrl = computed(() => {
     const { origin } = window.location;
     const gameId = gameStore.id;
-    const gameStateIndex = isSpectating.value ? currentGameStateIndex.value : gameStates.value.length - 1;
+    const gameStateIndex = 
+      (isSpectating.value && currentGameStateIndex.value !== -1) ?
+        currentGameStateIndex.value : gameStates.value.length - 1;
     return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
   });
 
