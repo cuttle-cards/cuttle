@@ -525,16 +525,16 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=clip-highlight]').click();
 
       // Clipboard should have spectate link to current gameState
-      cy.window()
-        .its('cuttle.gameStore')
-        .then((game) => {
-          return cy.window().then((win) => {
-            return win.navigator.clipboard.readText();
-          })
-            .then((text) => {
-              expect(text).to.eq(`https://cuttle.cards/spectate/${game.id}?gameStateIndex=1`);
-            });
-        });
+      cy.window().then((win) => {
+        const currentOrigin = win.location.origin;
+        cy.window()
+          .its('cuttle.gameStore')
+          .then((gameStore) => {
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            cy.wrap(win.navigator.clipboard.readText())
+              .should('eq', expectedUrl);
+          });
+      });
 
       // Menu item should show contents are copied
       cy.get('[data-cy=highlight-copied]')
@@ -547,11 +547,6 @@ describe('Rewatching finished games', () => {
       cy.get('#game-menu').should('be.visible');
       cy.get('[data-cy=highlight-copied]').should('not.exist');
       cy.get('[data-cy=clip-highlight]').should('be.visible');
-      // cy.get('[data-player-hand-card=1-0]').click();
-      // cy.get('[data-move-choice=oneOff]').click();
-
-      // cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
-
     });
   });
 

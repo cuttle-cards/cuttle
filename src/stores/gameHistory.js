@@ -67,9 +67,10 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const clipUrl = computed(() => {
+    const { origin } = window.location;
     const gameId = gameStore.id;
     const gameStateIndex = isSpectating.value ? currentGameStateIndex.value : gameStates.value.length - 1;
-    return `https://cuttle.cards/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
+    return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
   });
 
   return {

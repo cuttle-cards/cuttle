@@ -159,6 +159,11 @@ export default {
       return this.shownDialog === 'stalemate';
     }
   },
+  watch: {
+    showGameMenu() {
+      this.clipCopiedToClipboard = false;
+    }
+  },
   methods: {
     closeMenu() {
       this.showGameMenu = false;
@@ -196,7 +201,7 @@ export default {
         await navigator.clipboard.writeText(this.gameHistoryStore.clipUrl);
         this.clipCopiedToClipboard = true;
       } catch (err) {
-
+        this.$emit('handle-error', 'Could not copy highlight link to clipboard');
       }
     },
     async stopSpectate() {
@@ -210,11 +215,6 @@ export default {
     },
     async refresh() {
       await this.authStore.reconnectSocket();
-    }
-  },
-  watch: {
-    showGameMenu() {
-      this.clipCopiedToClipboard = false;
     }
   }
 };
