@@ -102,18 +102,18 @@ module.exports = {
   },
 
   discordRedirect: async function (_, res) {
-      const url = new URL('https://discord.com/api/oauth2/authorize');
-      const { generateSecret } = sails.helpers.oauth;
+    const url = new URL('https://discord.com/api/oauth2/authorize');
+    const { generateSecret } = sails.helpers.oauth;
 
-      url.searchParams.set('response_type', 'code');
-      url.searchParams.set('client_id', process.env.DISCORD_CLIENT_ID);
-      url.searchParams.set('scope', 'identify email guilds.members.read');
-      url.searchParams.set('redirect_uri', `${process.env.CALLBACK_URL_BASE}/auth/discord/callback`);
-      url.searchParams.set('prompt', 'none');
-      url.searchParams.set('state', generateSecret());
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('client_id', process.env.DISCORD_CLIENT_ID);
+    url.searchParams.set('scope', 'identify email guilds.members.read');
+    url.searchParams.set('redirect_uri', `${process.env.CALLBACK_URL_BASE}/auth/discord/callback`);
+    url.searchParams.set('prompt', 'none');
+    url.searchParams.set('state', generateSecret());
 
-      res.set('Cache-Control', 'private, no-cache');
-      return res.redirect(url.href);
+    res.set('Cache-Control', 'private, no-cache');
+    return res.redirect(url.href);
 
   },
 
@@ -121,7 +121,7 @@ module.exports = {
     const { code } = req.query;
     const { state } = req.query;
 
-    const {verifySecret} = sails.helpers.oauth;
+    const { verifySecret } = sails.helpers.oauth;
 
     const verified = verifySecret(state);
     if(!verified){
