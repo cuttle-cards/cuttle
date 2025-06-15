@@ -588,13 +588,9 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          cy.window()
-            .its('cuttle.gameStore')
-            .then((gameStore) => {
-              const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=-1`;
-              cy.wrap(win.navigator.clipboard.readText())
-                .should('eq', expectedUrl);
-            });
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=-1`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
         });
 
         // Menu item should show contents are copied
