@@ -524,6 +524,17 @@ describe('Rewatching finished games', () => {
       cy.get('#game-menu').should('be.visible');
       cy.get('[data-cy=clip-highlight]').click();
 
+      cy.window()
+        .its('cuttle.gameStore')
+        .then((game) => {
+          return cy.window().then((win) => {
+            return win.navigator.clipboard.readText();
+          })
+            .then((text) => {
+              expect(text).to.eq(`https://cuttle.cards/spectate/${game.id}?gameStateIndex=1`);
+            });
+        });
+
       // cy.get('[data-player-hand-card=1-0]').click();
       // cy.get('[data-move-choice=oneOff]').click();
 
