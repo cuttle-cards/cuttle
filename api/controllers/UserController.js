@@ -65,7 +65,7 @@ module.exports = {
       req.session.loggedIn = true;
 
       return res.ok({ username: user.username });
-      
+
     } catch (err) {
       return res.badRequest(err);
     }
@@ -151,7 +151,9 @@ module.exports = {
     if(!tokenData) {throw new Error('Failed to retrieve token');}
     const accessToken = tokenData.access_token;
 
-  
+    //Checking GH
+
+
   }
-  
+
 };
