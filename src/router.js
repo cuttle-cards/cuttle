@@ -120,7 +120,6 @@ const routes = [
     path: '/',
     name: ROUTE_NAME_HOME,
     component: () => import('@/routes/home/HomeView.vue'),
-    component: HomeView,
     beforeEnter: mustBeAuthenticated,
   },
   {
