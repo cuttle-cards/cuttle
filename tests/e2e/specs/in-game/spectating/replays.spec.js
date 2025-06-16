@@ -502,11 +502,169 @@ describe('Rewatching finished games', () => {
           assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true, rematchWasDeclined: true });
         });
       });
-
     });
   });
 
+  describe('Creating highlight clips', () => {
+    it('Copies the url of the current move as highlight clip as player in a game', () => {
+      cy.setupGameAsP0();
+
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      });
+
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=clip-highlight]').click();
+
+      // Clipboard should have spectate link to current gameState
+      cy.window().then((win) => {
+        const currentOrigin = win.location.origin;
+        cy.window()
+          .its('cuttle.gameStore')
+          .then((gameStore) => {
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            cy.wrap(win.navigator.clipboard.readText())
+              .should('eq', expectedUrl);
+          });
+      });
+
+      // Menu item should show contents are copied
+      cy.get('[data-cy=highlight-copied]')
+        .should('be.visible')
+        .click();
+      cy.get('#game-menu').should('not.exist');
+
+      // highlight-copied should switch back on re-opening menu
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=highlight-copied]').should('not.exist');
+      cy.get('[data-cy=clip-highlight]').should('be.visible');
+    });
+
+    it('Copies the current state url when spectating live', () => {
+      setupGameBetweenTwoUnseenPlayers('replay');
   
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+            Card.TEN_OF_HEARTS,
+            Card.TEN_OF_SPADES,
+            Card.ACE_OF_CLUBS
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_CLUBS,
+            Card.THREE_OF_DIAMONDS
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}`);
+
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=clip-highlight]').click();
+
+        // Clipboard should have spectate link to current gameState
+        cy.window().then((win) => {
+          const currentOrigin = win.location.origin;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
+        });
+
+        // Menu item should show contents are copied
+        cy.get('[data-cy=highlight-copied]')
+          .should('be.visible')
+          .click();
+        cy.get('#game-menu').should('not.exist');
+  
+        // highlight-copied should switch back on re-opening menu
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=highlight-copied]').should('not.exist');
+        cy.get('[data-cy=clip-highlight]').should('be.visible');
+      });
+    });
+
+    it('Copies clip highlight link while spectating a finished game', () => {
+      createAndPlayGameWithOneOffs();
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+            Card.TEN_OF_HEARTS,
+            Card.TEN_OF_SPADES,
+            Card.ACE_OF_CLUBS
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_CLUBS,
+            Card.THREE_OF_DIAMONDS
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=3`);
+
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=clip-highlight]').click();
+
+        // Clipboard should have spectate link to current gameState
+        cy.window().then((win) => {
+          const currentOrigin = win.location.origin;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
+        });
+
+        // Menu item should show contents are copied
+        cy.get('[data-cy=highlight-copied]')
+          .should('be.visible')
+          .click();
+        cy.get('#game-menu').should('not.exist');
+  
+        // highlight-copied should switch back on re-opening menu
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=highlight-copied]').should('not.exist');
+        cy.get('[data-cy=clip-highlight]').should('be.visible');
+      });
+    });
+  });
+
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {
       cy.loadFinishedGameFixtures([

@@ -66,6 +66,15 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     return currentGameStateIndex.value >= 0 && currentGameStateIndex.value < gameStates.value.length - 1;
   });
 
+  const clipUrl = computed(() => {
+    const { origin } = window.location;
+    const gameId = gameStore.id;
+    const gameStateIndex = 
+      (isSpectating.value && currentGameStateIndex.value !== -1) ?
+        currentGameStateIndex.value : gameStates.value.length - 1;
+    return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
+  });
+
   return {
     gameStates,
     isSpectating,
@@ -76,5 +85,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     showPlaybackControls,
     canGoToPreviousState,
     canGoToNextState,
+    clipUrl,
   };
 });
