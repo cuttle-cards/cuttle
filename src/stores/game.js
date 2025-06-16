@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import GameStatus from '../../utils/GameStatus.json';
+import GamePhase from '../../utils/GamePhase.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
@@ -79,6 +80,7 @@ export const useGameStore = defineStore('game', {
     p0Rematch: null,
     p1Rematch: null,
     rematchGameId: null,
+    phase: null,
     passes: 0,
     players: [],
     spectatingUsers: [],
@@ -101,9 +103,10 @@ export const useGameStore = defineStore('game', {
     lastEventChange: null,
     lastEventOneOffRank: null,
     lastEventTargetType: null,
+    lastEventPlayedBy: null,
 
     // START PHASE COMPUTED //
-    waitingForOpponentToCounter: false,
+    // waitingForOpponentToCounter: false,
     myTurnToCounter: false,
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -201,6 +204,11 @@ export const useGameStore = defineStore('game', {
     someoneDeclinedRematch() {
       return this.iWantRematch === false || this.opponentDeclinedRematch;
     },
+    waitingForOpponentToCounter() {
+      return this.phase === GamePhase.COUNTERING && 
+        this.lastEventPlayedBy === this.myPNum && 
+        this.myPNum !== null;
+    },
   },
   actions: {
     updateGame(newGame) {
@@ -215,6 +223,7 @@ export const useGameStore = defineStore('game', {
           newGame.lastEvent.change === MoveType.STALEMATE_REQUEST &&
           newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver
         ) ?? false;
+      this.lastEventPlayedBy = newGame.lastEvent?.pNum ?? null;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
       // this.chat = cloneDeep(newGame.chat);
@@ -242,6 +251,7 @@ export const useGameStore = defineStore('game', {
       this.rematchGameId = newGame.rematchGame ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
       this.status = newGame.status ?? GameStatus.ARCHIVED;
+      this.phase = newGame.phase =  newGame.phase ?? GamePhase.MAIN;
     
       const gameHistoryStore = useGameHistoryStore();
       gameHistoryStore.gameStates = newGame.gameStates ?? [];
@@ -561,7 +571,6 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId,
       });
-      this.waitingForOpponentToCounter = true;
       return Promise.resolve();
     },
 
@@ -574,7 +583,6 @@ export const useGameStore = defineStore('game', {
         pointId,
         targetType,
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPlayJack({ cardId, targetId }) {
@@ -613,12 +621,10 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId,
       });
-      this.waitingForOpponentToCounter = false;
     },
 
     async requestResolveFive(cardId) {
       this.myTurnToCounter = false;
-      this.waitingForOpponentToCounter = false;
       const moveType = MoveType.RESOLVE_FIVE;
 
       await this.makeSocketRequest('resolveFive', { moveType, cardId });
@@ -632,7 +638,6 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId: twoId,
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     ////////////
@@ -689,7 +694,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
@@ -701,7 +705,6 @@ export const useGameStore = defineStore('game', {
         targetType,
         index, // 0 if topCard, 1 if secondCard
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPass() {

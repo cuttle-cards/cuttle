@@ -63,7 +63,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE:
     case SocketEvent.FIZZLE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      gameStore.waitingForOpponentToCounter = false;
       gameStore.myTurnToCounter = false;
       if (evData.happened) {
         switch (evData.oneOff.rank) {
@@ -105,10 +104,8 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.COUNTER:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       if (evData.pNum !== gameStore.myPNum) {
-        gameStore.waitingForOpponentToCounter = false;
         gameStore.myTurnToCounter = true;
       } else {
-        gameStore.waitingForOpponentToCounter = true;
         gameStore.myTurnToCounter = false;
       }
       break;
@@ -128,7 +125,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.playingFromDeck = false;
       gameStore.waitingForOpponentToPlayFromDeck = false;
       if (evData.pNum !== gameStore.myPNum) {
-        gameStore.waitingForOpponentToCounter = false;
         gameStore.myTurnToCounter = true;
       }
       break;
