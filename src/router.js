@@ -45,12 +45,6 @@ const checkAndSubscribeToLobby = async (to) => {
       return { path: `/login/${gameId}` };
     }
 
-    // Check if the game exists
-    const gameExists = await gameStore.checkGameExists(gameId);
-    if (!gameExists) {
-      return { name: 'Home', query: { error: 'Game does not exist' } };
-    }
-
     if (gameStore.players.some(({ username }) => username === authStore.username)) {
       return true;
     }
