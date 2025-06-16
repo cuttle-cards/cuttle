@@ -22,9 +22,6 @@ describe('initCuttleGlobals', () => {
     vi.stubGlobal('document', mockDocument);
     vi.stubGlobal('window', mockWindow);
     vi.stubGlobal('console', mockConsole);
-
-    // Mock fetch to simulate devtools health check failure
-    vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('Network Error'))));
   });
 
   afterEach(() => {

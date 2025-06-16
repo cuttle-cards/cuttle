@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +32,7 @@ export default defineConfig(({ mode }) => {
         autoImport: false,
         styles: { configFile: 'src/sass/variables.scss' },
       }),
+      vueDevTools(),
     ],
     resolve: {
       alias: {
