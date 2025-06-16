@@ -224,7 +224,10 @@
         "cancel": "Cancel",
         "home": "Go Home",
         "concedeDialog": "The game will end and your opponent will win.",
-        "stalemateDialog": "If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move."
+        "stalemateDialog": "If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move.",
+        "clipHighlight": "Clip Highlight",
+        "highlightCopied": "Highlight Link Copied"
+
       },
       "spectatorListMenu": {
         "spectators": "Spectators",

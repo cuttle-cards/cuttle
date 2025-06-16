@@ -224,7 +224,9 @@
         "cancel": "Cancelar",
         "home": "Volver al menú",
         "concedeDialog": "El juego terminará y tu rival ganará.",
-        "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento."
+        "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento.",
+        "clipHighlight": "Recortar destacado",
+        "highlightCopied": "Enlace del destacado copiado"
       },
       "spectatorListMenu": {
         "spectators": "Espectadores",

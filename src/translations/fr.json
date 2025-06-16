@@ -224,7 +224,9 @@
         "cancel": "Annuler",
         "home": "Accueil",
         "concedeDialog": "Le jeu se termine et votre adversaire l'emporte.",
-        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup.",
+        "clipHighlight": "Extraire le point fort",
+        "highlightCopied": "Lien du point fort copié"
       },
       "spectatorListMenu": {
         "spectators": "Spectateurs",

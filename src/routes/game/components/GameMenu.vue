@@ -43,10 +43,10 @@
           prepend-icon="mdi-movie-open"
           @click.stop="clipHighlight"
         >
-          Clip Highlight
+          {{ t('game.menus.gameMenu.clipHighlight') }}
         </v-list-item>
         <v-list-item v-else data-cy="highlight-copied" prepend-icon="mdi-check-bold">
-          Highlight Link Copied
+          {{ t('game.menus.gameMenu.highlightCopied') }}
         </v-list-item>
         <TheLanguageSelector />
         <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
