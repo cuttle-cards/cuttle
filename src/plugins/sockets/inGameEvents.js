@@ -66,11 +66,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       if (evData.happened) {
         switch (evData.oneOff.rank) {
           case 3:
-            if (evData.playedBy !== gameStore.myPNum) {
-              gameStore.waitingForOpponentToPickFromScrap = true;
-            } else {
-              gameStore.pickingFromScrap = true;
-            }
             break;
           case 5:
             if (evData.playedBy === gameStore.myPNum) {
