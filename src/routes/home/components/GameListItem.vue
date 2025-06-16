@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import GameStatus from '_/utils/GameStatus.json';
+import GameStatus from '_/utils/GameStatus.js';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameListStore } from '@/stores/gameList';
