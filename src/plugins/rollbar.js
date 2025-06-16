@@ -37,10 +37,6 @@ export default {
   install(app) {
     app.config.errorHandler = (error, vm, info) => {
 
-      if (app.config.devtools) {
-        console.error(error);
-      }
-
       const vueComponent = {
         name: vm.$options?.name ?? 'AnonymousComponent',
         props: vm.$props ?? {},
