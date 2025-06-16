@@ -48,8 +48,6 @@ You can simultaneously run the server on `localhost:1337` and the client on `loc
 npm run start:dev
 ```
 
-This will also automatically open up [Vue Devtools](https://devtools.vuejs.org/). Alternatively, you can run them independently with separate commands.
-
 ##### Start the Server (sails backend)
 
 ```
@@ -68,13 +66,7 @@ to start the client on localhost:8080
 
 ##### Vue Devtools
 
-To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
-
-```
-npm run start:devtools
-```
-
-This will open the vue devtools in a standalone application window that you can use to inspect the state of the application. This can be used both when the app is open normally in the browser, or when testing with cypress.
+cuttle.cards uses the [vite-plugin vue devtools](https://devtools.vuejs.org/guide/vite-plugin), which let you inspect application state e.g. viewing all a component's data or all the state in the various stores. This is incredibly useful for debugging and analyzing problems. The devtools are automatically injected into the application during development and can be opened by clicking on the 'vue' icon at the bottom of the page when visiting the application. They can also be opened from inside Cypress tests, which is a powerful combination, enabling you to use test code to force the app into a specific state, and the devtools to investigate and troubleshoot.
 
 #### Open in browser
 
