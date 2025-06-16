@@ -5,17 +5,17 @@ import {
   playerFour,
   myUser,
   opponentOne,
-} from '../../fixtures/userFixtures';
+} from '../../../fixtures/userFixtures';
 import {
   assertGameState,
   assertSnackbar,
   getCardId,
   assertGameOverAsSpectator,
   rematchPlayerAsSpectator,
-} from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
-import { SnackBarError } from '../../fixtures/snackbarError';
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
+} from '../../../support/helpers';
+import { Card } from '../../../fixtures/cards';
+import { SnackBarError } from '../../../fixtures/snackbarError';
+import { announcementData } from '../../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function setup() {
   cy.wipeDatabase();
@@ -27,6 +27,15 @@ function setup() {
 
 describe('Spectating Games', () => {
   beforeEach(setup);
+
+  it('Prevents spectating your own game while it\'s ongoing', () => {
+    cy.setupGameAsP0();
+    cy.get('@gameId').then((gameId) => {
+      cy.visit(`/spectate/${gameId}`);
+      cy.url().should('not.include', `/spectate/${gameId}`);
+      assertSnackbar(`Cannot spectate game because you are playing`, 'error', 'newgame');
+    });
+  });
 
   it('Spectates a game', () => {
     cy.setupGameAsSpectator();
@@ -440,6 +449,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
       .then((game) => {
         cy.expect(game.p0Rematch).to.be.true;
         cy.expect(game.p1Rematch).to.be.true;
+        cy.wrap(game.rematchGameId).as('rematchGameId');
       });
 
     cy.signupOpponent(playerThree);
@@ -448,11 +458,10 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
 
     cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
 
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.url({ timeout: 10000 }).should('include', `/spectate/${game.id}`);
-        cy.setOpponentToSpectate(game.id);
+    cy.get('@rematchGameId')
+      .then((rematchGameId) => {
+        cy.url({ timeout: 10000 }).should('include', `/spectate/${rematchGameId}`);
+        cy.setOpponentToSpectate(rematchGameId);
       });
 
     cy.get('[data-cy="spectate-list-button"]').should('contain', '2')

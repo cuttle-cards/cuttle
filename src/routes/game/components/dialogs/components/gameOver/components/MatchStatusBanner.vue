@@ -26,13 +26,15 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game.js';
+import { useGameHistoryStore } from '@/stores/gameHistory.js';
 
 const gameStore = useGameStore();
+const gameHistoryStore = useGameHistoryStore();
 const { t } = useI18n();
 const prefix = 'game.dialogs.gameOverDialog.matchStatus';
 
 const isRanked = computed(() => gameStore.isRanked);
-const isSpectating = computed(() => gameStore.isSpectating);
+const isSpectating = computed(() => gameHistoryStore.isSpectating);
 
 const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi-coffee-outline');
 const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');

@@ -27,7 +27,7 @@ module.exports = {
       };
 
       const player = game[`p${row.playedBy}`]?.username;
-      const opponent = game[`p${row.playedBy % 2}`]?.username;
+      const opponent = game[`p${(row.playedBy + 1) % 2}`]?.username;
 
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
@@ -35,13 +35,16 @@ module.exports = {
 
       const getResolveFiveMessage = () => {
         const previousRow = game.gameStates[i - 1] ?? null;
-        const amountOfCardsDrawn =
-          row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`?.length];
+        let amountOfCardsDrawn =
+          row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`]?.length;
+        amountOfCardsDrawn += row.discardedCards.length; // account for discarded cards in num drawn
 
-        return amountOfCardsDrawn === 1 ? `draws 1 card` : `draws ${amountOfCardsDrawn} cards`;
+        return amountOfCardsDrawn === 1 ? `drew 1 card` : `drew ${amountOfCardsDrawn} cards`;
       };
 
       switch (moveType) {
+        case MoveType.DEAL:
+          return `${player} dealt; ${opponent} will go first`;
         case MoveType.DRAW:
           return `${player} drew a card.`;
 
@@ -91,11 +94,11 @@ module.exports = {
             case 2:
               return `The ${resolvedCardName} resolves; the ${targetCardName} is scrapped.`;
             case 3:
-              return `The ${resolvedCardName} one-off resolves; ${player} will draw one card of their choice from the Scrap pile.`;
+              return `The ${resolvedCardName} one-off resolves; ${opponent} will draw one card of their choice from the Scrap pile.`;
             case 4:
-              return `The ${resolvedCardName} one-off resolves; ${opponent} must discard two cards.`;
+              return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
             case 5:
-              return `The ${resolvedCardName} one-off resolves; ${player} must discard 1 card, and will draw up to 3.`;
+              return `The ${resolvedCardName} one-off resolves; ${opponent} must discard 1 card, and will draw up to 3.`;
             case 6:
               return `The ${resolvedCardName} one-off resolves; all Royals and Glasses are scrapped.`;
 
@@ -110,7 +113,7 @@ module.exports = {
               )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${opponent}'s hand. It cannot be played next turn.`;
+              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${player}'s hand. It cannot be played next turn.`;
           }
           break;
 
@@ -119,7 +122,7 @@ module.exports = {
 
         case MoveType.RESOLVE_FOUR:
           return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
-            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'
+            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
 
         case MoveType.RESOLVE_FIVE:
@@ -128,7 +131,7 @@ module.exports = {
               discardedCards[0],
             )} and ${getResolveFiveMessage()}`;
           }
-          return `${player} ${getResolveFiveMessage()}`;
+          return `${player} skipped discarding (empty hand) and ${getResolveFiveMessage()}`;
 
         case MoveType.SEVEN_POINTS:
           return `${player} played the ${playedCardName} from the top of the deck for points.`;
@@ -163,6 +166,9 @@ module.exports = {
         case MoveType.PASS:
           return `${player} passed.`;
 
+        case MoveType.CONCEDE:
+          return `${player} conceded`;
+
         case MoveType.STALEMATE_REQUEST:
           return `${player} requested a stalemate`;
 
@@ -171,6 +177,9 @@ module.exports = {
 
         case MoveType.STALEMATE_REJECT:
           return `${player} rejected ${opponent}'s offer for a stalemate`;
+
+        case MoveType.LOADFIXTURE:
+          return `${player} set the game into a custom state of their choosing`;
       }
     };
 

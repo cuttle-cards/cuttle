@@ -224,7 +224,9 @@
         "cancel": "Annuler",
         "home": "Accueil",
         "concedeDialog": "Le jeu se termine et votre adversaire l'emporte.",
-        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup.",
+        "clipHighlight": "Extraire le point fort",
+        "highlightCopied": "Lien du point fort copié"
       },
       "spectatorListMenu": {
         "spectators": "Spectateurs",
@@ -334,7 +336,8 @@
       "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
-      "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez"
+      "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",

@@ -224,7 +224,9 @@
         "cancel": "Cancelar",
         "home": "Volver al menú",
         "concedeDialog": "El juego terminará y tu rival ganará.",
-        "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento."
+        "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento.",
+        "clipHighlight": "Recortar destacado",
+        "highlightCopied": "Enlace del destacado copiado"
       },
       "spectatorListMenu": {
         "spectators": "Espectadores",
@@ -334,7 +336,8 @@
       "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
-      "cannotSpectate": "No puede ver el juego porque estás jugando."
+      "cannotSpectate": "No puede ver el juego porque estás jugando.",
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",

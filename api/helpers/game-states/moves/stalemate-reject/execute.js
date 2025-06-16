@@ -42,11 +42,7 @@ module.exports = {
       ...result,
       ...requestedMove,
       playedBy,
-      phase,
-      playedCard: null,
-      targetCard: null,
-      discardedCards: [],
-      resolved: null,
+      phase
     };
 
     return exits.success(result);

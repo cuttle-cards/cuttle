@@ -13,7 +13,7 @@
         :stalemates="stalemates"
         :latest-result="latestResult"
         :is-ranked="isRanked"
-        :is-spectating="gameStore.isSpectating"
+        :is-spectating="gameHistoryStore.isSpectating"
       />
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
@@ -88,6 +88,7 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import { WhichPlayer, usePlayerData } from './composables/playerData';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
@@ -123,10 +124,10 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    const gameStore = useGameStore();
+    const gameHistoryStore = useGameHistoryStore();
 
-    const leftPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P0 : WhichPlayer.CURRENT_PLAYER;
-    const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
+    const leftPlayer = gameHistoryStore.isSpectating ? WhichPlayer.ORIGINAL_P0 : WhichPlayer.CURRENT_PLAYER;
+    const rightPlayer = gameHistoryStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
 
     const {
       username: leftPlayerUsername,
@@ -144,6 +145,7 @@ export default {
 
     return {
       t,
+      gameHistoryStore,
       leftPlayerUsername,
       leftPlayerRematch,
       leftPlayerWins,
@@ -173,7 +175,7 @@ export default {
     },
     ...mapStores(useGameStore),
     heading() {
-      if (this.gameStore.isSpectating) {
+      if (this.gameHistoryStore.isSpectating) {
         return this.spectatorHeading;
       }
       if (this.matchIsOver) {
@@ -201,7 +203,7 @@ export default {
         return 'stalemate-heading';
       }
 
-      if (this.gameStore.isSpectating) {
+      if (this.gameHistoryStore.isSpectating) {
         const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
         const winner = this.gameStore.players[this.gameStore.winnerPNum];
         return winner.id === origianlP0 ? 'p1-wins-heading' : 'p2-wins-heading';
@@ -213,7 +215,7 @@ export default {
       if (this.stalemate) {
         return 'Stalemate';
       }
-      if (this.gameStore.isSpectating) {
+      if (this.gameHistoryStore.isSpectating) {
         const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
         const winner = this.gameStore.players[this.gameStore.winnerPNum];
         return winner.id === origianlP0 ? 'Won' : 'Lost';
@@ -247,13 +249,13 @@ export default {
       return this.isRanked ? 'newPrimary' : 'newSecondary';
     },
     rematchButtonText() {
-      if (this.gameStore.isSpectating) {
+      if (this.gameHistoryStore.isSpectating) {
         return 'Spectate';
       }
       return this.isRanked ? 'Continue Match' : 'Rematch';
     },
     rematchButtonDisabled() {
-      if (this.gameStore.isSpectating) {
+      if (this.gameHistoryStore.isSpectating) {
         return this.gameStore.someoneDeclinedRematch || this.gameStore.iWantToContinueSpectating;
       }
       return this.opponentDeclinedRematch || this.gameStore.iWantRematch;
@@ -269,7 +271,7 @@ export default {
         winner: null,
       });
 
-      if (!this.gameStore.isSpectating) {
+      if (!this.gameHistoryStore.isSpectating) {
         await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
       }
 
@@ -277,7 +279,7 @@ export default {
     },
     async rematch() {
       try {
-        if (this.gameStore.isSpectating) {
+        if (this.gameHistoryStore.isSpectating) {
           return this.continueSpectating();
         }
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
@@ -291,14 +293,32 @@ export default {
       this.gameStore.iWantToContinueSpectating = true;
       if (this.gameStore.p0Rematch && this.gameStore.p1Rematch) {
         this.gameStore.iWantToContinueSpectating = false;
-        await this.gameStore.requestSpectate(this.gameStore.rematchGameId);
-
-        this.$router.push({
-          name: this.$router.currentRoute.name,
-          params: {
-            gameId: this.gameStore.rematchGameId,
-          },
-        });
+        let rematchGameId;
+        try {
+          ({ rematchGameId } = this.gameStore);
+          const route = {
+            name: this.$router.currentRoute.name,
+            params: {
+              gameId: rematchGameId,
+            },
+          };
+          await this.gameStore.requestSpectate(rematchGameId, null, route);
+          const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
+          this.$router.push({
+            ...route,
+            query: {
+              gameStateIndex,
+            }
+          });
+        } catch (err) {
+          this.$router.push({
+            name: 'Home',
+            query: {
+              gameId: rematchGameId,
+              error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`
+            },
+          });
+        }
       }
       return;
     },

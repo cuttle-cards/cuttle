@@ -170,6 +170,55 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.log('Scuttling is disabled with specific message when opponent has no points');
   });
 
+  it('Scuttles a card with two jacks on it', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.JACK_OF_CLUBS, Card.TEN_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ ],
+      p1Hand: [ Card.JACK_OF_DIAMONDS ],
+      p1Points: [ Card.FOUR_OF_DIAMONDS ],
+      p1FaceCards: [],
+    });
+
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=4-1]').click();
+
+    assertGameState(0, {
+      p0Hand: [ Card.TEN_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS, Card.FOUR_OF_DIAMONDS ],
+      p0FaceCards: [ ],
+      p1Hand: [ Card.JACK_OF_DIAMONDS ],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS);
+
+    assertGameState(0, {
+      p0Hand: [  Card.TEN_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ ],
+      p1Hand: [],
+      p1Points: [ Card.FOUR_OF_DIAMONDS ],
+      p1FaceCards: [],
+    });
+
+    cy.get('[data-player-hand-card=10-3]').click();
+    cy.get('[data-move-choice=scuttle]').click();
+    cy.get('[data-opponent-point-card=4-1]').click({ force: true });
+
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ ],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [ Card.FOUR_OF_DIAMONDS, Card.TEN_OF_SPADES, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS ],
+    });
+  });
+
   it('Plays Kings', () => {
     // Setup
     cy.loadGameFixture(0, {

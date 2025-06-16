@@ -4,7 +4,7 @@ import MoveType from '../../../../utils/MoveType.json';
 import GamePhase from '../../../../utils/GamePhase.json';
 
 const gameStateRow = {
-  playedBy: 0,
+  playedBy: 1,
   moveType: MoveType.RESOLVE,
   playedCard: null,
   targetCard: 'JC',
@@ -36,7 +36,7 @@ export const resolveNine = {
   gameStateRow,
 
   gameState: {
-    playedBy: 0,
+    playedBy: 1,
     moveType: MoveType.RESOLVE,
     playedCard: null,
     targetCard: Card.JACK_OF_CLUBS,
@@ -82,8 +82,8 @@ export const resolveNine = {
     change: MoveType.RESOLVE,
     happened: true,
     oneOff: Card.NINE_OF_CLUBS,
-    pNum: 1,
-    playedBy: 1,
+    pNum: 0,
+    playedBy: 0,
     targetCardId: 'JC',
     game: {
       chat: [],
@@ -108,12 +108,12 @@ export const resolveNine = {
         change: MoveType.RESOLVE,
         happened: true,
         oneOff: Card.NINE_OF_CLUBS,
-        pNum: 1,
+        pNum: 0,
       },
       lock: null,
       lockedAt: null,
       log: [
-        "The 9♣️ one-off resolves, returning the J♣️ to myUsername's hand. It cannot be played next turn.",
+        "The 9♣️ one-off resolves, returning the J♣️ to definitelyNotTheGovernment6969's hand. It cannot be played next turn.",
       ],
       match: null,
       name: 'Test Game',
@@ -165,6 +165,16 @@ export const resolveNine = {
       turnStalemateWasRequestedByP1: -1,
       twos: [],
       winner: null,
+      gameStates: [
+        {
+          discardedCards: [],
+          moveType: 'resolve',
+          playedBy: 1,
+          playedCard: null,
+          resolved: '9C',
+          targetCard: 'JC',
+        },
+      ],
     },
     victory: {
       conceded: false,

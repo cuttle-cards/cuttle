@@ -224,7 +224,10 @@
         "cancel": "Cancel",
         "home": "Go Home",
         "concedeDialog": "The game will end and your opponent will win.",
-        "stalemateDialog": "If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move."
+        "stalemateDialog": "If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move.",
+        "clipHighlight": "Clip Highlight",
+        "highlightCopied": "Highlight Link Copied"
+
       },
       "spectatorListMenu": {
         "spectators": "Spectators",
@@ -334,7 +337,8 @@
       "spectateTwoPlayers": "You can only spectate an ongoing game with two players",
       "cantFindGame": "Can't find game",
       "invalidLobbyNumber": "Invalid Lobby Number",
-      "cannotSpectate": "Cannot spectate game because you are playing"
+      "cannotSpectate": "Cannot spectate game because you are playing",
+      "spectateNoGamestates": "Cannot spectate: game is too old"
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",

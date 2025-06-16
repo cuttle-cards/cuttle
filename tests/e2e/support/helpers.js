@@ -1,4 +1,10 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { SnackBarError } from '../fixtures/snackbarError';
+import { playerOne, playerTwo, playerThree } from '../fixtures/userFixtures';
+import { seasonFixtures } from '../fixtures/statsFixtures';
+
+dayjs.extend(utc);
 
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {
@@ -295,6 +301,52 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
   }
 }
 
+export function setupSeasons() {
+  cy.wipeDatabase();
+  cy.visit('/');
+
+  // Set up season
+  const [ , diamondsSeason ] = seasonFixtures;
+  diamondsSeason.startTime = dayjs.utc().subtract(2, 'week')
+    .subtract(1, 'day')
+    .toDate();
+  diamondsSeason.endTime = dayjs.utc().add(11, 'weeks')
+    .toDate();
+  cy.loadSeasonFixture([ diamondsSeason ]);
+  // Sign up to players and store their id's for comparison to match data
+  cy.signupOpponent(playerOne).as('playerOneId');
+  cy.signupOpponent(playerThree).as('playerThreeId');
+  // Opponent will be player 2 (the last one we log in as)
+  cy.signupOpponent(playerTwo)
+    .as('playerTwoId')
+    .then(function () {
+      // Create match from last week, which current games don't count towards
+      const oldMatchBetweenPlayers = {
+        player1: this.playerOneId,
+        player2: this.playerTwoId,
+        winner: this.playerOneId,
+        startTime: dayjs.utc().subtract(1, 'week')
+          .subtract(1, 'day')
+          .toDate(),
+        endTime: dayjs.utc().subtract(1, 'week')
+          .subtract(1, 'day')
+          .toDate(),
+      };
+
+      const currentMatchWithDifferentOpponent = {
+        player1: this.playerOneId,
+        player2: this.playerThreeId,
+        winner: null,
+        startTime: dayjs.utc().subtract(1, 'hour')
+          .toDate(),
+        endTime: dayjs.utc().subtract(1, 'hour')
+          .toDate(),
+      };
+
+      cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
+    });
+}
+
 /**
  * @param fixture:
  * {
@@ -515,7 +567,19 @@ export function assertStalemate(score = null) {
     });
 }
 
-export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked }) {
+export function setupGameBetweenTwoUnseenPlayers(gameName, isRanked = false) {
+  cy.createGameOpponent(gameName, isRanked).then(({ gameId }) => {
+    cy.wrap(gameId).as(`${gameName}GameId`);
+    cy.recoverSessionOpponent(playerOne);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+    cy.recoverSessionOpponent(playerTwo);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+  });
+}
+
+export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked, rematchWasDeclined }) {
   let headingDataCy;
   let headingText;
   let selectedScore;
@@ -560,11 +624,13 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
   cy.get(selectedScore).should('have.class', 'selected');
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
-  const bannerMessage = matchIsOver ? 'Good Match!' : 'Continue Spectating?';
+  const rankedIconVisibility = rematchWasDeclined ? 'not.exist' : 'be.visible';
+  const bannerMessage = rematchWasDeclined ? 'Player left - click to go home.' : matchIsOver ? 'Good Match!'  : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', bannerMessage)
-    .find(`[data-cy=${isRankedIcon}]`);
+    .find(`[data-cy=${isRankedIcon}]`)
+    .should(rankedIconVisibility);
 }
 
 export function rematchPlayerAsSpectator(userFixture, rematch = true) {

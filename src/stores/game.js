@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
+import GameStatus from '../../utils/GameStatus.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
@@ -79,7 +81,6 @@ export const useGameStore = defineStore('game', {
     rematchGameId: null,
     passes: 0,
     players: [],
-    isSpectating: false,
     spectatingUsers: [],
     scrap: [],
     turn: 0,
@@ -237,7 +238,12 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = newGame.currentMatch ?? this.currentMatch;
       this.p0Rematch = newGame.p0Rematch ?? null;
       this.p1Rematch = newGame.p1Rematch ?? null;
+      this.rematchGameId = newGame.rematchGame ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
+      this.status = newGame.status ?? GameStatus.ARCHIVED;
+    
+      const gameHistoryStore = useGameHistoryStore();
+      gameHistoryStore.gameStates = newGame.gameStates ?? [];
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -278,11 +284,15 @@ export const useGameStore = defineStore('game', {
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
+      const gameHistoryStore = useGameHistoryStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
         let myPNum = game.players.findIndex(({ username }) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
+        }
+        if (gameHistoryStore.isSpectating) {
+          myPNum = 0;
         }
         this.myPNum = myPNum;
       }
@@ -437,6 +447,7 @@ export const useGameStore = defineStore('game', {
         io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
           switch (jwres.statusCode) {
             case 200:
+              this.resetState();
               this.resetPNumIfNullThenUpdateGame(res.game);
               return handleInGameEvents(res, route).then(() => {
                 return resolve(res);
@@ -452,15 +463,16 @@ export const useGameStore = defineStore('game', {
       });
     },
 
-    async requestSpectate(gameId) {
-      const slug = `${gameId}/spectate`;
+    async requestSpectate(gameId, gameStateIndex = 0, route = null) {
+      const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
       try {
-        const res = await this.makeSocketRequest(slug, { gameId });
+        this.resetState();
+        const res = await this.makeSocketRequest(slug, {});
         this.myPNum = 0;
-        this.isSpectating = true;
-        this.updateGame(res.body);
+        this.updateGame(res.body.game);
+        return handleInGameEvents(res.body, route);
       } catch (err) {
-        const message = err?.message ?? 'Unable to spectate game';
+        const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
         throw(new Error(message));
       }
     },
@@ -490,7 +502,11 @@ export const useGameStore = defineStore('game', {
       return new Promise((resolve, reject) => {
         io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
-            return resolve(res);
+            return resolve();
+          }
+          // If game has already started, throw specific signal so lobbyview can handle it
+          if (jwres.statusCode === 409) {
+            return reject({ message: res.message, gameId: this.id, code: res.code });
           }
           return reject(new Error('Error readying for game'));
         });

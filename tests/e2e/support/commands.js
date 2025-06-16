@@ -13,11 +13,12 @@ io.sails.useCORSRouteToGetCookie = false;
 const transformGameUrl = (api, slug, gameId = null) => {
 
   switch (slug) {
-    case 'rematch':
-      return cy
-        .window()
-        .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/rematch`);
+    case 'rematch': 
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/rematch`)  :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/rematch`);
     case 'spectate':
       return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate`) :
         cy
@@ -209,7 +210,7 @@ Cypress.Commands.add('signupOpponent', (opponent) => {
   cy.makeSocketRequest('user', 'signup', {
     username: opponent.username,
     password: opponent.password,
-  });
+  }).as(`${opponent.username}Id`);
 });
 Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()
@@ -224,9 +225,10 @@ Cypress.Commands.add('loginPlayer', (player) => {
   cy.log(`Logged in as player ${player.username}`);
 });
 
-Cypress.Commands.add('createGameOpponent', (name) => {
+Cypress.Commands.add('createGameOpponent', (name, isRanked = false) => {
   cy.makeSocketRequest('game', '', {
     gameName: name,
+    isRanked
   });
 });
 
@@ -281,21 +283,21 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   cy.makeSocketRequest('user', 'reLogin', userFixture);
 });
 
-Cypress.Commands.add('drawCardOpponent', () => {
+Cypress.Commands.add('drawCardOpponent', (gameId = null) => {
   const moveType = MoveType.DRAW;
-  cy.makeSocketRequest('game', 'draw', { moveType });
+  cy.makeSocketRequest('game', 'draw', { moveType }, 'POST', gameId);
 });
 
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playPointsOpponent', (card) => {
+Cypress.Commands.add('playPointsOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot play opponent points with invalid card ${card}`);
   }
   const cardId = card.id;
   const moveType = MoveType.POINTS;
-  cy.makeSocketRequest('game', 'points', { moveType, cardId });
+  cy.makeSocketRequest('game', 'points', { moveType, cardId }, 'POST', gameId);
 });
 
 /**
@@ -385,7 +387,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
   });
 });
 
-Cypress.Commands.add('playOneOffOpponent', (card) => {
+Cypress.Commands.add('playOneOffOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot play one-off as opponent with invalid card ${card}`);
   }
@@ -394,7 +396,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
   cy.makeSocketRequest('game', 'untargetedOneOff', {
     moveType,
     cardId: card.id,
-  });
+  }, 'POST', gameId);
 });
 
 /**
@@ -423,14 +425,14 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('counterOpponent', (card) => {
+Cypress.Commands.add('counterOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot counter one-off with invalid card ${card}`);
   }
 
   const moveType = MoveType.COUNTER;
   const cardId = card.id;
-  cy.makeSocketRequest('game', 'counter', { moveType, cardId });
+  cy.makeSocketRequest('game', 'counter', { moveType, cardId }, 'POST', gameId);
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
@@ -449,9 +451,9 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
   cy.makeSocketRequest('game', 'resolveThree', { moveType, cardId });
 });
 
-Cypress.Commands.add('resolveOpponent', () => {
+Cypress.Commands.add('resolveOpponent', (gameId = null) => {
   const moveType = MoveType.RESOLVE;
-  cy.makeSocketRequest('game', 'resolve', { moveType });
+  cy.makeSocketRequest('game', 'resolve', { moveType }, 'POST', gameId);
 });
 
 /**
@@ -690,7 +692,11 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
  *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
  */
 Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDomAssertion }) => {
-  cy.makeSocketRequest('game', 'rematch', { gameId, rematch });
+  cy.makeSocketRequest('game', 'rematch', { rematch }, 'POST', gameId).then((res) => {
+    if (res?.newGameId) {
+      cy.wrap(res.newGameId).as(`game${gameId}RematchId`);
+    }
+  });
 
   if (skipDomAssertion) {
     return;
@@ -773,12 +779,19 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
  * }
  */
-Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  return cy
+Cypress.Commands.add('loadGameFixture', (pNum, fixture, gameId = null) => {
+  if (gameId) {
+    cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture ).then(() => {
+      return;
+    });
+    return;
+  }
+
+  cy
     .window()
     .its('cuttle.gameStore.id')
-    .then(async (gameId) => {
-      await cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture );
+    .then(async (gameIdFromStore) => {
+      await cy.makeSocketRequest(`game/${gameIdFromStore}`, 'game-state',  fixture );
       const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
       return;

@@ -303,6 +303,27 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
+
+  it('Brings you into the game when readying after game has started', function () {
+    const { gameId } = this.gameSummary;
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
+    cy.get('[data-cy=ready-button]').click();
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(gameId);
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+    cy.readyOpponent(gameId);
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.reconnectSocket());
+
+    cy.get('[data-cy=ready-button]').click();
+    assertGameStarted();
+  });
 });
 
 describe('Lobby - P1 Perspective', () => {

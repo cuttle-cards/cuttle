@@ -224,7 +224,9 @@
         "cancel": "Abbrechen",
         "home": "Zur Startseite",
         "concedeDialog": "Das Spiel endet und dein Gegner gewinnt.",
-        "stalemateDialog": "Wenn dein Gegner zustimmt, endet das Spiel in einem Unentschieden. Die Anfrage wird abgebrochen, wenn der Gegner ablehnt oder ein Spieler einen Zug macht."
+        "stalemateDialog": "Wenn dein Gegner zustimmt, endet das Spiel in einem Unentschieden. Die Anfrage wird abgebrochen, wenn der Gegner ablehnt oder ein Spieler einen Zug macht.",
+        "clipHighlight": "Ausschnitt hervorheben",
+        "highlightCopied": "Highlight-Link kopiert"
       },
       "spectatorListMenu": {
         "spectators": "Zuschauer",
@@ -334,7 +336,8 @@
       "spectateTwoPlayers": "Du kannst nur ein laufendes Spiel mit zwei Spielern beobachten",
       "cantFindGame": "Spiel nicht gefunden",
       "invalidLobbyNumber": "Ungültige Lobby-Nummer",
-      "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst"
+      "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst",
+      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt"
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",
