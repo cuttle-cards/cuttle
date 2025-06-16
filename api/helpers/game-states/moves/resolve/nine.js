@@ -1,4 +1,4 @@
-const TargetType = require('../../../../../utils/TargetType.json');
+const TargetType = require('../../../../../utils/TargetType.js');
 
 module.exports = {
   friendlyName: 'Resolve Nine One-Off',
