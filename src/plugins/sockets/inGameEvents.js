@@ -75,11 +75,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
             }
             break;
           case 4:
-            if (evData.playedBy === gameStore.myPNum) {
-              gameStore.waitingForOpponentToDiscard = true;
-            } else {
-              gameStore.showResolveFour = true;
-            }
             break;
           case 7:
             if (evData.playedBy === gameStore.myPNum) {

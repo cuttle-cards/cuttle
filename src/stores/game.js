@@ -110,7 +110,6 @@ export const useGameStore = defineStore('game', {
     // myTurnToCounter: false,
     // waitingForOpponentToPickFromScrap: false,
     // pickingFromScrap: false,
-    showResolveFour: false,
     waitingForOpponentToDiscard: false,
     showResolveFive: false,
     playingFromDeck: false,
@@ -221,6 +220,9 @@ export const useGameStore = defineStore('game', {
     },
     pickingFromScrap() {
       return this.phase === GamePhase.RESOLVING_THREE && this.isPlayersTurn;
+    },
+    showResolveFour() {
+      return this.phase === GamePhase.RESOLVING_FOUR && !this.isPlayersTurn;
     },
   },
   actions: {
@@ -364,7 +366,6 @@ export const useGameStore = defineStore('game', {
     },
     async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
       await sleep(1000);
