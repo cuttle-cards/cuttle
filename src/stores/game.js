@@ -205,14 +205,16 @@ export const useGameStore = defineStore('game', {
       return this.iWantRematch === false || this.opponentDeclinedRematch;
     },
     waitingForOpponentToCounter() {
-      return this.phase === GamePhase.COUNTERING && 
-        this.lastEventPlayedBy === this.myPNum && 
-        this.myPNum !== null;
+      const counteringPhase = this.phase === GamePhase.COUNTERING;
+      const numTwosIsEven = this.twos.length % 2 === 0;
+      
+      return counteringPhase && this.isPlayersTurn === numTwosIsEven;
     },
     myTurnToCounter() {
-      return this.phase === GamePhase.COUNTERING &&
-        this.lastEventPlayedBy !== this.myPNum && 
-        this.myPNum !== null;
+      const counteringPhase = this.phase === GamePhase.COUNTERING;
+      const numTwosIsEven = this.twos.length % 2 === 0;
+      
+      return counteringPhase && this.isPlayersTurn !== numTwosIsEven;
     },
     waitingForOpponentToPickFromScrap() {
       return this.phase === GamePhase.RESOLVING_THREE && !this.isPlayersTurn;
