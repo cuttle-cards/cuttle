@@ -68,6 +68,8 @@ to start the client on localhost:8080
 
 cuttle.cards uses the [vite-plugin vue devtools](https://devtools.vuejs.org/guide/vite-plugin), which let you inspect application state e.g. viewing all a component's data or all the state in the various stores. This is incredibly useful for debugging and analyzing problems. The devtools are automatically injected into the application during development and can be opened by clicking on the 'vue' icon at the bottom of the page when visiting the application. They can also be opened from inside Cypress tests, which is a powerful combination, enabling you to use test code to force the app into a specific state, and the devtools to investigate and troubleshoot.
 
+![Devtools in Cypress](./img/cuttle_dev_tools.webp)
+
 #### Open in browser
 
 Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
