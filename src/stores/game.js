@@ -108,7 +108,7 @@ export const useGameStore = defineStore('game', {
     // START PHASE COMPUTED //
     // waitingForOpponentToCounter: false,
     // myTurnToCounter: false,
-    waitingForOpponentToPickFromScrap: false,
+    // waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
     showResolveFour: false,
     waitingForOpponentToDiscard: false,
@@ -213,6 +213,9 @@ export const useGameStore = defineStore('game', {
       return this.phase === GamePhase.COUNTERING &&
         this.lastEventPlayedBy !== this.myPNum && 
         this.myPNum !== null;
+    },
+    waitingForOpponentToPickFromScrap() {
+      return this.phase === GamePhase.RESOLVING_THREE && !this.isPlayersTurn;
     }
   },
   actions: {
@@ -348,8 +351,7 @@ export const useGameStore = defineStore('game', {
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processThrees(chosenCard, game) {
-      this.waitingForOpponentToPickFromScrap = false;
-      this.pickingFromScrap = false;
+      this.phase = GamePhase.MAIN;
       this.lastEventCardChosen = chosenCard;
 
       await sleep(1000);
