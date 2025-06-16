@@ -125,7 +125,7 @@ const routes = [
   {
     name: ROUTE_NAME_SPECTATE_LIST,
     path: '/spectate-list',
-    component: HomeView,
+    component: () => import('@/routes/home/HomeView.vue'),
     beforeEnter: mustBeAuthenticated
   },
   {
