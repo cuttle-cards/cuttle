@@ -3,8 +3,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-import MoveType from '../../utils/MoveType.json';
-import GameStatus from '../../utils/GameStatus.json';
+import MoveType from '../../utils/MoveType.js';
+import GameStatus from '../../utils/GameStatus.js';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 

@@ -9,7 +9,7 @@ import {
 } from '../../../support/helpers';
 import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
-import GameStatus from '../../../../../utils/GameStatus.json';
+import GameStatus from '../../../../../utils/GameStatus.js';
 
 dayjs.extend(utc);
 

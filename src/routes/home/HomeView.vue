@@ -151,7 +151,7 @@ import GameListItem from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
-import GameStatus from '_/utils/GameStatus.json';
+import GameStatus from '_/utils/GameStatus.js';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
 const TABS = {

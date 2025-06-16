@@ -1,4 +1,4 @@
-const MoveType = require('../../../utils/MoveType.json');
+const MoveType = require('../../../utils/MoveType.js');
 
 module.exports = {
   friendlyName: 'Create Socket Event',

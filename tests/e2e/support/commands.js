@@ -1,6 +1,6 @@
 import { hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
-import MoveType from '../../../utils/MoveType.json';
+import MoveType from '../../../utils/MoveType.js';
 
 /**
  * Require & configure socket connection to server

@@ -1,4 +1,4 @@
-import GameStatus from '../../../utils/GameStatus.json';
+import GameStatus from '../../../utils/GameStatus.js';
 
 export const gameFixture = {
   id: 1,

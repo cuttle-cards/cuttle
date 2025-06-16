@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-import GameStatus from '_/utils/GameStatus.json';
+import GameStatus from '_/utils/GameStatus.js';
 
 class GameSummary {
   constructor(obj) {

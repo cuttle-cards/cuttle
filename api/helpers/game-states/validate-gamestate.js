@@ -1,4 +1,4 @@
-const GamePhase = require('../../../utils/GamePhase.json');
+const GamePhase = require('../../../utils/GamePhase.js');
 
 function validateGameId(param) {
   if (param === null || param === undefined || Number.isNaN(param)) {
