@@ -7,5 +7,8 @@ const GamePhase = {
   RESOLVING_SEVEN: 7,
   CONSIDERING_STALEMATE: -1
 };
-
-module.exports = GamePhase;
+// CommonJS fallback
+if (typeof module !== 'undefined') {
+  module.exports = GamePhase;
+}
+export default GamePhase;

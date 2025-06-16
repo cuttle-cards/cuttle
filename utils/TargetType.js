@@ -3,5 +3,8 @@ const TargetType = {
   faceCard: 'faceCard',
   jack: 'jack'
 };
-
-module.exports = TargetType;
+// CommonJS fallback
+if (typeof module !== 'undefined') {
+  module.exports = TargetType;
+}
+export default TargetType;

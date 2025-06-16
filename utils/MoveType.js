@@ -25,5 +25,8 @@ const MoveType = {
   CONCEDE: 'concede',
   LOADFIXTURE: 'loadFixture'
 };
-
-module.exports = MoveType;
+// CommonJS fallback
+if (typeof module !== 'undefined') {
+  module.exports = MoveType;
+}
+export default MoveType;

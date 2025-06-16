@@ -5,4 +5,8 @@ const GameStatus = {
   ARCHIVED : 4
 };
 
-module.exports = GameStatus;
+// CommonJS fallback
+if (typeof module !== 'undefined') {
+  module.exports = GameStatus;
+}
+export default GameStatus;

@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import  { useGameStore } from '@/stores/game';
 import { ROUTE_NAME_SPECTATE } from '@/router';
-import GameStatus from '../../utils/GameStatus.js';
+import GameStatus from '../../utils/GameStatus';
 
 export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Dependencies

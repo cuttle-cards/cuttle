@@ -5,4 +5,8 @@ const DeckIds = [
   'AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS', 'QS', 'KS'
 ];
 
-module.exports = DeckIds;
+// CommonJS fallback
+if (typeof module !== 'undefined') {
+  module.exports = DeckIds;
+}
+export default DeckIds;
