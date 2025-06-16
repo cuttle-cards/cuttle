@@ -1,10 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/routes/home/HomeView.vue';
-import LoginView from '@/routes/login/LoginView.vue';
-import LobbyView from '@/routes/lobby/LobbyView.vue';
-import GameView from '@/routes/game/GameView.vue';
-import RulesView from '@/routes/rules/RulesView.vue';
-import StatsView from '@/routes/stats/StatsView.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import GameStatus from '_/utils/GameStatus.json';
@@ -125,19 +119,19 @@ const routes = [
   {
     path: '/',
     name: ROUTE_NAME_HOME,
-    component: HomeView,
+    component: () => import('@/routes/home/HomeView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   {
     name: ROUTE_NAME_SPECTATE_LIST,
     path: '/spectate-list',
-    component: HomeView,
+    component: () => import('@/routes/home/HomeView.vue'),
     beforeEnter: mustBeAuthenticated
   },
   {
     path: '/login/:lobbyRedirectId?',
     name: ROUTE_NAME_LOGIN,
-    component: LoginView,
+    component: () => import('@/routes/login/LoginView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -145,7 +139,7 @@ const routes = [
   {
     path: '/signup',
     name: ROUTE_NAME_SIGNUP,
-    component: LoginView,
+    component: () => import('@/routes/login/LoginView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -163,12 +157,12 @@ const routes = [
   {
     path: '/rules',
     name: ROUTE_NAME_RULES,
-    component: RulesView,
+    component: () => import('@/routes/rules/RulesView.vue'),
   },
   {
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId?',
-    component: LobbyView,
+    component: () => import('@/routes/lobby/LobbyView.vue'),
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: checkAndSubscribeToLobby,
     meta: {
@@ -178,7 +172,7 @@ const routes = [
   {
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId?',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     beforeEnter: getGameState,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
@@ -190,7 +184,7 @@ const routes = [
   {
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId?',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -199,7 +193,7 @@ const routes = [
   {
     path: '/stats/:seasonId?',
     name: ROUTE_NAME_STATS,
-    component: StatsView,
+    component: () => import('@/routes/stats/StatsView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   // Catch every other unsupported route
