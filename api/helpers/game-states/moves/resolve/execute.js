@@ -1,5 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.js');
-const MoveType = require('../../../../../utils/MoveType.js.js');
+const MoveType = require('../../../../../utils/MoveType.js');
 
 module.exports = {
   friendlyName: 'Resolve One-Off',

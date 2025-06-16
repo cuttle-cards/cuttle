@@ -1,5 +1,5 @@
 const GameStatus = require('../../../utils/GameStatus.js');
-const MoveType = require('../../../utils/MoveType.js.js');
+const MoveType = require('../../../utils/MoveType.js');
 
 module.exports = {
   friendlyName: 'Check Game State for win',
