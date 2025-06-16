@@ -1,4 +1,4 @@
-const GamePhase = require('../../../../../utils/GamePhase.json');
+const GamePhase = require('../../../../../utils/GamePhase.js');
 
 module.exports = {
   friendlyName: 'Draw a card',

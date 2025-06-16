@@ -1,5 +1,5 @@
 import { Card } from '../Card';
-import GamePhase from '../../../../utils/GamePhase.json';
+import GamePhase from '../../../../utils/GamePhase.js';
 import MoveType from '../../../../utils/MoveType.json';
 import GameStatus from '../../../../utils/GameStatus.json';
 import { gameFixture } from '../Game';

@@ -1,7 +1,7 @@
 const GameStatus = require('../../../utils/GameStatus.json');
 const DeckIds = require('../../../utils/DeckIds.json');
 const MoveType = require('../../../utils/MoveType.json');
-const GamePhase = require('../../../utils/GamePhase.json');
+const GamePhase = require('../../../utils/GamePhase.js');
 
 module.exports = {
   friendlyName: 'Deal Cards',

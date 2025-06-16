@@ -1,0 +1,11 @@
+const GamePhase = {
+  MAIN : 1,
+  COUNTERING : 2,
+  RESOLVING_THREE : 3,
+  RESOLVING_FOUR : 4,
+  RESOLVING_FIVE: 5,
+  RESOLVING_SEVEN: 7,
+  CONSIDERING_STALEMATE: -1
+};
+
+module.exports = GamePhase;
