@@ -10,7 +10,6 @@ module.exports.routes = {
 
   // App health
   'GET /api/health': 'HealthController.getHealth',
-  'GET /api/devtools-health': 'HealthController.getDevtoolsHealth',
 
   // Users
   '/api/user/signup': 'userController.signup',
