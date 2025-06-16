@@ -1,6 +1,6 @@
 const GameStatus = require('../../../utils/GameStatus.js');
 const DeckIds = require('../../../utils/DeckIds.json');
-const MoveType = require('../../../utils/MoveType.json');
+const MoveType = require('../../../utils/MoveType.js/index.js');
 const GamePhase = require('../../../utils/GamePhase.js');
 
 module.exports = {

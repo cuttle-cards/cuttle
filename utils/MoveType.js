@@ -1,0 +1,29 @@
+const MoveType = {
+  DEAL: 'deal',
+  DRAW: 'draw',
+  POINTS: 'points',
+  SCUTTLE: 'scuttle',
+  FACE_CARD: 'faceCard',
+  JACK: 'jack',
+  ONE_OFF: 'oneOff',
+  COUNTER: 'counter',
+  RESOLVE: 'resolve',
+  FIZZLE: 'fizzle',
+  RESOLVE_THREE: 'resolveThree',
+  RESOLVE_FOUR: 'resolveFour',
+  RESOLVE_FIVE: 'resolveFive',
+  SEVEN_POINTS: 'sevenPoints',
+  SEVEN_SCUTTLE: 'sevenScuttle',
+  SEVEN_FACE_CARD: 'sevenFaceCard',
+  SEVEN_JACK: 'sevenJack',
+  SEVEN_DISCARD: 'sevenDiscard',
+  SEVEN_ONE_OFF: 'sevenOneOff',
+  PASS: 'pass',
+  STALEMATE_REQUEST: 'stalemateRequest',
+  STALEMATE_REJECT: 'stalemateReject',
+  STALEMATE_ACCEPT: 'stalemateAccept',
+  CONCEDE: 'concede',
+  LOADFIXTURE: 'loadFixture'
+};
+
+module.exports = MoveType;

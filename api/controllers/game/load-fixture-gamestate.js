@@ -1,4 +1,4 @@
-const MoveType = require('../../../utils/MoveType.json');
+const MoveType = require('../../../utils/MoveType.js');
 const GamePhase = require('../../../utils/GamePhase.js');
 const DeckIds = require('../../../utils/DeckIds.json');
 

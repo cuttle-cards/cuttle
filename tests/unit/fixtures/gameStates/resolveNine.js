@@ -1,6 +1,6 @@
 import { gameFixture } from '../Game';
 import { Card } from '../../fixtures/Card';
-import MoveType from '../../../../utils/MoveType.json';
+import MoveType from '../../../../utils/MoveType.js';
 import GamePhase from '../../../../utils/GamePhase.js';
 
 const gameStateRow = {

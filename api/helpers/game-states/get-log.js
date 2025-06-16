@@ -1,4 +1,4 @@
-const MoveType = require('../../../utils/MoveType.json');
+const MoveType = require('../../../utils/MoveType.js');
 const { getCardName } = require('../../../utils/game-utils');
 const { game: gameText } = require('../../../src/translations/en.json');
 

@@ -1,5 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.js');
-const MoveType = require('../../../../../utils/MoveType.json');
+const MoveType = require('../../../../../utils/MoveType.js/index.js');
 const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
