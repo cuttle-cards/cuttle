@@ -109,7 +109,7 @@ export const useGameStore = defineStore('game', {
     // waitingForOpponentToCounter: false,
     // myTurnToCounter: false,
     // waitingForOpponentToPickFromScrap: false,
-    pickingFromScrap: false,
+    // pickingFromScrap: false,
     showResolveFour: false,
     waitingForOpponentToDiscard: false,
     showResolveFive: false,
@@ -218,7 +218,10 @@ export const useGameStore = defineStore('game', {
     },
     waitingForOpponentToPickFromScrap() {
       return this.phase === GamePhase.RESOLVING_THREE && !this.isPlayersTurn;
-    }
+    },
+    pickingFromScrap() {
+      return this.phase === GamePhase.RESOLVING_THREE && this.isPlayersTurn;
+    },
   },
   actions: {
     updateGame(newGame) {
