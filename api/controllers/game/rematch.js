@@ -6,7 +6,7 @@
  * New game will be ranked/casual based on previous match
  * with name "firstPlayerUsername VS secondPlayerUsername {p0wins}-{p1Wins}-{stalemates}"
  */
-const GameStatus = require('../../../utils/GameStatus.json');
+const GameStatus = require('../../../utils/GameStatus.js');
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 

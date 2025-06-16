@@ -1,4 +1,4 @@
-const GameStatus = require('../../../utils/GameStatus.json');
+const GameStatus = require('../../../utils/GameStatus.js');
 const DeckIds = require('../../../utils/DeckIds.json');
 const MoveType = require('../../../utils/MoveType.json');
 const GamePhase = require('../../../utils/GamePhase.js');
