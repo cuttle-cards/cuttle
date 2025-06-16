@@ -90,34 +90,35 @@ export const useGameStore = defineStore('game', {
     secondCard: null,
     oneOff: null,
     oneOffTarget: null,
-    waitingForOpponentToCounter: false,
-    myTurnToCounter: false,
     isRanked: false,
     showIsRankedChangedAlert: false,
     // Threes
-    waitingForOpponentToPickFromScrap: false,
-    pickingFromScrap: false,
     lastEventCardChosen: null,
     lastEventPlayerChoosing: false,
     // Fours
-    showResolveFour: false,
-    waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
-    // fives
-    showResolveFive: false,
-    // Sevens
-    playingFromDeck: false,
-    waitingForOpponentToPlayFromDeck: false,
     // Last Event
     lastEventChange: null,
     lastEventOneOffRank: null,
     lastEventTargetType: null,
+
+    // START PHASE COMPUTED //
+    waitingForOpponentToCounter: false,
+    myTurnToCounter: false,
+    waitingForOpponentToPickFromScrap: false,
+    pickingFromScrap: false,
+    showResolveFour: false,
+    waitingForOpponentToDiscard: false,
+    showResolveFive: false,
+    playingFromDeck: false,
+    waitingForOpponentToPlayFromDeck: false,
+    waitingForOpponentToStalemate: false,
+    consideringOpponentStalemateRequest: false,
+
     // GameOver
     gameIsOver: false,
     winnerPNum: null,
     conceded: false,
-    waitingForOpponentToStalemate: false,
-    consideringOpponentStalemateRequest: false,
     currentMatch: null,
     iWantToContinueSpectating: false,
   }),
