@@ -107,7 +107,7 @@ export const useGameStore = defineStore('game', {
 
     // START PHASE COMPUTED //
     // waitingForOpponentToCounter: false,
-    myTurnToCounter: false,
+    // myTurnToCounter: false,
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
     showResolveFour: false,
@@ -209,6 +209,11 @@ export const useGameStore = defineStore('game', {
         this.lastEventPlayedBy === this.myPNum && 
         this.myPNum !== null;
     },
+    myTurnToCounter() {
+      return this.phase === GamePhase.COUNTERING &&
+        this.lastEventPlayedBy !== this.myPNum && 
+        this.myPNum !== null;
+    }
   },
   actions: {
     updateGame(newGame) {
@@ -608,13 +613,11 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestResolve() {
-      this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE;
       await this.makeSocketRequest('resolve', { moveType });
     },
 
     async requestResolveThree(cardId) {
-      this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE_THREE;
 
       await this.makeSocketRequest('resolveThree', {
@@ -624,14 +627,12 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestResolveFive(cardId) {
-      this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE_FIVE;
 
       await this.makeSocketRequest('resolveFive', { moveType, cardId });
     },
 
     async requestCounter(twoId) {
-      this.myTurnToCounter = false;
       const moveType = MoveType.COUNTER;
 
       await this.makeSocketRequest('counter', {
@@ -670,14 +671,11 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestResolveSevenDoubleJacks({ cardId, index }) {
-      this.myTurnToCounter = false;
-
       await this.makeSocketRequest('seven/jack', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
-
     },
 
     async requestPlayFaceCardSeven({ index, cardId }) {

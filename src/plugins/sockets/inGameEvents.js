@@ -63,7 +63,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE:
     case SocketEvent.FIZZLE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      gameStore.myTurnToCounter = false;
       if (evData.happened) {
         switch (evData.oneOff.rank) {
           case 3:
@@ -103,11 +102,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.ONE_OFF:
     case SocketEvent.COUNTER:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      if (evData.pNum !== gameStore.myPNum) {
-        gameStore.myTurnToCounter = true;
-      } else {
-        gameStore.myTurnToCounter = false;
-      }
       break;
     // Sevens
     case SocketEvent.SEVEN_POINTS:
@@ -124,9 +118,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
       gameStore.waitingForOpponentToPlayFromDeck = false;
-      if (evData.pNum !== gameStore.myPNum) {
-        gameStore.myTurnToCounter = true;
-      }
       break;
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });
