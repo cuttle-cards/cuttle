@@ -549,7 +549,7 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=clip-highlight]').should('be.visible');
     });
 
-    it.only('Copies the current state url when spectating live', () => {
+    it('Copies the current state url when spectating live', () => {
       setupGameBetweenTwoUnseenPlayers('replay');
   
       cy.get('@replayGameId').then((gameId) => {
