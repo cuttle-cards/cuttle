@@ -134,6 +134,7 @@ export const points = {
       p1Ready: true,
       p0Rematch: null,
       p1Rematch: null,
+      phase: GamePhase.MAIN,
       turnStalemateWasRequestedByP0: -1,
       turnStalemateWasRequestedByP1: -1,
       lock: null,

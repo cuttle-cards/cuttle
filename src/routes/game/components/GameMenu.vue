@@ -193,9 +193,7 @@ export default {
       this.loading = true;
       try {
         await this.gameStore.requestStalemate();
-        this.gameStore.waitingForOpponentToStalemate = true;
       } catch (e) {
-        this.gameStore.waitingForOpponentToStalemate = false;
         this.$emit('handle-error', e ?? 'Error requesting stalemate');
       }
       this.loading = false;

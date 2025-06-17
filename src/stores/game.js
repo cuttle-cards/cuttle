@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import GameStatus from '../../utils/GameStatus.json';
+import GamePhase from '../../utils/GamePhase.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
@@ -79,6 +80,7 @@ export const useGameStore = defineStore('game', {
     p0Rematch: null,
     p1Rematch: null,
     rematchGameId: null,
+    phase: null,
     passes: 0,
     players: [],
     spectatingUsers: [],
@@ -90,34 +92,23 @@ export const useGameStore = defineStore('game', {
     secondCard: null,
     oneOff: null,
     oneOffTarget: null,
-    waitingForOpponentToCounter: false,
-    myTurnToCounter: false,
     isRanked: false,
     showIsRankedChangedAlert: false,
     // Threes
-    waitingForOpponentToPickFromScrap: false,
-    pickingFromScrap: false,
     lastEventCardChosen: null,
     lastEventPlayerChoosing: false,
     // Fours
-    showResolveFour: false,
-    waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
-    // fives
-    showResolveFive: false,
-    // Sevens
-    playingFromDeck: false,
-    waitingForOpponentToPlayFromDeck: false,
     // Last Event
     lastEventChange: null,
     lastEventOneOffRank: null,
     lastEventTargetType: null,
+    lastEventPlayedBy: null,
+
     // GameOver
     gameIsOver: false,
     winnerPNum: null,
     conceded: false,
-    waitingForOpponentToStalemate: false,
-    consideringOpponentStalemateRequest: false,
     currentMatch: null,
     iWantToContinueSpectating: false,
   }),
@@ -171,7 +162,7 @@ export const useGameStore = defineStore('game', {
       return state.gameIsOver && state.winnerPNum === state.myPNum;
     },
     resolvingSeven: (state) => {
-      return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
+      return state.phase === GamePhase.RESOLVING_SEVEN;
     },
     isPlayersTurn: (state) => {
       return state.turn % 2 === state.myPNum;
@@ -200,6 +191,54 @@ export const useGameStore = defineStore('game', {
     someoneDeclinedRematch() {
       return this.iWantRematch === false || this.opponentDeclinedRematch;
     },
+    waitingForOpponentToCounter() {
+      const counteringPhase = this.phase === GamePhase.COUNTERING;
+      const numTwosIsEven = this.twos.length % 2 === 0;
+      
+      return counteringPhase && this.isPlayersTurn === numTwosIsEven;
+    },
+    myTurnToCounter() {
+      const counteringPhase = this.phase === GamePhase.COUNTERING;
+      const numTwosIsEven = this.twos.length % 2 === 0;
+      
+      return counteringPhase && this.isPlayersTurn !== numTwosIsEven;
+    },
+    waitingForOpponentToPickFromScrap() {
+      return this.phase === GamePhase.RESOLVING_THREE && !this.isPlayersTurn;
+    },
+    pickingFromScrap() {
+      return this.phase === GamePhase.RESOLVING_THREE && this.isPlayersTurn;
+    },
+    showResolveFour() {
+      return this.phase === GamePhase.RESOLVING_FOUR && !this.isPlayersTurn;
+    },
+    waitingForOpponentToDiscard() {
+      switch (this.phase) {
+        case GamePhase.RESOLVING_FOUR:
+          return this.isPlayersTurn;
+        case GamePhase.RESOLVING_FIVE:
+          return !this.isPlayersTurn;
+        default:
+          return false;
+      }
+    },
+    showResolveFive() {
+      return this.phase === GamePhase.RESOLVING_FIVE && this.isPlayersTurn;
+    },
+    playingFromDeck() {
+      return this.phase === GamePhase.RESOLVING_SEVEN &&
+        this.isPlayersTurn;
+    },
+    waitingForOpponentToPlayFromDeck() {
+      return this.phase === GamePhase.RESOLVING_SEVEN &&
+        !this.isPlayersTurn;
+    },
+    waitingForOpponentToStalemate() {
+      return this.phase === GamePhase.CONSIDERING_STALEMATE && this.lastEventPlayedBy === this.myPNum;
+    },
+    consideringOpponentStalemateRequest() {
+      return this.phase === GamePhase.CONSIDERING_STALEMATE && this.lastEventPlayedBy !== this.myPNum;
+    },
   },
   actions: {
     updateGame(newGame) {
@@ -209,11 +248,7 @@ export const useGameStore = defineStore('game', {
       this.lastEventCardChosen = newGame.lastEvent?.chosenCard ?? null;
       this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
       this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
-      this.waitingForOpponentToStalemate =
-        (
-          newGame.lastEvent.change === MoveType.STALEMATE_REQUEST &&
-          newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver
-        ) ?? false;
+      this.lastEventPlayedBy = newGame.lastEvent?.pNum ?? null;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
       // this.chat = cloneDeep(newGame.chat);
@@ -241,6 +276,7 @@ export const useGameStore = defineStore('game', {
       this.rematchGameId = newGame.rematchGame ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
       this.status = newGame.status ?? GameStatus.ARCHIVED;
+      this.phase = newGame.phase =  newGame.phase ?? GamePhase.MAIN;
     
       const gameHistoryStore = useGameHistoryStore();
       gameHistoryStore.gameStates = newGame.gameStates ?? [];
@@ -332,24 +368,21 @@ export const useGameStore = defineStore('game', {
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processThrees(chosenCard, game) {
-      this.waitingForOpponentToPickFromScrap = false;
-      this.pickingFromScrap = false;
+      this.phase = GamePhase.MAIN;
       this.lastEventCardChosen = chosenCard;
 
       await sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFours(discardedCards, game) {
-      this.waitingForOpponentToDiscard = false;
-      this.showResolveFour = false;
+      this.phase = GamePhase.MAIN;
       this.lastEventDiscardedCards = discardedCards;
 
       await sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFives(discardedCards, game) {
-      this.waitingForOpponentToDiscard = false;
-      this.showResolveFive = false;
+      this.phase = GamePhase.MAIN;
       this.lastEventDiscardedCards = discardedCards;
 
       // Animate discard then update full game to animate draw
@@ -560,7 +593,6 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId,
       });
-      this.waitingForOpponentToCounter = true;
       return Promise.resolve();
     },
 
@@ -573,7 +605,6 @@ export const useGameStore = defineStore('game', {
         pointId,
         targetType,
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPlayJack({ cardId, targetId }) {
@@ -599,39 +630,32 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestResolve() {
-      this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE;
       await this.makeSocketRequest('resolve', { moveType });
     },
 
     async requestResolveThree(cardId) {
-      this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE_THREE;
 
       await this.makeSocketRequest('resolveThree', {
         moveType,
         cardId,
       });
-      this.waitingForOpponentToCounter = false;
     },
 
     async requestResolveFive(cardId) {
-      this.myTurnToCounter = false;
-      this.waitingForOpponentToCounter = false;
       const moveType = MoveType.RESOLVE_FIVE;
 
       await this.makeSocketRequest('resolveFive', { moveType, cardId });
     },
 
     async requestCounter(twoId) {
-      this.myTurnToCounter = false;
       const moveType = MoveType.COUNTER;
 
       await this.makeSocketRequest('counter', {
         moveType,
         cardId: twoId,
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     ////////////
@@ -664,14 +688,11 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestResolveSevenDoubleJacks({ cardId, index }) {
-      this.myTurnToCounter = false;
-
       await this.makeSocketRequest('seven/jack', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
-
     },
 
     async requestPlayFaceCardSeven({ index, cardId }) {
@@ -688,7 +709,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
@@ -700,7 +720,6 @@ export const useGameStore = defineStore('game', {
         targetType,
         index, // 0 if topCard, 1 if secondCard
       });
-      this.waitingForOpponentToCounter = true;
     },
 
     async requestPass() {
@@ -714,17 +733,14 @@ export const useGameStore = defineStore('game', {
 
     async requestStalemate() {
       await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async acceptStalemate() {
       await this.makeSocketRequest('stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async rejectStalemate() {
       await this.makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async requestUnsubscribeFromGame() {

@@ -101,6 +101,7 @@ module.exports = {
         log: fullLog,
         passes: countPasses,
         turn: gameState.turn,
+        phase: gameState.phase,
         deck: gameState.deck.slice(2),
         scrap: gameState.scrap,
         topCard: gameState.deck[0],
