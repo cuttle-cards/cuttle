@@ -124,6 +124,7 @@ export const resolveNine = {
       p0Rematch: null,
       p1Ready: true,
       p1Rematch: null,
+      phase: GamePhase.MAIN,
       passes: 0,
       players: [
         {
