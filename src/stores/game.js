@@ -114,8 +114,8 @@ export const useGameStore = defineStore('game', {
     // showResolveFive: false,
     // playingFromDeck: false,
     // waitingForOpponentToPlayFromDeck: false,
-    waitingForOpponentToStalemate: false,
-    consideringOpponentStalemateRequest: false,
+    // waitingForOpponentToStalemate: false,
+    // consideringOpponentStalemateRequest: false,
 
     // GameOver
     gameIsOver: false,
@@ -245,6 +245,12 @@ export const useGameStore = defineStore('game', {
       return this.phase === GamePhase.RESOLVING_SEVEN &&
         !this.isPlayersTurn;
     },
+    waitingForOpponentToStalemate() {
+      return this.phase === GamePhase.CONSIDERING_STALEMATE && this.lastEventPlayedBy === this.myPNum;
+    },
+    consideringOpponentStalemateRequest() {
+      return this.phase === GamePhase.CONSIDERING_STALEMATE && this.lastEventPlayedBy !== this.myPNum;
+    },
   },
   actions: {
     updateGame(newGame) {
@@ -254,11 +260,6 @@ export const useGameStore = defineStore('game', {
       this.lastEventCardChosen = newGame.lastEvent?.chosenCard ?? null;
       this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
       this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
-      this.waitingForOpponentToStalemate =
-        (
-          newGame.lastEvent.change === MoveType.STALEMATE_REQUEST &&
-          newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver
-        ) ?? false;
       this.lastEventPlayedBy = newGame.lastEvent?.pNum ?? null;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
@@ -744,17 +745,14 @@ export const useGameStore = defineStore('game', {
 
     async requestStalemate() {
       await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async acceptStalemate() {
       await this.makeSocketRequest('stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async rejectStalemate() {
       await this.makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
-      this.consideringOpponentStalemateRequest = false;
     },
 
     async requestUnsubscribeFromGame() {

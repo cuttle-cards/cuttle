@@ -154,16 +154,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
       }
       break;
     case SocketEvent.STALEMATE_REQUEST:
-      // Show OpponentRequestedStalemateDialog if opponent requested stalemate
-      //   and game is not yet over
-      gameStore.consideringOpponentStalemateRequest =
-        !evData.victory.gameOver && evData.playedBy !== gameStore.myPNum;
-      gameStore.waitingForOpponentToStalemate = !evData.victory.gameOver && evData.playedBy === gameStore.myPNum;
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
-      gameStore.consideringOpponentStalemateRequest = false;
-      gameStore.waitingForOpponentToStalemate = false;
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
   }
 
