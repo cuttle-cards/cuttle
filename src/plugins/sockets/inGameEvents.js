@@ -68,11 +68,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
           case 3:
             break;
           case 5:
-            if (evData.playedBy === gameStore.myPNum) {
-              gameStore.showResolveFive = true;
-            } else {
-              gameStore.waitingForOpponentToDiscard = true;
-            }
             break;
           case 4:
             break;

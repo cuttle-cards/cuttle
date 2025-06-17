@@ -111,7 +111,7 @@ export const useGameStore = defineStore('game', {
     // waitingForOpponentToPickFromScrap: false,
     // pickingFromScrap: false,
     // waitingForOpponentToDiscard: false,
-    showResolveFive: false,
+    // showResolveFive: false,
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
     waitingForOpponentToStalemate: false,
@@ -225,8 +225,17 @@ export const useGameStore = defineStore('game', {
       return this.phase === GamePhase.RESOLVING_FOUR && !this.isPlayersTurn;
     },
     waitingForOpponentToDiscard() {
-      return this.isPlayersTurn && 
-        [ GamePhase.RESOLVING_FOUR, GamePhase.RESOLVING_FIVE ].includes(this.phase);
+      switch (this.phase) {
+        case GamePhase.RESOLVING_FOUR:
+          return this.isPlayersTurn;
+        case GamePhase.RESOLVING_FIVE:
+          return !this.isPlayersTurn;
+        default:
+          return false;
+      }
+    },
+    showResolveFive() {
+      return this.phase === GamePhase.RESOLVING_FIVE && this.isPlayersTurn;
     },
   },
   actions: {
@@ -369,13 +378,14 @@ export const useGameStore = defineStore('game', {
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFours(discardedCards, game) {
+      this.phase = GamePhase.MAIN;
       this.lastEventDiscardedCards = discardedCards;
 
       await sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFives(discardedCards, game) {
-      this.showResolveFive = false;
+      this.phase = GamePhase.MAIN;
       this.lastEventDiscardedCards = discardedCards;
 
       // Animate discard then update full game to animate draw
