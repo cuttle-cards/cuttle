@@ -105,18 +105,6 @@ export const useGameStore = defineStore('game', {
     lastEventTargetType: null,
     lastEventPlayedBy: null,
 
-    // START PHASE COMPUTED //
-    // waitingForOpponentToCounter: false,
-    // myTurnToCounter: false,
-    // waitingForOpponentToPickFromScrap: false,
-    // pickingFromScrap: false,
-    // waitingForOpponentToDiscard: false,
-    // showResolveFive: false,
-    // playingFromDeck: false,
-    // waitingForOpponentToPlayFromDeck: false,
-    // waitingForOpponentToStalemate: false,
-    // consideringOpponentStalemateRequest: false,
-
     // GameOver
     gameIsOver: false,
     winnerPNum: null,
