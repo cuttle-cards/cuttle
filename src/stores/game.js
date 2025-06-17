@@ -225,7 +225,8 @@ export const useGameStore = defineStore('game', {
       return this.phase === GamePhase.RESOLVING_FOUR && !this.isPlayersTurn;
     },
     waitingForOpponentToDiscard() {
-      return this.phase === GamePhase.RESOLVING_FOUR && this.isPlayersTurn;
+      return this.isPlayersTurn && 
+        [ GamePhase.RESOLVING_FOUR, GamePhase.RESOLVING_FIVE ].includes(this.phase);
     },
   },
   actions: {
@@ -368,14 +369,12 @@ export const useGameStore = defineStore('game', {
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFours(discardedCards, game) {
-      this.waitingForOpponentToDiscard = false;
       this.lastEventDiscardedCards = discardedCards;
 
       await sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFives(discardedCards, game) {
-      this.waitingForOpponentToDiscard = false;
       this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
