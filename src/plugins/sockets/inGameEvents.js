@@ -74,8 +74,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
           case 7:
             if (evData.playedBy === gameStore.myPNum) {
               gameStore.playingFromDeck = true;
-            } else {
-              gameStore.waitingForOpponentToPlayFromDeck = true;
             }
             break;
           default:
@@ -96,13 +94,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SEVEN_SCUTTLE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
-      gameStore.waitingForOpponentToPlayFromDeck = false;
       break;
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
-      gameStore.waitingForOpponentToPlayFromDeck = false;
       break;
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });

@@ -112,8 +112,8 @@ export const useGameStore = defineStore('game', {
     // pickingFromScrap: false,
     // waitingForOpponentToDiscard: false,
     // showResolveFive: false,
-    playingFromDeck: false,
-    waitingForOpponentToPlayFromDeck: false,
+    // playingFromDeck: false,
+    // waitingForOpponentToPlayFromDeck: false,
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
 
@@ -174,7 +174,7 @@ export const useGameStore = defineStore('game', {
       return state.gameIsOver && state.winnerPNum === state.myPNum;
     },
     resolvingSeven: (state) => {
-      return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
+      return state.phase === GamePhase.RESOLVING_SEVEN;
     },
     isPlayersTurn: (state) => {
       return state.turn % 2 === state.myPNum;
@@ -236,6 +236,14 @@ export const useGameStore = defineStore('game', {
     },
     showResolveFive() {
       return this.phase === GamePhase.RESOLVING_FIVE && this.isPlayersTurn;
+    },
+    playingFromDeck() {
+      return this.phase === GamePhase.RESOLVING_SEVEN &&
+        this.isPlayersTurn;
+    },
+    waitingForOpponentToPlayFromDeck() {
+      return this.phase === GamePhase.RESOLVING_SEVEN &&
+        !this.isPlayersTurn;
     },
   },
   actions: {
