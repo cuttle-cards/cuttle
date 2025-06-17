@@ -46,6 +46,21 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.CONCEDE:
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
+    case SocketEvent.RESOLVE:
+    case SocketEvent.FIZZLE:
+    case SocketEvent.TARGETED_ONE_OFF:
+    case SocketEvent.ONE_OFF:
+    case SocketEvent.COUNTER:
+    case SocketEvent.SEVEN_POINTS:
+    case SocketEvent.SEVEN_FACE_CARD:
+    case SocketEvent.SEVEN_JACK:
+    case SocketEvent.SEVEN_DISCARD:
+    case SocketEvent.SEVEN_SCUTTLE:
+    case SocketEvent.SEVEN_ONE_OFF:
+    case SocketEvent.SEVEN_TARGETED_ONE_OFF:
+    case SocketEvent.STALEMATE_REQUEST:
+    case SocketEvent.STALEMATE_ACCEPT:
+    case SocketEvent.STALEMATE_REJECT:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
@@ -60,41 +75,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE_FIVE:
       gameStore.processFives(evData.discardedCards, evData.game);
       break;
-    case SocketEvent.RESOLVE:
-    case SocketEvent.FIZZLE:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      if (evData.happened) {
-        switch (evData.oneOff.rank) {
-          case 3:
-            break;
-          case 5:
-            break;
-          case 4:
-            break;
-          case 7:
-            break;
-          default:
-            break;
-        }
-      }
-      break;
-    case SocketEvent.TARGETED_ONE_OFF:
-    case SocketEvent.ONE_OFF:
-    case SocketEvent.COUNTER:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
-    // Sevens
-    case SocketEvent.SEVEN_POINTS:
-    case SocketEvent.SEVEN_FACE_CARD:
-    case SocketEvent.SEVEN_JACK:
-    case SocketEvent.SEVEN_DISCARD:
-    case SocketEvent.SEVEN_SCUTTLE:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
-    case SocketEvent.SEVEN_ONE_OFF:
-    case SocketEvent.SEVEN_TARGETED_ONE_OFF:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
+
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });
       return;
@@ -147,13 +128,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);
       }
-      break;
-    case SocketEvent.STALEMATE_REQUEST:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
-    case SocketEvent.STALEMATE_ACCEPT:
-    case SocketEvent.STALEMATE_REJECT:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
   }
 
