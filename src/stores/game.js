@@ -474,26 +474,23 @@ export const useGameStore = defineStore('game', {
       });
     },
 
-    requestGameState(gameId, gameStateIndex = -1, route = null) {
+    async requestGameState(gameId, gameStateIndex = -1, route = null) {
       const authStore = useAuthStore();
-      return new Promise((resolve, reject) => {
-        io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
-          switch (jwres.statusCode) {
-            case 200:
-              this.resetState();
-              this.resetPNumIfNullThenUpdateGame(res.game);
-              return handleInGameEvents(res, route).then(() => {
-                return resolve(res);
-              });
-            case 401:
-              authStore.mustReauthenticate = true;
-              // resolve so we can navigate to gameview & login there
-              return resolve(jwres.body.message);
-            default:
-              return reject(jwres.body.message);
-          }
-        });
-      });
+      const slug = `${gameId}?gameStateIndex=${gameStateIndex}`;
+      try {
+        const res = await this.makeSocketRequest(slug, {}, 'GET');
+        this.resetState();
+        this.resetPNumIfNullThenUpdateGame(res.body.game);
+        return handleInGameEvents(res.body, route);
+      } catch (err) {
+        // Swallow 401 error so we can authenticate from GameView
+        if (authStore.mustReauthenticate) {
+          this.id = gameId;
+          return;
+        }
+        const message = err?.message ?? err ?? `Can't join game ${gameId}`;
+        throw(new Error(message));
+      }
     },
 
     async requestSpectate(gameId, gameStateIndex = 0, route = null) {
