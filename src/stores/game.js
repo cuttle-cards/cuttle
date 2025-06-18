@@ -506,6 +506,7 @@ export const useGameStore = defineStore('game', {
         this.updateGame(res.body.game);
         return handleInGameEvents(res.body, route);
       } catch (err) {
+        // Swallow 401 error so we can authenticate from GameView
         if (authStore.mustReauthenticate) {
           this.id = gameId;
           return;
