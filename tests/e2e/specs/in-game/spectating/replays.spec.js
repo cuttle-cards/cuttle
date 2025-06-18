@@ -363,10 +363,17 @@ describe('Rewatching finished games', () => {
     });
 
     it('Navigates directly to a particular state of a finished game', () => {
-      cy.loginPlayer(playerOne);
+
       cy.get('@replayGameId').then((gameId) => {
         cy.visit(`/spectate/${gameId}?gameStateIndex=2`);
       });
+
+      cy.get('#reauthenticate-dialog').should('be.visible');
+      cy.get('[data-cy=username]').click()
+        .type(playerOne.username);
+      cy.get('[data-cy=password]').click()
+        .type(playerOne.password);
+      cy.get('[data-cy=login]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 

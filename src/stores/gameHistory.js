@@ -28,8 +28,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     if (
       isNaN(index) || 
       !isFinite(index) || 
-      index < 0 || 
-      index >= gameStates.value.length
+      index < 0
     ) {
       return -1;
     }

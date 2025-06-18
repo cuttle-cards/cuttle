@@ -497,6 +497,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestSpectate(gameId, gameStateIndex = 0, route = null) {
+      const authStore = useAuthStore();
       const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
       try {
         this.resetState();
@@ -505,6 +506,11 @@ export const useGameStore = defineStore('game', {
         this.updateGame(res.body.game);
         return handleInGameEvents(res.body, route);
       } catch (err) {
+        // Swallow 401 error so we can authenticate from GameView
+        if (authStore.mustReauthenticate) {
+          this.id = gameId;
+          return;
+        }
         const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
         throw(new Error(message));
       }

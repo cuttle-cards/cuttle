@@ -56,6 +56,7 @@
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import { useI18n } from 'vue-i18n';
@@ -86,7 +87,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore, useGameStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     show: {
       get() {
         return this.modelValue;
@@ -108,7 +109,11 @@ export default {
           password: this.password,
         });
 
-        await this.gameStore.requestGameState(this.gameStore.id);
+        if (this.gameHistoryStore.isSpectating) {
+          await this.gameStore.requestSpectate(this.gameStore.id, this.gameHistoryStore.currentGameStateIndex);
+        } else {
+          await this.gameStore.requestGameState(this.gameStore.id);
+        }
         this.clearSnackBar();
         this.clearForm();
         this.isLoggingIn = false;
