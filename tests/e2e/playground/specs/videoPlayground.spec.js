@@ -492,7 +492,7 @@ describe('Video Playground', () => {
     cy.resolveOpponent();
   });
 
-  it.only('Loses to god combo', () => {
+  it('Loses to god combo', () => {
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.SIX_OF_DIAMONDS,
