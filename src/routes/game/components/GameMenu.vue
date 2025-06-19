@@ -30,10 +30,10 @@
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
-          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
+          <v-list-item data-cy="concede-initiate" prepend-icon="mdi-skull" @click="shownDialog = 'concede'">
             {{ t('game.menus.gameMenu.concede') }}
           </v-list-item>
-          <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
+          <v-list-item data-cy="stalemate-initiate" prepend-icon="mdi-handshake" @click="shownDialog = 'stalemate'">
             {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
         </template>
