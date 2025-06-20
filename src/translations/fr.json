@@ -62,7 +62,7 @@
       "opponentMayCounter": "L'adversaire peut contrer",
       "opponentMustResolve": "L'adversaire doit résoudre",
       "opponentIsDiscarding": "{username} défausse une carte",
-      "opponentSkipsDiscarding": "L'adversaire saute la défausse",
+      "opponentSkipsDiscarding": "{username} saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
       "opponentPlayingFromDeck": "Adversaire jouant depuis la pioche",
       "opponentMustDiscardJack": "L'adversaire doit défausser un valet",

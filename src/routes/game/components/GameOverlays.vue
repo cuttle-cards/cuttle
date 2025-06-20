@@ -193,10 +193,6 @@ export default {
       return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
     },
     opponentDiscardingText() {
-      // If opponent has no cards, use skip discarding message
-      if (this.gameStore.opponent.hand.length === 0) {
-        return this.t('game.overlays.opponentSkipsDiscarding');
-      }
       // Determine discarding player based on phase
       const phase = this.gameStore.phase;
 
@@ -205,6 +201,10 @@ export default {
         case GamePhase.RESOLVING_FIVE:
           // Player whose turn it is
           discardingPlayer = this.gameStore.players[this.gameStore.turn % 2];
+          // If opponent has no cards, use skip discarding message
+          if (this.gameStore.opponent.hand.length === 0) {
+            return this.t('game.overlays.opponentSkipsDiscarding', { username: discardingPlayer?.username || this.t('game.overlays.opponent') });
+          }
           break;
         case GamePhase.RESOLVING_FOUR:
           // The other player

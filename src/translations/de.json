@@ -62,7 +62,7 @@
       "opponentMayCounter": "Gegner kann kontern",
       "opponentMustResolve": "Gegner muss lösen",
       "opponentIsDiscarding": "{username} wirft ab",
-      "opponentSkipsDiscarding": "Gegner überspringt das Abwerfen",
+      "opponentSkipsDiscarding": "{username} überspringt das Abwerfen",
       "opponentChoosingFromScrap": "Gegner wählt eine Karte aus dem Abwurf",
       "opponentPlayingFromDeck": "Gegner spielt vom Deck",
       "opponentMustDiscardJack": "Gegner muss Buben abwerfen",

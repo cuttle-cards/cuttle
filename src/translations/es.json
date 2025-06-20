@@ -62,7 +62,7 @@
       "opponentMayCounter": "El rival puede contrarrestar",
       "opponentMustResolve": "El rival debe resolver",
       "opponentIsDiscarding": "{username} se está descartando",
-      "opponentSkipsDiscarding": "El oponente salta descartando",
+      "opponentSkipsDiscarding": "{username} salta descartando",
       "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
       "opponentPlayingFromDeck": "El rival está jugando desde el mazo",
       "opponentMustDiscardJack": "El rival debe descartar la Sota",
