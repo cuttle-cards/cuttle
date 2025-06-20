@@ -201,15 +201,19 @@ export default {
       const phase = this.gameStore.phase;
 
       let discardingPlayer = null;
-      if (phase === GamePhase.RESOLVING_FIVE) {
-        // Player whose turn it is
-        discardingPlayer = this.gameStore.players[this.gameStore.turn % 2];
-      } else if (phase === GamePhase.RESOLVING_FOUR) {
-        // The other player
-        discardingPlayer = this.gameStore.players[(this.gameStore.turn + 1) % 2];
-      } else {
-        // Default to opponent
-        discardingPlayer = this.gameStore.opponent;
+      switch (phase) {
+        case GamePhase.RESOLVING_FIVE:
+          // Player whose turn it is
+          discardingPlayer = this.gameStore.players[this.gameStore.turn % 2];
+          break;
+        case GamePhase.RESOLVING_FOUR:
+          // The other player
+          discardingPlayer = this.gameStore.players[(this.gameStore.turn + 1) % 2];
+          break;
+        default:
+          // Default to opponent
+          discardingPlayer = this.gameStore.opponent;
+          break;
       }
       const username = discardingPlayer?.username || this.t('game.overlays.opponent');
       return this.t('game.overlays.opponentIsDiscarding', { username });
