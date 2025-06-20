@@ -61,7 +61,7 @@
       "leaveGame": "Abandonar la partida",
       "opponentMayCounter": "El rival puede contrarrestar",
       "opponentMustResolve": "El rival debe resolver",
-      "opponentIsDiscarding": "El rival se está descartando",
+      "opponentIsDiscarding": "{username} se está descartando",
       "opponentSkipsDiscarding": "El oponente salta descartando",
       "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
       "opponentPlayingFromDeck": "El rival está jugando desde el mazo",
@@ -70,7 +70,8 @@
       "gameUnavailable": {
         "title": "¡Ups!",
         "content": "Parece que esta partida no está disponible."
-      }
+      },
+      "opponent": "El rival"
     },
     "dialogs": {
       "reauthentication": {

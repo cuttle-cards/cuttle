@@ -61,7 +61,7 @@
       "leaveGame": "Leave Game",
       "opponentMayCounter": "Opponent May Counter",
       "opponentMustResolve": "Opponent Must Resolve",
-      "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentIsDiscarding": "{username} is discarding",
       "opponentSkipsDiscarding": "Opponent Skips Discarding",
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
@@ -70,7 +70,8 @@
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Looks like this game isn't available."
-      }
+      },
+      "opponent": "Opponent"
     },
     "dialogs": {
       "reauthentication": {

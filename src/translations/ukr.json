@@ -61,7 +61,7 @@
       "leaveGame": "Покинути гру",
       "opponentMayCounter": "Суперник може заперечити",
       "opponentMustResolve": "Суперник повинен вирішити",
-      "opponentIsDiscarding": "Суперник скидає карту",
+      "opponentIsDiscarding": "{username} скидає карту",
       "opponentSkipsDiscarding": "Суперник пропускає скидання карти",
       "opponentChoosingFromScrap": "Суперник вибирає карту з відбою",
       "opponentPlayingFromDeck": "Суперник грає з колоди",
@@ -70,7 +70,9 @@
       "gameUnavailable": {
         "title": "Ой!",
         "content": "Схоже, ця гра недоступна."
-      }
+      },
+      "opponent": "Суперник"
+
     },
     "dialogs": {
       "reauthentication": {

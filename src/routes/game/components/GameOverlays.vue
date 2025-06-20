@@ -60,7 +60,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t(opponentDiscardingText) }}
+        {{ opponentDiscardingText }}
       </h1>
     </v-overlay>
 
@@ -133,6 +133,7 @@ import { useGameStore } from '@/stores/game';
 
 import MoveChoiceOverlay from '@/routes/game/components/MoveChoiceOverlay.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+import GamePhase from '_/utils/GamePhase.json'
 
 export default {
   name: 'GameOverlays',
@@ -192,9 +193,26 @@ export default {
       return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
     },
     opponentDiscardingText() {
-      return this.gameStore.opponent.hand.length === 0 ?
-        'game.overlays.opponentSkipsDiscarding' :
-        'game.overlays.opponentIsDiscarding';
+      // If opponent has no cards, use skip discarding message
+      if (this.gameStore.opponent.hand.length === 0) {
+        return this.t('game.overlays.opponentSkipsDiscarding');
+      }
+      // Determine discarding player based on phase
+      const phase = this.gameStore.phase;
+
+      let discardingPlayer = null;
+      if (phase === GamePhase.RESOLVING_FIVE) {
+        // Player whose turn it is
+        discardingPlayer = this.gameStore.players[this.gameStore.turn % 2];
+      } else if (phase === GamePhase.RESOLVING_FOUR) {
+        // The other player
+        discardingPlayer = this.gameStore.players[(this.gameStore.turn + 1) % 2];
+      } else {
+        // Default to opponent
+        discardingPlayer = this.gameStore.opponent;
+      }
+      const username = discardingPlayer?.username || this.t('game.overlays.opponent');
+      return this.t('game.overlays.opponentIsDiscarding', { username });
     },
   },
   methods: {

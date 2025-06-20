@@ -61,7 +61,7 @@
       "leaveGame": "Quitter le jeu",
       "opponentMayCounter": "L'adversaire peut contrer",
       "opponentMustResolve": "L'adversaire doit résoudre",
-      "opponentIsDiscarding": "L'adversaire défausse une carte",
+      "opponentIsDiscarding": "{username} défausse une carte",
       "opponentSkipsDiscarding": "L'adversaire saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
       "opponentPlayingFromDeck": "Adversaire jouant depuis la pioche",
@@ -70,7 +70,8 @@
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Cette partie n'est pas disponible."
-      }
+      },
+      "opponent": "L'adversaire"
     },
     "dialogs": {
       "reauthentication": {
@@ -378,7 +379,7 @@
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement.",
     "playTitle": "Jouer",
     "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
-    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
+    "playText-2": "À votre tour, vous devez effectuer exactement l'une des actions suivantes :",
     "draw": "Piocher",
     "drawDescription": "Prenez une carte de la pioche. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
     "points": "Points",

@@ -61,7 +61,7 @@
       "leaveGame": "Spiel verlassen",
       "opponentMayCounter": "Gegner kann kontern",
       "opponentMustResolve": "Gegner muss lösen",
-      "opponentIsDiscarding": "Gegner wirft ab",
+      "opponentIsDiscarding": "{username} wirft ab",
       "opponentSkipsDiscarding": "Gegner überspringt das Abwerfen",
       "opponentChoosingFromScrap": "Gegner wählt eine Karte aus dem Abwurf",
       "opponentPlayingFromDeck": "Gegner spielt vom Deck",
@@ -70,7 +70,8 @@
       "gameUnavailable": {
         "title": "Ups!",
         "content": "Es scheint, dass dieses Spiel nicht verfügbar ist."
-      }
+      },
+      "opponent": "Gegner"
     },
     "dialogs": {
       "reauthentication": {
