@@ -210,10 +210,6 @@ export default {
           // The other player
           discardingPlayer = this.gameStore.players[(this.gameStore.turn + 1) % 2];
           break;
-        default:
-          // Default to opponent
-          discardingPlayer = this.gameStore.opponent;
-          break;
       }
       const username = discardingPlayer?.username || this.t('game.overlays.opponent');
       return this.t('game.overlays.opponentIsDiscarding', { username });
