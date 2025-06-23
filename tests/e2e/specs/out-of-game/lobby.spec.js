@@ -185,7 +185,7 @@ describe('Lobby - P0 Perspective', () => {
       });
   });
 
-  it.only('readying, leaving and joining back', () => {
+  it('readying, leaving and joining back', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((gameData) => {
