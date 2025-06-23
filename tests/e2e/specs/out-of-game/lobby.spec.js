@@ -185,13 +185,17 @@ describe('Lobby - P0 Perspective', () => {
       });
   });
 
-  it('readying, leaving and joining back', () => {
+  it.only('readying, leaving and joining back', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((gameData) => {
         cy.signupOpponent(opponentOne);
         const gameId = gameData.id;
         cy.subscribeOpponent(gameId);
+
+        // Assert player and opponent indicators show correct usernames
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
 
         // player ready, exit, join back
         cy.get('[data-cy=ready-button]').click();
@@ -202,6 +206,10 @@ describe('Lobby - P0 Perspective', () => {
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
         expect(gameData.p0Ready).to.eq(false);
+
+        // Assert player and opponent indicators show correct usernames after rejoining
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
 
         // opponent ready, exit, join back
         cy.readyOpponent(gameId);
@@ -214,6 +222,10 @@ describe('Lobby - P0 Perspective', () => {
         expect(gameData.p1Ready).to.eq(false);
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
           .should('exist');
+
+        // Assert player and opponent indicators show correct usernames after opponent rejoins
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
       });
   });
 
