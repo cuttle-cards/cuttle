@@ -59,8 +59,8 @@
     "overlays": {
       "waitingForGameToStart": "En attendant le début du jeu",
       "leaveGame": "Quitter le jeu",
-      "opponentMayCounter": "L'adversaire peut contrer",
-      "opponentMustResolve": "L'adversaire doit résoudre",
+      "opponentMayCounter": "{username} peut contrer",
+      "opponentMustResolve": "{username} doit résoudre",
       "opponentIsDiscarding": "{username} défausse une carte",
       "opponentSkipsDiscarding": "{username} saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",

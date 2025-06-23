@@ -59,8 +59,8 @@
     "overlays": {
       "waitingForGameToStart": "Waiting for Game to Start",
       "leaveGame": "Leave Game",
-      "opponentMayCounter": "Opponent May Counter",
-      "opponentMustResolve": "Opponent Must Resolve",
+      "opponentMayCounter": "{username} May Counter",
+      "opponentMustResolve": "{username} Must Resolve",
       "opponentIsDiscarding": "{username} is discarding",
       "opponentSkipsDiscarding": "{username} Skips Discarding",
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",

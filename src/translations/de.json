@@ -59,8 +59,8 @@
     "overlays": {
       "waitingForGameToStart": "Wartet darauf, dass das Spiel startet",
       "leaveGame": "Spiel verlassen",
-      "opponentMayCounter": "Gegner kann kontern",
-      "opponentMustResolve": "Gegner muss lösen",
+      "opponentMayCounter": "{username} kann kontern",
+      "opponentMustResolve": "{username} muss lösen",
       "opponentIsDiscarding": "{username} wirft ab",
       "opponentSkipsDiscarding": "{username} überspringt das Abwerfen",
       "opponentChoosingFromScrap": "Gegner wählt eine Karte aus dem Abwurf",

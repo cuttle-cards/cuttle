@@ -59,8 +59,8 @@
     "overlays": {
       "waitingForGameToStart": "Esperando que comience la partida",
       "leaveGame": "Abandonar la partida",
-      "opponentMayCounter": "El rival puede contrarrestar",
-      "opponentMustResolve": "El rival debe resolver",
+      "opponentMayCounter": "{username} puede contrarrestar",
+      "opponentMustResolve": "{username} debe resolver",
       "opponentIsDiscarding": "{username} se está descartando",
       "opponentSkipsDiscarding": "{username} salta descartando",
       "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
