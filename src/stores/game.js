@@ -354,7 +354,7 @@ export const useGameStore = defineStore('game', {
       const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
 
       // Update game in one-step if moved cards are not found
-      if (playedCardIndex === undefined || targetCardIndex === undefined) {
+      if (playedCardIndex === -1 || targetCardIndex === -1) {
         this.resetPNumIfNullThenUpdateGame(game);
         return;
       }
