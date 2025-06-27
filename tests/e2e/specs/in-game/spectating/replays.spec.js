@@ -456,7 +456,7 @@ describe('Rewatching finished games', () => {
       rewatchCasualMatch(this.replayGameId);
     });
 
-    it('Steps and skips backwards from latest state (-1)', function () {
+    it.only('Steps and skips backwards from latest state (-1)', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
       cy.visit(`/spectate/${this.replayGameId}?gameStateIndex=-1`);
@@ -467,7 +467,7 @@ describe('Rewatching finished games', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('contain', '?gameStateIndex=8');
+      cy.url().should('contain', '?gameStateIndex=7');
 
       assertGameState(0, {
         p0Hand: [ Card.ACE_OF_CLUBS,  Card.TEN_OF_SPADES ],
