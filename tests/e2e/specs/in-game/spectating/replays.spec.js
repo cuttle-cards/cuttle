@@ -19,7 +19,7 @@ function createAndFinishCasualMatch() {
   cy.get('@replayGameId').then((gameId) => {
     cy.loadGameFixture(0, {
       p0Hand: [
-        Card.TEN_OF_CLUBS,
+        Card.NINE_OF_CLUBS,
         Card.TEN_OF_DIAMONDS,
         Card.TEN_OF_HEARTS,
         Card.TEN_OF_SPADES,
@@ -28,7 +28,7 @@ function createAndFinishCasualMatch() {
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [
-        Card.TWO_OF_CLUBS,
+        Card.TEN_OF_CLUBS,
         Card.TWO_OF_DIAMONDS,
         Card.TWO_OF_HEARTS,
         Card.TWO_OF_SPADES,
@@ -42,10 +42,10 @@ function createAndFinishCasualMatch() {
     }, gameId);
 
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsOpponent(Card.TEN_OF_CLUBS, gameId);
+    cy.playPointsOpponent(Card.NINE_OF_CLUBS, gameId);
 
     cy.recoverSessionOpponent(playerTwo);
-    cy.drawCardOpponent(gameId);
+    cy.scuttleOpponent(Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS, gameId);
 
     cy.recoverSessionOpponent(playerOne);
     cy.playPointsOpponent(Card.TEN_OF_DIAMONDS, gameId);
@@ -55,6 +55,12 @@ function createAndFinishCasualMatch() {
 
     cy.recoverSessionOpponent(playerOne);
     cy.playPointsOpponent(Card.TEN_OF_HEARTS, gameId);
+    
+    cy.recoverSessionOpponent(playerTwo);
+    cy.drawCardOpponent(gameId);
+
+    cy.recoverSessionOpponent(playerOne);
+    cy.playPointsOpponent(Card.TEN_OF_SPADES, gameId);
     
     // Both players rematch and create new game
     cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
@@ -94,11 +100,11 @@ function rewatchCasualMatch(firstGameId) {
   cy.get('[data-cy=history-log]').should('have.length', 2);
 
   assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Hand: [ Card.NINE_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [],
     p0FaceCards: [],
     p1Hand: [
-      Card.TWO_OF_CLUBS,
+      Card.TEN_OF_CLUBS,
       Card.TWO_OF_DIAMONDS,
       Card.TWO_OF_HEARTS,
       Card.TWO_OF_SPADES,
@@ -109,7 +115,7 @@ function rewatchCasualMatch(firstGameId) {
     p1FaceCards: [],
   });
 
-  // Step forward to state 2 (p0 points)
+  // Step forward to state 2 (p0 plays nine of clubs for points)
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=step-forward]')
     .click();
@@ -119,10 +125,10 @@ function rewatchCasualMatch(firstGameId) {
 
   assertGameState(0, {
     p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
+    p0Points: [ Card.NINE_OF_CLUBS ],
     p0FaceCards: [],
     p1Hand: [
-      Card.TWO_OF_CLUBS,
+      Card.TEN_OF_CLUBS,
       Card.TWO_OF_DIAMONDS,
       Card.TWO_OF_HEARTS,
       Card.TWO_OF_SPADES,
@@ -133,7 +139,7 @@ function rewatchCasualMatch(firstGameId) {
     p1FaceCards: [],
   });
 
-  // Step forward to state 3 (p1 draw)
+  // Step forward to state 3 (p1 scuttles nine of clubs with ten of clubs)
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=step-forward]')
     .click();
@@ -143,10 +149,57 @@ function rewatchCasualMatch(firstGameId) {
 
   assertGameState(0, {
     p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
+    p0Points: [],
     p0FaceCards: [],
     p1Hand: [
-      Card.TWO_OF_CLUBS,
+      Card.TWO_OF_DIAMONDS,
+      Card.TWO_OF_HEARTS,
+      Card.TWO_OF_SPADES,
+      Card.THREE_OF_CLUBS,
+      Card.THREE_OF_DIAMONDS
+    ],
+    p1Points: [],
+    p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
+  });
+
+  // Step forward to state 4 (p0 plays ten of diamonds for points)
+  cy.get('[data-cy=playback-controls]')
+    .find('[data-cy=step-forward]')
+    .click();
+
+  cy.url().should('contain', '?gameStateIndex=4');
+  cy.get('[data-cy=history-log]').should('have.length', 5);
+
+  assertGameState(0, {
+    p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS ],
+    p0FaceCards: [],
+    p1Hand: [
+      Card.TWO_OF_DIAMONDS,
+      Card.TWO_OF_HEARTS,
+      Card.TWO_OF_SPADES,
+      Card.THREE_OF_CLUBS,
+      Card.THREE_OF_DIAMONDS
+    ],
+    p1Points: [],
+    p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
+  });
+
+  // Step forward to state 5 (p1 draws card)
+  cy.get('[data-cy=playback-controls]')
+    .find('[data-cy=step-forward]')
+    .click();
+
+  cy.url().should('contain', '?gameStateIndex=5');
+  cy.get('[data-cy=history-log]').should('have.length', 6);
+
+  assertGameState(0, {
+    p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS ],
+    p0FaceCards: [],
+    p1Hand: [
       Card.TWO_OF_DIAMONDS,
       Card.TWO_OF_HEARTS,
       Card.TWO_OF_SPADES,
@@ -156,30 +209,110 @@ function rewatchCasualMatch(firstGameId) {
     ],
     p1Points: [],
     p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
   });
 
-  // Step backward to state 2 again (p0 points)
+  // Step forward to state 6 (p0 plays ten of hearts for points)
   cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-backward]')
+    .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=2');
-  cy.get('[data-cy=history-log]').should('have.length', 3);
+  cy.url().should('contain', '?gameStateIndex=6');
+  cy.get('[data-cy=history-log]').should('have.length', 7);
 
   assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
+    p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
     p0FaceCards: [],
     p1Hand: [
-      Card.TWO_OF_CLUBS,
       Card.TWO_OF_DIAMONDS,
       Card.TWO_OF_HEARTS,
       Card.TWO_OF_SPADES,
       Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS
+      Card.THREE_OF_DIAMONDS,
+      Card.SEVEN_OF_HEARTS,
     ],
     p1Points: [],
     p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
+  });
+
+  // Step forward to state 7 (p1 draws card)
+  cy.get('[data-cy=playback-controls]')
+    .find('[data-cy=step-forward]')
+    .click();
+
+  cy.url().should('contain', '?gameStateIndex=7');
+  cy.get('[data-cy=history-log]').should('have.length', 8);
+
+  assertGameState(0, {
+    p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+    p0FaceCards: [],
+    p1Hand: [
+      Card.TWO_OF_DIAMONDS,
+      Card.TWO_OF_HEARTS,
+      Card.TWO_OF_SPADES,
+      Card.THREE_OF_CLUBS,
+      Card.THREE_OF_DIAMONDS,
+      Card.SEVEN_OF_HEARTS,
+      Card.FOUR_OF_HEARTS,
+    ],
+    p1Points: [],
+    p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
+  });
+
+  // Step forward to state 8 (p0 plays ten of spades for points)
+  cy.get('[data-cy=playback-controls]')
+    .find('[data-cy=step-forward]')
+    .click();
+
+  cy.url().should('contain', '?gameStateIndex=8');
+  cy.get('[data-cy=history-log]').should('have.length', 9);
+
+  assertGameState(0, {
+    p0Hand: [ Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
+    p0FaceCards: [],
+    p1Hand: [
+      Card.TWO_OF_DIAMONDS,
+      Card.TWO_OF_HEARTS,
+      Card.TWO_OF_SPADES,
+      Card.THREE_OF_CLUBS,
+      Card.THREE_OF_DIAMONDS,
+      Card.SEVEN_OF_HEARTS,
+      Card.FOUR_OF_HEARTS,
+    ],
+    p1Points: [],
+    p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
+  });
+
+  // Step backward to state 7 (p1 draw)
+  cy.get('[data-cy=playback-controls]')
+    .find('[data-cy=step-backward]')
+    .click();
+
+  cy.url().should('contain', '?gameStateIndex=7');
+  cy.get('[data-cy=history-log]').should('have.length', 8);
+
+  assertGameState(0, {
+    p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+    p0FaceCards: [],
+    p1Hand: [
+      Card.TWO_OF_DIAMONDS,
+      Card.TWO_OF_HEARTS,
+      Card.TWO_OF_SPADES,
+      Card.THREE_OF_CLUBS,
+      Card.THREE_OF_DIAMONDS,
+      Card.SEVEN_OF_HEARTS,
+      Card.FOUR_OF_HEARTS,
+    ],
+    p1Points: [],
+    p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
   });
 
   // skip backward to state 0
@@ -197,14 +330,13 @@ function rewatchCasualMatch(firstGameId) {
     .click();
 
   cy.url().should('contain', '?gameStateIndex=-1');
-  cy.get('[data-cy=history-log]').should('have.length', 7);
+  cy.get('[data-cy=history-log]').should('have.length', 9);
 
   assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+    p0Hand: [ Card.ACE_OF_CLUBS ],
+    p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     p0FaceCards: [],
     p1Hand: [
-      Card.TWO_OF_CLUBS,
       Card.TWO_OF_DIAMONDS,
       Card.TWO_OF_HEARTS,
       Card.TWO_OF_SPADES,
@@ -215,6 +347,7 @@ function rewatchCasualMatch(firstGameId) {
     ],
     p1Points: [],
     p1FaceCards: [],
+    scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
   });
 
   assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
@@ -334,14 +467,13 @@ describe('Rewatching finished games', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('contain', '?gameStateIndex=5');
+      cy.url().should('contain', '?gameStateIndex=8');
 
       assertGameState(0, {
-        p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS, Card.TEN_OF_HEARTS ],
-        p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
+        p0Hand: [ Card.ACE_OF_CLUBS,  Card.TEN_OF_SPADES ],
+        p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [
-          Card.TWO_OF_CLUBS,
           Card.TWO_OF_DIAMONDS,
           Card.TWO_OF_HEARTS,
           Card.TWO_OF_SPADES,
@@ -352,6 +484,7 @@ describe('Rewatching finished games', () => {
         ],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
       });
     });
   });

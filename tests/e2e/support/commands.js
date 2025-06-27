@@ -370,7 +370,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
  */
-Cypress.Commands.add('scuttleOpponent', (card, target) => {
+Cypress.Commands.add('scuttleOpponent', (card, target, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot scuttle as opponent with invalid card ${card}`);
   }
@@ -384,7 +384,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
     moveType,
     cardId: card.id,
     targetId: target.id,
-  });
+  }, 'POST', gameId);
 });
 
 Cypress.Commands.add('playOneOffOpponent', (card, gameId = null) => {
