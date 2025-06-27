@@ -1,4 +1,5 @@
 import { Card } from '../../fixtures/cards';
+import { assertGameState } from '../../support/helpers';
 
 /**
  * Video Playground
@@ -489,5 +490,113 @@ describe('Video Playground', () => {
     cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
+  });
+
+  it('Loses to god combo', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.SIX_OF_DIAMONDS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_HEARTS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+    });
+
+    cy.wait(2000);
+
+    cy.get('[data-player-hand-card=6-1]').click();
+    cy.wait(500);
+    cy.get('[data-move-choice=oneOff]').click();
+
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.wait(1000);
+
+    cy.counterOpponent(Card.TWO_OF_HEARTS);
+    cy.get('#cannot-counter-dialog')
+      .should('be.visible');
+    cy.wait(1000);
+
+    cy.get('#cannot-counter-dialog')
+      .should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
+
+    assertGameState(0, {
+      p0Hand: [
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_HEARTS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_SPADES ],
+      p1Points: [],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+      scrap: [
+        Card.SIX_OF_DIAMONDS,
+        Card.TWO_OF_HEARTS
+      ]
+    });
+
+    cy.playPointsOpponent(Card.TEN_OF_SPADES);
+  });
+});
+
+describe('Playground as p1', () => {
+  beforeEach(() => {
+    cy.viewport(1920, 1080);
+    cy.setupGameAsP1();
+  });
+
+  it('Has God combo', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [
+        Card.SIX_OF_DIAMONDS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_HEARTS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+    });
+
+    cy.wait(2000);
+
+    cy.playOneOffOpponent(Card.SIX_OF_DIAMONDS);
+
+    // Player Counters
+    cy.get('#counter-dialog')
+      .should('be.visible')
+      .get('[data-cy=counter]')
+      .click();
+    cy.wait(1000);
+
+
+    cy.get('#choose-two-dialog')
+      .should('be.visible')
+      .get('[data-counter-dialog-card=2-2]')
+      .click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+    // Opponent Resolves
+    cy.resolveOpponent();
+    cy.wait(1000);
+    cy.get('#turn-indicator').contains('YOUR TURN');
+
+    cy.get('[data-player-hand-card=10-3]').click();
+    cy.wait(500);
+    cy.get('[data-move-choice=points]').click();
   });
 });
