@@ -38,7 +38,7 @@ module.exports = {
     const { cardId } = requestedMove;
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-    const targetCard = result.twos[result.twos.length - 1] ?? result.oneOff;
+    const targetCard = result.twos.length >= 2 ? result.twos[result.twos.length - 2] : result.oneOff;
     const [ playedCard ] = player.hand.splice(cardIndex, 1);
     result.twos.push(playedCard);
 

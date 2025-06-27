@@ -68,6 +68,9 @@ describe('Countering One-Offs', () => {
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent resolves
     cy.resolveOpponent();
+
+    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+
     assertGameState(1, {
       // Opponent is P0
       p0Hand: [ Card.FOUR_OF_SPADES ],
