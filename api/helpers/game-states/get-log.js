@@ -18,7 +18,7 @@ module.exports = {
 
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
-      const { moveType, playedCard, targetCard, resolved, deck, twos, discardedCards } = row;
+      const { moveType, playedCard, targetCard, resolved, deck, discardedCards } = row;
       const { convertStrToCard } = sails.helpers.gameStates;
 
       const getFullCardName = (card) => {
