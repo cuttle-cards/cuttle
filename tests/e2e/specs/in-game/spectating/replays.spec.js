@@ -456,7 +456,7 @@ describe('Rewatching finished games', () => {
       rewatchCasualMatch(this.replayGameId);
     });
 
-    it.only('Steps and skips backwards from latest state (-1)', function () {
+    it('Steps and skips backwards from latest state (-1)', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
       cy.visit(`/spectate/${this.replayGameId}?gameStateIndex=-1`);
