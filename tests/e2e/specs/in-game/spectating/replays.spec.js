@@ -803,6 +803,41 @@ describe('Rewatching finished games', () => {
         cy.get('[data-cy=clip-highlight]').should('be.visible');
       });
     });
+
+    describe('Replaying other game states', () => {
+      it.only('Watches a replay of a game that ends via passes', () => {
+        setupGameBetweenTwoUnseenPlayers('replay');
+
+        cy.get('@replayGameId').then((gameId) => {
+          cy.loadGameFixture(0, {
+            p0Hand: [ Card.ACE_OF_CLUBS ],
+            p0Points: [],
+            p0FaceCards: [],
+            p1Hand: [ Card.ACE_OF_DIAMONDS ],
+            p1Points: [],
+            p1FaceCards: [],
+            deck: [],
+          }, gameId);
+
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent(gameId);
+          cy.recoverSessionOpponent(playerTwo);
+          cy.passOpponent(gameId);
+
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent(gameId);
+
+          cy.visit('/');
+          cy.signupPlayer(myUser);
+          cy.vueRoute(`/spectate/${gameId}`);
+        });
+
+        cy.url().should('contain', '?gameStateIndex=0');
+        // Wait and verify game over dialog doesn't appear
+        cy.wait(1000);
+        cy.get('#game-over-dialog').should('not.exist');
+      });
+    });
   });
 
   describe('Error handling', () => {
