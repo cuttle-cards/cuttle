@@ -805,7 +805,7 @@ describe('Rewatching finished games', () => {
     });
 
     describe('Replaying other game states', () => {
-      it.only('Watches a replay of a game that ends via passes', () => {
+      it('Watches a replay of a game that ends via passes', () => {
         setupGameBetweenTwoUnseenPlayers('replay');
 
         cy.get('@replayGameId').then((gameId) => {
