@@ -845,7 +845,7 @@ describe('Rewatching finished games', () => {
         cy.get('[data-cy=playback-controls]')
           .find('[data-cy=step-forward]')
           .click();
-          cy.url().should('contain', '?gameStateIndex=2');
+        cy.url().should('contain', '?gameStateIndex=2');
         // Wait and verify game over dialog doesn't appear
         cy.wait(1000);
         cy.get('#game-over-dialog').should('not.exist');
@@ -856,8 +856,8 @@ describe('Rewatching finished games', () => {
         cy.url().should('contain', '?gameStateIndex=3');
         // Step forward to state 4 (pass; stalemate)
         cy.get('[data-cy=playback-controls]')
-        .find('[data-cy=step-forward]')
-        .click();
+          .find('[data-cy=step-forward]')
+          .click();
 
         assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
       });
