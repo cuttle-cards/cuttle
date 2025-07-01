@@ -57,7 +57,7 @@ module.exports = async function (req, res) {
     const updatedState = execute(gameState, req.body, playedBy, game.gameStates);
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
-    const socketEvent = await createSocketEvent(game, updatedState);
+    const socketEvent = await createSocketEvent(game, { ...updatedState, id: gameStateRow.id });
     Game.publish([ game.id ], socketEvent);
     await sails.helpers.unlockGame(game.lock);
 

@@ -64,6 +64,7 @@ module.exports = {
   fn: ({ gameState }, exits) => {
     try {
       const gameStateUpdated = {
+        id: gameState.id,
         gameId: validateGameId(gameState.gameId),
         playedBy: validatePlayedBy(gameState.playedBy),
         moveType: validateMoveType(gameState.moveType),
