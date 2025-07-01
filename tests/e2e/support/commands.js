@@ -641,10 +641,10 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
   });
 });
 
-Cypress.Commands.add('passOpponent', () => {
+Cypress.Commands.add('passOpponent', (gameId = null) => {
   cy.log('Opponent Passes');
   const moveType = MoveType.PASS;
-  cy.makeSocketRequest('game', 'pass', { moveType });
+  cy.makeSocketRequest('game', 'pass', { moveType }, 'POST', gameId);
 });
 
 Cypress.Commands.add('concedeOpponent', (gameId = null) => {
