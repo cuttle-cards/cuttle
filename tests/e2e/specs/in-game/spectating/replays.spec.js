@@ -836,6 +836,30 @@ describe('Rewatching finished games', () => {
         // Wait and verify game over dialog doesn't appear
         cy.wait(1000);
         cy.get('#game-over-dialog').should('not.exist');
+        // Step forward to state 1 (loaded fixture)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+        cy.url().should('contain', '?gameStateIndex=1');
+        // Step forward to state 2 (pass)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+          cy.url().should('contain', '?gameStateIndex=2');
+        // Wait and verify game over dialog doesn't appear
+        cy.wait(1000);
+        cy.get('#game-over-dialog').should('not.exist');
+        // Step forward to state 3 (pass)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+        cy.url().should('contain', '?gameStateIndex=3');
+        // Step forward to state 4 (pass; stalemate)
+        cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+
+        assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
       });
     });
   });
