@@ -146,5 +146,10 @@ export const useAuthStore = defineStore('auth', {
         throw new Error(err);
       }
     },
-  },
+    async oAuth(provider) {
+      const url = `http://${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
+      window.location.href = url;
+    }
+
+  }
 });
