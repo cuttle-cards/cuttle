@@ -16,15 +16,15 @@ module.exports = {
 
   fn: ({ token }, exits) => {
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      const payload = jwt.verify(token, process.env.VITE_JWT_SECRET);
 
-      if (payload.purpose !== 'oauth') {
-        return exits.success(false);
+      if (payload.purpose !== 'Oauth') {
+        throw new Error('Invalid JWT');
       }
 
       return exits.success(payload);
     } catch (err) {
-      return exits.success(false);
+      return exits.error(err);
     }
   },
 };
