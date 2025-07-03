@@ -1104,7 +1104,7 @@ export default {
       }
     },
     isBeingDiscarded(card) {
-      return this.gameStore.lastEventDiscardedCards?.some(id => id === card.id); 
+      return this.gameStore.lastEventDiscardedCards?.some(discardedCard => discardedCard.id === card.id); 
     }
   },
 };
