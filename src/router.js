@@ -45,7 +45,10 @@ const checkAndSubscribeToLobby = async (to) => {
       return { path: `/login/${gameId}` };
     }
 
-    if (gameStore.players.some(({ username }) => username === authStore.username)) {
+    if (
+      gameStore.id === gameId &&
+      gameStore.players.some(({ username }) => username === authStore.username)
+    ) {
       return true;
     }
 
