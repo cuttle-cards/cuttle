@@ -65,7 +65,7 @@ describe('Lobby - Page Content', () => {
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 
-  it.only('Player concedes, goes home, joins new game created by new user, and both are not ready', function () {
+  it('Player concedes, goes home, joins new game created by new user, and both are not ready', function () {
     const { gameId } = this.gameSummary;
     // 1. Player hits ready
     cy.get('[data-cy=ready-button]').click();
