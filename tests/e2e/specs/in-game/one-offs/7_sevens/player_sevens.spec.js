@@ -539,7 +539,7 @@ describe('Playing SEVENS', () => {
       assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     });
 
-    it('Scuttles a card with two jacks on it via a seven one-off', () => {
+    it('Scuttles a card with a jack on it via a seven one-off', () => {
       // Setup: p0 has a point card and a seven, p1 has a jack, topCard is larger than the point card
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
