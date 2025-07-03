@@ -104,7 +104,8 @@ describe('Lobby - Page Content', () => {
       cy.get('[data-cy=gameover-go-home]').click();
       cy.url().should('not.include', '/game');
       // 8. Player joins the new game created by the second user
-      cy.get(`[data-cy-join-game=${newGameSummary.gameId}]`).should('be.enabled').click();
+      cy.get(`[data-cy-join-game=${newGameSummary.gameId}]`).should('be.enabled')
+        .click();
       cy.url().should('include', `/lobby/${newGameSummary.gameId}`);
       // 9. Assert both players in lobby and both not ready
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
