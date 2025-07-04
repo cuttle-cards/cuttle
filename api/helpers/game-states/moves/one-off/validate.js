@@ -31,7 +31,7 @@ module.exports = {
     },
     priorStates: {
       type: 'ref',
-      description: "List of packed gameStateRows for this game's prior states",
+      description: 'List of packed gameStateRows for this game\'s prior states',
       required: true,
     }
   },

@@ -353,7 +353,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
 
     assertStalemate({ wins: 2, losses: 1, stalemates: 1 });
@@ -503,7 +503,7 @@ describe('Spectating Rematches', () => {
       cy.get('[data-opponent-hand-card]').should('have.length', 2);
       cy.recoverSessionOpponent(playerOne);
       cy.passOpponent();
-      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
       cy.recoverSessionOpponent(playerTwo);
       cy.passOpponent();
       cy.get('#turn-indicator').contains('YOUR TURN');

@@ -556,7 +556,7 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.readyOpponent(gameId);
     cy.get('[data-cy=user-menu]').click();
-    cy.get("[data-nav='Log Out']").click();
+    cy.get('[data-nav=\'Log Out\']').click();
     cy.visit(`/lobby/${gameId}`);
     cy.url().should('include', `/login/${gameId}`);
     cy.get('[data-cy=password]').type(myUser.password);

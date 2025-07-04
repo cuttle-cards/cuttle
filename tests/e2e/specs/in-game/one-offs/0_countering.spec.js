@@ -550,7 +550,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
             expect(true).to.eq(false, 'Expected request to draw card to error');
           } catch (err) {
             const errors = [
-              "Can't play while waiting for opponent to counter",
+              'Can\'t play while waiting for opponent to counter',
               'game.snackbar.global.notInMainPhase',
             ];
             expect(err).to.be.oneOf(errors);

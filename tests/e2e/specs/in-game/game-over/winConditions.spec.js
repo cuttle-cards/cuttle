@@ -199,7 +199,7 @@ describe('Stalemates', () => {
       .click();
     cy.log('Should log the passing');
     cy.get('#history').contains(`${myUser.username} passed`);
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
     cy.get('#history').contains(`${opponentOne.username} passed`);
     cy.get('#turn-indicator').contains('YOUR TURN');
@@ -233,13 +233,13 @@ describe('Stalemates', () => {
       .click();
     cy.log('Deck empty');
 
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
 
     assertStalemate();
@@ -331,7 +331,7 @@ describe('Stalemates', () => {
 
       // Draw card to take turn
       cy.get('#deck').click();
-      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
       // Request stalemate again - now allowed
       cy.get('#game-menu-activator').click();
