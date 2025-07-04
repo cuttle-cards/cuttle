@@ -202,7 +202,7 @@ export function playOutOfTurn(moveName) {
   // Specified move choice should be disabled
   cy.get(`[data-move-choice=${moveName}]`)
     .should('have.class', 'v-card--disabled')
-    .should('contain', "It's not your turn")
+    .should('contain', 'It\'s not your turn')
     .click({ force: true });
   // Back end should fire error that move is illegal after click is forced
   assertSnackbar(SnackBarError.NOT_YOUR_TURN);

@@ -113,7 +113,7 @@ export const resolveNine = {
       lock: null,
       lockedAt: null,
       log: [
-        "The 9♣️ one-off resolves, returning the J♣️ to definitelyNotTheGovernment6969's hand. It cannot be played next turn.",
+        'The 9♣️ one-off resolves, returning the J♣️ to definitelyNotTheGovernment6969\'s hand. It cannot be played next turn.',
       ],
       match: null,
       name: 'Test Game',

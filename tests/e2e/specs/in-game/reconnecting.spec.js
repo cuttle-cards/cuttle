@@ -1093,7 +1093,7 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
-    cy.get('#turn-indicator').should('contain', "OPPONENT'S TURN");
+    cy.get('#turn-indicator').should('contain', 'OPPONENT\'S TURN');
     cy.drawCardOpponent();
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
@@ -1147,7 +1147,7 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
-    cy.get('#turn-indicator').should('contain', "OPPONENT'S TURN");
+    cy.get('#turn-indicator').should('contain', 'OPPONENT\'S TURN');
     cy.drawCardOpponent();
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });

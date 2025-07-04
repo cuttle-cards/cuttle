@@ -218,7 +218,7 @@ describe('FOURS', () => {
       cy.get('#cannot-counter-dialog').should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
-      cy.log("Player resolves opponent's Four");
+      cy.log('Player resolves opponent\'s Four');
 
       // Four Dialog appears (you must discard)
       cy.get('#four-discard-dialog').should('be.visible');

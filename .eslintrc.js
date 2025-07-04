@@ -77,7 +77,7 @@ module.exports = {
     'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    quotes: [ 'error', 'single', { avoidEscape: true, allowTemplateLiterals: true } ],
+    quotes: [ 'error', 'single', { allowTemplateLiterals: true } ],
     semi: [ 'error', 'always' ],
     curly: 'error',
     'vue/html-closing-bracket-newline': [

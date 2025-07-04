@@ -21,7 +21,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=points]').click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Attempt to play out of turn
     cy.get('[data-player-hand-card=1-0]').click(); // ace of clubs
@@ -99,7 +99,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=scuttle]')
       .should('have.class', 'v-card--disabled')
-      .should('contain', "It's not your turn")
+      .should('contain', 'It\'s not your turn')
       .click({ force: true });
     cy.get('[data-opponent-point-card=1-1]').click(); // ace of diamonds
     // Test that Error snackbar says its not your turn
@@ -140,7 +140,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
         Card.ACE_OF_DIAMONDS,
       ],
     });
-    cy.log("Player (p0) scuttled opponent's last point card");
+    cy.log('Player (p0) scuttled opponent\'s last point card');
 
     cy.scuttleOpponent(Card.TEN_OF_CLUBS, Card.TWO_OF_CLUBS);
     assertGameState(0, {
@@ -321,7 +321,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-player-hand-card=11-1]').click();
     cy.get('[data-move-choice=jack]')
       .should('have.class', 'v-card--disabled')
-      .should('contain', "You cannot jack your opponent's points while they have a queen")
+      .should('contain', 'You cannot jack your opponent\'s points while they have a queen')
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
@@ -642,7 +642,7 @@ describe('Play Jacks', () => {
     });
 
     cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Opponent plays jack
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
@@ -686,7 +686,7 @@ describe('Play Jacks', () => {
 
     cy.get('[data-player-hand-card]').should('have.length', 3);
     // Attempt to play king out of turn
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Opponent plays 2nd jack
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
@@ -716,7 +716,7 @@ describe('Play Jacks', () => {
       scrap: [],
     });
 
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Opponent plays 4th jack
     cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS);

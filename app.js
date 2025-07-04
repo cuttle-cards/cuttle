@@ -39,7 +39,7 @@ process.chdir(__dirname);
     console.error(
       'When you run `sails lift`, your app will still use a local `./node_modules/sails` dependency if it exists,',
     );
-    console.error("but if it doesn't, the app will run with the global sails instead!");
+    console.error('but if it doesn\'t, the app will run with the global sails instead!');
     return;
   }
 

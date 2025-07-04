@@ -52,7 +52,7 @@ describe('Auth - Page Content', () => {
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     cy.get('[data-cy="user-menu"]').click();
-    cy.get("[data-nav='Log Out']").click();
+    cy.get('[data-nav=\'Log Out\']').click();
     cy.visit('/');
     cy.location('pathname').should('eq', '/login');
     cy.clearLocalStorage();
