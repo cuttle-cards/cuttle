@@ -110,7 +110,7 @@ module.exports = {
     url.searchParams.set('client_id', process.env.VITE_DISCORD_CLIENT_ID);
     url.searchParams.set('scope', 'identify email guilds.members.read');
     url.searchParams.set('redirect_uri', 'http://localhost:1337/api/user/discord/callback');
-    url.searchParams.set('prompt', 'none');
+    url.searchParams.set('prompt', 'consent');
     url.searchParams.set('state', state);
 
     res.set('Cache-Control', 'private, no-cache');
@@ -122,7 +122,7 @@ module.exports = {
     const { code } = req.query;
     const { state } = req.query;
 
-    const { verifySecret } = sails.helpers.oauth;
+    const { verifySecret, fetchDiscordIdentity } = sails.helpers.oauth;
 
     const verified = verifySecret(state);
     if (!verified) {
@@ -155,12 +155,21 @@ module.exports = {
       if (!tokenData) {
         throw new Error('Failed to retrieve token');
       }
-      const accessToken = tokenData.access_token;
+      const user = await fetchDiscordIdentity(tokenData);
+
+      if (!user) {
+        throw new Error('Failed to retrieve user data');
+      }
+
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+
+      return res.redirect('http://localhost:8080');
 
 
 
     }catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 };
