@@ -10,20 +10,13 @@ module.exports = {
     user: {
       model: 'user',
     },
+    providerId:{
+      type:'string',
+      required: true
+    },
     provider: {
       type: 'string',
       required: true
-    },
-    accessToken: {
-      type: 'string',
-      required: true
-    },
-    refreshToken: {
-      type: 'string',
-      required: true
-    },
-    avatar: {
-      type: 'string',
     },
     email:{
       type: 'string',

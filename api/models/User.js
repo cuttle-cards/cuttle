@@ -13,7 +13,6 @@ module.exports = {
     },
     encryptedPassword: {
       type: 'string',
-      required: true,
     },
     /**
      * Index of this user within a Game's players collection
