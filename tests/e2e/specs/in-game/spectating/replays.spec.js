@@ -10,293 +10,9 @@ import {
 import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 import GameStatus from '../../../../../utils/GameStatus.json';
+import { createAndFinishCasualMatch, rewatchCasualMatch, createAndPlayGameWithOneOffs } from './replayHelpers';
 
 dayjs.extend(utc);
-
-function createAndFinishCasualMatch() {
-  setupGameBetweenTwoUnseenPlayers('replay');
-  
-  cy.get('@replayGameId').then((gameId) => {
-    cy.loadGameFixture(0, {
-      p0Hand: [
-        Card.TEN_OF_CLUBS,
-        Card.TEN_OF_DIAMONDS,
-        Card.TEN_OF_HEARTS,
-        Card.TEN_OF_SPADES,
-        Card.ACE_OF_CLUBS
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [
-        Card.TWO_OF_CLUBS,
-        Card.TWO_OF_DIAMONDS,
-        Card.TWO_OF_HEARTS,
-        Card.TWO_OF_SPADES,
-        Card.THREE_OF_CLUBS,
-        Card.THREE_OF_DIAMONDS
-      ],
-      p1Points: [],
-      p1FaceCards: [],
-      topCard: Card.SEVEN_OF_HEARTS,
-      secondCard: Card.FOUR_OF_HEARTS,
-    }, gameId);
-
-    cy.recoverSessionOpponent(playerOne);
-    cy.playPointsOpponent(Card.TEN_OF_CLUBS, gameId);
-
-    cy.recoverSessionOpponent(playerTwo);
-    cy.drawCardOpponent(gameId);
-
-    cy.recoverSessionOpponent(playerOne);
-    cy.playPointsOpponent(Card.TEN_OF_DIAMONDS, gameId);
-
-    cy.recoverSessionOpponent(playerTwo);
-    cy.drawCardOpponent(gameId);
-
-    cy.recoverSessionOpponent(playerOne);
-    cy.playPointsOpponent(Card.TEN_OF_HEARTS, gameId);
-    
-    // Both players rematch and create new game
-    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
-    cy.recoverSessionOpponent(playerTwo);
-    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
-    cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
-      cy.loadGameFixture(0, {
-        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [],
-        topCard: Card.SEVEN_OF_HEARTS,
-        secondCard: Card.FOUR_OF_HEARTS,
-      }, rematchGameId);
-      
-      cy.recoverSessionOpponent(playerOne);
-      cy.concedeOpponent(rematchGameId);
-      cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
-    });
-  });
-}
-
-function rewatchCasualMatch(firstGameId) {
-  cy.visit(`/spectate/${firstGameId}`);
-
-  cy.get('[data-player-hand-card]').should('have.length', 5);
-  cy.get('[data-cy=history-log]').should('have.length', 1);
-
-  // Step forward to state 1 (loaded fixture)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-forward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=1');
-  cy.get('[data-cy=history-log]').should('have.length', 2);
-
-  assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [],
-    p0FaceCards: [],
-    p1Hand: [
-      Card.TWO_OF_CLUBS,
-      Card.TWO_OF_DIAMONDS,
-      Card.TWO_OF_HEARTS,
-      Card.TWO_OF_SPADES,
-      Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS
-    ],
-    p1Points: [],
-    p1FaceCards: [],
-  });
-
-  // Step forward to state 2 (p0 points)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-forward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=2');
-  cy.get('[data-cy=history-log]').should('have.length', 3);
-
-  assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
-    p0FaceCards: [],
-    p1Hand: [
-      Card.TWO_OF_CLUBS,
-      Card.TWO_OF_DIAMONDS,
-      Card.TWO_OF_HEARTS,
-      Card.TWO_OF_SPADES,
-      Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS
-    ],
-    p1Points: [],
-    p1FaceCards: [],
-  });
-
-  // Step forward to state 3 (p1 draw)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-forward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=3');
-  cy.get('[data-cy=history-log]').should('have.length', 4);
-
-  assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
-    p0FaceCards: [],
-    p1Hand: [
-      Card.TWO_OF_CLUBS,
-      Card.TWO_OF_DIAMONDS,
-      Card.TWO_OF_HEARTS,
-      Card.TWO_OF_SPADES,
-      Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS,
-      Card.SEVEN_OF_HEARTS,
-    ],
-    p1Points: [],
-    p1FaceCards: [],
-  });
-
-  // Step backward to state 2 again (p0 points)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-backward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=2');
-  cy.get('[data-cy=history-log]').should('have.length', 3);
-
-  assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS ],
-    p0FaceCards: [],
-    p1Hand: [
-      Card.TWO_OF_CLUBS,
-      Card.TWO_OF_DIAMONDS,
-      Card.TWO_OF_HEARTS,
-      Card.TWO_OF_SPADES,
-      Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS
-    ],
-    p1Points: [],
-    p1FaceCards: [],
-  });
-
-  // skip backward to state 0
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=skip-backward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=0');
-  cy.get('[data-cy=history-log]').should('have.length', 1);
-  cy.get('[data-player-hand-card]').should('have.length', 5);
-  
-  // skip forward to state -1 (end of game)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=skip-forward]')
-    .click();
-
-  cy.url().should('contain', '?gameStateIndex=-1');
-  cy.get('[data-cy=history-log]').should('have.length', 7);
-
-  assertGameState(0, {
-    p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
-    p0FaceCards: [],
-    p1Hand: [
-      Card.TWO_OF_CLUBS,
-      Card.TWO_OF_DIAMONDS,
-      Card.TWO_OF_HEARTS,
-      Card.TWO_OF_SPADES,
-      Card.THREE_OF_CLUBS,
-      Card.THREE_OF_DIAMONDS,
-      Card.SEVEN_OF_HEARTS,
-      Card.FOUR_OF_HEARTS,
-    ],
-    p1Points: [],
-    p1FaceCards: [],
-  });
-
-  assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
-
-  // Navigate to next game
-  cy.get('[data-cy=gameover-rematch]').click();
-
-  // Should start on the first state since game is finished
-  cy.url().should('contain', '?gameStateIndex=0');
-
-  // Step forward to game 2 state 1 (loaded game fixture)
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-forward]')
-    .click();
-  cy.url().should('contain', '?gameStateIndex=1');
-  cy.get('[data-cy=history-log]').should('have.length', 2);
-
-  assertGameState(0, {
-    p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
-    p0Points: [],
-    p0FaceCards: [],
-    p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
-    p1Points: [],
-    p1FaceCards: [],
-    topCard: Card.SEVEN_OF_HEARTS,
-    secondCard: Card.FOUR_OF_HEARTS,
-  });
-
-  cy.get('[data-cy=playback-controls]')
-    .find('[data-cy=step-forward]')
-    .click();
-  cy.url().should('contain', '?gameStateIndex=2');
-  cy.get('[data-cy=history-log]')
-    .should('have.length', 3)
-    .should('contain', 'Player1 conceded');
-
-  assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false, rematchWasDeclined: true });
-}
-
-function createAndPlayGameWithOneOffs() {
-  setupGameBetweenTwoUnseenPlayers('replay');
-  cy.get('@replayGameId').then((gameId) => {
-    cy.loadGameFixture(0, {
-      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_HEARTS ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.TWO_OF_DIAMONDS ],
-      p1Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
-      p1FaceCards: [],
-    }, gameId);
-
-    cy.recoverSessionOpponent(playerOne);
-    cy.playOneOffOpponent(Card.ACE_OF_CLUBS, gameId);
-    cy.recoverSessionOpponent(playerTwo);
-    cy.counterOpponent(Card.TWO_OF_DIAMONDS, gameId);
-    cy.recoverSessionOpponent(playerOne);
-    cy.counterOpponent(Card.TWO_OF_HEARTS, gameId);
-    cy.recoverSessionOpponent(playerTwo);
-    cy.resolveOpponent(gameId);
-
-    cy.concedeOpponent(gameId);
-    cy.recoverSessionOpponent(playerOne);
-    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
-    cy.recoverSessionOpponent(playerTwo);
-    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
-    cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
-      cy.loadGameFixture(0, {
-        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [],
-        topCard: Card.SEVEN_OF_HEARTS,
-        secondCard: Card.FOUR_OF_HEARTS,
-      }, rematchGameId);
-      cy.recoverSessionOpponent(playerOne);
-      cy.concedeOpponent(rematchGameId);
-      cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
-    });
-  });
-}
 
 describe('Rewatching finished games', () => {
   beforeEach(() => {
@@ -334,14 +50,13 @@ describe('Rewatching finished games', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('contain', '?gameStateIndex=5');
+      cy.url().should('contain', '?gameStateIndex=7');
 
       assertGameState(0, {
-        p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS, Card.TEN_OF_HEARTS ],
-        p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
+        p0Hand: [ Card.ACE_OF_CLUBS,  Card.TEN_OF_SPADES ],
+        p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [
-          Card.TWO_OF_CLUBS,
           Card.TWO_OF_DIAMONDS,
           Card.TWO_OF_HEARTS,
           Card.TWO_OF_SPADES,
@@ -352,6 +67,7 @@ describe('Rewatching finished games', () => {
         ],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
       });
     });
   });
@@ -363,10 +79,17 @@ describe('Rewatching finished games', () => {
     });
 
     it('Navigates directly to a particular state of a finished game', () => {
-      cy.loginPlayer(playerOne);
+
       cy.get('@replayGameId').then((gameId) => {
         cy.visit(`/spectate/${gameId}?gameStateIndex=2`);
       });
+
+      cy.get('#reauthenticate-dialog').should('be.visible');
+      cy.get('[data-cy=username]').click()
+        .type(playerOne.username);
+      cy.get('[data-cy=password]').click()
+        .type(playerOne.password);
+      cy.get('[data-cy=login]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
@@ -502,11 +225,228 @@ describe('Rewatching finished games', () => {
           assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true, rematchWasDeclined: true });
         });
       });
-
     });
   });
 
+  describe('Creating highlight clips', () => {
+    it('Copies the url of the current move as highlight clip as player in a game', () => {
+      cy.setupGameAsP0();
+
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      });
+
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=clip-highlight]').click();
+
+      // Clipboard should have spectate link to current gameState
+      cy.window().then((win) => {
+        const currentOrigin = win.location.origin;
+        cy.window()
+          .its('cuttle.gameStore')
+          .then((gameStore) => {
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            cy.wrap(win.navigator.clipboard.readText())
+              .should('eq', expectedUrl);
+          });
+      });
+
+      // Menu item should show contents are copied
+      cy.get('[data-cy=highlight-copied]')
+        .should('be.visible')
+        .click();
+      cy.get('#game-menu').should('not.exist');
+
+      // highlight-copied should switch back on re-opening menu
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible');
+      cy.get('[data-cy=highlight-copied]').should('not.exist');
+      cy.get('[data-cy=clip-highlight]').should('be.visible');
+    });
+
+    it('Copies the current state url when spectating live', () => {
+      setupGameBetweenTwoUnseenPlayers('replay');
   
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+            Card.TEN_OF_HEARTS,
+            Card.TEN_OF_SPADES,
+            Card.ACE_OF_CLUBS
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_CLUBS,
+            Card.THREE_OF_DIAMONDS
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}`);
+
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=clip-highlight]').click();
+
+        // Clipboard should have spectate link to current gameState
+        cy.window().then((win) => {
+          const currentOrigin = win.location.origin;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
+        });
+
+        // Menu item should show contents are copied
+        cy.get('[data-cy=highlight-copied]')
+          .should('be.visible')
+          .click();
+        cy.get('#game-menu').should('not.exist');
+  
+        // highlight-copied should switch back on re-opening menu
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=highlight-copied]').should('not.exist');
+        cy.get('[data-cy=clip-highlight]').should('be.visible');
+      });
+    });
+
+    it('Copies clip highlight link while spectating a finished game', () => {
+      createAndPlayGameWithOneOffs();
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+            Card.TEN_OF_HEARTS,
+            Card.TEN_OF_SPADES,
+            Card.ACE_OF_CLUBS
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_CLUBS,
+            Card.THREE_OF_DIAMONDS
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=3`);
+
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=clip-highlight]').click();
+
+        // Clipboard should have spectate link to current gameState
+        cy.window().then((win) => {
+          const currentOrigin = win.location.origin;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          cy.wrap(win.navigator.clipboard.readText())
+            .should('eq', expectedUrl);
+        });
+
+        // Menu item should show contents are copied
+        cy.get('[data-cy=highlight-copied]')
+          .should('be.visible')
+          .click();
+        cy.get('#game-menu').should('not.exist');
+  
+        // highlight-copied should switch back on re-opening menu
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible');
+        cy.get('[data-cy=highlight-copied]').should('not.exist');
+        cy.get('[data-cy=clip-highlight]').should('be.visible');
+      });
+    });
+
+    describe('Replaying other game states', () => {
+      it('Watches a replay of a game that ends via passes', () => {
+        setupGameBetweenTwoUnseenPlayers('replay');
+
+        cy.get('@replayGameId').then((gameId) => {
+          cy.loadGameFixture(0, {
+            p0Hand: [ Card.ACE_OF_CLUBS ],
+            p0Points: [],
+            p0FaceCards: [],
+            p1Hand: [ Card.ACE_OF_DIAMONDS ],
+            p1Points: [],
+            p1FaceCards: [],
+            deck: [],
+          }, gameId);
+
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent(gameId);
+          cy.recoverSessionOpponent(playerTwo);
+          cy.passOpponent(gameId);
+
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent(gameId);
+
+          cy.visit('/');
+          cy.signupPlayer(myUser);
+          cy.vueRoute(`/spectate/${gameId}`);
+        });
+
+        cy.url().should('contain', '?gameStateIndex=0');
+        // Wait and verify game over dialog doesn't appear
+        cy.wait(1000);
+        cy.get('#game-over-dialog').should('not.exist');
+        // Step forward to state 1 (loaded fixture)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+        cy.url().should('contain', '?gameStateIndex=1');
+        // Step forward to state 2 (pass)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+        cy.url().should('contain', '?gameStateIndex=2');
+        // Wait and verify game over dialog doesn't appear
+        cy.wait(1000);
+        cy.get('#game-over-dialog').should('not.exist');
+        // Step forward to state 3 (pass)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+        cy.url().should('contain', '?gameStateIndex=3');
+        // Step forward to state 4 (pass; stalemate)
+        cy.get('[data-cy=playback-controls]')
+          .find('[data-cy=step-forward]')
+          .click();
+
+        assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
+      });
+    });
+  });
+
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {
       cy.loadFinishedGameFixtures([

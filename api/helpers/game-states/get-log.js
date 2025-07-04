@@ -18,7 +18,7 @@ module.exports = {
 
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
-      const { moveType, playedCard, targetCard, resolved, deck, twos, discardedCards } = row;
+      const { moveType, playedCard, targetCard, resolved, deck, discardedCards } = row;
       const { convertStrToCard } = sails.helpers.gameStates;
 
       const getFullCardName = (card) => {
@@ -75,12 +75,7 @@ module.exports = {
         }
 
         case MoveType.COUNTER:
-          if (twos.length > 0) {
-            return `${player} played the ${playedCardName} to counter ${opponent}'s 
-            ${getFullCardName(twos[twos.length - 1])}.`;
-          }
-          return `${player} played the ${playedCardName} to counter 
-        ${opponent}'s ${resolvedCardName}.`;
+          return `${player} played the ${playedCardName} to counter ${opponent}'s ${targetCardName}.`;
 
         case MoveType.FIZZLE:
           return `The ${getFullCardName(

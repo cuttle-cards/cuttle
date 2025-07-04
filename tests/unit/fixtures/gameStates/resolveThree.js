@@ -148,6 +148,7 @@ export const resolveThree = {
       p1Rematch: null,
       rematchGame: null,
       resolved: Card.THREE_OF_SPADES,
+      phase: GamePhase.MAIN,
       passes: 0,
       oneOff: null,
       oneOffTarget: null,

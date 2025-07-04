@@ -64,6 +64,56 @@ describe('Lobby - Page Content', () => {
       .should('exist');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
+
+  it('Player concedes, goes home, joins new game created by new user, and both are not ready', function () {
+    const { gameId } = this.gameSummary;
+    // 1. Player hits ready
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-cy=my-indicator] [data-cy="lobby-ready-card"]')
+      .should('exist');
+
+    // 2. Opponent Signs up and readies
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]')
+      .should('exist');
+
+    // 3. Player readies (game starts)
+    cy.get('[data-cy=ready-button]').click();
+
+    // 3. Verify game has started (should be in /game and have hand)
+    cy.url().should('include', '/game');
+    cy.get('[data-player-hand-card]').should('exist');
+
+    // 4. Signup a new user (opponentTwo)
+    cy.signupOpponent(opponentTwo);
+    // 5. New user creates and joins a game
+    cy.createGameOpponent('Second Game').then((newGameSummary) => {
+      cy.subscribeOpponent(newGameSummary.gameId);
+      // 6. Player concedes using the game menu
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=concede-initiate]')
+        .click();
+      cy.get('#request-gameover-dialog').should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+      // 7. Player hits the button to go home in the #game-over-dialog
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.get('[data-cy=gameover-go-home]').click();
+      cy.url().should('not.include', '/game');
+      // 8. Player joins the new game created by the second user
+      cy.get(`[data-cy-join-game=${newGameSummary.gameId}]`).should('be.enabled')
+        .click();
+      cy.url().should('include', `/lobby/${newGameSummary.gameId}`);
+      // 9. Assert both players in lobby and both not ready
+      cy.get('[data-cy=my-indicator]').contains(myUser.username);
+      cy.get('[data-cy=opponent-indicator]').contains(opponentTwo.username);
+      cy.get('[data-cy=my-indicator] [data-cy="lobby-card-container"]').should('not.have.class', 'ready');
+      cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should('not.have.class', 'ready');
+    });
+  });
 });
 
 describe('Lobby - Page Content (Ranked)', () => {
@@ -193,6 +243,10 @@ describe('Lobby - P0 Perspective', () => {
         const gameId = gameData.id;
         cy.subscribeOpponent(gameId);
 
+        // Assert player and opponent indicators show correct usernames
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
+
         // player ready, exit, join back
         cy.get('[data-cy=ready-button]').click();
         cy.get('[data-cy=exit-button]').click();
@@ -202,6 +256,10 @@ describe('Lobby - P0 Perspective', () => {
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
         expect(gameData.p0Ready).to.eq(false);
+
+        // Assert player and opponent indicators show correct usernames after rejoining
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
 
         // opponent ready, exit, join back
         cy.readyOpponent(gameId);
@@ -214,6 +272,10 @@ describe('Lobby - P0 Perspective', () => {
         expect(gameData.p1Ready).to.eq(false);
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
           .should('exist');
+
+        // Assert player and opponent indicators show correct usernames after opponent rejoins
+        cy.get('[data-cy=my-indicator]').contains(myUser.username);
+        cy.get('[data-cy=opponent-indicator]').contains(opponentOne.username);
       });
   });
 

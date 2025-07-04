@@ -74,6 +74,9 @@ module.exports = {
 
       const combinedData = { ...gameState, ...convertedData };
 
+      // Remove the id field to prevent database duplicate id errors
+      delete combinedData.id;
+
       return exits.success(combinedData);
     } catch (err) {
       return exits.error(err.message);

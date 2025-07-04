@@ -224,7 +224,9 @@
         "cancel": "Abbrechen",
         "home": "Zur Startseite",
         "concedeDialog": "Das Spiel endet und dein Gegner gewinnt.",
-        "stalemateDialog": "Wenn dein Gegner zustimmt, endet das Spiel in einem Unentschieden. Die Anfrage wird abgebrochen, wenn der Gegner ablehnt oder ein Spieler einen Zug macht."
+        "stalemateDialog": "Wenn dein Gegner zustimmt, endet das Spiel in einem Unentschieden. Die Anfrage wird abgebrochen, wenn der Gegner ablehnt oder ein Spieler einen Zug macht.",
+        "clipHighlight": "Ausschnitt hervorheben",
+        "highlightCopied": "Highlight-Link kopiert"
       },
       "spectatorListMenu": {
         "spectators": "Zuschauer",

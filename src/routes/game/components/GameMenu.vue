@@ -16,22 +16,42 @@
       </template>
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
-        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
+        <v-list-item data-cy="rules-open" prepend-icon="mdi-information" @click="shownDialog = 'rules'">
           {{ t('game.menus.gameMenu.rules') }}
         </v-list-item>
         <!-- Stop Spectating -->
-        <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
+        <v-list-item
+          v-if="isSpectating"
+          data-cy="stop-spectating"
+          prepend-icon="mdi-home"
+          @click.stop="stopSpectate"
+        >
           {{ t('game.menus.gameMenu.home') }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
-          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
+          <v-list-item
+            data-cy="concede-initiate"
+            prepend-icon="mdi-flag-variant-outline"
+            @click="shownDialog = 'concede'"
+          >
             {{ t('game.menus.gameMenu.concede') }}
           </v-list-item>
-          <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
+          <v-list-item data-cy="stalemate-initiate" prepend-icon="mdi-handshake" @click="shownDialog = 'stalemate'">
             {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
         </template>
+        <v-list-item
+          v-if="!clipCopiedToClipboard"
+          data-cy="clip-highlight"
+          prepend-icon="mdi-movie-open"
+          @click.stop="clipHighlight"
+        >
+          {{ t('game.menus.gameMenu.clipHighlight') }}
+        </v-list-item>
+        <v-list-item v-else data-cy="highlight-copied" prepend-icon="mdi-check-bold">
+          {{ t('game.menus.gameMenu.highlightCopied') }}
+        </v-list-item>
         <TheLanguageSelector />
         <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
           {{ t('game.menus.gameMenu.refresh') }}
@@ -76,8 +96,9 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
-import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -104,11 +125,11 @@ export default {
       shownDialog:'',
       showGameMenu: false,      
       loading: false,
+      clipCopiedToClipboard: false,
     };
   },
   computed: {
-    ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     showEndGameDialog:{
       get() {
         return this.showConcedeDialog || this.showStalemateDialog;
@@ -147,6 +168,11 @@ export default {
       return this.shownDialog === 'stalemate';
     }
   },
+  watch: {
+    showGameMenu() {
+      this.clipCopiedToClipboard = false;
+    }
+  },
   methods: {
     closeMenu() {
       this.showGameMenu = false;
@@ -171,13 +197,19 @@ export default {
       this.loading = true;
       try {
         await this.gameStore.requestStalemate();
-        this.gameStore.waitingForOpponentToStalemate = true;
       } catch (e) {
-        this.gameStore.waitingForOpponentToStalemate = false;
         this.$emit('handle-error', e ?? 'Error requesting stalemate');
       }
       this.loading = false;
       this.shownDialog = '';
+    },
+    async clipHighlight() {
+      try {
+        await navigator.clipboard.writeText(this.gameHistoryStore.clipUrl);
+        this.clipCopiedToClipboard = true;
+      } catch (err) {
+        this.$emit('handle-error', 'Could not copy highlight link to clipboard');
+      }
     },
     async stopSpectate() {
       try {
@@ -191,7 +223,7 @@ export default {
     async refresh() {
       await this.authStore.reconnectSocket();
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

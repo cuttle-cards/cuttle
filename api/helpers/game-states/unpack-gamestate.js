@@ -64,6 +64,7 @@ module.exports = {
       };
 
       const data = {
+        id: gameStateRow.id,
         gameId: gameStateRow.gameId,
         playedBy: gameStateRow.playedBy,
         moveType: gameStateRow.moveType,

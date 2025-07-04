@@ -21,15 +21,18 @@ module.exports = {
   fn: async function ({ game, gameState }, exits) {
     try {
       // Combine game and gamestate users and delete passwords
-      const p0 = { ...game.p0, ...gameState.p0 };
+      const p0 = { ...game.p0, ...gameState.p0, pNum: 0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game.p1, ...gameState.p1 };
+      const p1 = { ...game.p1, ...gameState.p1, pNum: 1 };
       delete p1.encryptedPassword;
       const players = [ p0, p1 ];
 
       const countPasses = (function () {
         let numPasses = 0;
-        for (const gameState of game.gameStates.slice(-3)) {
+        const currentIndex = game.gameStates.findIndex(gs => gs.id === gameState.id);
+        const threeUpToCurrent = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
+
+        for (const gameState of threeUpToCurrent) {
           if (gameState.moveType !== MoveType.PASS) {
             return numPasses;
           }
@@ -101,6 +104,7 @@ module.exports = {
         log: fullLog,
         passes: countPasses,
         turn: gameState.turn,
+        phase: gameState.phase,
         deck: gameState.deck.slice(2),
         scrap: gameState.scrap,
         topCard: gameState.deck[0],

@@ -37,6 +37,7 @@ module.exports.session = {
   // https://sailsjs.com/documentation/reference/configuration/sails-config-session#?properties
   name: 'cuttle.sid',
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
+    // 7d * 24hrs * 60min * 60s * 1000ms
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
 };

@@ -68,6 +68,9 @@ describe('Countering One-Offs', () => {
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent resolves
     cy.resolveOpponent();
+
+    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+
     assertGameState(1, {
       // Opponent is P0
       p0Hand: [ Card.FOUR_OF_SPADES ],
@@ -295,8 +298,12 @@ describe('Countering One-Offs', () => {
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
+
+    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♥️ to counter definitelyNotTheGovernment6969\'s A♣️.');
     // Opponent counters back (2nd counter)
     cy.counterOpponent(Card.TWO_OF_CLUBS);
+
+    cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 played the 2♣️ to counter myUsername\'s 2♥️.');
     // Player counters again (3rd counter)
     cy.get('#counter-dialog').should('be.visible')
       .get('[data-cy=counter]')
@@ -310,6 +317,8 @@ describe('Countering One-Offs', () => {
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-0]').should('exist');
     // Opponent plays 4th and final counter
     cy.counterOpponent(Card.TWO_OF_DIAMONDS);
+
+    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s 2♣️.');
     // Player cannot counter back
     cy.get('#cannot-counter-dialog').should('be.visible')
       .get('[data-cy=cannot-counter-resolve]')

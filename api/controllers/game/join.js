@@ -58,6 +58,7 @@ module.exports = async function (req, res) {
     }
     
     game.players.push({ username: user.username, pNum });
+    game.players.sort((p1, p2) => p1.pNum - p2.pNum);
     Game.subscribe(req, [ gameId ]);
 
     await Game.updateOne({ id: gameId }).set(gameUpdates);
