@@ -65,7 +65,7 @@ module.exports = {
       req.session.loggedIn = true;
 
       return res.ok({ username: user.username });
-      
+
     } catch (err) {
       return res.badRequest(err);
     }
@@ -100,4 +100,77 @@ module.exports = {
       return res.badRequest(err);
     }
   },
+
+  discordRedirect: async function(_, res) {
+    const url = new URL('https://discord.com/api/oauth2/authorize');
+    const { generateSecret } = sails.helpers.oauth;
+    const state = generateSecret();
+
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('client_id', process.env.VITE_DISCORD_CLIENT_ID);
+    url.searchParams.set('scope', 'identify email guilds.members.read');
+    url.searchParams.set('redirect_uri', 'http://localhost:1337/api/user/discord/callback');
+    url.searchParams.set('prompt', 'consent');
+    url.searchParams.set('state', state);
+
+    res.set('Cache-Control', 'private, no-cache');
+    return res.redirect(url.href);
+
+  },
+
+  discordCallBack: async function(req, res) {
+    const { code } = req.query;
+    const { state } = req.query;
+
+    const { verifySecret, fetchDiscordIdentity } = sails.helpers.oauth;
+
+    const verified = verifySecret(state);
+    if (!verified) {
+      return res.badRequest('Invalid secret');
+    }
+
+    if (!code) {
+      return res.badRequest('Missing code');
+    }
+
+    const params = {
+      client_id: String(process.env.VITE_DISCORD_CLIENT_ID),
+      client_secret: String(process.env.VITE_DISCORD_CLIENT_SECRET),
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: `http://localhost:1337/api/user/discord/callback`,
+    };
+
+    try {
+      const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(params),
+      });
+
+      const tokenData = await tokenRes.json();
+
+      if (!tokenData) {
+        throw new Error('Failed to retrieve token');
+      }
+      const user = await fetchDiscordIdentity(tokenData);
+
+      if (!user) {
+        throw new Error('Failed to retrieve user data');
+      }
+
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+
+      return res.redirect('http://localhost:8080');
+
+
+
+    }catch (err) {
+      console.log(err);
+    }
+  }
 };
+
