@@ -1,7 +1,7 @@
 import { gameFixture } from '../Game';
 import { Card } from '../../fixtures/Card';
-import MoveType from '../../../../utils/MoveType.json';
-import GamePhase from '../../../../utils/GamePhase.json';
+import MoveType from '../../../../types/MoveType.json';
+import GamePhase from '../../../../types/GamePhase.json';
 
 const gameStateRow = {
   playedBy: 1,

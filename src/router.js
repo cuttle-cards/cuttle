@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import GameStatus from '_/utils/GameStatus.json';
+import GameStatus from '_/types/GameStatus.json';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
