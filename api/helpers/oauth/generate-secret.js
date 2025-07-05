@@ -10,7 +10,7 @@ module.exports = {
   fn: function (_, exits) {
     try {
       const randomString = crypto.randomBytes(32).toString('base64url');
-      const secretKey =  process.env.VITE_JWT_SECRET
+      const secretKey =  process.env.VITE_JWT_SECRET;
       const secret = jwt.sign(
         { randomString, purpose: 'Oauth' },
         secretKey,
