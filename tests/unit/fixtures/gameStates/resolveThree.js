@@ -1,6 +1,6 @@
-import MoveType from '../../../../utils/MoveType.json';
-import GamePhase from '../../../../utils/GamePhase.json';
-import GameStatus from '../../../../utils/GameStatus.json';
+import MoveType from '../../../../types/MoveType.json';
+import GamePhase from '../../../../types/GamePhase.json';
+import GameStatus from '../../../../types/GameStatus.json';
 import { gameFixture } from '../Game';
 import { Card } from '../Card';
 

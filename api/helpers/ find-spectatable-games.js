@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
-const GameStatus = require('../../utils/GameStatus');
+const GameStatus = require('../../types/GameStatus');
 
 module.exports = {
   friendlyName: 'Find Spectatable Games',

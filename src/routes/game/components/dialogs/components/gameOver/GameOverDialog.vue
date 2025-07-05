@@ -91,7 +91,7 @@ import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { WhichPlayer, usePlayerData } from './composables/playerData';
 import BaseDialog from '@/components/BaseDialog.vue';
-import GameStatus from '_/utils/GameStatus.json';
+import GameStatus from '_/types/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MatchScoreCounter from './components/MatchScoreCounter.vue';
 import MatchStatusBanner from './components/MatchStatusBanner.vue';

@@ -4,7 +4,7 @@ const NotFoundError = require('../../errors/notFoundError');
 const ForbiddenError = require('../../errors/forbiddenError');
 const BadRequestError = require('../../errors/badRequestError');
 const ConflictError = require('../../errors/conflictError');
-const GameStatus = require('../../../utils/GameStatus');
+const GameStatus = require('../../../types/GameStatus');
 
 module.exports = async function (req, res) {
   let game;

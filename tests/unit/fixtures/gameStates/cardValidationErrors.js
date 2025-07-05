@@ -1,6 +1,6 @@
 import { Card } from '../Card';
-import GamePhase from '../../../../utils/GamePhase.json';
-import MoveType from '../../../../utils/MoveType.json';
+import GamePhase from '../../../../types/GamePhase.json';
+import MoveType from '../../../../types/MoveType.json';
 
 
 // Seven Of Spades appears twice

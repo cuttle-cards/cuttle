@@ -1,4 +1,4 @@
-import GameStatus from '../../../utils/GameStatus.json';
+import GameStatus from '../../../types/GameStatus.json';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import router from '@/router.js';

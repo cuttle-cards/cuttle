@@ -1,4 +1,4 @@
-const GameStatus = require('../../utils/GameStatus');
+const GameStatus = require('../../types/GameStatus');
 
 module.exports = {
   friendlyName: 'Is Game Full?',

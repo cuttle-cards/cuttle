@@ -1,4 +1,4 @@
-const GamePhase = require('../../../../../utils/GamePhase.json');
+const GamePhase = require('../../../../../types/GamePhase.json');
 
 module.exports = {
   friendlyName: 'Discard a Jack via a seven',

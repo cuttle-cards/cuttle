@@ -1,5 +1,5 @@
-const MoveType = require('../../utils/MoveType.json');
-const DeckIds = require('../../utils/DeckIds.json');
+const MoveType = require('../../types/MoveType.json');
+const DeckIds = require('../../types/DeckIds.json');
 
 /**
  * hasValidMoveBody

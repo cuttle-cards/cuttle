@@ -1,6 +1,6 @@
 const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
-const GameStatus = require('../../../utils/GameStatus.json');
+const GameStatus = require('../../../types/GameStatus.json');
 
 module.exports = async function(req, res) {
   const { gameId } = req.params;

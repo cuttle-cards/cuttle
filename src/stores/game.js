@@ -3,9 +3,9 @@ import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-import MoveType from '../../utils/MoveType.json';
-import GameStatus from '../../utils/GameStatus.json';
-import GamePhase from '../../utils/GamePhase.json';
+import MoveType from '../../types/MoveType.json';
+import GameStatus from '../../types/GameStatus.json';
+import GamePhase from '../../types/GamePhase.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 

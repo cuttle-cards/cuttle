@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 const Result = require('../../types/Result.es5');
-const GameStatus = require('../../utils/GameStatus');
+const GameStatus = require('../../types/GameStatus');
 
 /////////////
 // Helpers //

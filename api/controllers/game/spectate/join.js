@@ -1,4 +1,4 @@
-const GameStatus = require('../../../../utils/GameStatus');
+const GameStatus = require('../../../../types/GameStatus');
 
 module.exports = async function (req, res) {
   let { gameId } = req.params;

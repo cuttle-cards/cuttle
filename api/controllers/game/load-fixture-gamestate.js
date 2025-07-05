@@ -1,6 +1,6 @@
-const MoveType = require('../../../utils/MoveType.json');
-const GamePhase = require('../../../utils/GamePhase.json');
-const DeckIds = require('../../../utils/DeckIds.json');
+const MoveType = require('../../../types/MoveType.json');
+const GamePhase = require('../../../types/GamePhase.json');
+const DeckIds = require('../../../types/DeckIds.json');
 
 module.exports = async function (req, res) {
   try {
