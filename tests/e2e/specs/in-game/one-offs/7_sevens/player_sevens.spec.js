@@ -96,7 +96,7 @@ describe('Playing SEVENS', () => {
       .click();
     cy.get('[data-move-choice=jack]')
       .should('have.class', 'v-card--disabled')
-      .should('contain', "You cannot jack your opponent's points while they have a queen")
+      .should('contain', 'You cannot jack your opponent\'s points while they have a queen')
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=10-2]').click();
@@ -329,7 +329,7 @@ describe('Playing SEVENS', () => {
       cy.get('#deck').find('#empty-deck-text')
         .should('contain', 'PASS');
 
-      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     });
   });
 
