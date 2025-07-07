@@ -78,7 +78,6 @@ module.exports = {
 
   status: async function (req, res) {
     const { usr: id, loggedIn: authenticated } = req.session;
-
     // User is not logged in, get out of here
     if (!authenticated || !id) {
       return res.ok({
@@ -88,11 +87,12 @@ module.exports = {
 
     try {
       // If the user is logged in, see if we can find them first to verify they exist
-      const { username } = await userAPI.findUser(id);
+      const { username, identities } = await userAPI.findUser(id);
       return res.ok({
         id,
         username,
         authenticated,
+        identities
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
@@ -155,21 +155,23 @@ module.exports = {
       if (!tokenData) {
         throw new Error('Failed to retrieve token');
       }
-      const user = await fetchDiscordIdentity(tokenData);
+      const user = req.session.usr ?? null;
 
-      if (!user) {
+      const updatedUser = await fetchDiscordIdentity(tokenData, user);
+
+      if (!updatedUser) {
         throw new Error('Failed to retrieve user data');
       }
 
       req.session.loggedIn = true;
-      req.session.usr = user.id;
+      req.session.usr = updatedUser.id;
 
       return res.redirect('http://localhost:8080');
 
 
 
     }catch (err) {
-      console.log(err);
+      return res.redirect('http://localhost:8080/logout');
     }
   }
 };

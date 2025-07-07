@@ -8,10 +8,14 @@ module.exports = {
       type: 'ref',
       description: 'Discord Access Token',
       required: true
+    },
+    user: {
+      type: 'ref',
+      description: 'Exisiting User'
     }
   },
 
-  fn: async function ({ token }, exits) {
+  fn: async function ({ token, user }, exits) {
     try {
       const response = await fetch('https://discord.com/api/users/@me', {
         headers: {
@@ -33,24 +37,26 @@ module.exports = {
       const prevIdentity = await Identity.findOne({ providerId }).populate('user');
 
       if (prevIdentity && prevIdentity.user) {
+        if(user && prevIdentity.user.id !== user){
+          return exits.error('Account already linked to another profile');
+        }
         return exits.success(prevIdentity.user);
       }
-      const existingUser = await User.findOne({ username });
+      const existingUserName = await User.findOne({ username });
 
-      if (existingUser) {
-        // Append random number to avoid username collision
+      if (existingUserName) {
         username = `${username}${Math.floor(Math.random() * 1000)}`;
       }
-      const newUser = await User.create({ username }).fetch();
+      const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username }).fetch();
 
       await Identity.create({
         providerId,
         provider,
         email,
-        user: newUser.id,
+        user: updatedUser.id,
       });
 
-      return exits.success(newUser);
+      return exits.success(updatedUser);
 
     } catch (e) {
       console.error('Error fetching identity from Discord:', e);

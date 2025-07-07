@@ -78,7 +78,7 @@
     "docker:stop": "docker compose -f ./docker/docker-compose.yml down",
     "start:serve": "vite preview",
     "start:client": "vite --host",
-    "start:server": "node app.js",
+    "start:server": "VITE_JWT_SECRET=cuttle69420 VITE_DISCORD_CLIENT_ID=1385321376889438238 VITE_DISCORD_CLIENT_SECRET=BflVlmWGk_6FnCsAkzr5aHQaJmn_RoUa node app.js",
     "start:preview": "npm run build;npm run start:server",
     "start:dev": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start": "node app.js",
