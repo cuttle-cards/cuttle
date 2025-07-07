@@ -13,7 +13,7 @@ function verifyAuthenticatedLinks() {
   cy.location('pathname').should('equal', '/stats');
   // Log out
   cy.get('[data-cy="user-menu"]').click();
-  cy.get("[data-nav='Log Out']").click();
+  cy.get('[data-nav=\'Log Out\']').click();
   cy.location('pathname').should('equal', '/login');
 }
 
@@ -35,7 +35,7 @@ function verifyUnauthenticatedLinks() {
   cy.signupPlayer(playerOne);
   cy.vueRoute('/rules');
   cy.get('[data-cy="user-menu"]').click();
-  cy.get("[data-nav='Log Out']").click();
+  cy.get('[data-nav=\'Log Out\']').click();
   cy.get('[data-cy=rules-link]').click();
   cy.location('pathname').should('equal', '/rules');
 

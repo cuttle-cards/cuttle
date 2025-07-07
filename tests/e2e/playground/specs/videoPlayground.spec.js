@@ -140,7 +140,7 @@ describe('Video Playground', () => {
 
     cy.get('[data-player-hand-card=4-3]').click();
     cy.get('[data-move-choice=points]').click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.wait(1000);
 
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.FOUR_OF_SPADES);
@@ -476,7 +476,7 @@ describe('Video Playground', () => {
     cy.get('[data-player-hand-card]').should('have.length', 3);
     cy.get('[data-player-hand-card=10-3]').click();
     cy.get('[data-move-choice=points]').click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
     cy.wait(2000);
     cy.get('#turn-indicator').contains('YOUR TURN');
