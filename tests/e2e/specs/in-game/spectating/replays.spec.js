@@ -387,6 +387,24 @@ describe('Rewatching finished games', () => {
       });
     });
 
+    it.only('does not affect live game state when a spectator joins at gameStateIndex=0', () => {
+      // Setup a game as p0
+      cy.setupGameAsP0();
+      cy.get('@gameId').then((gameId) => {
+        // Have p0 draw a card
+        cy.get('#deck').click();
+        // Assert p0 has 6 cards in hand (initial 5 + 1 drawn)
+        cy.get('#player-hand-cards .player-card').should('have.length', 6);
+        // Sign up another user as opponent/other user
+        cy.signupOpponent({ username: 'spectator', password: 'password' });
+        // Use cy.setOpponentToSpectate to subscribe the new user to the game at gameStateIndex=0
+        cy.setOpponentToSpectate(gameId, 0);
+        cy.wait(1000);
+        cy.get('#player-hand-cards .player-card').should('have.length', 6);
+      });
+    });
+  }); // end describe('Creating highlight clips')
+  
     describe('Replaying other game states', () => {
       it('Watches a replay of a game that ends via passes', () => {
         setupGameBetweenTwoUnseenPlayers('replay');
@@ -445,7 +463,6 @@ describe('Rewatching finished games', () => {
         assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
       });
     });
-  });
 
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {
