@@ -184,7 +184,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
@@ -225,7 +225,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')

@@ -10,7 +10,7 @@ function stripDbAttributes(obj) {
   attributesToRemove.forEach((attr) => delete obj[attr]);
 }
 
-describe("Converting GameState's and GameStateRow's and emitting sockets for Points", () => {
+describe('Converting GameState\'s and GameStateRow\'s and emitting sockets for Points', () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
   });

@@ -255,7 +255,7 @@ describe.skip('Aesthetic tests', () => {
     });
 
     cy.get('[data-player-hand-card]').should('have.length', 3);
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // opponent plays 2nd Jack
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
@@ -285,7 +285,7 @@ describe.skip('Aesthetic tests', () => {
       scrap: [],
     });
 
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Opponent plays 4th jack
     cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS);
@@ -328,7 +328,7 @@ describe.skip('Aesthetic tests', () => {
     });
 
     cy.get('[data-player-hand-card]').should('have.length', 3);
-    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
 
     // Opponent plays 2nd jack
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
