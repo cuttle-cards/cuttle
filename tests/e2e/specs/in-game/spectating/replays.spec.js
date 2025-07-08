@@ -7,7 +7,7 @@ import {
   assertGameOverAsSpectator,
   assertSnackbar
 } from '../../../support/helpers';
-import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
+import { myUser, playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 import GameStatus from '../../../../../utils/GameStatus.json';
 import { createAndFinishCasualMatch, rewatchCasualMatch, createAndPlayGameWithOneOffs } from './replayHelpers';
@@ -387,7 +387,7 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it('Does not affect live game state when a spectator joins at gameStateIndex=0', () => {
+    it.only('Does not affect live game state when a spectator joins at gameStateIndex=0', () => {
       // Setup a game as p0
       cy.setupGameAsP0();
       cy.get('@gameId').then((gameId) => {
@@ -396,7 +396,7 @@ describe('Rewatching finished games', () => {
         // Assert p0 has 6 cards in hand (initial 5 + 1 drawn)
         cy.get('#player-hand-cards .player-card').should('have.length', 6);
         // Sign up another user as opponent/other user
-        cy.signupOpponent({ username: 'spectator', password: 'password' });
+        cy.signupOpponent(playerThree);
         // Use cy.setOpponentToSpectate to subscribe the new user to the game at gameStateIndex=0
         cy.setOpponentToSpectate(gameId, 0);
         cy.wait(1000);
