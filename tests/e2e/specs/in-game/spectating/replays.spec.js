@@ -387,7 +387,7 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it.only('Does not affect live game state when a spectator joins at gameStateIndex=0', () => {
+    it('Does not affect live game state when a spectator joins at gameStateIndex=0', () => {
       // Setup a game as p0
       cy.setupGameAsP0();
       cy.get('@gameId').then((gameId) => {
