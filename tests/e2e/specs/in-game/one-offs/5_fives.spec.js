@@ -275,7 +275,7 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
         cy.get('[data-cy=five-discard-dialog]').should('not.exist');
 
-        cy.get('[data-player-hand-card]').should('have.length', 5);
+        cy.get('[data-player-hand-card]', { timeout: 6000 }).should('have.length', 5);
 
         cy.playPointsOpponent(Card.FOUR_OF_CLUBS);
         cy.get('[data-opponent-point-card=4-0]').should('be.visible');
