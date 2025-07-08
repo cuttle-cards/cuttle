@@ -405,64 +405,64 @@ describe('Rewatching finished games', () => {
     });
   }); // end describe('Creating highlight clips')
   
-    describe('Replaying other game states', () => {
-      it('Watches a replay of a game that ends via passes', () => {
-        setupGameBetweenTwoUnseenPlayers('replay');
+  describe('Replaying other game states', () => {
+    it('Watches a replay of a game that ends via passes', () => {
+      setupGameBetweenTwoUnseenPlayers('replay');
 
-        cy.get('@replayGameId').then((gameId) => {
-          cy.loadGameFixture(0, {
-            p0Hand: [ Card.ACE_OF_CLUBS ],
-            p0Points: [],
-            p0FaceCards: [],
-            p1Hand: [ Card.ACE_OF_DIAMONDS ],
-            p1Points: [],
-            p1FaceCards: [],
-            deck: [],
-          }, gameId);
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_DIAMONDS ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+        }, gameId);
 
-          cy.recoverSessionOpponent(playerOne);
-          cy.passOpponent(gameId);
-          cy.recoverSessionOpponent(playerTwo);
-          cy.passOpponent(gameId);
+        cy.recoverSessionOpponent(playerOne);
+        cy.passOpponent(gameId);
+        cy.recoverSessionOpponent(playerTwo);
+        cy.passOpponent(gameId);
 
-          cy.recoverSessionOpponent(playerOne);
-          cy.passOpponent(gameId);
+        cy.recoverSessionOpponent(playerOne);
+        cy.passOpponent(gameId);
 
-          cy.visit('/');
-          cy.signupPlayer(myUser);
-          cy.vueRoute(`/spectate/${gameId}`);
-        });
-
-        cy.url().should('contain', '?gameStateIndex=0');
-        // Wait and verify game over dialog doesn't appear
-        cy.wait(1000);
-        cy.get('#game-over-dialog').should('not.exist');
-        // Step forward to state 1 (loaded fixture)
-        cy.get('[data-cy=playback-controls]')
-          .find('[data-cy=step-forward]')
-          .click();
-        cy.url().should('contain', '?gameStateIndex=1');
-        // Step forward to state 2 (pass)
-        cy.get('[data-cy=playback-controls]')
-          .find('[data-cy=step-forward]')
-          .click();
-        cy.url().should('contain', '?gameStateIndex=2');
-        // Wait and verify game over dialog doesn't appear
-        cy.wait(1000);
-        cy.get('#game-over-dialog').should('not.exist');
-        // Step forward to state 3 (pass)
-        cy.get('[data-cy=playback-controls]')
-          .find('[data-cy=step-forward]')
-          .click();
-        cy.url().should('contain', '?gameStateIndex=3');
-        // Step forward to state 4 (pass; stalemate)
-        cy.get('[data-cy=playback-controls]')
-          .find('[data-cy=step-forward]')
-          .click();
-
-        assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.vueRoute(`/spectate/${gameId}`);
       });
+
+      cy.url().should('contain', '?gameStateIndex=0');
+      // Wait and verify game over dialog doesn't appear
+      cy.wait(1000);
+      cy.get('#game-over-dialog').should('not.exist');
+      // Step forward to state 1 (loaded fixture)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+      cy.url().should('contain', '?gameStateIndex=1');
+      // Step forward to state 2 (pass)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+      cy.url().should('contain', '?gameStateIndex=2');
+      // Wait and verify game over dialog doesn't appear
+      cy.wait(1000);
+      cy.get('#game-over-dialog').should('not.exist');
+      // Step forward to state 3 (pass)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+      cy.url().should('contain', '?gameStateIndex=3');
+      // Step forward to state 4 (pass; stalemate)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+
+      assertGameOverAsSpectator({ p1Wins: 0, p2Wins:0, stalemates: 1, winner: null, isRanked: false });
     });
+  });
 
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {

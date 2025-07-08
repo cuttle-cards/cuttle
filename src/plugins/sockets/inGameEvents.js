@@ -45,7 +45,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.DELETE_DECK:
     case SocketEvent.CONCEDE:
     case SocketEvent.RE_LOGIN:
-    case SocketEvent.SPECTATOR_JOINED:
     case SocketEvent.RESOLVE:
     case SocketEvent.FIZZLE:
     case SocketEvent.TARGETED_ONE_OFF:
