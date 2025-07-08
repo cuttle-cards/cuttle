@@ -129,6 +129,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
         gameStore.removeSpectator(evData.username);
       }
       break;
+    case SocketEvent.SPECTATOR_JOINED:
+      if (gameStore.id === evData.gameId) {
+        gameStore.addSpectator(evData.username);
+      }
+      break;
   }
 
   // Validate current route & navigate if incorrect
