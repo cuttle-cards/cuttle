@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', {
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
+    identities: []
   }),
   actions: {
     authSuccess(username) {
@@ -25,6 +26,7 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       this.authenticated = false;
       this.username = null;
+      this.identities = [];
     },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
@@ -83,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username } = status;
+        const { authenticated, username, identities } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -92,6 +94,9 @@ export const useAuthStore = defineStore('auth', {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
+        }
+        if(identities) {
+          this.identities = identities;
         }
 
         return;
@@ -146,5 +151,10 @@ export const useAuthStore = defineStore('auth', {
         throw new Error(err);
       }
     },
-  },
+    async oAuth(provider) {
+      const url = `http://${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
+      window.location.href = url;
+    }
+
+  }
 });
