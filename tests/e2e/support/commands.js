@@ -243,8 +243,12 @@ Cypress.Commands.add('subscribeOpponent', (gameId) => {
   cy.makeSocketRequest(`game/${gameId}`, 'join');
 });
 
-Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
-  cy.makeSocketRequest('game', 'spectate', { gameId }, 'POST', gameId);
+Cypress.Commands.add('setOpponentToSpectate', (gameId, gameStateIndex = undefined) => {
+  let slug = 'spectate';
+  if (typeof gameStateIndex === 'number' && !isNaN(gameStateIndex)) {
+    slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
+  }
+  cy.makeSocketRequest('game', slug, { gameId }, 'POST', gameId);
 });
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
