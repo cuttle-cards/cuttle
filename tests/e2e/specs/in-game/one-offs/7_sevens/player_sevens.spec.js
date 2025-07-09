@@ -96,7 +96,7 @@ describe('Playing SEVENS', () => {
       .click();
     cy.get('[data-move-choice=jack]')
       .should('have.class', 'v-card--disabled')
-      .should('contain', "You cannot jack your opponent's points while they have a queen")
+      .should('contain', 'You cannot jack your opponent\'s points while they have a queen')
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=10-2]').click();
@@ -329,7 +329,7 @@ describe('Playing SEVENS', () => {
       cy.get('#deck').find('#empty-deck-text')
         .should('contain', 'PASS');
 
-      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     });
   });
 
@@ -537,6 +537,71 @@ describe('Playing SEVENS', () => {
       cy.get('[data-move-choice=scuttle]').click();
       cy.get('[data-opponent-point-card=5-3]').click();
       assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
+    });
+
+    it('Scuttles a card with a jack on it via a seven one-off', () => {
+      // Setup: p0 has a point card and a seven, p1 has a jack, topCard is larger than the point card
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.FOUR_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.JACK_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SIX_OF_CLUBS, // larger than FOUR_OF_DIAMONDS
+        secondCard: Card.TWO_OF_SPADES,
+      });
+
+      // p0 plays points (four of diamonds)
+      cy.get('[data-player-hand-card=4-1]').click(); // Four of diamonds
+      cy.get('[data-move-choice=points]').click();
+
+      assertGameState(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.FOUR_OF_DIAMONDS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.JACK_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [],
+        topCard: Card.SIX_OF_CLUBS,
+        secondCard: Card.TWO_OF_SPADES,
+      });
+
+      // p1 jacks the four of diamonds
+      cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.FOUR_OF_DIAMONDS);
+
+      assertGameState(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.FOUR_OF_DIAMONDS ],
+        p1FaceCards: [],
+        scrap: [],
+        topCard: Card.SIX_OF_CLUBS,
+        secondCard: Card.TWO_OF_SPADES,
+      });
+
+      // p0 plays seven as a one-off
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
+      // p0 chooses topCard (six of clubs) to scuttle with
+      cy.get('[data-top-card=6-0]').click();
+      cy.get('[data-move-choice=scuttle]').click();
+      cy.get('[data-opponent-point-card=4-1]').click({ force: true });
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.SEVEN_OF_CLUBS, Card.SIX_OF_CLUBS, Card.FOUR_OF_DIAMONDS, Card.JACK_OF_CLUBS ],
+        topCard: Card.TWO_OF_SPADES,
+      });
     });
   }); // End seven scuttle describe()
 

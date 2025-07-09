@@ -27,7 +27,7 @@ module.exports = {
     },
     priorStates: {
       type: 'ref',
-      description: "List of packed gameStateRows for this game's prior states",
+      description: 'List of packed gameStateRows for this game\'s prior states',
       required: true,
     }
   },
@@ -48,7 +48,8 @@ module.exports = {
 
     // Move both cards to scrap and cleanup seven
     const { oneOff } = result;
-    result.scrap.push(oneOff, targetCard, playedCard);
+    result.scrap.push(oneOff, targetCard, ...targetCard.attachments, playedCard);
+    targetCard.attachments = [];
 
     result.turn++;
 

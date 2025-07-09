@@ -775,5 +775,12 @@ export const useGameStore = defineStore('game', {
       });
     },
 
+    addSpectator(username) {
+      if (!username) {return;}
+      if (!this.spectatingUsers.includes(username)) {
+        this.spectatingUsers.push(username);
+      }
+    },
+
   }, // End actions
 }); // End game store

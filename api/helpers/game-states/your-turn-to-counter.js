@@ -2,7 +2,7 @@ module.exports = {
   friendlyName: 'Is your chance to counter',
 
   description:
-    "Verifies whether it is the requesting player's opportunity to counter. Returns `true` if so and `false` otherwise",
+    'Verifies whether it is the requesting player\'s opportunity to counter. Returns `true` if so and `false` otherwise',
 
   inputs: {
     currentState: {

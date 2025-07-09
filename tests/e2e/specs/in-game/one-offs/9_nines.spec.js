@@ -542,7 +542,7 @@ describe('Playing NINES', () => {
       });
 
       // Step 4
-      cy.log("STEP 4- P0 Jacks P1's 10");
+      cy.log('STEP 4- P0 Jacks P1\'s 10');
       cy.get('[data-player-hand-card=11-3]').click(); // Jack of spades
       cy.get('[data-move-choice=jack]').click();
       cy.get('#player-hand-targeting').should('be.visible');

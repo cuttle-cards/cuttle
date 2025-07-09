@@ -3,7 +3,7 @@ const TargetType = require('../../../utils/TargetType.json');
 module.exports = {
   friendlyName: 'Find target card',
 
-  description: "Finds card specified by its ID on the requested player's board. Returns null if not found",
+  description: 'Finds card specified by its ID on the requested player\'s board. Returns null if not found',
 
   inputs: {
     targetId: {
