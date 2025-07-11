@@ -145,8 +145,9 @@
 </template>
 <script>
 import { mapStores } from 'pinia';
-import { useGameListStore } from '@/stores/gameList';
 import { useI18n } from 'vue-i18n';
+import { useGameListStore } from '@/stores/gameList';
+import { useGameStore } from '@/stores/game';
 import GameListItem from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
@@ -186,7 +187,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameListStore),
+    ...mapStores(useGameListStore, useGameStore),
     playableGameList() {
       return this.gameListStore.openGames;
     },
@@ -212,6 +213,7 @@ export default {
     }
   },
   async created() {
+    this.gameStore.resetState();
     await this.gameListStore.requestGameList();
     this.loadingData = false;
     this.tab = this.$route.path;
