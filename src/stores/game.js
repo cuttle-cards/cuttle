@@ -782,5 +782,13 @@ export const useGameStore = defineStore('game', {
       }
     },
 
+    isUserAPlayer() {
+      return this.userId === this.p0?.id || this.userId === this.p1?.id;
+    },
+
+    getMyOriginalPlayerNumber() {
+      return this.userId === this.p0?.id ? 0 : 1;
+    },
+    
   }, // End actions
 }); // End game store

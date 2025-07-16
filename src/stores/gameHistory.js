@@ -71,7 +71,8 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     const gameStateIndex = 
       (isSpectating.value && currentGameStateIndex.value !== -1) ?
         currentGameStateIndex.value : gameStates.value.length - 1;
-    return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
+    const pNum = gameStore.myPNum ?? 0;
+    return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}&pNum=${pNum}`;
   });
 
   return {
