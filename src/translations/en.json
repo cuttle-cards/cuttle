@@ -59,14 +59,14 @@
     "overlays": {
       "waitingForGameToStart": "Waiting for Game to Start",
       "leaveGame": "Leave Game",
-      "opponentMayCounter": "Opponent May Counter",
-      "opponentMustResolve": "Opponent Must Resolve",
-      "opponentIsDiscarding": "Opponent Is Discarding",
-      "opponentSkipsDiscarding": "Opponent Skips Discarding",
-      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
-      "opponentPlayingFromDeck": "Opponent Playing from Deck",
-      "opponentMustDiscardJack": "Opponent Must Discard Jack",
-      "opponentConsideringStalemate": "Opponent Considering Stalemate Request",
+      "mayCounter": "May Counter",
+      "mustResolve": "Must Resolve",
+      "isDiscarding": "Is Discarding",
+      "skipsDiscarding": "Skips Discarding",
+      "choosingFromScrap": "Is Choosing A Card From The Scrap Pile",
+      "playingFromDeck": "Is Playing From The Deck",
+      "mustDiscardJack": "Must Discard A Jack",
+      "consideringStalemate": "Is considering A Stalemate Request",
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Looks like this game isn't available."

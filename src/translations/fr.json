@@ -59,14 +59,14 @@
     "overlays": {
       "waitingForGameToStart": "En attendant le début du jeu",
       "leaveGame": "Quitter le jeu",
-      "opponentMayCounter": "L'adversaire peut contrer",
-      "opponentMustResolve": "L'adversaire doit résoudre",
-      "opponentIsDiscarding": "L'adversaire défausse une carte",
-      "opponentSkipsDiscarding": "L'adversaire saute la défausse",
-      "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
-      "opponentPlayingFromDeck": "Adversaire jouant depuis la pioche",
-      "opponentMustDiscardJack": "L'adversaire doit défausser un valet",
-      "opponentConsideringStalemate": "L'adversaire envisage une demande d'impasse",
+      "mayCounter": "peut contrer",
+      "mustResolve": "doit résoudre",
+      "isDiscarding": "défausse une carte",
+      "skipsDiscarding": "saute la défausse",
+      "choosingFromScrap": "choisit une carte à partir de la défausse",
+      "playingFromDeck": "joue depuis la pioche",
+      "mustDiscardJack": "doit défausser un valet",
+      "consideringStalemate": "envisage une demande d'impasse",
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Cette partie n'est pas disponible."

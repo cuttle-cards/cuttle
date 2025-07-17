@@ -59,14 +59,14 @@
     "overlays": {
       "waitingForGameToStart": "Esperando que comience la partida",
       "leaveGame": "Abandonar la partida",
-      "opponentMayCounter": "El rival puede contrarrestar",
-      "opponentMustResolve": "El rival debe resolver",
-      "opponentIsDiscarding": "El rival se está descartando",
-      "opponentSkipsDiscarding": "El oponente salta descartando",
-      "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
-      "opponentPlayingFromDeck": "El rival está jugando desde el mazo",
-      "opponentMustDiscardJack": "El rival debe descartar la Sota",
-      "opponentConsideringStalemate": "El rival está considerando la solicitud de empate",
+      "mayCounter": "puede contrarrestar",
+      "mustResolve": "debe resolver",
+      "isDiscarding": "se está descartando",
+      "skipsDiscarding": "salta descartando",
+      "choosingFromScrap": "está eligiendo del mazo de descarte",
+      "playingFromDeck": "está jugando desde el mazo",
+      "mustDiscardJack": "debe descartar la Sota",
+      "consideringStalemate": "está considerando la solicitud de empate",
       "gameUnavailable": {
         "title": "¡Ups!",
         "content": "Parece que esta partida no está disponible."
