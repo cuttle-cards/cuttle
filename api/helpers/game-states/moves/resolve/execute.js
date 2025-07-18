@@ -1,5 +1,5 @@
-const GamePhase = require('../../../../../utils/GamePhase.json');
-const MoveType = require('../../../../../utils/MoveType.json');
+const GamePhase = require('../../../../../types/GamePhase.json');
+const MoveType = require('../../../../../types/MoveType.json');
 
 module.exports = {
   friendlyName: 'Resolve One-Off',
