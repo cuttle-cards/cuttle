@@ -213,7 +213,7 @@ describe('Home - Game List', () => {
         .then((store) => store.reconnectSocket());
 
       // Wait for the game list to refresh and show the new game
-      cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual', { timeout: 5000 })
+      cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual')
         .should('exist');
     });
   });
