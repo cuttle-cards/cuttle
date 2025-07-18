@@ -195,6 +195,29 @@ describe('Home - Game List', () => {
     });
   });
 
+  it('Refreshes the game list when socket reconnects', () => {
+    cy.get('[data-cy=text-if-no-game]').should('be.visible');
+    // Disconnect the socket
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    // Create a game as an opponent while disconnected
+    cy.signupOpponent(opponentOne);
+    cy.createGameOpponent('Opponent Game').then(({ gameId }) => {
+      // At this point, the game list should not update because we're disconnected
+
+      // Reconnect the socket
+      cy.window()
+        .its('cuttle.authStore')
+        .then((store) => store.reconnectSocket());
+
+      // Wait for the game list to refresh and show the new game
+      cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual')
+        .should('exist');
+    });
+  });
+
   describe('Spectating games', () => {
     it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then(({ gameId }) => {
