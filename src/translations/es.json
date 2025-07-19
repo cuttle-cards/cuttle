@@ -21,6 +21,27 @@
       "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
       "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
       "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
+    },
+    "statsScoring": {
+      "title": "Puntuación por clasificación",
+      "button": "¿Cómo se determinan los rangos?",
+      "displayName": "1 Punto | {count} Puntos",
+      "seasonDescription1a": "Cuttle Competitivo se divide en 4 temporadas al año, una por palo: Tréboles, Diamantes, Corazones y Espadas. Al final de cada temporada, los 8 mejores jugadores juegan un torneo de campeonato de doble eliminación y los",
+      "seasonDescription1b": "campeones son reconocidos permanentemente en el sitio.",
+      "award1": "Jugador campeón",
+      "award2": "Jugador en segundo lugar",
+      "award3": "Jugador en tercer lugar",
+      "seasonDescription2": "Cada temporada se divide en 13 semanas. Por cada semana, contamos la cantidad de partidas clasificadas al mejor de 3 ganadas por cada jugador contra oponentes únicos (ignorando empates) y asignamos puntos a los jugadores según su clasificación semanal.",
+      "points": {
+        "5": "El jugador con más victorias recibe 5 puntos por la semana",
+        "4": "El jugador con la segunda mayor cantidad de victorias recibe 4 puntos por la semana",
+        "3": "El jugador con la tercera mayor cantidad de victorias recibe 3 puntos por la semana",
+        "2": "Cada otro jugador que haya ganado al menos una partida recibe 2 puntos por la semana",
+        "1": "Cada otro jugador que haya completado una partida sin ganar recibe 1 punto por la semana"
+      },
+      "seasonDescription3": "Puedes ver las estadísticas y clasificaciones de cada temporada en esta página. Al final de cada temporada, los 8 mejores jugadores compiten en un torneo de campeonato de doble eliminación. Al final del año, los 8 mejores jugadores de los Campeonatos de Temporada compiten en el Campeonato Mundial de Cuttle. ¿Tienes lo que se necesita para convertirte en",
+      "lordOfDeep": "¿Señor de las Profundidades?",
+      "gotIt": "¡Entendido!"
     }
   },
   "login": {
