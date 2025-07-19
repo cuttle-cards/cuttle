@@ -1,7 +1,7 @@
 <template>
   <v-menu
     v-model="isOpen"
-    transition="slide-x-transition" 
+    transition="slide-x-transition"
   >
     <template #activator="{ props }">
       <v-btn
@@ -12,7 +12,7 @@
         variant="text"
       >
         <v-icon
-          icon="mdi-account-circle" 
+          icon="mdi-account-circle"
           aria-label="Open user menu"
           aria-hidden="false"
           role="img"
@@ -28,6 +28,7 @@
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
       <TheLanguageSelector has-chevron />
+      <DiscordLink />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
         :key="i"
@@ -46,8 +47,8 @@ import { useAuthStore } from '@/stores/auth';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
-
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import DiscordLink from '@/components/DiscordLink.vue';
 
 const authStore = useAuthStore();
 

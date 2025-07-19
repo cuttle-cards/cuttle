@@ -7,7 +7,7 @@
       <v-container id="welcome-container" fluid class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <div class="d-flex align-center">          
+          <div class="d-flex align-center">
             <TheLanguageSelector variant="light" />
             <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
               {{ buttonText }}
@@ -118,6 +118,7 @@
                 </v-btn>
               </div>
 
+
               <v-btn
                 class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
@@ -129,6 +130,17 @@
                 <span class="discordButton">{{ t('login.joinDiscord') }}</span>
               </v-btn>
             </v-form>
+
+            <v-btn
+              class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+              size="large"
+              color="newSecondary"
+              type="button"
+              @click="oAuth('discord')"
+            >
+              <img class="discord" src="/img/loginView/logo-discord.svg">
+              <span class="discordButton"> Login With Discord </span>
+            </v-btn>
 
             <BaseSnackbar
               v-model="showSnackBar"
@@ -187,14 +199,13 @@ import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
-
 export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
     BaseVideo,
     MarkdownContent,
-    TheLanguageSelector
+    TheLanguageSelector,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -204,10 +215,12 @@ export default {
     const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
     useHead({
-      link: [ {
-        rel: 'canonical',
-        href: () => 'https://www.cuttle.cards/signup'
-      } ]
+      link: [
+        {
+          rel: 'canonical',
+          href: () => 'https://www.cuttle.cards/signup',
+        },
+      ],
     });
     return {
       t,
@@ -288,9 +301,12 @@ export default {
       }
       return this.$router.push(`/lobby/${lobbyRedirectId}`);
     },
+    oAuth(provider){
+      this.authStore.oAuth(provider);
+    },
     handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage =  this.t(messageKey);
+      this.snackBarMessage = this.t(messageKey);
       this.loading = false;
     },
     clearSnackBar() {
@@ -377,9 +393,9 @@ export default {
   margin-right: 18px;
 }
 
-.discordButton{
-    white-space: normal;
-  }
+.discordButton {
+  white-space: normal;
+}
 
 #username-login-form {
   padding: 0;
