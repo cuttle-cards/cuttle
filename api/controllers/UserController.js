@@ -15,7 +15,10 @@ module.exports = {
   signup: async function (req, res) {
     try {
       const { username, password } = req.body;
-      const foundUser = await User.findOne({ username: username });
+      const userName = username.toLowerCase();
+      const foundUser = await User.findOne({ 
+        username: { $regex: new RegExp(`^${userName}$`, 'i') }
+      });
       if (foundUser) {
         throw {
           message: 'login.snackbar.usernameIsTaken',
