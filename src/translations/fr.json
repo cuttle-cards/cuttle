@@ -21,27 +21,6 @@
       "cardBackAlt": "Dos de la carte -- En attente de l'adversaire",
       "readyAlt": "Face de la carte -- {playerUsername} est prêt",
       "rematchAlt": "Face de la carte -- {playerUsername} veut une revanche"
-    },
-    "statsScoring": {
-      "title": "Points par classement",
-      "button": "Comment les classements sont-ils déterminés ?",
-      "displayName": "1 Point | {count} Points",
-      "seasonDescription1a": "Cuttle Compétitif est divisé en 4 saisons par an, une pour chaque couleur : Trèfles, Carreaux, Cœurs et Piques. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi à double élimination, et les",
-      "seasonDescription1b": "champions sont immortalisés sur le site.",
-      "award1": "Joueur champion",
-      "award2": "Joueur deuxième place",
-      "award3": "Joueur troisième place",
-      "seasonDescription2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés en 2 manches gagnantes remportés par chaque joueur contre des adversaires uniques (en ignorant les égalités) et attribuons des points aux joueurs selon leur classement hebdomadaire.",
-      "points": {
-        "5": "Le joueur avec le plus de victoires gagne 5 points pour la semaine",
-        "4": "Le joueur avec le deuxième plus grand nombre de victoires gagne 4 points pour la semaine",
-        "3": "Le joueur avec le troisième plus grand nombre de victoires gagne 3 points pour la semaine",
-        "2": "Tous les autres joueurs ayant remporté au moins un match gagnent 2 points pour la semaine",
-        "1": "Tous les autres joueurs ayant terminé un match sans victoire gagnent 1 point pour la semaine"
-      },
-      "seasonDescription3": "Vous pouvez consulter les statistiques et classements de chaque saison sur cette page. À la fin de chaque saison, les 8 meilleurs joueurs s'affrontent dans un tournoi à double élimination. En fin d’année, les 8 meilleurs joueurs des Championnats de Saison s’affrontent dans le Championnat du Monde de Cuttle. Avez-vous ce qu’il faut pour devenir",
-      "lordOfDeep": "le Seigneur des Profondeurs ?",
-      "gotIt": "Compris !"
     }
   },
   "login": {
@@ -542,7 +521,28 @@
     "seasonTotal": "Total de la saison",
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points seulement",
-    "winsOnly": "Gagne seulement"
+    "winsOnly": "Gagne seulement",
+    "statsScoring": {
+      "title": "Points par classement",
+      "button": "Comment les classements sont-ils déterminés ?",
+      "displayName": "1 Point | {count} Points",
+      "seasonDescription1a": "Cuttle Compétitif est divisé en 4 saisons par an, une pour chaque couleur : Trèfles, Carreaux, Cœurs et Piques. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi à double élimination, et les",
+      "seasonDescription1b": "champions sont immortalisés sur le site.",
+      "award1": "Joueur champion",
+      "award2": "Joueur deuxième place",
+      "award3": "Joueur troisième place",
+      "seasonDescription2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés en 2 manches gagnantes remportés par chaque joueur contre des adversaires uniques (en ignorant les égalités) et attribuons des points aux joueurs selon leur classement hebdomadaire.",
+      "points": {
+        "5": "Le joueur avec le plus de victoires gagne 5 points pour la semaine",
+        "4": "Le joueur avec le deuxième plus grand nombre de victoires gagne 4 points pour la semaine",
+        "3": "Le joueur avec le troisième plus grand nombre de victoires gagne 3 points pour la semaine",
+        "2": "Tous les autres joueurs ayant remporté au moins un match gagnent 2 points pour la semaine",
+        "1": "Tous les autres joueurs ayant terminé un match sans victoire gagnent 1 point pour la semaine"
+      },
+      "seasonDescription3": "Vous pouvez consulter les statistiques et classements de chaque saison sur cette page. À la fin de chaque saison, les 8 meilleurs joueurs s'affrontent dans un tournoi à double élimination. En fin d’année, les 8 meilleurs joueurs des Championnats de Saison s’affrontent dans le Championnat du Monde de Cuttle. Avez-vous ce qu’il faut pour devenir",
+      "lordOfDeep": "le Seigneur des Profondeurs ?",
+      "gotIt": "Compris !"
+    }
   },
   "error": {
     "404": {
