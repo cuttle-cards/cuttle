@@ -28,9 +28,9 @@
         <strong>{{ $t('global.statsScoring.seasonDescription1b') }}</strong>
       </p>
       <div class="d-flex justify-space-around flex-wrap mt-4">
-        <AwardCard username="$t('global.statsScoring.award1')" :place="1" class="mb-4" />
-        <AwardCard username="$t('global.statsScoring.award2')" :place="2" class="mb-4" />
-        <AwardCard username="$t('global.statsScoring.award3')" :place="3" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award1')" :place="1" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award2')" :place="2" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award3')" :place="3" class="mb-4" />
       </div>
       <p>
         {{ $t('global.statsScoring.seasonDescription2') }}
@@ -38,31 +38,31 @@
       <v-list class="mt-4" bg-color="surface-2" base-color="surface-1">
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
-            {{ t('global.statsScoring.points.displayName', 5) }}
+            {{ $t('global.statsScoring.points.displayName', 5) }}
           </v-chip>
           {{ $t('global.statsScoring.points.5') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
-            {{ t('global.statsScoring.points.displayName', 4) }}
+            {{ $t('global.statsScoring.points.displayName', 4) }}
           </v-chip>
           {{ $t('global.statsScoring.points.4') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
-            {{ t('global.statsScoring.points.displayName', 3) }}
+            {{ $t('global.statsScoring.points.displayName', 3) }}
           </v-chip>
           {{ $t('global.statsScoring.points.3') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
-            {{ t('global.statsScoring.points.displayName', 2) }}
+            {{ $t('global.statsScoring.points.displayName', 2) }}
           </v-chip>
           {{ $t('global.statsScoring.points.2') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
-            {{ t('global.statsScoring.points.displayName') }}
+            {{ $t('global.statsScoring.points.displayName') }}
           </v-chip>
           {{ $t('global.statsScoring.points.1') }}
         </v-list-item>
