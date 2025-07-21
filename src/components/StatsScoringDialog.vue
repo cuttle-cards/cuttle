@@ -28,9 +28,9 @@
         <strong>{{ $t('global.statsScoring.seasonDescription1b') }}</strong>
       </p>
       <div class="d-flex justify-space-around flex-wrap mt-4">
-        <AwardCard username="$t('global.statsScoring.award1')" :place="1" class="mb-4" />
-        <AwardCard username="$t('global.statsScoring.award2')" :place="2" class="mb-4" />
-        <AwardCard username="$t('global.statsScoring.award3')" :place="3" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award1')" :place="1" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award2')" :place="2" class="mb-4" />
+        <AwardCard :username="$t('global.statsScoring.award3')" :place="3" class="mb-4" />
       </div>
       <p>
         {{ $t('global.statsScoring.seasonDescription2') }}
