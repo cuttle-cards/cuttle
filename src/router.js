@@ -88,8 +88,21 @@ const setupSpectate = async (to) => {
   const gameId = Number(to.params.gameId);
   const gameStateIndex = Number(to.query.gameStateIndex);
   const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+
+  const pNum = to.query.pNum !== undefined ? parseInt(to.query.pNum) : null;
+  const validPNum = (pNum === 0 || pNum === 1);
+
   try {
     await gameStore.requestSpectate(gameId, gameStateIndex, to);
+    if(validPNum){
+      gameStore.myPNum = pNum;
+    }
+    else if(gameStore.isUserAPlayer()) {
+      gameStore.myPNum = gameStore.getMyOriginalPlayerNumber();
+    }
+    else {
+      gameStore.myPNum = 0;
+    }
     if (isValidGameStateIndex) {
       return;
     }

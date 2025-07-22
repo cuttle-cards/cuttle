@@ -103,7 +103,7 @@ describe('Rewatching finished games', () => {
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
       cy.get('@replayGameId').then((gameId) => {
-        cy.visit(`/spectate/${gameId}?gameStateIndex=5`);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=5&pNum=0`);
       });
 
       assertGameState(0, {
@@ -253,7 +253,7 @@ describe('Rewatching finished games', () => {
         cy.window()
           .its('cuttle.gameStore')
           .then((gameStore) => {
-            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1&pNum=0`;
             cy.wrap(win.navigator.clipboard.readText())
               .should('eq', expectedUrl);
           });
@@ -311,7 +311,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
@@ -368,7 +368,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
