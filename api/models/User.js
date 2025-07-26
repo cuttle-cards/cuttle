@@ -13,7 +13,6 @@ module.exports = {
     },
     encryptedPassword: {
       type: 'string',
-      required: true,
     },
     /**
      * Index of this user within a Game's players collection
@@ -41,5 +40,9 @@ module.exports = {
       type: 'number',
       defaultsTo: 1000,
     },
+    identities: {
+      collection: 'identity',
+      via: 'user'
+    }
   }, // end attributes
 }; // end exports

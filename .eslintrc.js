@@ -1,3 +1,4 @@
+
 const sharedTestRules = {
   'import/no-unresolved': [ 'off' ],
 };
@@ -14,6 +15,7 @@ const sailsGlobals = {
   Game: true,
   UserSpectatingGame: true,
   GameStateRow: true,
+  Identity: true,
 };
 
 module.exports = {

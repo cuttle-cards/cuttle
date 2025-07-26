@@ -21,15 +21,16 @@ module.exports = function userHook() {
 
     findUser: function (id) {
       return new Promise(function (resolve, reject) {
-        User.findOne(id).exec(function (error, user) {
-          if (error) {
-            reject(error);
-          } else if (!user) {
-            reject({ message: 'User does not exist' });
-          } else {
-            return resolve(user);
-          }
-        });
+        User.findOne(id).populate('identities')
+          .exec(function (error, user) {
+            if (error) {
+              reject(error);
+            } else if (!user) {
+              reject({ message: 'User does not exist' });
+            } else {
+              return resolve(user);
+            }
+          });
       });
     },
 

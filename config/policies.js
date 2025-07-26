@@ -29,6 +29,8 @@ module.exports.policies = {
     // reLogin does not require password intentionally-- if you are already logged in it will
     // not require a password to validate the session
     reLogin: [ 'hasValidUsername' ],
+    discordRedirect: true,
+    discordCallback: true,
     logout: true,
     status: true,
   },
