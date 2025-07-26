@@ -50,7 +50,6 @@ class GameCard {
         12: 'Q',
         13: 'K',
       }[card.rank] ?? card.rank;
-    // Stringify Suit
     const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
