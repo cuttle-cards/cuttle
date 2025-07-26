@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="gameStore.myPNum === null">
+    <template v-if="gameStore.myPNum === null || !gameStore.player || !gameStore.opponent">
       <GameUnavailableView />
     </template>
 
@@ -842,7 +842,7 @@ export default {
      * @param player is the player object
      */
     kingCount(player) {
-      return player.faceCards.reduce((kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0), 0);
+      return player?.faceCards?.reduce((kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0), 0) ?? 0;
     },
     /**
      * Returns the number of points to win
