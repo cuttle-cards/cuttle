@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="gameStore.myPNum === null">
+    <template v-if="gameStore.myPNum === null || !gameStore.player || !gameStore.opponent">
       <GameUnavailableView />
     </template>
 
