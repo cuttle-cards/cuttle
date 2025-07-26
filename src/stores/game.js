@@ -138,12 +138,16 @@ export const useGameStore = defineStore('game', () => {
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
   const hasGlassesEight = computed(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false);
   const iWantRematch = computed(() => {
-    if (myPNum.value === null) return false;
+    if (myPNum.value === null) {
+      return false;
+    }
     const key = myPNum.value === 0 ? p0Rematch : p1Rematch;
     return key.value;
   });
   const opponentWantsRematch = computed(() => {
-    if (myPNum.value === null) return false;
+    if (myPNum.value === null) {
+      return false;
+    }
     const key = myPNum.value === 0 ? p1Rematch : p0Rematch;
     return key.value;
   });
@@ -602,7 +606,9 @@ export const useGameStore = defineStore('game', () => {
     });
   }
   function addSpectator(username) {
-    if (!username) return;
+    if (!username) {
+      return;
+    }
     if (!spectatingUsers.value.includes(username)) {
       spectatingUsers.value.push(username);
     }
