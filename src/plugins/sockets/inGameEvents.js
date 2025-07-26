@@ -60,7 +60,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.STALEMATE_REQUEST:
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
+      gameStore.updateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
       gameStore.processScuttle(evData);
@@ -112,8 +112,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
         };
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
-        gameStore.myPNum = null;
-        gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
+        gameStore.updateGame(evData.newGame);
       }
 
       router.push(route);

@@ -18,7 +18,7 @@ function queenCount(player) {
   if (!player?.faceCards) {
     return 0;
   }
-  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
+  return player?.faceCards?.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
 const compareByRankThenSuit = (card1, card2) => {
@@ -50,6 +50,7 @@ class GameCard {
         12: 'Q',
         13: 'K',
       }[card.rank] ?? card.rank;
+    // Stringify Suit
     const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
@@ -87,7 +88,6 @@ export const useGameStore = defineStore('game', () => {
   const scrap = ref([]);
   const turn = ref(0);
   const twos = ref([]);
-  const myPNum = ref(null);
   const topCard = ref(null);
   const secondCard = ref(null);
   const oneOff = ref(null);
@@ -117,6 +117,13 @@ export const useGameStore = defineStore('game', () => {
   const gameHistoryStore = useGameHistoryStore();
 
   // Computed (getters)
+  const myPNum = computed(() => {
+    if (gameHistoryStore.isSpectating) {
+      return 0;
+    }
+    const pNum = players.value.findIndex(({ username }) => username === authStore.username);
+    return pNum > -1 ? pNum : null;
+  });
   const player = computed(() => players.value[myPNum.value]);
   const playerPointTotal = computed(() => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
   const playerQueenCount = computed(() => queenCount(player.value));
@@ -231,7 +238,6 @@ export const useGameStore = defineStore('game', () => {
     scrap.value = [];
     turn.value = 0;
     twos.value = [];
-    myPNum.value = null;
     topCard.value = null;
     secondCard.value = null;
     oneOff.value = null;
@@ -274,10 +280,6 @@ export const useGameStore = defineStore('game', () => {
     winnerPNum.value = winner;
     currentMatch.value = cm;
   }
-  function resetPNumIfNullThenUpdateGame(game) {
-    resetPNumIfNull(game);
-    updateGame(game);
-  }
   function setRematch({ pNum: p, rematch }) {
     if (p === 0) {
       p0Rematch.value = rematch;
@@ -285,22 +287,9 @@ export const useGameStore = defineStore('game', () => {
       p1Rematch.value = rematch;
     }
   }
-  function resetPNumIfNull(game) {
-    // Set my pNum if it is null
-    if (myPNum.value === null) {
-      let myPNumLocal = game.players.findIndex(({ username }) => username === authStore.username);
-      if (myPNumLocal === -1) {
-        myPNumLocal = null;
-      }
-      if (gameHistoryStore.isSpectating) {
-        myPNumLocal = 0;
-      }
-      myPNum.value = myPNumLocal;
-    }
-  }
   async function processScuttle({ game, playedCardId, targetCardId, playedBy }) {
     if (!player.value) {
-      resetPNumIfNullThenUpdateGame(game);
+      updateGame(game);
       return;
     }
     const scuttlingPlayer = players.value[playedBy];
@@ -308,26 +297,26 @@ export const useGameStore = defineStore('game', () => {
     const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
     const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
     if (playedCardIndex === -1 || targetCardIndex === -1) {
-      resetPNumIfNullThenUpdateGame(game);
+      updateGame(game);
       return;
     }
     const [ playedCard ] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
     const targetCard = scuttledPlayer.points[targetCardIndex];
     targetCard.scuttledBy = playedCard;
     await sleep(1000);
-    resetPNumIfNullThenUpdateGame(game);
+    updateGame(game);
   }
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
     lastEventCardChosen.value = chosenCard;
     await sleep(1000);
-    resetPNumIfNullThenUpdateGame(game);
+    updateGame(game);
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
     lastEventDiscardedCards.value = discardedCards;
     await sleep(1000);
-    resetPNumIfNullThenUpdateGame(game);
+    updateGame(game);
   }
   async function processFives(discardedCards, game) {
     phase.value = GamePhase.MAIN;
@@ -338,7 +327,7 @@ export const useGameStore = defineStore('game', () => {
       player.value.hand = player.value.hand.filter((card) => !discardedCards.includes(card.id));
       await sleep(1000);
     }
-    resetPNumIfNullThenUpdateGame(game);
+    updateGame(game);
   }
   function handleGameResponse(jwres, resolve, reject) {
     switch (jwres.statusCode) {
@@ -405,7 +394,6 @@ export const useGameStore = defineStore('game', () => {
         (res, jwres) => {
           if (jwres.statusCode === 200) {
             resetState();
-            myPNum.value = res.pNum;
             updateGame(res.game);
             return resolve(res);
           }
@@ -421,7 +409,7 @@ export const useGameStore = defineStore('game', () => {
         switch (jwres.statusCode) {
           case 200:
             resetState();
-            resetPNumIfNullThenUpdateGame(res.game);
+            updateGame(res.game);
             return handleInGameEvents(res, route).then(() => {
               return resolve(res);
             });
@@ -439,7 +427,6 @@ export const useGameStore = defineStore('game', () => {
     try {
       resetState();
       const res = await makeSocketRequest(slug, {});
-      myPNum.value = 0;
       updateGame(res.body.game);
       return handleInGameEvents(res.body, route);
     } catch (err) {
@@ -640,7 +627,6 @@ export const useGameStore = defineStore('game', () => {
     scrap,
     turn,
     twos,
-    myPNum,
     topCard,
     secondCard,
     oneOff,
@@ -661,6 +647,7 @@ export const useGameStore = defineStore('game', () => {
     iWantToContinueSpectating,
     status,
     // Getters
+    myPNum,
     player,
     playerPointTotal,
     playerQueenCount,
@@ -697,9 +684,7 @@ export const useGameStore = defineStore('game', () => {
     updateReady,
     opponentLeft,
     setGameOver,
-    resetPNumIfNullThenUpdateGame,
     setRematch,
-    resetPNumIfNull,
     processScuttle,
     processThrees,
     processFours,

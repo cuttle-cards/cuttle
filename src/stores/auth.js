@@ -3,12 +3,6 @@ import { io, reconnectSockets } from '@/plugins/sails.js';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
 
-// TODO Figure out how to reconsolidate this with backend
-const getPlayerPnumByUsername = (players, username) => {
-  const pNum = players.findIndex(({ username: pUsername }) => pUsername === username);
-  return pNum > -1 ? pNum : null;
-};
-
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     // This value will ONLY be null on the initial load
@@ -59,11 +53,7 @@ export const useAuthStore = defineStore('auth', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              const gameStore = useGameStore();
               this.mustReauthenticate = false;
-              const pNum = getPlayerPnumByUsername(gameStore.players, this.username);
-
-              gameStore.myPNum = pNum;
               return resolve(res);
             }
             this.clearAuth();
