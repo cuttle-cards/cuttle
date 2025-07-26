@@ -59,14 +59,14 @@
     "overlays": {
       "waitingForGameToStart": "Wartet darauf, dass das Spiel startet",
       "leaveGame": "Spiel verlassen",
-      "opponentMayCounter": "Gegner kann kontern",
-      "opponentMustResolve": "Gegner muss lösen",
-      "opponentIsDiscarding": "Gegner wirft ab",
-      "opponentSkipsDiscarding": "Gegner überspringt das Abwerfen",
-      "opponentChoosingFromScrap": "Gegner wählt eine Karte aus dem Abwurf",
-      "opponentPlayingFromDeck": "Gegner spielt vom Deck",
-      "opponentMustDiscardJack": "Gegner muss Buben abwerfen",
-      "opponentConsideringStalemate": "Gegner überlegt ein Patt zu erklären",
+      "mayCounter": "kann kontern",
+      "mustResolve": "muss lösen",
+      "isDiscarding": "wirft ab",
+      "skipsDiscarding": "überspringt das Abwerfen",
+      "choosingFromScrap": "wählt eine Karte aus dem Abwurfstapel",
+      "playingFromDeck": "spielt vom Deck",
+      "mustDiscardJack": "muss einen Buben abwerfen",
+      "consideringStalemate": "überlegt, ein Patt zu erklären",
       "gameUnavailable": {
         "title": "Ups!",
         "content": "Es scheint, dass dieses Spiel nicht verfügbar ist."
