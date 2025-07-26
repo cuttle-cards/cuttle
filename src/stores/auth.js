@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
-import { useGameStore } from '@/stores/game';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
