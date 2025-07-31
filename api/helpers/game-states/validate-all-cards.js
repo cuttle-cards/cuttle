@@ -1,4 +1,4 @@
-const DeckIds = require('../../../utils/DeckIds.json');
+const DeckIds = require('../../../types/DeckIds.json');
 
 module.exports = {
   friendlyName: 'Validate All Cards',

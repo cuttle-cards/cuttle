@@ -1,7 +1,7 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 const ConflictError = require('../../errors/conflictError');
-const GameStatus = require('../../../utils/GameStatus');
+const GameStatus = require('../../../types/GameStatus');
 
 module.exports = async function (req, res) {
   // Query for game
