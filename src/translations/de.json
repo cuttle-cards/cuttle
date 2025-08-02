@@ -521,7 +521,28 @@
     "seasonTotal": "Saisongesamt",
     "pointsAndWins": "Punkte und Siege",
     "pointsOnly": "Nur Punkte",
-    "winsOnly": "Nur Siege"
+    "winsOnly": "Nur Siege",
+      "statsScoring": {
+      "title": "Ranglistenwertung",
+      "button": "Wie werden die Ränge bestimmt?",
+      "displayName": "1 Punkt | {count} Punkte",
+      "seasonDescription1a": "Competitive Cuttle ist in 4 Saisons pro Jahr unterteilt – eine pro Kartenfarbe: Kreuz, Karo, Herz und Pik. Am Ende jeder Saison spielen die besten 8 Spieler ein Double-Elimination-Meisterschaftsturnier und die",
+      "seasonDescription1b": "Champions werden dauerhaft auf der Website verewigt.",
+      "award1": "Champion-Spieler",
+      "award2": "Zweitplatzierter Spieler",
+      "award3": "Drittplatzierter Spieler",
+      "seasonDescription2": "Jede Saison ist in 13 Wochen unterteilt. In jeder Woche zählen wir die Anzahl der gewonnenen Best-of-3-Ranglistenspiele gegen einzigartige Gegner (Unentschieden werden ignoriert) und vergeben Punkte basierend auf der wöchentlichen Platzierung.",
+      "points": {
+        "5": "Der Spieler mit den meisten Siegen erhält 5 Punkte für die Woche",
+        "4": "Der Spieler mit den zweitmeisten Siegen erhält 4 Punkte für die Woche",
+        "3": "Der Spieler mit den drittmeisten Siegen erhält 3 Punkte für die Woche",
+        "2": "Jeder andere Spieler, der mindestens ein Spiel gewonnen hat, erhält 2 Punkte für die Woche",
+        "1": "Jeder andere Spieler, der ein Spiel abgeschlossen, aber nicht gewonnen hat, erhält 1 Punkt für die Woche"
+      },
+      "seasonDescription3": "Du kannst die Statistiken und Ranglisten jeder Saison auf dieser Seite einsehen. Am Ende jeder Saison treten die besten 8 Spieler in einem Double-Elimination-Meisterschaftsturnier gegeneinander an. Am Jahresende spielen die 8 besten Spieler aus den Saisonmeisterschaften in der Cuttle-Weltmeisterschaft! Hast du das Zeug dazu, der",
+      "lordOfDeep": "Herr der Tiefe zu werden?",
+      "gotIt": "Verstanden!"
+    }
   },
   "error": {
     "404": {
