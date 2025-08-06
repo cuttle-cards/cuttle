@@ -24,21 +24,20 @@ module.exports = {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch user info: ${response.status}`);
+        throw new Error();
       }
 
       const data = await response.json();
 
       const providerId = data.id;
       const provider = 'discord';
-      const { email } = data;
       let { username } = data;
 
       const prevIdentity = await Identity.findOne({ providerId }).populate('user');
 
       if (prevIdentity && prevIdentity.user) {
-        if(user && prevIdentity.user.id !== user){
-          return exits.error('Account already linked to another profile');
+        if( user && prevIdentity.user.id !== user ){
+          return exits.error('login.snackbar.discord.alreadyLinked');
         }
         return exits.success(prevIdentity.user);
       }
@@ -52,14 +51,12 @@ module.exports = {
       await Identity.create({
         providerId,
         provider,
-        email,
         user: updatedUser.id,
       });
 
       return exits.success(updatedUser);
 
     } catch (e) {
-      console.error('Error fetching identity from Discord:', e);
       return exits.error(e);
     }
   }
