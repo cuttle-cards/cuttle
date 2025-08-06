@@ -264,6 +264,17 @@ export default {
       return this.t('login.haveAccount');
     },
   },
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        if (this.$route.query?.error) {
+          this.handleError(this.t(this.$route.query.error));
+          this.$router.replace('/');
+        }
+      }
+    }
+  },
   mounted() {
     if (this.goingToForm) {
       this.scrollAndFocusLogin();
