@@ -31,7 +31,7 @@ module.exports = {
 
       const providerId = data.id;
       const provider = 'discord';
-      let { username } = data;
+      const { username: discordUsername } = data;
 
       const prevIdentity = await Identity.findOne({ providerId }).populate('user');
 
@@ -39,19 +39,20 @@ module.exports = {
         if( user && prevIdentity.user.id !== user ){
           return exits.error('login.snackbar.discord.alreadyLinked');
         }
+
+        await Identity.updateOne({ id: prevIdentity.id }, { username: discordUsername });
         return exits.success(prevIdentity.user);
       }
-      const existingUserName = await User.findOne({ username });
+      const existingUserName = await User.findOne({ discordUsername });
+      const username = existingUserName ? `${discordUsername}${Math.floor(Math.random() * 1000)}` : discordUsername;
 
-      if (existingUserName) {
-        username = `${username}${Math.floor(Math.random() * 1000)}`;
-      }
       const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username }).fetch();
 
       await Identity.create({
         providerId,
         provider,
         user: updatedUser.id,
+        username: discordUsername
       });
 
       return exits.success(updatedUser);

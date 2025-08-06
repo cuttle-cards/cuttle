@@ -18,9 +18,6 @@ module.exports = {
       type: 'string',
       required: true
     },
-    email:{
-      type: 'string',
-    },
     userName:{
       type: 'string',
     }
