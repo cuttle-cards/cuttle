@@ -11,7 +11,7 @@ const hasDiscord = computed(() => {return authStore.identities.some(({ provider 
 const title = hasDiscord.value ? 'Linked to Discord' : 'Link Discord';
 
 const handleClick = () => {
-  if(hasDiscord.value){
+  if (hasDiscord.value) {
     return;
   }
 
