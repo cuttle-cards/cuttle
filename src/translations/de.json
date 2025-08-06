@@ -39,7 +39,11 @@
     "snackbar": {
       "usernameIsTaken": "Dieser Benutzername ist bereits einem anderen Benutzer zugeordnet; versuche dich anzumelden!",
       "userNotFound": "Dieser Benutzer konnte mit diesem Benutzernamen nicht gefunden werden. Versuche dich anzumelden!",
-      "wrongPassword": "Benutzername und Passwort stimmen nicht überein"
+      "wrongPassword": "Benutzername und Passwort stimmen nicht überein",
+      "discord": {
+        "alreadyLinked": "Konto ist bereits mit einem anderen Benutzer verknüpft",
+        "discordError": "Fehler bei der Verbindung zu Discord"
+      }
     }
   },
   "lobby": {

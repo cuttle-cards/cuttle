@@ -39,7 +39,11 @@
     "snackbar": {
       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
       "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
-      "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
+      "wrongPassword": "El nombre de usuario y la contraseña no coinciden",
+      "discord": {
+        "alreadyLinked": "Cuenta ya vinculada a otro usuario",
+        "discordError": "Error al conectar con Discord"
+      }
     }
   },
   "lobby": {
