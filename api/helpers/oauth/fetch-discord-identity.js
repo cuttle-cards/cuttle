@@ -43,7 +43,7 @@ module.exports = {
         await Identity.updateOne({ id: prevIdentity.id }, { username: discordUsername });
         return exits.success(prevIdentity.user);
       }
-      const existingUserName = await User.findOne({ discordUsername });
+      const existingUserName = await User.findOne({ username: discordUsername });
       const username = existingUserName ? `${discordUsername}${Math.floor(Math.random() * 1000)}` : discordUsername;
 
       const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username }).fetch();
