@@ -37,7 +37,7 @@ module.exports = {
 
       if (prevIdentity && prevIdentity.user) {
         if( user && prevIdentity.user.id !== user ){
-          return exits.error('login.snackbar.discord.alreadyLinked');
+          throw new Error('login.snackbar.discord.alreadyLinked');
         }
 
         await Identity.updateOne({ id: prevIdentity.id }, { username: discordUsername });

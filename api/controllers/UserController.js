@@ -167,6 +167,10 @@ module.exports = {
 
     }catch (err) {
       const message = err.message ?? 'login.snackbar.discord.discordError';
+
+      if (req.session.usr > 0) {
+        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?error=${message}`);
+      }
       return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${message}`);
     }
   }
