@@ -65,8 +65,12 @@ module.exports = async function (req, res) {
     }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvent = await createSocketEvent(game, gameState);
-    Game.publish([ game.id ], socketEvent);
-
+    // Only notify others that a spectator joined, do not send full game state
+    Game.publish([ game.id ], {
+      gameId: game.id,
+      change: 'spectatorJoined',
+      username: spectator.username,
+    });
 
     return res.ok(socketEvent);
 

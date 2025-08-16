@@ -45,7 +45,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.DELETE_DECK:
     case SocketEvent.CONCEDE:
     case SocketEvent.RE_LOGIN:
-    case SocketEvent.SPECTATOR_JOINED:
     case SocketEvent.RESOLVE:
     case SocketEvent.FIZZLE:
     case SocketEvent.TARGETED_ONE_OFF:
@@ -61,7 +60,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.STALEMATE_REQUEST:
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
+      gameStore.updateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
       gameStore.processScuttle(evData);
@@ -113,8 +112,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
         };
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
-        gameStore.myPNum = null;
-        gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
+        gameStore.updateGame(evData.newGame);
       }
 
       router.push(route);
@@ -127,6 +125,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);
+      }
+      break;
+    case SocketEvent.SPECTATOR_JOINED:
+      if (gameStore.id === evData.gameId) {
+        gameStore.addSpectator(evData.username);
       }
       break;
   }

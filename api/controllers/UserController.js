@@ -109,7 +109,7 @@ module.exports = {
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('client_id', process.env.VITE_DISCORD_CLIENT_ID);
     url.searchParams.set('scope', 'identify email guilds.members.read');
-    url.searchParams.set('redirect_uri', 'http://localhost:1337/api/user/discord/callback');
+    url.searchParams.set('redirect_uri', `http://${process.env.VITE_API_URL}/api/user/discord/callback`);
     url.searchParams.set('prompt', 'consent');
     url.searchParams.set('state', state);
 
@@ -123,25 +123,22 @@ module.exports = {
     const { state } = req.query;
 
     const { verifySecret, fetchDiscordIdentity } = sails.helpers.oauth;
-
-    const verified = verifySecret(state);
-    if (!verified) {
-      return res.badRequest('Invalid secret');
-    }
-
-    if (!code) {
-      return res.badRequest('Missing code');
-    }
-
-    const params = {
-      client_id: String(process.env.VITE_DISCORD_CLIENT_ID),
-      client_secret: String(process.env.VITE_DISCORD_CLIENT_SECRET),
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: `http://localhost:1337/api/user/discord/callback`,
-    };
-
     try {
+      const verified = verifySecret(state);
+
+      if (!verified || !code) {
+        throw new Error();
+      }
+
+      const params = {
+        client_id: String(process.env.VITE_DISCORD_CLIENT_ID),
+        client_secret: String(process.env.VITE_DISCORD_CLIENT_SECRET),
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: `http://${process.env.VITE_API_URL}/api/user/discord/callback`,
+      };
+
+
       const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
         method: 'POST',
         headers: {
@@ -153,25 +150,28 @@ module.exports = {
       const tokenData = await tokenRes.json();
 
       if (!tokenData) {
-        throw new Error('Failed to retrieve token');
+        throw new Error();
       }
       const user = req.session.usr ?? null;
 
       const updatedUser = await fetchDiscordIdentity(tokenData, user);
 
       if (!updatedUser) {
-        throw new Error('Failed to retrieve user data');
+        throw new Error();
       }
 
       req.session.loggedIn = true;
       req.session.usr = updatedUser.id;
 
-      return res.redirect('http://localhost:8080');
-
-
+      return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/`);
 
     }catch (err) {
-      return res.redirect('http://localhost:8080/logout');
+      const message = err.message ?? 'login.snackbar.discord.discordError';
+
+      if (req.session.usr > 0) {
+        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?error=${message}`);
+      }
+      return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${message}`);
     }
   }
 };

@@ -16,13 +16,16 @@ export default defineConfig({
   },
   test: {
     // vitest includes tests from the project root
-    include: ['tests/unit/specs/sails/**/*'],
+    include: [ 'tests/unit/specs/sails/**/*' ],
     globals: true,
     environment: 'node',
-    setupFiles: ['tests/unit/setup-sails.vitest.js'],
+    setupFiles: [ 'tests/unit/setup-sails.vitest.js' ],
     // Sails tests can not be parallelized
     async: false,
     threads: false,
     isolate: false,
+    env:{
+      VITE_JWT_SECRET: 'cuttle69420'
+    }
   },
 });

@@ -24,42 +24,40 @@ module.exports = {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch user info: ${response.status}`);
+        throw new Error();
       }
 
       const data = await response.json();
 
       const providerId = data.id;
       const provider = 'discord';
-      const { email } = data;
-      let { username } = data;
+      const { username: discordUsername } = data;
 
       const prevIdentity = await Identity.findOne({ providerId }).populate('user');
 
       if (prevIdentity && prevIdentity.user) {
-        if(user && prevIdentity.user.id !== user){
-          return exits.error('Account already linked to another profile');
+        if( user && prevIdentity.user.id !== user ){
+          throw new Error('login.snackbar.discord.alreadyLinked');
         }
+
+        await Identity.updateOne({ id: prevIdentity.id }, { username: discordUsername });
         return exits.success(prevIdentity.user);
       }
-      const existingUserName = await User.findOne({ username });
+      const existingUserName = await User.findOne({ username: discordUsername });
+      const username = existingUserName ? `${discordUsername}${Math.floor(Math.random() * 1000)}` : discordUsername;
 
-      if (existingUserName) {
-        username = `${username}${Math.floor(Math.random() * 1000)}`;
-      }
       const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username }).fetch();
 
       await Identity.create({
         providerId,
         provider,
-        email,
         user: updatedUser.id,
+        username: discordUsername
       });
 
       return exits.success(updatedUser);
 
     } catch (e) {
-      console.error('Error fetching identity from Discord:', e);
       return exits.error(e);
     }
   }
