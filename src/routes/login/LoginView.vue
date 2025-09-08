@@ -125,20 +125,22 @@
                 @click="oAuth('discord')"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                <span class="discordButton"> Login With Discord </span>
+                <span class="discordButton"> {{ t('login.loginDiscord') }} </span>
               </v-btn>
             </v-form>
             <div class="d-flex align-center flex-column m-10">
-              <p class="text-h6">Check out our socials for more Cuttle content!</p>
+              <p class="text-h6">
+                {{ t('login.socials') }}
+              </p>
               <div class="my-4 d-flex align-center">
-                <v-btn variant="text"  href="https://discord.com/invite/9vrAZ8xGyh">
-                  <img  src="/img/loginView/logo-discord-blue.svg">
+                <v-btn variant="text" href="https://discord.com/invite/9vrAZ8xGyh">
+                  <img src="/img/loginView/logo-discord-blue.svg">
                 </v-btn>
                 <v-btn variant="text" href="https://www.youtube.com/@cuttle-cards2245">
-                  <img  src="/img/loginView/logo-youtube.svg">
+                  <img src="/img/loginView/logo-youtube.svg">
                 </v-btn>
                 <v-btn class="py-1" variant="text" href="https://www.patreon.com/cuttle">
-                  <img  src="/img/loginView/logo-patreon.svg">
+                  <img src="/img/loginView/logo-patreon.svg">
                 </v-btn>
               </div>
             </div>

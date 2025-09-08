@@ -36,6 +36,8 @@
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
     "joinDiscord": "Join our discord community",
+    "loginDiscord": "Login with Discord",
+    "socials": "Check out our socials for more Cuttle content!",
     "snackbar": {
       "usernameIsTaken": "That username is already registered to another user; try logging in!",
       "userNotFound": "Could not find that user with that username. Try signing up!",

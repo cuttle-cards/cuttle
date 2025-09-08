@@ -36,6 +36,8 @@
     "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Prepara una valiente ofensiva mientras frustras los planes de tu rival con malvados trucos. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord",
+    "loginDiscord": "Iniciar sesión con Discord",
+    "socials": "¡Mira nuestras redes sociales para más contenido de Cuttle!",
     "snackbar": {
       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
       "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
