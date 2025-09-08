@@ -117,31 +117,31 @@
                   {{ switchLabelText }}
                 </v-btn>
               </div>
-
-
               <v-btn
-                class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+                class="w-100 mt-10 mb-8 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
-                href="https://discord.com/invite/9vrAZ8xGyh"
-                target="_blank"
+                type="button"
+                @click="oAuth('discord')"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                <span class="discordButton">{{ t('login.joinDiscord') }}</span>
+                <span class="discordButton"> Login With Discord </span>
               </v-btn>
             </v-form>
-
-            <v-btn
-              class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
-              size="large"
-              color="newSecondary"
-              type="button"
-              @click="oAuth('discord')"
-            >
-              <img class="discord" src="/img/loginView/logo-discord.svg">
-              <span class="discordButton"> Login With Discord </span>
-            </v-btn>
-
+            <div class="d-flex align-center flex-column m-10">
+              <p class="text-h6">Check out our socials for more Cuttle content!</p>
+              <div class="my-4 d-flex align-center">
+                <v-btn variant="text"  href="https://discord.com/invite/9vrAZ8xGyh">
+                  <img  src="/img/loginView/logo-discord-blue.svg">
+                </v-btn>
+                <v-btn variant="text" href="https://www.youtube.com/@cuttle-cards2245">
+                  <img  src="/img/loginView/logo-youtube.svg">
+                </v-btn>
+                <v-btn class="py-1" variant="text" href="https://www.patreon.com/cuttle">
+                  <img  src="/img/loginView/logo-patreon.svg">
+                </v-btn>
+              </div>
+            </div>
             <BaseSnackbar
               v-model="showSnackBar"
               :message="snackBarMessage"
