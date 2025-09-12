@@ -63,9 +63,9 @@ export const useAuthStore = defineStore('auth', {
         );
       });
     },
-    async requestStatus() {
+    async requestStatus(force = false) {
       // If we've authenticated before, fast fail
-      if (this.authenticated !== null) {
+      if (this.authenticated !== null && !force) {
         return;
       }
 
@@ -159,9 +159,10 @@ export const useAuthStore = defineStore('auth', {
           }),
           credentials: 'include',
         });
-        this.authSuccess(username);
+        this.requestStatus(true);
       }catch(e){
-        console.log(e);
+        this.clearAuth();
+        throw new Error(err);
       }}
   },
 });
