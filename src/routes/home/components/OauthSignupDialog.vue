@@ -25,7 +25,7 @@ import BaseDialog from '@/components/BaseDialog.vue';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import {useGameListStore} from '@/stores/gameList';
+import { useGameListStore } from '@/stores/gameList';
 
 const authStore = useAuthStore();
 const gameListStore = useGameListStore();
@@ -67,9 +67,9 @@ const completeOauth = async() => {
   try{
     debugger;
     await authStore.completeOAuth(provider, { username: username.value, password:password.value });
-    await gameListStore.requestGameList();
+    gameListStore.requestGameList();
+    router.replace('/');
     show.value = false;
-    router.push({ path: '/', replace: true });
   }catch {
     router.push('/signup');
   }

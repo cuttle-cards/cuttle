@@ -46,11 +46,7 @@
                   />
                 </v-col>
                 <v-col lg="6" cols="12" class="list-item__button mx-auto pa-0">
-                  <v-skeleton-loader
-                    class="py-0 pl-0 pr-2 mx-auto"
-                    type="heading"
-                    color="surface-2"
-                  />
+                  <v-skeleton-loader class="py-0 pl-0 pr-2 mx-auto" type="heading" color="surface-2" />
                 </v-col>
                 <v-divider color="surface-1" class="border-opacity-25" />
               </v-row>
@@ -158,7 +154,7 @@ import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
 
 const TABS = {
   PLAY: '/',
-  SPECTATE: '/spectate-list'
+  SPECTATE: '/spectate-list',
 };
 
 export default {
@@ -202,7 +198,7 @@ export default {
     },
   },
   watch: {
-    tab(newVal){
+    tab(newVal) {
       this.setGameListUrl(newVal);
     },
     $route: {
@@ -212,21 +208,26 @@ export default {
           this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
           this.$router.replace('/');
         }
-        if([ 'discord' ].includes(this.$route.query?.oauthsignup)){
+        if ([ 'discord' ].includes(this.$route.query?.oauthsignup)) {
           this.oAuthSignup = true;
         }
-      }
-    }
+      },
+    },
   },
   async created() {
-    await this.gameListStore.requestGameList();
-    this.loadingData = false;
-    this.tab = this.$route.path;
+    try {
+      await this.gameListStore.requestGameList();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.loadingData = false;
+      this.tab = this.$route.path;
+    }
   },
   methods: {
-    setGameListUrl(url){
+    setGameListUrl(url) {
       this.$router.replace(url);
-      return this.tab = url;
+      return (this.tab = url);
     },
     clearSnackBar() {
       this.snackMessage = '';
@@ -368,9 +369,9 @@ p {
   line-height: 5rem;
   margin: 32px auto 16px auto;
 }
-#game-list :deep(.v-skeleton-loader__heading){
-  height:34px;
-  width:100%;
+#game-list :deep(.v-skeleton-loader__heading) {
+  height: 34px;
+  width: 100%;
   border-radius: 4px;
 }
 
@@ -430,4 +431,3 @@ p {
   }
 }
 </style>
-

@@ -159,7 +159,7 @@ export const useAuthStore = defineStore('auth', {
           }),
           credentials: 'include',
         });
-        this.requestStatus();
+        this.authSuccess(username);
       }catch(e){
         console.log(e);
       }}
