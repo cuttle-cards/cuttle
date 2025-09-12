@@ -49,7 +49,7 @@ module.exports = {
       }
 
       const foundUsername = await User.findOne({ username: suppliedUsername });
-      if(suppliedUsername && foundUsername){
+      if(!user && suppliedUsername && foundUsername){
         throw new Error('login.snackbar.discord.usernameTaken');
       }
 
