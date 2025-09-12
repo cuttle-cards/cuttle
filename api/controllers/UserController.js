@@ -184,6 +184,7 @@ module.exports = {
     const { username, password } = req.body;
     const { fetchDiscordIdentity } = sails.helpers.oauth;
 
+    let user = null;
     if( password ){
       try {
         const user = await User.findOne({ username: username });
@@ -193,14 +194,13 @@ module.exports = {
           };
         }
         await passwordAPI.checkPass(password, user.encryptedPassword);
-        req.session.usr = user.id;
       } catch (err) {
         return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${err}`);
       }
     }
 
     const { tokenData } = req.session;
-    const updatedUser = await fetchDiscordIdentity(tokenData, null , username);
+    const updatedUser = await fetchDiscordIdentity(tokenData, user , username);
 
     if (!updatedUser) {
       throw new Error();
