@@ -187,7 +187,7 @@ module.exports = {
     let user = null;
     if( password ){
       try {
-        const user = await User.findOne({ username: username });
+        user = await User.findOne({ username });
         if (!user) {
           throw {
             message: 'login.snackbar.userNotFound',
