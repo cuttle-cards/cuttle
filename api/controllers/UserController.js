@@ -159,7 +159,8 @@ module.exports = {
         return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
       }
 
-      const updatedUser = await fetchDiscordIdentity(tokenData, user);
+      const populatedUser = await User.findOne({ id: user });
+      const updatedUser = await fetchDiscordIdentity(tokenData, populatedUser);
 
       if (!updatedUser) {
         throw new Error();
