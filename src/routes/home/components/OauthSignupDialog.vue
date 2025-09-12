@@ -4,18 +4,20 @@
       <h2 class="mb-6">
         {{ titleText }}
       </h2>
-      <v-form @submit.prevent="completeOauth">
+      <v-form id="form" @submit.prevent="completeOauth">
         <v-text-field v-model="username" label="Username" />
         <v-text-field v-if="!noAccount" v-model="password" label="Password" />
-        <div class="d-flex justify-space-between">
-          <v-btn type="submit" color="newPrimary">
-            {{ submitText }}
-          </v-btn>
-          <v-btn variant="text" color="white" @click="switchModes">
-            {{ buttonText }}
-          </v-btn>
-        </div>
       </v-form>
+    </template>
+    <template #actions>
+      <div class=" d-flex justify-space-between">
+        <v-btn variant="text" color="surface-1" @click="switchModes">
+          {{ buttonText }}
+        </v-btn>
+        <v-btn form="form" type="submit" color="newPrimary">
+          {{ submitText }}
+        </v-btn>
+      </div>
     </template>
   </BaseDialog>
 </template>
@@ -26,6 +28,9 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useGameListStore } from '@/stores/gameList';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const gameListStore = useGameListStore();
@@ -59,9 +64,9 @@ const titleText = computed(() =>
   noAccount.value ? 'Create a Username for your new account' : 'Login to link your existing account',
 );
 
-const submitText = computed(() => (noAccount.value ? 'Create Account' : 'Login'));
+const submitText = computed(() => (t(noAccount.value ? 'global.signup' : 'global.login')));
 
-const buttonText = computed(() => (noAccount.value ? 'Don\'t have an account?' : 'Have an account?'));
+const buttonText = computed(() => (t(noAccount.value ?  'login.haveAccount' : 'login.noAccount' )));
 
 const completeOauth = async() => {
   try{
