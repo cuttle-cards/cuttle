@@ -1,5 +1,6 @@
 <template>
   <AnnouncementDialog />
+  <OauthSignupDialog v-model="oAuthSignup" />
   <div class="h-100 bg-surface-1">
     <v-container id="home-container" class="container">
       <h1 id="home-card-title">
@@ -153,6 +154,7 @@ import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
+import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
 
 const TABS = {
   PLAY: '/',
@@ -167,6 +169,7 @@ export default {
     BaseSnackbar,
     HowItWorksDialog,
     AnnouncementDialog,
+    OauthSignupDialog,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -182,7 +185,8 @@ export default {
       tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
-      loadingData: true
+      loadingData: true,
+      oAuthSignup: false,
     };
   },
   computed: {
@@ -207,6 +211,9 @@ export default {
         if (this.$route.query?.error) {
           this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
           this.$router.replace('/');
+        }
+        if([ 'discord' ].includes(this.$route.query?.oauthsignup)){
+          this.oAuthSignup = true;
         }
       }
     }

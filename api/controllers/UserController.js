@@ -154,6 +154,11 @@ module.exports = {
       }
       const user = req.session.usr ?? null;
 
+      if(!user){
+        req.session.tokenData = tokenData;
+        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
+      }
+
       const updatedUser = await fetchDiscordIdentity(tokenData, user);
 
       if (!updatedUser) {
@@ -173,6 +178,38 @@ module.exports = {
       }
       return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${message}`);
     }
+  },
+
+  discordComplete: async function(req, res) {
+    const { username, password } = req.body;
+    const { fetchDiscordIdentity } = sails.helpers.oauth;
+
+    if( password ){
+      try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+          throw {
+            message: 'login.snackbar.userNotFound',
+          };
+        }
+        await passwordAPI.checkPass(password, user.encryptedPassword);
+        req.session.usr = user.id;
+      } catch (err) {
+        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${err}`);
+      }
+    }
+
+    const { tokenData } = req.session;
+    const updatedUser = await fetchDiscordIdentity(tokenData, null , username);
+
+    if (!updatedUser) {
+      throw new Error();
+    }
+
+    req.session.loggedIn = true;
+    req.session.usr = updatedUser.id;
+
+    return res.ok(updatedUser.id);
   }
 };
 

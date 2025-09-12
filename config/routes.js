@@ -19,6 +19,7 @@ module.exports.routes = {
   '/api/user/status': 'userController.status',
   'GET /api/user/discord/redirect': 'userController.discordRedirect',
   'GET /api/user/discord/callback': 'userController.discordCallback',
+  'POST /api/user/discord/completeOauth': 'userController.discordComplete',
 
   // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',

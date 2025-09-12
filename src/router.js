@@ -15,6 +15,10 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 
 const mustBeAuthenticated = async (to, from, next) => {
+
+  if([ 'discord' ].includes(to.query.oauthsignup)){
+    return next();
+  }
   const authStore = useAuthStore();
   if (authStore.authenticated) {
     return next();

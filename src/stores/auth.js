@@ -143,7 +143,25 @@ export const useAuthStore = defineStore('auth', {
     async oAuth(provider) {
       const url = `http://${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
       window.location.href = url;
-    }
-
-  }
+    },
+    async completeOAuth(provider, credentials) {
+      const { username, password } = credentials;
+      try{
+        await fetch(`/api/user/${provider}/completeOauth`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            provider,
+            username,
+            password
+          }),
+          credentials: 'include',
+        });
+        this.requestStatus();
+      }catch(e){
+        console.log(e);
+      }}
+  },
 });

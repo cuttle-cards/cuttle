@@ -12,10 +12,14 @@ module.exports = {
     user: {
       type: 'ref',
       description: 'Exisiting User'
+    },
+    suppliedUsername: {
+      type: 'string',
+      description: 'Username supplied by user'
     }
   },
 
-  fn: async function ({ token, user }, exits) {
+  fn: async function ({ token, user, suppliedUsername }, exits) {
     try {
       const response = await fetch('https://discord.com/api/users/@me', {
         headers: {
@@ -43,10 +47,13 @@ module.exports = {
         await Identity.updateOne({ id: prevIdentity.id }, { username: discordUsername });
         return exits.success(prevIdentity.user);
       }
-      const existingUserName = await User.findOne({ username: discordUsername });
-      const username = existingUserName ? `${discordUsername}${Math.floor(Math.random() * 1000)}` : discordUsername;
 
-      const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username }).fetch();
+      const foundUsername = await User.findOne({ username: suppliedUsername });
+      if(suppliedUsername && foundUsername){
+        throw new Error('login.snackbar.discord.usernameTaken');
+      }
+
+      const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username: suppliedUsername }).fetch();
 
       await Identity.create({
         providerId,

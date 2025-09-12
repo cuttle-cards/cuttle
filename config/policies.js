@@ -31,6 +31,7 @@ module.exports.policies = {
     reLogin: [ 'hasValidUsername' ],
     discordRedirect: true,
     discordCallback: true,
+    discordComplete: true,
     logout: true,
     status: true,
   },
