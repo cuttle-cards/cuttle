@@ -53,7 +53,7 @@ module.exports = {
         throw new Error('login.snackbar.discord.usernameTaken');
       }
 
-      const updatedUser = user ? await User.findOne({ id: user }) : await User.create({ username: suppliedUsername }).fetch();
+      const updatedUser = user ? await User.findOne({ id: user.id }) : await User.create({ username: suppliedUsername }).fetch();
 
       await Identity.create({
         providerId,
