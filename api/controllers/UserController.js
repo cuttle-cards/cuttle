@@ -152,14 +152,14 @@ module.exports = {
       if (!tokenData) {
         throw new Error();
       }
-      const user = req.session.usr ?? null;
+      const userId = req.session.usr ?? null;
 
-      if(!user){
+      if(!userId){
         req.session.tokenData = tokenData;
         return res.redirect(`${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
       }
 
-      const populatedUser = await User.findOne({ id: user });
+      const populatedUser = await User.findOne({ id: userId });
       const updatedUser = await fetchDiscordIdentity(tokenData, populatedUser);
 
       if (!updatedUser) {

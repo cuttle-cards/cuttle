@@ -141,7 +141,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async oAuth(provider) {
-      const url = `http://${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
+      const url = `${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
       window.location.href = url;
     },
     async completeOAuth(provider, credentials) {

@@ -15,7 +15,8 @@ module.exports = {
     },
     suppliedUsername: {
       type: 'string',
-      description: 'Username supplied by user'
+      description: 'Username supplied by user',
+      defaultsTo: ''
     }
   },
 
@@ -48,8 +49,8 @@ module.exports = {
         return exits.success(prevIdentity.user);
       }
 
-      const foundUsername = await User.findOne({ username: suppliedUsername });
-      if(!user && suppliedUsername && foundUsername){
+      const foundUsername = await User.find({ username: suppliedUsername });
+      if(!user && suppliedUsername && foundUsername.length){
         throw new Error('login.snackbar.discord.usernameTaken');
       }
 
