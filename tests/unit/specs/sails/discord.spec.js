@@ -38,5 +38,6 @@ describe('Login with Discord oAuth', () => {
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('totallynotthegovernment69');
     expect(status.id).toEqual(status.identities[0].id);
+    nock.cleanAll();
   });
 });
