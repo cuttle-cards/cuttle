@@ -162,7 +162,7 @@ export const useAuthStore = defineStore('auth', {
         this.requestStatus(true);
       }catch(e){
         this.clearAuth();
-        throw new Error(err);
+        throw new Error(e);
       }}
   },
 });
