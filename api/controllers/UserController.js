@@ -109,7 +109,7 @@ module.exports = {
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('client_id', process.env.VITE_DISCORD_CLIENT_ID);
     url.searchParams.set('scope', 'identify email guilds.members.read');
-    url.searchParams.set('redirect_uri', `http://${process.env.VITE_API_URL}/api/user/discord/callback`);
+    url.searchParams.set('redirect_uri', `${process.env.VITE_API_URL}/api/user/discord/callback`);
     url.searchParams.set('prompt', 'consent');
     url.searchParams.set('state', state);
 
@@ -135,7 +135,7 @@ module.exports = {
         client_secret: String(process.env.VITE_DISCORD_CLIENT_SECRET),
         grant_type: 'authorization_code',
         code,
-        redirect_uri: `http://${process.env.VITE_API_URL}/api/user/discord/callback`,
+        redirect_uri: `${process.env.VITE_API_URL}/api/user/discord/callback`,
       };
 
 
@@ -156,7 +156,7 @@ module.exports = {
 
       if(!user){
         req.session.tokenData = tokenData;
-        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
+        return res.redirect(`${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
       }
 
       const populatedUser = await User.findOne({ id: user });
@@ -169,15 +169,15 @@ module.exports = {
       req.session.loggedIn = true;
       req.session.usr = updatedUser.id;
 
-      return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/`);
+      return res.redirect(`${process.env.VITE_FRONTEND_URL}/`);
 
     }catch (err) {
       const message = err.message ?? 'login.snackbar.discord.discordError';
 
       if (req.session.usr > 0) {
-        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/?error=${message}`);
+        return res.redirect(`${process.env.VITE_FRONTEND_URL}/?error=${message}`);
       }
-      return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${message}`);
+      return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=${message}`);
     }
   },
 
@@ -196,7 +196,7 @@ module.exports = {
         }
         await passwordAPI.checkPass(password, user.encryptedPassword);
       } catch (err) {
-        return res.redirect(`http://${process.env.VITE_FRONTEND_URL}/login?error=${err}`);
+        return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=${err}`);
       }
     }
 
