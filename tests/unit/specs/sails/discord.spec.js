@@ -28,7 +28,9 @@ describe('Login with Discord oAuth', () => {
       .query({ state: secret, code: '12345' });
 
     expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('http://localhost:8080/');
+    expect(res.headers.location).toBe('http://localhost:8080/?oauthsignup=discord');
+
+    await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
 
     const { body: status } = await agent
       .get('/api/user/status');
@@ -36,6 +38,5 @@ describe('Login with Discord oAuth', () => {
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('totallynotthegovernment69');
     expect(status.id).toEqual(status.identities[0].id);
-
   });
 });
