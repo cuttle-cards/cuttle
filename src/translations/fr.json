@@ -38,6 +38,8 @@
     "joinDiscord": "Rejoignez notre communauté sur Discord.",
     "loginDiscord": "Se connecter avec Discord",
     "socials": "Découvrez nos réseaux sociaux pour plus de contenu Cuttle !",
+    "linkAccount": "Liez votre compte",
+    "createUsername": "Créez un nom d’utilisateur pour votre nouveau compte",
     "snackbar": {
       "usernameIsTaken": "Ce pseudo est déjà enregistré. Essayez de vous connecter!",
       "userNotFound": "Ce pseudo est inconnu au bataillon. Inscrivez vous!",

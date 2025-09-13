@@ -1,5 +1,10 @@
 <template>
-  <BaseDialog id="oauthsignup" v-model="show" title="Oauth Signup">
+  <BaseDialog
+    id="oauthsignup"
+    v-model="show"
+    title="Oauth Signup"
+    persistent
+  >
     <template #body>
       <h2 class="mb-6">
         {{ titleText }}
@@ -88,7 +93,7 @@ const switchModes = () => {
 };
 
 const titleText = computed(() =>
-  noAccount.value ? 'Create a Username for your new account' : 'Login to link your existing account',
+  t(noAccount.value ? 'login.createUsername' : 'login.linkAccount'),
 );
 
 const submitText = computed(() => (t(noAccount.value ? 'global.signup' : 'global.login')));

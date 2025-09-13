@@ -38,6 +38,8 @@
     "joinDiscord": "Join our discord community",
     "loginDiscord": "Login with Discord",
     "socials": "Check out our socials for more Cuttle content!",
+    "linkAccount": "Link your account",
+    "createUsername": "Create a username for your new account",
     "snackbar": {
       "usernameIsTaken": "That username is already registered to another user; try logging in!",
       "userNotFound": "Could not find that user with that username. Try signing up!",
