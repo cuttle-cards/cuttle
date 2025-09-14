@@ -210,6 +210,7 @@ export default {
         }
         if ([ 'discord' ].includes(this.$route.query?.oauthsignup)) {
           this.oAuthSignup = true;
+          this.$router.replace('/');
         }
       },
     },

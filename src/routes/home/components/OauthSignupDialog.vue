@@ -90,6 +90,7 @@ const show = computed({
 
 const switchModes = () => {
   noAccount.value = !noAccount.value;
+  password.value = '';
 };
 
 const titleText = computed(() =>
@@ -101,15 +102,14 @@ const submitText = computed(() => (t(noAccount.value ? 'global.signup' : 'global
 const buttonText = computed(() => (t(noAccount.value ?  'login.haveAccount' : 'login.noAccount' )));
 
 const completeOauth = async() => {
-  try{
+  try {
     loading.value = true;
     await authStore.completeOAuth(provider, { username: username.value, password:password.value });
     gameListStore.requestGameList();
-    router.replace('/');
     show.value = false;
     loading.value = false;
-  }catch {
-    router.push('/signup');
+  } catch (e) {
+    router.push(`/login?error=${e.message}`);
   }
 };
 </script>

@@ -167,46 +167,49 @@ module.exports = {
   oAuthComplete: async function(req, res) {
     const { username, password } = req.body;
     const { fetchIdentity } = sails.helpers.oauth[req.params.provider];
-
+    try{
     // Find existing user
-    let user = null;
-    if ( password ) {
-      try {
-        user = await User.findOne({ username });
-        if (!user) {
-          throw {
-            message: 'login.snackbar.userNotFound',
-          };
+      let user = null;
+      if ( password ) {
+        try {
+          user = await User.findOne({ username });
+          if (!user) {
+            throw {
+              message: 'login.snackbar.userNotFound',
+            };
+          }
+          await passwordAPI.checkPass(password, user.encryptedPassword);
+        } catch (err) {
+          throw new Error(err);
         }
-        await passwordAPI.checkPass(password, user.encryptedPassword);
-      } catch (err) {
-        return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=${err}`);
       }
-    }
 
-    const { tokenData } = req.session;
-    const providerIdentity = await fetchIdentity(tokenData);
+      const { tokenData } = req.session;
+      const providerIdentity = await fetchIdentity(tokenData);
 
-    if (!user) {
+      if (!user) {
       // If no existing user, check username is not a duplicate and if not, create new user
-      const foundUsername = await User.findOne({ username });
-      if (foundUsername) {
-        return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=login.snackbar.usernameIsTaken`);
+        const foundUsername = await User.findOne({ username });
+        if (foundUsername) {
+          throw new Error('login.snackbar.usernameIsTaken');
+        }
+        user = await User.create({ username: username }).fetch();
       }
-      user = await User.create({ username: username }).fetch();
+
+      await Identity.create({
+        provider: providerIdentity.providerName,
+        providerId: providerIdentity.id,
+        user: user.id,
+        username: providerIdentity.username,
+      });
+
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+
+      return res.ok(user.id);
+    } catch (e) {
+      return res.badRequest(e);
     }
-
-    await Identity.create({
-      provider: providerIdentity.providerName,
-      providerId: providerIdentity.id,
-      user: user.id,
-      username: providerIdentity.username,
-    });
-
-    req.session.loggedIn = true;
-    req.session.usr = user.id;
-
-    return res.ok(user.id);
   }
 };
 
