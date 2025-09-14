@@ -187,7 +187,6 @@ module.exports = {
     const { tokenData } = req.session;
     const providerIdentity = await fetchIdentity(tokenData);
 
-
     if (!user) {
       // If no existing user, check username is not a duplicate and if not, create new user
       const foundUsername = await User.findOne({ username });
