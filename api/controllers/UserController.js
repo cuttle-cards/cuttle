@@ -187,29 +187,27 @@ module.exports = {
     const { tokenData } = req.session;
     const providerIdentity = await fetchIdentity(tokenData);
 
-    let updatedUser;
-    if (user) {
-      updatedUser = await User.findOne({ id: user.id });
-    } else {
+
+    if (!user) {
       // If no existing user, check username is not a duplicate and if not, create new user
       const foundUsername = await User.findOne({ username });
       if (foundUsername) {
         return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=login.snackbar.usernameIsTaken`);
       }
-      updatedUser = await User.create({ username: username }).fetch();
+      user = await User.create({ username: username }).fetch();
     }
 
     await Identity.create({
       provider: providerIdentity.providerName,
       providerId: providerIdentity.id,
-      user: updatedUser.id,
+      user: user.id,
       username: providerIdentity.username,
     });
 
     req.session.loggedIn = true;
-    req.session.usr = updatedUser.id;
+    req.session.usr = user.id;
 
-    return res.ok(updatedUser.id);
+    return res.ok(user.id);
   }
 };
 
