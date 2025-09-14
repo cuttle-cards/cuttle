@@ -154,7 +154,7 @@ module.exports = {
 
       return res.redirect(`${process.env.VITE_FRONTEND_URL}/`);
 
-    }catch (err) {
+    } catch (err) {
       const message = err.message ?? 'login.snackbar.oAuth.providerError';
 
       if (req.session.usr > 0) {
