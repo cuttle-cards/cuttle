@@ -130,15 +130,15 @@ module.exports = {
       const prevIdentity = await Identity.findOne({ providerId: providerIdentity.id }).populate('user');
 
       const loggedInUser = req.session.usr ?? null;
-      if ( prevIdentity && loggedInUser && prevIdentity.user.id !== loggedInUser ){
+      if ( prevIdentity && loggedInUser && prevIdentity.user?.id !== loggedInUser ){
         // Fail if identity is already attached to someone elses account
-        throw new Error('login.snackbar.discord.alreadyLinked');
+        throw new Error('login.snackbar.oAuth.alreadyLinked');
       }
 
       if (!prevIdentity && loggedInUser) {
         // If no identity but user is already log in, create Identity
         await Identity.create({
-          provider: 'discord',
+          provider,
           providerId: providerIdentity.id,
           user: loggedInUser,
           username: providerIdentity.username,
@@ -150,7 +150,7 @@ module.exports = {
       }
 
       req.session.loggedIn = true;
-      req.session.usr = prevIdentity.user.id;
+      req.session.usr = loggedInUser ?? prevIdentity.user.id;
 
       return res.redirect(`${process.env.VITE_FRONTEND_URL}/`);
 

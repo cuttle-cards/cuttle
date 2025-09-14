@@ -14,13 +14,15 @@ describe('Login with Discord oAuth', () => {
       .reply(200, {
         access_token: '123456',
         token_type: 'bearer'
-      });
+      })
+      .persist();
 
     nock('https://discord.com').get('/api/users/@me')
       .reply(200, {
         id: '9876564',
         username: 'totallynotthegovernment69',
-      });
+      })
+      .persist();
   });
 
   it('Creates new account with Discord oAuth', async () => {
