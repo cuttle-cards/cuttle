@@ -44,9 +44,9 @@
       "usernameIsTaken": "Ce pseudo est déjà enregistré. Essayez de vous connecter!",
       "userNotFound": "Ce pseudo est inconnu au bataillon. Inscrivez vous!",
       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas.",
-      "discord": {
+      "oAuth": {
         "alreadyLinked": "Compte déjà lié à un autre utilisateur",
-        "discordError": "Erreur lors de la connexion à Discord"
+        "providerError": "Erreur lors de la connexion à Discord"
       }
     }
   },

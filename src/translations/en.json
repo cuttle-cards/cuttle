@@ -44,9 +44,9 @@
       "usernameIsTaken": "That username is already registered to another user; try logging in!",
       "userNotFound": "Could not find that user with that username. Try signing up!",
       "wrongPassword": "Username and password do not match",
-      "discord": {
+      "oAuth": {
         "alreadyLinked": "Account already linked to another user",
-        "discordError": "Error connecting to Discord"
+        "providerError": "Error connecting to Discord"
       }
     }
   },

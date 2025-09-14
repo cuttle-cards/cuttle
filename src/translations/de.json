@@ -44,9 +44,9 @@
       "usernameIsTaken": "Dieser Benutzername ist bereits einem anderen Benutzer zugeordnet; versuche dich anzumelden!",
       "userNotFound": "Dieser Benutzer konnte mit diesem Benutzernamen nicht gefunden werden. Versuche dich anzumelden!",
       "wrongPassword": "Benutzername und Passwort stimmen nicht überein",
-      "discord": {
+      "oAuth": {
         "alreadyLinked": "Konto ist bereits mit einem anderen Benutzer verknüpft",
-        "discordError": "Fehler bei der Verbindung zu Discord"
+        "providerError": "Fehler bei der Verbindung zu Discord"
       }
     }
   },
