@@ -31,7 +31,7 @@ module.exports.policies = {
     reLogin: [ 'hasValidUsername' ],
     oAuthRedirect: true,
     oAuthCallback: true,
-    oAuthComplete: true,
+    oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity' ],
     logout: true,
     status: true,
   },
