@@ -17,9 +17,9 @@ module.exports.routes = {
   '/api/user/reLogin': 'userController.reLogin',
   '/api/user/logout': 'userController.logout',
   '/api/user/status': 'userController.status',
-  'GET /api/user/discord/redirect': 'userController.discordRedirect',
-  'GET /api/user/discord/callback': 'userController.discordCallback',
-  'POST /api/user/discord/completeOauth': 'userController.discordComplete',
+  'GET /api/user/:provider/redirect': 'userController.oAuthRedirect',
+  'GET /api/user/:provider/callback': 'userController.oAuthCallback',
+  'POST /api/user/:provider/completeOauth': 'userController.oAuthComplete',
 
   // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',

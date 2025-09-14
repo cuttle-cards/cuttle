@@ -101,73 +101,56 @@ module.exports = {
     }
   },
 
-  discordRedirect: async function(_, res) {
-    const url = new URL('https://discord.com/api/oauth2/authorize');
-    const { generateSecret } = sails.helpers.oauth;
-    const state = generateSecret();
-
-    url.searchParams.set('response_type', 'code');
-    url.searchParams.set('client_id', process.env.VITE_DISCORD_CLIENT_ID);
-    url.searchParams.set('scope', 'identify email guilds.members.read');
-    url.searchParams.set('redirect_uri', `${process.env.VITE_API_URL}/api/user/discord/callback`);
-    url.searchParams.set('prompt', 'consent');
-    url.searchParams.set('state', state);
+  oAuthRedirect: async function(req, res) {
+    const { createRedirectParams } = sails.helpers.oauth[req.params.provider];
+    const url = createRedirectParams();
 
     res.set('Cache-Control', 'private, no-cache');
     return res.redirect(url.href);
-
   },
 
-  discordCallBack: async function(req, res) {
+  oAuthCallBack: async function(req, res) {
     const { code } = req.query;
     const { state } = req.query;
+    const { provider } = req.params;
 
-    const { verifySecret, fetchDiscordIdentity } = sails.helpers.oauth;
+    const { verifySecret } = sails.helpers.oauth;
+    const { fetchIdentity, retrieveTokenData } = sails.helpers.oauth[provider];
     try {
       const verified = verifySecret(state);
 
       if (!verified || !code) {
+        // throw generic error
         throw new Error();
       }
 
-      const params = {
-        client_id: String(process.env.VITE_DISCORD_CLIENT_ID),
-        client_secret: String(process.env.VITE_DISCORD_CLIENT_SECRET),
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: `${process.env.VITE_API_URL}/api/user/discord/callback`,
-      };
+      const tokenData = await retrieveTokenData(code);
 
+      const providerIdentity = await fetchIdentity(tokenData);
+      const prevIdentity = await Identity.findOne({ providerId: providerIdentity.id }).populate('user');
 
-      const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(params),
-      });
-
-      const tokenData = await tokenRes.json();
-
-      if (!tokenData) {
-        throw new Error();
+      const loggedInUser = req.session.usr ?? null;
+      if ( prevIdentity && loggedInUser && prevIdentity.user.id !== loggedInUser ){
+        // Fail if identity is already attached to someone elses account
+        throw new Error('login.snackbar.discord.alreadyLinked');
       }
-      const userId = req.session.usr ?? null;
 
-      if(!userId){
+      if (!prevIdentity && loggedInUser) {
+        // If no identity but user is already log in, create Identity
+        await Identity.create({
+          provider: 'discord',
+          providerId: providerIdentity.id,
+          user: loggedInUser,
+          username: providerIdentity.username,
+        });
+      } else if (!prevIdentity) {
+        // If no user, and no identity, redirect to identity signup
         req.session.tokenData = tokenData;
-        return res.redirect(`${process.env.VITE_FRONTEND_URL}/?oauthsignup=discord`);
-      }
-
-      const populatedUser = await User.findOne({ id: userId });
-      const updatedUser = await fetchDiscordIdentity(tokenData, populatedUser);
-
-      if (!updatedUser) {
-        throw new Error();
+        return res.redirect(`${process.env.VITE_FRONTEND_URL}/?oauthsignup=${provider}`);
       }
 
       req.session.loggedIn = true;
-      req.session.usr = updatedUser.id;
+      req.session.usr = prevIdentity.user.id;
 
       return res.redirect(`${process.env.VITE_FRONTEND_URL}/`);
 
@@ -181,12 +164,13 @@ module.exports = {
     }
   },
 
-  discordComplete: async function(req, res) {
+  oAuthComplete: async function(req, res) {
     const { username, password } = req.body;
-    const { fetchDiscordIdentity } = sails.helpers.oauth;
+    const { fetchIdentity } = sails.helpers.oauth[req.params.provider];
 
+    // Find existing user
     let user = null;
-    if( password ){
+    if ( password ) {
       try {
         user = await User.findOne({ username });
         if (!user) {
@@ -201,11 +185,26 @@ module.exports = {
     }
 
     const { tokenData } = req.session;
-    const updatedUser = await fetchDiscordIdentity(tokenData, user , username);
+    const providerIdentity = await fetchIdentity(tokenData);
 
-    if (!updatedUser) {
-      throw new Error();
+    let updatedUser;
+    if (user) {
+      updatedUser = await User.findOne({ id: user.id });
+    } else {
+      // If no existing user, check username is not a duplicate and if not, create new user
+      const foundUsername = await User.findOne({ username });
+      if (foundUsername) {
+        return res.redirect(`${process.env.VITE_FRONTEND_URL}/login?error=login.snackbar.usernameIsTaken`);
+      }
+      updatedUser = await User.create({ username: username }).fetch();
     }
+
+    await Identity.create({
+      provider: providerIdentity.providerName,
+      providerId: providerIdentity.id,
+      user: updatedUser.id,
+      username: providerIdentity.username,
+    });
 
     req.session.loggedIn = true;
     req.session.usr = updatedUser.id;

@@ -12,7 +12,7 @@ describe('Login with Discord oAuth', () => {
     nock('https://discord.com')
       .post('/api/oauth2/token')
       .reply(200, {
-        accessToken: '123456',
+        access_token: '123456',
         token_type: 'bearer'
       });
 
