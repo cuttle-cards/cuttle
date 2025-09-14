@@ -133,14 +133,27 @@
                 {{ t('login.socials') }}
               </p>
               <div class="my-4 d-flex align-center">
-                <v-btn variant="text" href="https://discord.com/invite/9vrAZ8xGyh">
+                <v-btn variant="text" href="https://discord.com/invite/9vrAZ8xGyh" target="_blank">
                   <img src="/img/loginView/logo-discord-blue.svg">
                 </v-btn>
-                <v-btn variant="text" href="https://www.youtube.com/@cuttle-cards2245">
+                <v-btn variant="text" href="https://www.youtube.com/@cuttle-cards2245" target="_blank">
                   <img src="/img/loginView/logo-youtube.svg">
                 </v-btn>
-                <v-btn class="py-1" variant="text" href="https://www.patreon.com/cuttle">
+                <v-btn
+                  class="py-1"
+                  variant="text"
+                  href="https://www.patreon.com/cuttle"
+                  target="_blank"
+                >
                   <img src="/img/loginView/logo-patreon.svg">
+                </v-btn>
+                <v-btn
+                  class="py-1"
+                  variant="text"
+                  href="https://github.com/cuttle-cards/cuttle"
+                  target="_blank"
+                >
+                  <img src="/img/loginView/logo-github.svg">
                 </v-btn>
               </div>
             </div>
