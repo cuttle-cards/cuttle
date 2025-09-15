@@ -140,7 +140,7 @@ module.exports = {
           provider,
           providerId: providerIdentity.id,
           user: loggedInUser,
-          providerUserName: providerIdentity.username,
+          providerUsername: providerIdentity.username,
         });
         // If no user, and no identity, redirect to identity signup
       } else if (!prevIdentity) {
@@ -199,7 +199,7 @@ module.exports = {
         provider: providerIdentity.providerName,
         providerId: providerIdentity.id,
         user: user.id,
-        providerUserName: providerIdentity.username,
+        providerUsername: providerIdentity.username,
       });
 
       req.session.loggedIn = true;
