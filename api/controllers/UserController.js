@@ -87,7 +87,7 @@ module.exports = {
 
     try {
       // If the user is logged in, see if we can find them first to verify they exist
-      const { username, identities } = await userAPI.findUser(id);
+      const { username, identities } = await User.findOne({ id }).populate('identities');
       return res.ok({
         id,
         username,
@@ -110,8 +110,7 @@ module.exports = {
   },
 
   oAuthCallBack: async function(req, res) {
-    const { code } = req.query;
-    const { state } = req.query;
+    const { code, state } = req.query;
     const { provider } = req.params;
 
     const { verifySecret } = sails.helpers.oauth;
@@ -127,7 +126,7 @@ module.exports = {
       const tokenData = await retrieveTokenData(code);
 
       const providerIdentity = await fetchIdentity(tokenData);
-      const prevIdentity = await Identity.findOne({ providerId: providerIdentity.id }).populate('user');
+      const prevIdentity = await Identity.findOne({ provider, providerId: providerIdentity.id }).populate('user');
 
       const loggedInUser = req.session.usr ?? null;
       if ( prevIdentity && loggedInUser && prevIdentity.user?.id !== loggedInUser ){
@@ -135,16 +134,16 @@ module.exports = {
         throw new Error('login.snackbar.oAuth.alreadyLinked');
       }
 
+      // If no identity but user is already logged in, create Identity
       if (!prevIdentity && loggedInUser) {
-        // If no identity but user is already log in, create Identity
         await Identity.create({
           provider,
           providerId: providerIdentity.id,
           user: loggedInUser,
           username: providerIdentity.username,
         });
-      } else if (!prevIdentity) {
         // If no user, and no identity, redirect to identity signup
+      } else if (!prevIdentity) {
         req.session.tokenData = tokenData;
         return res.redirect(`${process.env.VITE_FRONTEND_URL}/?oauthsignup=${provider}`);
       }
