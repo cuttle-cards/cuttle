@@ -46,7 +46,7 @@
       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas.",
       "oAuth": {
         "alreadyLinked": "Compte déjà lié à un autre utilisateur",
-        "providerError": "Erreur lors de la connexion à Discord"
+        "providerError": "Erreur de connexion au fournisseur"
       }
     }
   },

@@ -46,7 +46,7 @@
       "wrongPassword": "El nombre de usuario y la contraseña no coinciden",
       "oAuth": {
         "alreadyLinked": "Cuenta ya vinculada a otro usuario",
-        "providerError": "Error al conectar con Discord"
+        "providerError": "Error al conectar con el proveedor"
       }
     }
   },

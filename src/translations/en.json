@@ -46,7 +46,7 @@
       "wrongPassword": "Username and password do not match",
       "oAuth": {
         "alreadyLinked": "Account already linked to another user",
-        "providerError": "Error connecting to Discord"
+        "providerError": "Error connecting to provider"
       }
     }
   },
