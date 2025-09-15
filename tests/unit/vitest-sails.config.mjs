@@ -25,7 +25,7 @@ export default defineConfig({
     threads: false,
     isolate: false,
     env:{
-      VITE_JWT_SECRET: 'cuttle69420'
+      VITE_JWT_SECRET: 'cuttle_TEST_JWT_SECRET',
     }
   },
 });
