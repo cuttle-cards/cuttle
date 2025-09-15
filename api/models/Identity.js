@@ -18,7 +18,7 @@ module.exports = {
       type: 'string',
       required: true
     },
-    userName:{
+    providerUserName:{
       type: 'string',
     }
   },
