@@ -53,6 +53,25 @@ describe('Login with Discord oAuth', () => {
     expect(status.id).toEqual(status.identities[0].id);
   });
 
+  it('Logs in with Discord oAuth', async () => {
+    // Use Agent to persist cookies & session data
+    const agent = request.agent(globalThis.sailsApp);
+
+    await discordCallback(agent);
+
+    await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
+    await agent.post('/api/user/logout');
+
+    await discordCallback(agent, true);
+
+    const { body: status } = await agent
+      .get('/api/user/status');
+
+    expect(status.authenticated).toBe(true);
+    expect(status.username).toEqual('totallynotthegovernment69');
+    expect(status.id).toEqual(status.identities[0].id);
+  });
+
   it('Logs into existing account with Discord oAuth', async () => {
     const agent = request.agent(globalThis.sailsApp);
     const userRes = await agent.post('/api/user/signup').send({ username: 'totallynotthegovernment69', password: 'notagoodpassword' });
