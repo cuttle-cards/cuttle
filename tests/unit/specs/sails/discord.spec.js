@@ -2,8 +2,6 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import nock from 'nock';
 import request from 'supertest';
 
-// Setup mock responses from outside requests
-
 const discordCallback = async(agent, prevIdentity = false) => {
   const location = prevIdentity ? 'http://localhost:8080/': 'http://localhost:8080/?oauthsignup=discord';
 
@@ -22,6 +20,7 @@ describe('Login with Discord oAuth', () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
 
+    // Mock request made to discord
     nock('https://discord.com')
       .post('/api/oauth2/token')
       .reply(200, {
