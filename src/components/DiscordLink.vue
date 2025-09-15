@@ -1,14 +1,22 @@
 <template>
-  <v-list-item :title="title" prepend-icon="mdi-link" @click="handleClick" />
+  <v-list-item
+    :title="title"
+    prepend-icon="mdi-link"
+    :disabled="hasDiscord"
+    @click="handleClick"
+  />
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const authStore = useAuthStore();
 
 const hasDiscord = computed(() => {return authStore.identities.some(({ provider }) => provider === 'discord');});
-const title = hasDiscord.value ? 'Linked to Discord' : 'Link Discord';
+const title = t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord');
 
 const handleClick = () => {
   if (hasDiscord.value) {
