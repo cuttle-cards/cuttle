@@ -4,6 +4,19 @@ import request from 'supertest';
 
 // Setup mock responses from outside requests
 
+const discordCallback = async(agent, prevIdentity = false) => {
+  const location = prevIdentity ? 'http://localhost:8080/': 'http://localhost:8080/?oauthsignup=discord';
+
+  const { generateSecret } = sails.helpers.oauth;
+  const secret = generateSecret();
+
+  const res = await agent
+    .get('/api/user/discord/callback')
+    .query({ state: secret, code: '12345' });
+
+  expect(res.statusCode).toBe(302);
+  expect(res.headers.location).toBe(location);
+};
 
 describe('Login with Discord oAuth', () => {
   beforeEach(async () => {
@@ -29,15 +42,7 @@ describe('Login with Discord oAuth', () => {
     // Use Agent to persist cookies & session data
     const agent = request.agent(globalThis.sailsApp);
 
-    const { generateSecret } = sails.helpers.oauth;
-    const secret = generateSecret();
-
-    const res = await agent
-      .get('/api/user/discord/callback')
-      .query({ state: secret, code: '12345' });
-
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('http://localhost:8080/?oauthsignup=discord');
+    await discordCallback(agent);
 
     await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
 
@@ -58,15 +63,7 @@ describe('Login with Discord oAuth', () => {
 
     await agent.post('/api/user/logout');
 
-    const { generateSecret } = sails.helpers.oauth;
-    const secret = generateSecret();
-
-    const res = await agent
-      .get('/api/user/discord/callback')
-      .query({ state: secret, code: '12345' });
-
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('http://localhost:8080/?oauthsignup=discord');
+    await discordCallback(agent);
 
     await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69', password: 'notagoodpassword' });
 
@@ -84,15 +81,7 @@ describe('Login with Discord oAuth', () => {
     expect(userRes.statusCode).toBe(200);
     expect(userRes.body).toBeGreaterThan(0);
 
-    const { generateSecret } = sails.helpers.oauth;
-    const secret = generateSecret();
-
-    const res = await agent
-      .get('/api/user/discord/callback')
-      .query({ state: secret, code: '12345' });
-
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('http://localhost:8080/');
+    await discordCallback(agent, true);
 
     const { body: status } = await agent
       .get('/api/user/status');
