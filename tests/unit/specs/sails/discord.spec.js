@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import nock from 'nock';
 import request from 'supertest';
 
@@ -35,6 +35,10 @@ describe('Login with Discord oAuth', () => {
         username: 'totallynotthegovernment69',
       })
       .persist();
+  });
+
+  afterAll(() => {
+    nock.cleanAll();
   });
 
   it('Creates new account with Discord oAuth', async () => {
@@ -108,5 +112,58 @@ describe('Login with Discord oAuth', () => {
     expect(status.username).toEqual('totallynotthegovernment69');
     expect(status.id).toEqual(userRes.body);
     expect(status.id).toEqual(status.identities[0].id);
+  });
+});
+
+describe('Oauth Errors', () => {
+  beforeEach(async () => {
+    await sails.helpers.wipeDatabase();
+
+    // Mock request made to discord
+    nock('https://discord.com')
+      .post('/api/oauth2/token')
+      .reply(200, {
+        access_token: '123456',
+        token_type: 'bearer'
+      })
+      .persist();
+
+    nock('https://discord.com').get('/api/users/@me')
+      .reply(200, {
+        id: '9876564',
+        username: 'totallynotthegovernment69',
+      })
+      .persist();
+  });
+
+  afterAll(() => {
+    nock.cleanAll();
+  });
+
+  it('Returns an error when secret cannot be verified', async () => {
+    const agent = request.agent(globalThis.sailsApp);
+    const res = await agent
+      .get('/api/user/discord/callback')
+      .query({ state: 'notavalidsecret', code: '12345' });
+
+    expect(res.statusCode).toBe(302);
+    expect(res.headers.location).toBe('http://localhost:8080/?error=login.snackbar.oAuth.providerError');
+  });
+
+  it('Throws an error when username is taken', async () => {
+    const agent = request.agent(globalThis.sailsApp);
+    const userRes = await agent.post('/api/user/signup').send({ username: 'totallynotthegovernment69', password: 'notagoodpassword' });
+
+    expect(userRes.statusCode).toBe(200);
+    expect(userRes.body).toBeGreaterThan(0);
+
+    await agent.post('/api/user/logout');
+
+    await discordCallback(agent);
+
+    const res = await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toBe('login.snackbar.usernameIsTaken');
   });
 });
