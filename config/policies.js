@@ -28,12 +28,15 @@ module.exports.policies = {
     login: [ 'hasValidUsername', 'hasPassword' ],
     // reLogin does not require password intentionally-- if you are already logged in it will
     // not require a password to validate the session
-    reLogin: [ 'hasValidUsername' ],
-    oAuthRedirect: true,
-    oAuthCallback: true,
-    oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity' ],
     logout: true,
     status: true,
+  },
+
+  OAuthController: {
+    reLogin: [ 'hasValidUsername' ],
+    oAuthRedirect: [ 'hasValidOAuthProvider' ],
+    oAuthCallback: [ 'hasValidOAuthProvider', 'verifyOAuthSecretAndCode' ],
+    oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
   },
 
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],

@@ -20,19 +20,11 @@ module.exports = {
 
   // Discord hits this endpoint on response to logging in with discord
   oAuthCallBack: async function(req, res) {
-    const { code, state } = req.query;
+    const { code } = req.query;
     const { provider } = req.params;
 
-    const { verifySecret } = sails.helpers.oauth;
     const { fetchIdentity, retrieveTokenData } = sails.helpers.oauth[provider];
     try {
-      const verified = verifySecret(state);
-
-      if (!verified || !code) {
-        // throw generic error
-        throw new Error();
-      }
-
       const tokenData = await retrieveTokenData(code);
 
       const providerIdentity = await fetchIdentity(tokenData);
