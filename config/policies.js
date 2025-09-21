@@ -28,12 +28,12 @@ module.exports.policies = {
     login: [ 'hasValidUsername', 'hasPassword' ],
     // reLogin does not require password intentionally-- if you are already logged in it will
     // not require a password to validate the session
+    reLogin: [ 'hasValidUsername' ],
     logout: true,
     status: true,
   },
 
   OAuthController: {
-    reLogin: [ 'hasValidUsername' ],
     oAuthRedirect: [ 'hasValidOAuthProvider' ],
     oAuthCallback: [ 'hasValidOAuthProvider', 'verifyOAuthSecretAndCode' ],
     oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
