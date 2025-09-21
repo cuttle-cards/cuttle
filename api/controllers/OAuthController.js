@@ -99,7 +99,7 @@ module.exports = {
         // If no existing user, check username is not a duplicate and if not, create new user
         const foundUsername = await User.findOne({ username });
         if (foundUsername) {
-          throw new Error('login.snackbar.usernameIsTaken');
+          throw ({ message: 'login.snackbar.usernameIsTaken' });
         }
         user = await User.create({ username: username }).fetch();
       }
@@ -116,7 +116,7 @@ module.exports = {
 
       return res.ok(user.id);
     } catch (e) {
-      return res.badRequest(e);
+      return res.badRequest(e.message);
     }
   }
 };
