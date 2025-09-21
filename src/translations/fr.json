@@ -48,7 +48,8 @@
       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas.",
       "oAuth": {
         "alreadyLinked": "Compte déjà lié à un autre utilisateur",
-        "providerError": "Erreur de connexion au fournisseur"
+        "providerError": "Erreur de connexion au fournisseur",
+        "invalidProvider": "Fournisseur invalide"
       }
     }
   },

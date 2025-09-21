@@ -48,7 +48,8 @@
       "wrongPassword": "Username and password do not match",
       "oAuth": {
         "alreadyLinked": "Account already linked to another user",
-        "providerError": "Error connecting to provider"
+        "providerError": "Error connecting to provider",
+        "invalidProvider" : "invalidProvider"
       }
     }
   },
