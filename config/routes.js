@@ -17,9 +17,11 @@ module.exports.routes = {
   '/api/user/reLogin': 'userController.reLogin',
   '/api/user/logout': 'userController.logout',
   '/api/user/status': 'userController.status',
-  'GET /api/user/:provider/redirect': 'userController.oAuthRedirect',
-  'GET /api/user/:provider/callback': 'userController.oAuthCallback',
-  'POST /api/user/:provider/completeOauth': 'userController.oAuthComplete',
+
+  // OAuth
+  'GET /api/user/:provider/redirect': 'OAuthController.oAuthRedirect',
+  'GET /api/user/:provider/callback': 'OAuthController.oAuthCallback',
+  'POST /api/user/:provider/completeOauth': 'OAuthController.oAuthCompleteRegistration',
 
   // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
