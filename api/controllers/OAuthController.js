@@ -3,6 +3,15 @@
  * OAuthController
  *
  * @description :: Server-side logic for managing Users via Oauth authentication
+ *
+ * Flow is: 
+ *   1) Client navigates to oAuthRedirect(), which redirects to identity provider's auth
+ *   2) Identity provider redirects back to our oAuthCallback(), logs user in or preps 1st-time registration
+ *   3) New users decide whether to create a new account or link an old one, then hit oAuthCompleteRegistration()
+ *
+ * Covers three cases:
+ *   Returning user login, New user signup, Linking account before login, link account after login
+ *
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
