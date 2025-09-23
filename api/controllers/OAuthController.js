@@ -3,6 +3,15 @@
  * OAuthController
  *
  * @description :: Server-side logic for managing Users via Oauth authentication
+ *
+ * Flow is: 
+ *   1) Client navigates to oAuthRedirect(), which redirects to identity provider's auth
+ *   2) Identity provider redirects back to our oAuthCallback(), logs user in or preps 1st-time registration
+ *   3) New users decide whether to create a new account or link an old one, then hit oAuthCompleteRegistration()
+ *
+ * Covers three cases:
+ *   Returning user login, New user signup, Linking account before login, link account after login
+ *
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
@@ -75,16 +84,14 @@ module.exports = {
   oAuthCompleteRegistration: async function(req, res) {
     const { username, password } = req.body;
     const { fetchIdentity } = sails.helpers.oauth[req.params.provider];
-    try{
+    try {
       // Find existing user
       let user = null;
       if ( password ) {
         try {
           user = await User.findOne({ username });
           if (!user) {
-            throw {
-              message: 'login.snackbar.userNotFound',
-            };
+            throw new Error('login.snackbar.userNotFound');
           }
           await passwordAPI.checkPass(password, user.encryptedPassword);
         } catch (err) {
@@ -99,7 +106,7 @@ module.exports = {
         // If no existing user, check username is not a duplicate and if not, create new user
         const foundUsername = await User.findOne({ username });
         if (foundUsername) {
-          throw ({ message: 'login.snackbar.usernameIsTaken' });
+          throw new Error('login.snackbar.usernameIsTaken');
         }
         user = await User.create({ username: username }).fetch();
       }

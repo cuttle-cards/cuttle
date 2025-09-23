@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const authStore = useAuthStore();
 
-const hasDiscord = computed(() => {return authStore.identities.some(({ provider }) => provider === 'discord');});
+const hasDiscord = computed(() => authStore.identities.some(({ provider }) => provider === 'discord'));
 const title = t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord');
 
 const handleClick = () => {

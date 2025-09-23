@@ -10,7 +10,8 @@ module.exports = {
     user: {
       model: 'user',
     },
-    providerId:{
+    // id of user in 3rd party identity provider
+    providerId: {
       type:'string',
       required: true
     },
@@ -18,7 +19,7 @@ module.exports = {
       type: 'string',
       required: true
     },
-    providerUsername:{
+    providerUsername: {
       type: 'string',
     }
   },
