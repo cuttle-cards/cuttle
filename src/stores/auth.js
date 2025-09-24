@@ -84,7 +84,7 @@ export const useAuthStore = defineStore('auth', {
         if (username) {
           this.authSuccess(username);
         }
-        if(identities) {
+        if (identities) {
           this.identities = identities;
         }
 
@@ -146,7 +146,7 @@ export const useAuthStore = defineStore('auth', {
     },
     async completeOAuth(provider, credentials) {
       const { username, password } = credentials;
-      try{
+      try {
         await fetch(`/api/user/${provider}/completeOauth`, {
           method: 'POST',
           headers: new Headers({
