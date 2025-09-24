@@ -21,6 +21,7 @@ module.exports = {
     if (!response.ok) {
       // throw generic error
       return exits.error(
+        new Error('Could not authenticate with discord')
       );
     }
 
