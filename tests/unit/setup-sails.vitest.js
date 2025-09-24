@@ -5,6 +5,7 @@ let sailsApp;
 
 beforeAll(async () => {
   sailsApp = await bootServer();
+  globalThis.sailsApp = sailsApp.hooks.http.server;
 });
 
 afterAll(async () => {

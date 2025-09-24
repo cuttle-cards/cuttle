@@ -18,6 +18,11 @@ module.exports.routes = {
   '/api/user/logout': 'userController.logout',
   '/api/user/status': 'userController.status',
 
+  // OAuth
+  'GET /api/user/:provider/redirect': 'OAuthController.oAuthRedirect',
+  'GET /api/user/:provider/callback': 'OAuthController.oAuthCallback',
+  'POST /api/user/:provider/completeOauth': 'OAuthController.oAuthCompleteRegistration',
+
   // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
   '/api/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
@@ -36,7 +41,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/rematch': 'game/rematch',
 
   '/api/game/join-rematch': 'game/join-rematch',
-  
+
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
   'DELETE /api/test/wipe-database': 'TestController.wipeDatabase',

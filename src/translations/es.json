@@ -36,10 +36,21 @@
     "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Prepara una valiente ofensiva mientras frustras los planes de tu rival con malvados trucos. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord",
+    "loginDiscord": "Iniciar sesión con Discord",
+    "linkDiscord": "Vincular Discord",
+    "discordLinked": "Discord vinculado",
+    "socials": "¡Mira nuestras redes sociales para más contenido de Cuttle!",
+    "linkAccount": "Vincula tu cuenta",
+    "createUsername": "Crea un nombre de usuario para tu nueva cuenta",
     "snackbar": {
       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
       "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
-      "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
+      "wrongPassword": "El nombre de usuario y la contraseña no coinciden",
+      "oAuth": {
+        "alreadyLinked": "Cuenta ya vinculada a otro usuario",
+        "providerError": "Error al conectar con el proveedor",
+        "invalidProvider": "Proveedor no válido"
+      }
     }
   },
   "lobby": {

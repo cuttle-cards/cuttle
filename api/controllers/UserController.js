@@ -65,7 +65,7 @@ module.exports = {
       req.session.loggedIn = true;
 
       return res.ok({ username: user.username });
-      
+
     } catch (err) {
       return res.badRequest(err);
     }
@@ -78,7 +78,6 @@ module.exports = {
 
   status: async function (req, res) {
     const { usr: id, loggedIn: authenticated } = req.session;
-
     // User is not logged in, get out of here
     if (!authenticated || !id) {
       return res.ok({
@@ -88,11 +87,12 @@ module.exports = {
 
     try {
       // If the user is logged in, see if we can find them first to verify they exist
-      const { username } = await userAPI.findUser(id);
+      const { username, identities } = await User.findOne({ id }).populate('identities');
       return res.ok({
         id,
         username,
         authenticated,
+        identities
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
@@ -101,3 +101,4 @@ module.exports = {
     }
   },
 };
+

@@ -7,7 +7,7 @@
       <v-container id="welcome-container" fluid class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <div class="d-flex align-center">          
+          <div class="d-flex align-center">
             <TheLanguageSelector variant="light" />
             <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
               {{ buttonText }}
@@ -117,19 +117,56 @@
                   {{ switchLabelText }}
                 </v-btn>
               </div>
-
               <v-btn
-                class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+                class="w-100 mt-10 mb-8 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
-                href="https://discord.com/invite/9vrAZ8xGyh"
-                target="_blank"
+                type="button"
+                @click="oAuth('discord')"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                <span class="discordButton">{{ t('login.joinDiscord') }}</span>
+                <span class="discordButton"> {{ t('login.loginDiscord') }} </span>
               </v-btn>
             </v-form>
-
+            <div class="d-flex align-center flex-column m-10">
+              <p class="text-h6">
+                {{ t('login.socials') }}
+              </p>
+              <div class="my-4 d-flex align-center">
+                <v-btn
+                  variant="text"
+                  size="large"
+                  href="https://discord.com/invite/9vrAZ8xGyh"
+                  target="_blank"
+                >
+                  <img src="/img/loginView/logo-discord-blue.svg">
+                </v-btn>
+                <v-btn
+                  variant="text"
+                  size="large"
+                  href="https://www.youtube.com/@cuttle-cards2245"
+                  target="_blank"
+                >
+                  <img src="/img/loginView/logo-youtube.svg">
+                </v-btn>
+                <v-btn
+                  variant="text"
+                  size="large"
+                  href="https://www.patreon.com/cuttle"
+                  target="_blank"
+                >
+                  <img src="/img/loginView/logo-patreon.svg">
+                </v-btn>
+                <v-btn
+                  variant="text"
+                  size="large"
+                  href="https://github.com/cuttle-cards/cuttle"
+                  target="_blank"
+                >
+                  <img src="/img/loginView/logo-github.svg">
+                </v-btn>
+              </div>
+            </div>
             <BaseSnackbar
               v-model="showSnackBar"
               :message="snackBarMessage"
@@ -187,14 +224,13 @@ import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
-
 export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
     BaseVideo,
     MarkdownContent,
-    TheLanguageSelector
+    TheLanguageSelector,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -204,10 +240,12 @@ export default {
     const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
     useHead({
-      link: [ {
-        rel: 'canonical',
-        href: () => 'https://www.cuttle.cards/signup'
-      } ]
+      link: [
+        {
+          rel: 'canonical',
+          href: () => 'https://www.cuttle.cards/signup',
+        },
+      ],
     });
     return {
       t,
@@ -251,6 +289,17 @@ export default {
       return this.t('login.haveAccount');
     },
   },
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        if (this.$route.query?.error) {
+          this.handleError(this.t(this.$route.query.error));
+          this.$router.replace('/');
+        }
+      }
+    }
+  },
   mounted() {
     if (this.goingToForm) {
       this.scrollAndFocusLogin();
@@ -288,9 +337,12 @@ export default {
       }
       return this.$router.push(`/lobby/${lobbyRedirectId}`);
     },
+    oAuth(provider){
+      this.authStore.oAuth(provider);
+    },
     handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage =  this.t(messageKey);
+      this.snackBarMessage = this.t(messageKey);
       this.loading = false;
     },
     clearSnackBar() {
@@ -377,9 +429,9 @@ export default {
   margin-right: 18px;
 }
 
-.discordButton{
-    white-space: normal;
-  }
+.discordButton {
+  white-space: normal;
+}
 
 #username-login-form {
   padding: 0;
