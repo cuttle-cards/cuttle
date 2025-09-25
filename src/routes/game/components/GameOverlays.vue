@@ -60,7 +60,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t(opponentDiscardingText) }}
+        {{ opponentDiscardingText }}
       </h1>
     </v-overlay>
 
@@ -71,7 +71,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentChoosingFromScrap') }}
+        {{ `${opponentUsername} ${t('game.overlays.choosingFromScrap')}` }}
       </h1>
     </v-overlay>
 
@@ -81,7 +81,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentPlayingFromDeck') }}
+        {{ `${opponentUsername} ${t('game.overlays.playingFromDeck')}` }}
       </h1>
     </v-overlay>
 
@@ -92,7 +92,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentMustDiscardJack') }}
+        {{ `${opponentUsername} ${t('game.overlays.mustDiscardJack')}` }}
       </h1>
     </v-overlay>
 
@@ -102,7 +102,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        <div>{{ t('game.overlays.opponentConsideringStalemate') }}</div>
+        <div>{{ `${opponentUsername} ${t('game.overlays.consideringStalemate')}` }}</div>
       </h1>
     </v-overlay>
 
@@ -172,8 +172,8 @@ export default {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
     showWaitingForOpponetToCounterMessage() {
-      const mayCounter = this.t('game.overlays.opponentMayCounter');
-      const mustResolve = this.t('game.overlays.opponentMustResolve');
+      const mayCounter = `${this.opponentUsername} ${this.t('game.overlays.mayCounter')}`;
+      const mustResolve = `${this.opponentUsername} ${this.t('game.overlays.mustResolve')}`;
       const opponentHasTwo = this.gameStore.opponent.hand.some((card) => card.rank === 2);
       if (this.gameStore.playerQueenCount || (this.gameStore.hasGlassesEight && !opponentHasTwo)) {
         return mustResolve;
@@ -191,10 +191,13 @@ export default {
     showWaitingForOpponentToPlayFromDeck() {
       return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
     },
+    opponentUsername() {
+      return this.gameStore.opponentUsername;
+    },
     opponentDiscardingText() {
       return this.gameStore.opponent.hand.length === 0 ?
-        'game.overlays.opponentSkipsDiscarding' :
-        'game.overlays.opponentIsDiscarding';
+        `${this.opponentUsername} ${this.t('game.overlays.skipsDiscarding')}` :
+        `${this.opponentUsername} ${this.t('game.overlays.isDiscarding')}`;
     },
   },
   methods: {
