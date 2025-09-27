@@ -65,6 +65,10 @@ const createGameCard = (card) => {
   if (!card) {
     return null;
   }
+  // Short-circuit hidden cards to leave them as-is
+  if (card.isHidden) {
+    return card;
+  }
   return new GameCard(card);
 };
 
