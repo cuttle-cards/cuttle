@@ -14,7 +14,21 @@ module.exports = async function(req, res) {
       throw new NotFoundError(`Can't find Game ${ gameId }`);
     }
 
-    Game.subscribe(req, [ gameId ]);
+    let pNum;
+    switch (req.session.usr) {
+      case game.p0.id:
+        pNum = 0;
+        break;
+      case game.p1.id:
+        pNum = 1;
+        break;
+      default:
+        pNum = 'spectator';
+    }
+
+    // Join socket room for the correct player perspective for this game
+    const roomName = `game_${gameId}_p${pNum}`;
+    sails.sockets.join(req, roomName);
 
     if (!game.gameStates.length) {
       return res.ok({

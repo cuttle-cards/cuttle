@@ -9,7 +9,11 @@ module.exports = async function (req, res) {
     const newGameId = oldGame?.rematchGame;
 
     const game = await Game.findOne({ id: newGameId });
-    Game.subscribe(req, [ game.id ]);
+    let pNum = game.p0.id === req.session.usr ? 0 : 1;
+
+    // Join socket room for the correct player perspective for this game
+    const roomName = `game_${gameId}_p${pNum}`;
+    sails.sockets.join(req, roomName);
 
     return res.ok();
   } catch (err) {

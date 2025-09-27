@@ -36,8 +36,8 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'home.snackbar.spectateNoGamestates' });
     }
 
-    // Subscribe socket to game
-    Game.subscribe(req, [ gameId ]);
+    // Subscribe socket to game as spectator
+    sails.sockets.join(req, `game_${gameId}_spectator`);
 
     // Add spectating users to table
     const spectatorAlreadyExisted = await UserSpectatingGame.updateOne(
