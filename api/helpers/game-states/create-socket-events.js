@@ -97,7 +97,7 @@ module.exports = {
 
           return {
             ...player,
-            hand: player.hand.map(createHiddenCard);
+            hand: player.hand.map(createHiddenCard),
           };
         });
       };

@@ -4,6 +4,11 @@ module.exports = {
   description: 'Creates three socket events and broadcasts them to their respective rooms (p0, p1, spectator)',
 
   inputs: {
+    game: {
+      type: 'ref',
+      description: 'Game object',
+      required: true,
+    },
     gameState: {
       type: 'ref',
       description: 'Game state object (unpacked)',
@@ -11,7 +16,7 @@ module.exports = {
     },
   },
 
-  fn: async function ({ gameState }, exits) {
+  fn: async function ({ game, gameState }, exits) {
     try {
       // Create the three socket events using the createSocketEvents helper
       const socketEvents = await sails.helpers.gameStates.createSocketEvents(game, gameState);
@@ -28,13 +33,13 @@ module.exports = {
       // Broadcast to each room
       sails.sockets.broadcast(p0Room, 'game', p0State),
       sails.sockets.broadcast(p1Room, 'game', p1State),
-      sails.sockets.broadcast(spectatorRoom, 'game', spectatorState)
+      sails.sockets.broadcast(spectatorRoom, 'game', spectatorState);
 
       return exits.success({
         p0State,
         p1State,
         spectatorState,
-        rooms: [p0Room, p1Room, spectatorRoom]
+        rooms: [ p0Room, p1Room, spectatorRoom ]
       });
 
     } catch (err) {

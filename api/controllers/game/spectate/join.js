@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
       await UserSpectatingGame.create({ gameSpectated: game.id, spectator: spectator.id });
     }
 
-    const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
+    const { unpackGamestate, createSocketEvents } = sails.helpers.gameStates;
     // Default to first gamestate for finished games, last for live ones
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
@@ -64,7 +64,7 @@ module.exports = async function (req, res) {
         });
     }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
-    const socketEvent = await createSocketEvent(game, gameState);
+    const socketEvents = await createSocketEvents(game, gameState);
     // Only notify others that a spectator joined, do not send full game state
     Game.publish([ game.id ], {
       gameId: game.id,
@@ -72,7 +72,7 @@ module.exports = async function (req, res) {
       username: spectator.username,
     });
 
-    return res.ok(socketEvent);
+    return res.ok(socketEvents.spectatorState);
 
   } catch (err) {
 

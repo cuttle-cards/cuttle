@@ -8,26 +8,40 @@ module.exports = async function(req, res) {
     const game = await Game.findOne({ id: gameId })
       .populate('p0')
       .populate('p1')
-      .populate('gameStates', { sort: 'createdAt ASC' });
+      .populate('gameStates', { sort: 'createdAt ASC' })
+      .populate('spectatingUsers');
 
     if (!game) {
       throw new NotFoundError(`Can't find Game ${ gameId }`);
     }
 
-    let pNum;
-    switch (req.session.usr) {
-      case game.p0.id:
-        pNum = 0;
-        break;
-      case game.p1.id:
-        pNum = 1;
-        break;
-      default:
-        pNum = 'spectator';
+    let userRelationship;
+    let isSpectator = false;
+    
+    // Check if user is p0, p1, or a spectator
+    if (req.session.usr === game.p0.id) {
+      userRelationship = 'p0';
+    } else if (req.session.usr === game.p1.id) {
+      userRelationship = 'p1';
+    } else {
+      // Check if user is already spectating this game
+      const existingSpectator = game.spectatingUsers?.find(usg => usg.spectator === req.session.usr);
+      if (existingSpectator) {
+        userRelationship = 'spectator';
+        isSpectator = true;
+      } else {
+        // Make user a spectator by creating spectatingUsers row
+        await spectatingUsers.create({ 
+          gameSpectated: game.id, 
+          spectator: req.session.usr 
+        });
+        userRelationship = 'spectator';
+        isSpectator = true;
+      }
     }
 
     // Join socket room for the correct player perspective for this game
-    const roomName = `game_${gameId}_p${pNum}`;
+    const roomName = `game_${gameId}_${userRelationship}`;
     sails.sockets.join(req, roomName);
 
     if (!game.gameStates.length) {
@@ -38,7 +52,7 @@ module.exports = async function(req, res) {
       });
     }
 
-    const {  unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
+    const {  unpackGamestate, createSocketEvents } = sails.helpers.gameStates;
 
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
@@ -52,7 +66,10 @@ module.exports = async function(req, res) {
     }
 
     const gameState = unpackGamestate(packedGameState);
-    const response = await createSocketEvent(game, gameState);
+    const socketEvents = await createSocketEvents(game, gameState);
+    
+    // Return the appropriate state based on user relationship
+    let response = socketEvents[`${userRelationship}State`];
 
     return res.ok(response);
 

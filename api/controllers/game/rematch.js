@@ -86,7 +86,7 @@ module.exports = async function (req, res) {
     newGame.p1 = { ...newP1 };
     // Deal cards in new game
     const newFullGame = await sails.helpers.gameStates.dealCards(newGame);
-    const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
+    const { spectatorState: socketEvent } = await sails.helpers.gameStates.createSocketEvents(newGame, newFullGame); // Use spectator state for rematch notification
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
