@@ -9,7 +9,7 @@ module.exports = async function (req, res) {
       .populate('p0')
       .populate('p1');
 
-    const { createSocketEvents, saveGamestate, convertStrToCard } = sails.helpers.gameStates;
+    const { publishGameState, saveGamestate, unpackGamestate, convertStrToCard } = sails.helpers.gameStates;
 
     const {
       p0Hand,
@@ -43,7 +43,7 @@ module.exports = async function (req, res) {
       populatedDeck.unshift(topCard);
     }
 
-    const gameState = {
+    let gameState = {
       p0: {
         hand: p0Hand,
         points: p0Points,
@@ -71,10 +71,10 @@ module.exports = async function (req, res) {
     };
 
     const gameStateRow = await saveGamestate(gameState);
+    gameState = unpackGamestate(gameStateRow);
     // add newest GameStateRow to game in memory instead of re-querying
     game.gameStates.push(gameStateRow);
-    const { spectatorState } = await createSocketEvents(game, gameState);
-    Game.publish([ game.id ], spectatorState);
+    await sails.helpers.gameStates.publishGameState(game, gameState);
 
     return res.ok(gameState);
   } catch (err) {
