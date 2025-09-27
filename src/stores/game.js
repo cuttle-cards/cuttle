@@ -91,8 +91,6 @@ export const useGameStore = defineStore('game', () => {
   const scrap = ref([]);
   const turn = ref(0);
   const twos = ref([]);
-  const topCard = ref(null);
-  const secondCard = ref(null);
   const oneOff = ref(null);
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
@@ -184,6 +182,8 @@ export const useGameStore = defineStore('game', () => {
   const waitingForOpponentToPlayFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value);
   const waitingForOpponentToStalemate = computed(() => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value === myPNum.value);
   const consideringOpponentStalemateRequest = computed(() => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value !== myPNum.value);
+  const topCard = computed(() => deck.value[0] ?? null);
+  const secondCard = computed(() => deck.value[1] ?? null);
 
   // Actions
   function updateGame(newGame) {
@@ -206,8 +206,6 @@ export const useGameStore = defineStore('game', () => {
     players.value = newGame.players?.map((player) => setPlayers(player, myPNum.value, hasGlassesEight.value, gameHistoryStore.isSpectating)) ?? players.value;
     spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
-    topCard.value = createGameCard(newGame.topCard) ?? null;
-    secondCard.value = createGameCard(newGame.secondCard) ?? null;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
     isRanked.value = newGame.isRanked ?? isRanked.value;
@@ -245,8 +243,6 @@ export const useGameStore = defineStore('game', () => {
     scrap.value = [];
     turn.value = 0;
     twos.value = [];
-    topCard.value = null;
-    secondCard.value = null;
     oneOff.value = null;
     oneOffTarget.value = null;
     isRanked.value = false;

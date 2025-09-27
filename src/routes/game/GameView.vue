@@ -518,14 +518,7 @@ export default {
       return this.gameHistoryStore.log;
     },
     deckLength() {
-      let res = this.deck.length;
-      if (this.gameStore.topCard) {
-        res++;
-      }
-      if (this.gameStore.secondCard) {
-        res++;
-      }
-      return res;
+      return this.deck.length;
     },
     spectatingUsers() {
       return this.gameStore.spectatingUsers;
