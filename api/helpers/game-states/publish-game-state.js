@@ -43,7 +43,7 @@ module.exports = {
       });
 
     } catch (err) {
-      return exits.error(`Error publishing game state: ${err.message}`);
+      return exits.error(new Error(`Error publishing game state: ${err.message}`));
     }
   },
 };
