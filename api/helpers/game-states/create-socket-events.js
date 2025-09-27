@@ -1,9 +1,10 @@
 const MoveType = require('../../../utils/MoveType.json');
+const GamePhase = require('../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Create Socket Event',
+  friendlyName: 'Create Socket Events',
 
-  description: 'Creates a Socket event, and blast game over if game is over',
+  description: 'Creates three Socket events (p0State, p1State, spectatorState) with asymmetric information',
 
   inputs: {
     game: {
@@ -80,7 +81,43 @@ module.exports = {
         .filter(({ activelySpectating }) => activelySpectating === true)
         .map(({ spectator }) => spectator.username);
 
-      const socketGame = {
+      // Helper function to create hidden card placeholder
+      const createHiddenCard = () => ({ isHidden: true });
+
+      // Helper function to hide opponent's hand cards
+      const hideOpponentHand = (playerIndex, originalPlayers) => {
+        const hasGlassesEight = originalPlayers[playerIndex]?.faceCards?.some(card => card.rank === 8);
+        const deckIsEmpty = gameState.deck.length === 0;
+        
+        return originalPlayers.map((player, index) => {
+          const isPlayer = index === playerIndex;
+          if (isPlayer || hasGlassesEight || deckIsEmpty) {
+            return player;
+          }
+
+          return {
+            ...player,
+            hand: player.hand.map(createHiddenCard);
+          };
+        });
+      };
+
+      // Helper function to create deck with visibility rules
+      const hideDeck = () => {
+        const isResolvingSeven = gameState.phase === GamePhase.RESOLVING_SEVEN;
+        
+        // Show deck if: resolving seven (first two cards only)
+        if (isResolvingSeven) {
+          return [
+            ...gameState.deck.slice(0, 2), // First two cards visible
+            ...gameState.deck.slice(2).map(createHiddenCard) // Rest hidden
+          ];
+        }
+        return gameState.deck.map(createHiddenCard); // All cards hidden
+      };
+
+      // Create base socket game object (spectator state)
+      const baseSocketGame = {
         players,
         id: game.id,
         createdAt: game.createdAt,
@@ -105,10 +142,8 @@ module.exports = {
         passes: countPasses,
         turn: gameState.turn,
         phase: gameState.phase,
-        deck: gameState.deck.slice(2),
+        deck: gameState.deck,
         scrap: gameState.scrap,
-        topCard: gameState.deck[0],
-        secondCard: gameState.deck[1],
         twos: gameState.twos,
         resolved: gameState.resolved,
         oneOff: gameState.oneOff,
@@ -128,9 +163,9 @@ module.exports = {
 
       const change = gameState.moveType;
 
-      const fullSocketEvent = {
+      const baseSocketEvent = {
         change,
-        game: socketGame,
+        game: baseSocketGame,
         victory,
         happened,
         playedBy,
@@ -143,11 +178,38 @@ module.exports = {
         ...(discardedCards && { discardedCards }),
       };
 
+      // Create spectator state (full visibility)
+      const spectatorState = { ...baseSocketEvent };
+
+      // Create p0 state (asymmetric visibility)
+      const p0State = {
+        ...baseSocketEvent,
+        game: {
+          ...baseSocketGame,
+          players: hideOpponentHand(0, players),
+          deck: hideDeck(),
+        }
+      };
+
+      // Create p1 state (asymmetric visibility)
+      const p1State = {
+        ...baseSocketEvent,
+        game: {
+          ...baseSocketGame,
+          players: hideOpponentHand(1, players),
+          deck: hideDeck(),
+        }
+      };
+
       if (victory.gameOver) {
         sails.sockets.blast('gameFinished', { gameId: game.id });
       }
 
-      return exits.success(fullSocketEvent);
+      return exits.success({
+        p0State,
+        p1State,
+        spectatorState
+      });
     } catch (err) {
       return exits.error(`Error emitting socket: ${err.message}`);
     }
