@@ -66,11 +66,14 @@ module.exports = async function (req, res) {
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvents = await createSocketEvents(game, gameState);
     // Only notify others that a spectator joined, do not send full game state
-    Game.publish([ game.id ], {
+    const payload = {
       gameId: game.id,
       change: 'spectatorJoined',
       username: spectator.username,
-    });
+    };
+    sails.sockets.broadcast(`game_${id}_p0`, 'game', payload);
+    sails.sockets.broadcast(`game_${id}_p1`, 'game', payload);
+    sails.sockets.broadcast(`game_${id}_spectator`, 'game', payload);
 
     return res.ok(socketEvents.spectatorState);
 

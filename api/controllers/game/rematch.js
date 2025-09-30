@@ -36,11 +36,14 @@ module.exports = async function (req, res) {
 
     if (!bothWantToRematch) {
       game = await Game.updateOne({ id: game.id }).set(gameUpdates);
-      Game.publish([ game.id ], {
+      const payload = {
         change: 'rematch',
         game,
         pNum: oldPNum,
-      });
+      };
+      sails.sockets.broadcast(`game_${id}_p0`, 'game', payload);
+      sails.sockets.broadcast(`game_${id}_p1`, 'game', payload);
+      sails.sockets.broadcast(`game_${id}_spectator`, 'game', payload);
   
       await sails.helpers.unlockGame(game.lock);
       return res.ok();
@@ -88,13 +91,16 @@ module.exports = async function (req, res) {
     const newFullGame = await sails.helpers.gameStates.dealCards(newGame);
     const { spectatorState: socketEvent } = await sails.helpers.gameStates.createSocketEvents(newGame, newFullGame); // Use spectator state for rematch notification
 
-    Game.publish([ game.id ], {
+    const payload = {
       change: 'newGameForRematch',
       oldGameId : Number(oldGameId),
       gameId: newGame.id,
-      newGame: socketEvent.game
-    });
-    
+      newGame: socketEvent.game,
+    };
+    sails.sockets.broadcast(`game_${id}_p0`, 'game', payload);
+    sails.sockets.broadcast(`game_${id}_p1`, 'game', payload);
+    sails.sockets.broadcast(`game_${id}_spectator`, 'game', payload);
+
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
