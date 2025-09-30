@@ -74,7 +74,7 @@ module.exports = async function (req, res) {
     gameState = unpackGamestate(gameStateRow);
     // add newest GameStateRow to game in memory instead of re-querying
     game.gameStates.push(gameStateRow);
-    await sails.helpers.gameStates.publishGameState(game, gameState);
+    await publishGameState(game, gameState);
 
     return res.ok(gameState);
   } catch (err) {
