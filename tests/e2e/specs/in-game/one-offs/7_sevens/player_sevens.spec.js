@@ -37,7 +37,6 @@ describe('Playing SEVENS', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-      topCard: Card.FOUR_OF_CLUBS,
     });
   });
 
@@ -71,7 +70,6 @@ describe('Playing SEVENS', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-      topCard: Card.SIX_OF_DIAMONDS,
     });
   });
 
@@ -116,7 +114,6 @@ describe('Playing SEVENS', () => {
       p1Points: [ Card.TEN_OF_HEARTS ],
       p1FaceCards: [ Card.QUEEN_OF_CLUBS ],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-      topCard: Card.JACK_OF_CLUBS,
     });
   });
 
@@ -178,7 +175,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
-        topCard: Card.JACK_OF_DIAMONDS,
       });
     });
 
@@ -212,7 +208,6 @@ describe('Playing SEVENS', () => {
         p1Points: [ Card.SIX_OF_DIAMONDS ],
         p1FaceCards: [ Card.QUEEN_OF_CLUBS ],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS ],
-        topCard: Card.JACK_OF_DIAMONDS,
       });
 
       // see if opponent can still make moves
@@ -259,7 +254,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS ],
-        topCard: Card.JACK_OF_DIAMONDS,
       });
 
       // see if opponent can still make moves
@@ -398,7 +392,6 @@ describe('Playing SEVENS', () => {
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
-        topCard: Card.SIX_OF_CLUBS,
       });
     }); // End seven queen test
 
@@ -431,7 +424,6 @@ describe('Playing SEVENS', () => {
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
-        topCard: Card.SIX_OF_CLUBS,
       });
     }); // End seven glasses test
   }); // End seven face card describe
@@ -467,7 +459,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS ],
-        topCard: Card.SIX_OF_DIAMONDS,
       });
     }); // End scuttle from seven
 
@@ -501,7 +492,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.NINE_OF_DIAMONDS, Card.NINE_OF_CLUBS ],
-        topCard: Card.SIX_OF_DIAMONDS,
       });
     }); // End scuttle with NINE from seven
 
@@ -564,8 +554,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [],
-        topCard: Card.SIX_OF_CLUBS,
-        secondCard: Card.TWO_OF_SPADES,
       });
 
       // p1 jacks the four of diamonds
@@ -579,8 +567,6 @@ describe('Playing SEVENS', () => {
         p1Points: [ Card.FOUR_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [],
-        topCard: Card.SIX_OF_CLUBS,
-        secondCard: Card.TWO_OF_SPADES,
       });
 
       // p0 plays seven as a one-off
@@ -600,7 +586,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.SIX_OF_CLUBS, Card.FOUR_OF_DIAMONDS, Card.JACK_OF_CLUBS ],
-        topCard: Card.TWO_OF_SPADES,
       });
     });
   }); // End seven scuttle describe()
@@ -640,7 +625,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_SPADES, Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
-        topCard: Card.JACK_OF_CLUBS,
       });
     });
 
@@ -708,7 +692,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.QUEEN_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS ],
-        topCard: Card.JACK_OF_CLUBS,
       });
     }); // End playing topCard TWO from seven
 
@@ -747,7 +730,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.QUEEN_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS ],
-        topCard: Card.JACK_OF_CLUBS,
       });
     }); // End playing topCard TWO from seven
 
@@ -802,7 +784,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.JACK_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS ],
-        topCard: Card.FOUR_OF_CLUBS,
       });
     }); // End playing TWO on jacks from a seven
 
@@ -841,7 +822,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
-        topCard: Card.TWO_OF_SPADES,
       });
     }); // End playing NINE from seven
 
@@ -897,7 +877,6 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
-        topCard: Card.TWO_OF_SPADES,
       });
     }); // End playing NINE on jacks from a seven
 
