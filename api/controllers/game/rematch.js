@@ -35,7 +35,8 @@ module.exports = async function (req, res) {
     const bothWantToRematch = p0Rematch && p1Rematch;
 
     if (!bothWantToRematch) {
-      game = await Game.updateOne({ id: game.id }).set(gameUpdates);
+      const { id } = game;
+      game = await Game.updateOne({ id }).set(gameUpdates);
       const payload = {
         change: 'rematch',
         game,
@@ -97,9 +98,9 @@ module.exports = async function (req, res) {
       gameId: newGame.id,
       newGame: socketEvent.game,
     };
-    sails.sockets.broadcast(`game_${id}_p0`, 'game', payload);
-    sails.sockets.broadcast(`game_${id}_p1`, 'game', payload);
-    sails.sockets.broadcast(`game_${id}_spectator`, 'game', payload);
+    sails.sockets.broadcast(`game_${oldGameId}_p0`, 'game', payload);
+    sails.sockets.broadcast(`game_${oldGameId}_p1`, 'game', payload);
+    sails.sockets.broadcast(`game_${oldGameId}_spectator`, 'game', payload);
 
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
