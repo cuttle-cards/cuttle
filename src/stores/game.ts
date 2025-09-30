@@ -21,12 +21,12 @@ function queenCount(player) {
   return player?.faceCards?.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
-const compareByRankThenSuit = (card1, card2) => {
+const compareByRankThenSuit = (card1: GameCard, card2: GameCard) => {
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
-  const sortCards = (cards) => {
+const setPlayers = (player, myPnum: number, hasGlassesEight: boolean, isSpectating: boolean) => {
+  const sortCards = (cards: GameCard[]): GameCard[] => {
     if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
       return cards?.sort(compareByRankThenSuit);
     }
@@ -42,6 +42,15 @@ const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
 };
 
 class GameCard {
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  suit: number;
+  rank: number;
+  isFrozen: boolean;
+  name: string;
+  attachments: GameCard[];
+
   constructor(card) {
     const str_rank =
       {
@@ -72,9 +81,9 @@ export const useGameStore = defineStore('game', () => {
   // State
   const id = ref(null);
   const chat = ref([]);
-  const deck = ref([]);
+  const deck = ref<GameCard[]>([]);
   const log = ref([]);
-  const name = ref(null);
+  const name = ref<String | null>(null);
   const p0Ready = ref(false);
   const p1Ready = ref(false);
   const p0Rematch = ref(null);
@@ -84,11 +93,11 @@ export const useGameStore = defineStore('game', () => {
   const passes = ref(0);
   const players = ref([]);
   const spectatingUsers = ref([]);
-  const scrap = ref([]);
-  const turn = ref(0);
-  const twos = ref([]);
-  const oneOff = ref(null);
-  const oneOffTarget = ref(null);
+  const scrap = ref<GameCard[]>([]);
+  const turn = ref<number>(0);
+  const twos = ref<GameCard[]>([]);
+  const oneOff = ref<GameCard>(null);
+  const oneOffTarget = ref<GameCard>(null);
   const isRanked = ref(false);
   const showIsRankedChangedAlert = ref(false);
   // Threes
@@ -127,13 +136,13 @@ export const useGameStore = defineStore('game', () => {
   const playerUsername = computed(() => player.value?.username ?? null);
   const opponent = computed(() => players.value.length < 2 ? null : players.value[(myPNum.value + 1) % 2]);
   const opponentIsReady = computed(() => opponent.value ? (myPNum.value === 0 ? p1Ready.value : p0Ready.value) : null);
-  const opponentUsername = computed(() => opponent.value?.username ?? null);
-  const opponentPointTotal = computed(() => opponent.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
-  const opponentQueenCount = computed(() => queenCount(opponent.value));
+  const opponentUsername = computed<string | null>(() => opponent.value?.username ?? null);
+  const opponentPointTotal = computed<number>(() => opponent.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
+  const opponentQueenCount = computed<number>(() => queenCount(opponent.value));
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
-  const hasGlassesEight = computed(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false);
+  const hasGlassesEight = computed<Boolean>(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0);
   const iWantRematch = computed(() => {
     if (myPNum.value === null) {
       return false;

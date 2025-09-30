@@ -11,7 +11,7 @@ import {
 } from '@/plugins/sockets/gameListEvents';
 import { handleConnect } from '@/plugins/sockets/connectivityEvents';
 
-export const io = sails(socketIoClient);
+export const io: ReturnType<typeof socketIoClient> = sails(socketIoClient);
 
 export const reconnectSockets = () => {
   return new Promise((resolve, reject) => {
@@ -38,8 +38,8 @@ export const reconnectSockets = () => {
 };
 
 // Configure socket connection url for dev environments
-if (!import.meta.env.PROD) {
-  io.sails.url = import.meta.env.VITE_API_URL || 'http://localhost:1337';
+if (!import.meta!.env.PROD) {
+  io.sails.url = import.meta!.env.VITE_API_URL || 'http://localhost:1337';
 }
 
 io.sails.transports = [ 'websocket' ];

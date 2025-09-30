@@ -28,8 +28,9 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base' ],
-  plugins: [ 'cypress', 'vitest', 'prettier', 'mocha' ],
+  extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base', "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended" ],
+  plugins: [ 'cypress', 'vitest', 'prettier', 'mocha', 'typescript-eslint' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
     'eol-last': [ 'error', 'always' ],
@@ -49,11 +50,11 @@ module.exports = {
       'always',
       {
         'block': {
-          'markers': [ '!' ],  
+          'markers': [ '!' ],
           'exceptions': [ '*' ] // Allow JSDoc comments
         },
         'line': {
-          'markers': [ '/', '//' ], 
+          'markers': [ '/', '//' ],
           'exceptions': [ '*', '/' ] // Allow comments starting with /
         }
       }
