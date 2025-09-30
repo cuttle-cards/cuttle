@@ -1,7 +1,6 @@
 const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
 const GameStatus = require('../../../utils/GameStatus.json');
-const UserSpectatingGame = require('_/api/models/UserSpectatingGame');
 
 module.exports = async function(req, res) {
   const { gameId } = req.params;
