@@ -366,6 +366,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
+      const deckShouldBeEmpty  = fixture.deck?.length === 0;
       const playerShouldHaveGlasses = fixture[`p${pNum}FaceCards`].some((card) => card.rank === 8);
       for (let i=0; i <= 1; i++) {
         const gamePlayer = game.players[i];
@@ -378,7 +379,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
 
         // Check Hand
         const checkingCurrentPlayer = i === pNum;
-        const handShouldBeRevealed = checkingCurrentPlayer || playerShouldHaveGlasses || isSpectating;
+        const handShouldBeRevealed = checkingCurrentPlayer || playerShouldHaveGlasses || deckShouldBeEmpty || isSpectating;
         if (handShouldBeRevealed) {
           expect(cardListsMatch(gamePlayer.hand, fixturePlayer.hand)).to.eq(
             true,
