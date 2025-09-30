@@ -37,3 +37,5 @@ We have a very active Discord community and currently run 2 events per week.
 - Thursday Lunch Cuttle at 12:00pm EST
 
 [![Discord Community](https://discord.com/api/guilds/833694928684187669/widget.png?style=banner2)](https://discord.gg/9vrAZ8xGyh)
+
+Dummy text
