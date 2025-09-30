@@ -1,6 +1,7 @@
 const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
 const GameStatus = require('../../../utils/GameStatus.json');
+const UserSpectatingGame = require('_/api/models/UserSpectatingGame');
 
 module.exports = async function(req, res) {
   const { gameId } = req.params;
@@ -16,7 +17,6 @@ module.exports = async function(req, res) {
     }
 
     let userRelationship;
-    let isSpectator = false;
     
     // Check if user is p0, p1, or a spectator
     if (req.session.usr === game.p0.id) {
@@ -28,15 +28,13 @@ module.exports = async function(req, res) {
       const existingSpectator = game.spectatingUsers?.find(usg => usg.spectator === req.session.usr);
       if (existingSpectator) {
         userRelationship = 'spectator';
-        isSpectator = true;
       } else {
         // Make user a spectator by creating spectatingUsers row
-        await spectatingUsers.create({ 
+        await UserSpectatingGame.create({ 
           gameSpectated: game.id, 
           spectator: req.session.usr 
         });
         userRelationship = 'spectator';
-        isSpectator = true;
       }
     }
 
