@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     let pNum = game.p0.id === req.session.usr ? 0 : 1;
 
     // Join socket room for the correct player perspective for this game
-    const roomName = `game_${gameId}_p${pNum}`;
+    const roomName = `game_${newGameId}_p${pNum}`;
     sails.sockets.join(req, roomName);
 
     return res.ok();
