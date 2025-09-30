@@ -402,7 +402,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
         expect(cardListsMatch(gamePlayer.points, fixturePlayer.points)).to.eq(
           true,
           `P${i} Points should match fixture, but actual: ${printCardList(
-           gamePlayer.points,
+            gamePlayer.points,
           )} did not match ficture: ${printCardList(fixturePlayer.points)}`,
         );
 
