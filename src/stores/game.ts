@@ -10,11 +10,105 @@ import GamePhase from '../../utils/GamePhase.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
+export interface Player {
+  pNum: number;
+  username: string;
+  hand: GameCard[];
+  points: GameCard[];
+  faceCards: GameCard[];
+}
+
+export interface RawCard {
+  id: string;
+  suit: number;
+  rank: number;
+  createdAt: string;
+  updatedAt: string;
+  isFrozen: boolean;
+  attachments?: RawCard[];
+}
+
+export interface Game {
+  id: string;
+  turn: number;
+  deck: RawCard[];
+  scrap: RawCard[];
+  log: string[];
+  players: Player[];
+  spectatingUsers: string[];
+  twos: RawCard[];
+  oneOff?: RawCard;
+  oneOffTarget?: RawCard;
+  isRanked: boolean;
+  currentMatch?: unknown;
+  p0Ready: boolean;
+  p1Ready: boolean;
+  p0Rematch: boolean | null;
+  p1Rematch: boolean | null;
+  rematchGame?: string;
+  gameIsOver: boolean;
+  status: string;
+  phase: string;
+  lastEvent?: Record<string, unknown>;
+  name: string;
+}
+
+
+export interface SocketGame {
+  players: Player[];
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  chat: string[];
+  status: number;
+  p0Ready: boolean;
+  p1Ready: boolean;
+  p0Rematch: boolean;
+  p1Rematch: boolean;
+  turnStalemateWasRequestedByP0: number;
+  turnStalemateWasRequestedByP1: number;
+  lock: string;
+  lockedAt: string;
+  rematchGame: string;
+  spectatingUsers: Player[];
+  isRanked: boolean;
+  winner: Player;
+  match: string;
+  log: string[],
+  passes: number;
+  turn: number;
+  phase: number;
+  deck: RawCard[]
+  scrap: RawCard[],
+  twos: RawCard[],
+  resolved: RawCard,
+  oneOff: RawCard,
+  oneOffTarget: RawCard,
+  oneOffTargetType: string,
+  lastEvent: {
+    change: string;
+    pNum?: number;
+    happened: boolean;
+    oneOff?: RawCard;
+    chosenCard?: RawCard;
+    discardedCards?: string[];
+    oneOffTargetType?: string,
+  },
+  victory:{
+    gameOver: boolean;
+    winner: Player | null;
+    conceded: boolean;
+    currentMatch: string;
+  }
+};
+
+
 /**
  * @returns number of queens a given player has
  * @param player is the player object
  */
-function queenCount(player) {
+function queenCount(player: Player) {
   if (!player?.faceCards) {
     return 0;
   }
@@ -25,7 +119,7 @@ const compareByRankThenSuit = (card1: GameCard, card2: GameCard) => {
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum: number, hasGlassesEight: boolean, isSpectating: boolean) => {
+const setPlayers = (player: Player, myPnum: number, hasGlassesEight: boolean, isSpectating: boolean) => {
   const sortCards = (cards: GameCard[]): GameCard[] => {
     if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
       return cards?.sort(compareByRankThenSuit);
@@ -70,7 +164,7 @@ class GameCard {
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
 }
-const createGameCard = (card) => {
+const createGameCard = (card: RawCard): null | GameCard => {
   if (!card) {
     return null;
   }
@@ -79,25 +173,25 @@ const createGameCard = (card) => {
 
 export const useGameStore = defineStore('game', () => {
   // State
-  const id = ref(null);
+  const id = ref<string | null>(null);
   const chat = ref([]);
   const deck = ref<GameCard[]>([]);
-  const log = ref([]);
+  const log = ref<string[]>([]);
   const name = ref<String | null>(null);
   const p0Ready = ref(false);
   const p1Ready = ref(false);
-  const p0Rematch = ref(null);
-  const p1Rematch = ref(null);
-  const rematchGameId = ref(null);
+  const p0Rematch = ref<boolean | null>(null);
+  const p1Rematch = ref<boolean | null>(null);
+  const rematchGameId = ref<string | null>(null);
   const phase = ref(null);
   const passes = ref(0);
-  const players = ref([]);
+  const players = ref<Player[]>([]);
   const spectatingUsers = ref([]);
   const scrap = ref<GameCard[]>([]);
   const turn = ref<number>(0);
   const twos = ref<GameCard[]>([]);
-  const oneOff = ref<GameCard>(null);
-  const oneOffTarget = ref<GameCard>(null);
+  const oneOff = ref<GameCard | null>(null);
+  const oneOffTarget = ref<GameCard | null>(null);
   const isRanked = ref(false);
   const showIsRankedChangedAlert = ref(false);
   // Threes
@@ -130,8 +224,8 @@ export const useGameStore = defineStore('game', () => {
     const pNum = players.value.findIndex(({ username }) => username === authStore.username);
     return pNum > -1 ? pNum : null;
   });
-  const player = computed(() => players.value[myPNum.value]);
-  const playerPointTotal = computed(() => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
+  const player = computed<Player>(() => players.value[myPNum.value]);
+  const playerPointTotal = computed<number>(() => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
   const playerQueenCount = computed(() => queenCount(player.value));
   const playerUsername = computed(() => player.value?.username ?? null);
   const opponent = computed(() => players.value.length < 2 ? null : players.value[(myPNum.value + 1) % 2]);
@@ -142,7 +236,7 @@ export const useGameStore = defineStore('game', () => {
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
-  const hasGlassesEight = computed<Boolean>(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0);
+  const hasGlassesEight = computed<boolean>(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0);
   const iWantRematch = computed(() => {
     if (myPNum.value === null) {
       return false;
@@ -191,12 +285,12 @@ export const useGameStore = defineStore('game', () => {
   const secondCard = computed(() => deck.value[1] ?? null);
 
   // Actions
-  function updateGame(newGame) {
+  function updateGame(newGame: SocketGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
     lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
     lastEventCardChosen.value = newGame.lastEvent?.chosenCard ?? null;
-    lastEventPlayerChoosing.value = newGame.lastEvent?.pNum === myPNum.value ?? null;
+    lastEventPlayerChoosing.value = newGame.lastEvent?.pNum === myPNum.value ? true : null;
     lastEventDiscardedCards.value = newGame.lastEvent?.discardedCards ?? null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
@@ -214,20 +308,20 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
     isRanked.value = newGame.isRanked ?? isRanked.value;
-    currentMatch.value = newGame.currentMatch ?? currentMatch.value;
+    currentMatch.value = newGame.victory.currentMatch ?? currentMatch.value;
     p0Rematch.value = newGame.p0Rematch ?? null;
     p1Rematch.value = newGame.p1Rematch ?? null;
     rematchGameId.value = newGame.rematchGame ?? null;
-    gameIsOver.value = newGame.gameIsOver ?? false;
+    gameIsOver.value = newGame.victory.gameOver ?? false;
     status.value = newGame.status ?? GameStatus.ARCHIVED;
     phase.value = newGame.phase ?? GamePhase.MAIN;
     gameHistoryStore.gameStates = newGame.gameStates ?? [];
   }
-  function opponentJoined(newPlayer) {
+  function opponentJoined(newPlayer: Player) {
     players.value.push(cloneDeep(newPlayer));
     players.value.sort((player, opponent) => player.pNum - opponent.pNum);
   }
-  function removeSpectator(username) {
+  function removeSpectator(username: string) {
     spectatingUsers.value = spectatingUsers.value.filter((spectator) => spectator !== username);
   }
   function resetState() {
@@ -314,19 +408,19 @@ export const useGameStore = defineStore('game', () => {
     await sleep(1000);
     updateGame(game);
   }
-  async function processThrees(chosenCard, game) {
+  async function processThrees(chosenCard: RawCard, game: SocketGame) {
     phase.value = GamePhase.MAIN;
     lastEventCardChosen.value = chosenCard;
     await sleep(1000);
     updateGame(game);
   }
-  async function processFours(discardedCards, game) {
+  async function processFours(discardedCards: string[], game: SocketGame) {
     phase.value = GamePhase.MAIN;
     lastEventDiscardedCards.value = discardedCards;
     await sleep(1000);
     updateGame(game);
   }
-  async function processFives(discardedCards, game) {
+  async function processFives(discardedCards: string[], game:SocketGame) {
     phase.value = GamePhase.MAIN;
     lastEventDiscardedCards.value = discardedCards;
     if (discardedCards?.length) {
@@ -348,7 +442,7 @@ export const useGameStore = defineStore('game', () => {
         return reject(jwres.body.message);
     }
   }
-  function transformGameUrl(slug) {
+  function transformGameUrl(slug:string): string {
     switch (slug) {
       case 'draw':
       case 'points':
@@ -380,7 +474,7 @@ export const useGameStore = defineStore('game', () => {
         return `/api/game/${slug}`;
     }
   }
-  function makeSocketRequest(slug, data, method = 'POST') {
+  function makeSocketRequest(slug: string, data:Record<string, any>, method: string = 'POST'): Promise<Response> {
     const url = transformGameUrl(slug);
     return new Promise((resolve, reject) => {
       io.socket.request(
@@ -395,7 +489,7 @@ export const useGameStore = defineStore('game', () => {
       );
     });
   }
-  async function requestSubscribe(gameId) {
+  async function requestSubscribe(gameId:string) {
     return new Promise((resolve, reject) => {
       io.socket.post(
         `/api/game/${gameId}/join`,
@@ -411,7 +505,7 @@ export const useGameStore = defineStore('game', () => {
       );
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null) {
+  function requestGameState(gameId :string, gameStateIndex = -1, route = null) {
     return new Promise((resolve, reject) => {
       io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
         switch (jwres.statusCode) {
@@ -430,11 +524,11 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
+  async function requestSpectate(gameId: string, gameStateIndex = 0, route = null) {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
     try {
       resetState();
-      const res = await makeSocketRequest(slug, {});
+      const res = await makeSocketRequest(slug, {})
       updateGame(res.body.game);
       return handleInGameEvents(res.body, route);
     } catch (err) {
@@ -446,7 +540,7 @@ export const useGameStore = defineStore('game', () => {
       throw(new Error(message));
     }
   }
-  async function requestSpectateLeave() {
+  async function requestSpectateLeave():Promise<void> {
     return new Promise((resolve, reject) => {
       io.socket.delete(`/api/game/${id.value}/spectate`, (_res, jwres) => {
         if (jwres.statusCode === 200) {
@@ -457,7 +551,7 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  async function requestLeaveLobby() {
+  async function requestLeaveLobby():Promise<void> {
     return new Promise((resolve, reject) => {
       io.socket.post(`/api/game/${id.value}/leave`, (res, jwres) => {
         if (jwres.statusCode === 200) {
@@ -468,7 +562,7 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  async function requestReady() {
+  async function requestReady():Promise<void> {
     return new Promise((resolve, reject) => {
       io.socket.post(`/api/game/${id.value}/ready`, (res, jwres) => {
         if (jwres.statusCode === 200) {
@@ -481,7 +575,7 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  async function requestSetIsRanked({ isRanked: isRankedArg }) {
+  async function requestSetIsRanked({ isRanked: isRankedArg }):Promise<void> {
     return new Promise((resolve, reject) => {
       io.socket.patch(
         `/api/game/${id.value}/is-ranked`,
@@ -510,12 +604,12 @@ export const useGameStore = defineStore('game', () => {
     const moveType = MoveType.FACE_CARD;
     await makeSocketRequest('faceCard', { moveType, cardId: cardIdArg });
   }
-  async function requestScuttle(cardData) {
+  async function requestScuttle(cardData: { cardId: string, targetId: string }) {
     const moveType = MoveType.SCUTTLE;
     const { cardId, targetId } = cardData;
     await makeSocketRequest('scuttle', { moveType, cardId, targetId });
   }
-  async function requestPlayOneOff(cardIdArg) {
+  async function requestPlayOneOff(cardIdArg: string) {
     const moveType = MoveType.ONE_OFF;
     await makeSocketRequest('untargetedOneOff', { moveType, cardId: cardIdArg });
     return Promise.resolve();
@@ -545,7 +639,7 @@ export const useGameStore = defineStore('game', () => {
     const moveType = MoveType.RESOLVE_FIVE;
     await makeSocketRequest('resolveFive', { moveType, cardId: cardIdArg });
   }
-  async function requestCounter(twoId) {
+  async function requestCounter(twoId: string) {
     const moveType = MoveType.COUNTER;
     await makeSocketRequest('counter', { moveType, cardId: twoId });
   }
@@ -690,7 +784,6 @@ export const useGameStore = defineStore('game', () => {
     updateGame,
     opponentJoined,
     removeSpectator,
-    resetState,
     updateReady,
     opponentLeft,
     setGameOver,
@@ -699,8 +792,6 @@ export const useGameStore = defineStore('game', () => {
     processThrees,
     processFours,
     processFives,
-    handleGameResponse,
-    transformGameUrl,
     makeSocketRequest,
     requestSubscribe,
     requestGameState,

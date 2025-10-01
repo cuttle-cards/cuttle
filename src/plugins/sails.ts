@@ -13,7 +13,7 @@ import { handleConnect } from '@/plugins/sockets/connectivityEvents';
 
 export const io: ReturnType<typeof socketIoClient> = sails(socketIoClient);
 
-export const reconnectSockets = () => {
+export const reconnectSockets = (): Promise<void> => {
   return new Promise((resolve, reject) => {
     io.socket.disconnect();
     io.socket.reconnect();
