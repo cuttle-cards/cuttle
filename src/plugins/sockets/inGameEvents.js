@@ -96,9 +96,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
 
       // wait for card flip animations
       await sleep(500);
-
-      const { gameId: oldGameId } = targetRoute.params;
-
       const route = {
         name: targetRoute.name,
         params: {
@@ -111,7 +108,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
           gameStateIndex: gameStore.status === GameStatus.STARTED ? -1 : 0,
         };
       } else {
-        await gameStore.requestJoinRematch({ oldGameId });
         gameStore.updateGame(evData.newGame);
       }
 

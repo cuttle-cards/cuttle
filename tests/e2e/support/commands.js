@@ -680,7 +680,6 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
 
 Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
   cy.makeSocketRequest('game', 'rematch', { gameId, rematch: true });
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId: gameId });
 });
 
 /**
@@ -724,10 +723,6 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
 
     cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   }
-});
-
-Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId });
 });
 
 /**

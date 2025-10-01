@@ -121,8 +121,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy="lobby-card-container"]')
         .should('not.have.class', 'ready');
       cy.get('[data-cy=gameover-rematch]').click();
-
-      cy.joinRematchOpponent({ oldGameId });
     });
 
     // Match should be incomplete with one game
@@ -344,7 +342,8 @@ describe('Creating And Updating Casual Games With Rematch', () => {
         Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
         Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
         Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
-        Card.NINE_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ]
+        Card.NINE_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
+      deck: [],
     });
 
     // Players pass to end game

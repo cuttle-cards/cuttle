@@ -594,16 +594,7 @@ export const useGameStore = defineStore('game', () => {
   async function requestRematch({ gameId: gameIdArg, rematch = true }) {
     await makeSocketRequest('rematch', { gameId: gameIdArg, rematch });
   }
-  async function requestJoinRematch({ oldGameId }) {
-    return new Promise((resolve, reject) => {
-      io.socket.get('/api/game/join-rematch', { oldGameId }, (res, jwres) => {
-        if (jwres.statusCode === 200) {
-          resetState();
-        }
-        return handleGameResponse(jwres, resolve, reject);
-      });
-    });
-  }
+
   function addSpectator(username) {
     if (!username) {
       return;
@@ -730,7 +721,6 @@ export const useGameStore = defineStore('game', () => {
     rejectStalemate,
     requestUnsubscribeFromGame,
     requestRematch,
-    requestJoinRematch,
     addSpectator,
   };
 });
