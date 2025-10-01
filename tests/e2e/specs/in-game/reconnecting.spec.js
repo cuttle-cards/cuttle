@@ -744,7 +744,6 @@ describe('Reconnecting to a game', () => {
         p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
-        topCard: Card.NINE_OF_CLUBS,
         scrap: [ Card.SEVEN_OF_CLUBS ],
       });
     });
