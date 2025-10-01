@@ -14,7 +14,7 @@ let game;
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
-    const { gameId: oldGameId } = req.params;
+    let { gameId: oldGameId } = req.params;
     const { rematch } = req.body;
 
     game = await sails.helpers.lockGame(oldGameId);
@@ -42,9 +42,7 @@ module.exports = async function (req, res) {
         game,
         pNum: oldPNum,
       };
-      sails.sockets.broadcast(`game_${id}_p0`, 'game', payload);
-      sails.sockets.broadcast(`game_${id}_p1`, 'game', payload);
-      sails.sockets.broadcast(`game_${id}_spectator`, 'game', payload);
+      sails.helpers.broadcastGameEvent(id, payload);
   
       await sails.helpers.unlockGame(game.lock);
       return res.ok();
@@ -96,18 +94,15 @@ module.exports = async function (req, res) {
     // Subscribe players to new game (switching perspectives)
     sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p0`, `game_${newGame.id}_p1`);
     sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p1`, `game_${newGame.id}_p0`);
-
+    
+    oldGameId = Number(oldGameId);
     const payload = {
       change: 'newGameForRematch',
-      oldGameId : Number(oldGameId),
+      oldGameId : oldGameId,
       gameId: newGame.id,
       newGame: socketEvent.game,
     };
-    sails.sockets.broadcast(`game_${oldGameId}_p0`, 'game', payload);
-    sails.sockets.broadcast(`game_${oldGameId}_p1`, 'game', payload);
-    sails.sockets.broadcast(`game_${oldGameId}_spectator`, 'game', payload);
-
-
+    sails.helpers.broadcastGameEvent(oldGameId, payload);
 
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });

@@ -18,9 +18,7 @@ module.exports = async function (req, res) {
         change: 'spectatorLeft',
         username: user.username,
       };
-      sails.sockets.broadcast(`game_${gameId}_p0`, 'game', payload);
-      sails.sockets.broadcast(`game_${gameId}_p1`, 'game', payload);
-      sails.sockets.broadcast(`game_${gameId}_spectator`, 'game', payload);
+      sails.helpers.broadcastGameEvent(gameId, payload);
     }
 
     Game.unsubscribe(req, [ gameId ]);
