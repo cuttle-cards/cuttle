@@ -9,10 +9,10 @@
 module.exports = function (req, res, next) {
   const { provider } = req.params;
 
-  if(![ 'discord' ].includes(provider)){
+  if (![ 'discord' ].includes(provider)){
 
     // Regular error if we're coming from oauth complete registration form
-    if(req.url.includes('oauthcomplete')){
+    if (req.url.includes('oauthcomplete')){
       return res.badRequest({ message: 'Error: Request missing required param provider' });
     }
 
