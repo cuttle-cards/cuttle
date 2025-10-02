@@ -678,11 +678,6 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
   });
 });
 
-Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
-  cy.makeSocketRequest('game', 'rematch', { gameId, rematch: true });
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId: gameId });
-});
-
 /**
  * @description Requests to accept/reject rematch on behalf of the test-controlled user
  *  Note that when spectating, the caller needs to first update session data to match
@@ -724,10 +719,6 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
 
     cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   }
-});
-
-Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId });
 });
 
 /**

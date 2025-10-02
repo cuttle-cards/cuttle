@@ -32,8 +32,12 @@ module.exports = async function (req, res) {
     game.players = players;
     // Player already in game; re-subscribe and early return
     if ([ game.p0?.id, game.p1?.id ].includes(userId)) {
-      Game.subscribe(req, [ gameId ]);
       const pNum = user.id === game.p0.id ? 0 : 1;
+
+      // Join socket room for the correct player perspective for this game
+      const roomName = `game_${gameId}_p${pNum}`;
+      sails.sockets.join(req, roomName);
+
       await sails.helpers.unlockGame(game.lock);
       return res.ok({ game, username: user.username, pNum });
     }
@@ -59,7 +63,10 @@ module.exports = async function (req, res) {
     
     game.players.push({ username: user.username, pNum });
     game.players.sort((p1, p2) => p1.pNum - p2.pNum);
-    Game.subscribe(req, [ gameId ]);
+
+    // Join socket room for the correct player perspective for this game
+    const roomName = `game_${gameId}_p${pNum}`;
+    sails.sockets.join(req, roomName);
 
     await Game.updateOne({ id: gameId }).set(gameUpdates);
     await sails.helpers.unlockGame(game.lock);
