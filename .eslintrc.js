@@ -76,9 +76,7 @@ module.exports = {
         registeredComponentsOnly: true,
       },
     ],
-
     'keyword-spacing': [ 'error', { before: true, after: true } ],
-
     'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
