@@ -385,7 +385,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
             true,
             `P${i} Hand should match fixture, but actual: ${printCardList(
               gamePlayer.hand,
-            )} did not match ficture: ${printCardList(fixturePlayer.hand)}`,
+            )} did not match fixture: ${printCardList(fixturePlayer.hand)}`,
           );
         } else {
           expect(gamePlayer.hand.length).to.eq(fixturePlayer.hand.length, 
@@ -403,7 +403,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
           true,
           `P${i} Points should match fixture, but actual: ${printCardList(
             gamePlayer.points,
-          )} did not match ficture: ${printCardList(fixturePlayer.points)}`,
+          )} did not match fixture: ${printCardList(fixturePlayer.points)}`,
         );
 
         // Face Cards
@@ -411,7 +411,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
           true,
           `P${i} Face Cards should match fixture, but actual: ${printCardList(
             gamePlayer.faceCards,
-          )} did not match ficture: ${printCardList(fixturePlayer.faceCards)}`,
+          )} did not match fixture: ${printCardList(fixturePlayer.faceCards)}`,
         );
       } // End loop through players
 
