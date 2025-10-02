@@ -15,6 +15,7 @@ module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
     let { gameId: oldGameId } = req.params;
+    oldGameId = Number(oldGameId);
     const { rematch } = req.body;
 
     game = await sails.helpers.lockGame(oldGameId);
@@ -95,10 +96,9 @@ module.exports = async function (req, res) {
     sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p0`, `game_${newGame.id}_p1`);
     sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p1`, `game_${newGame.id}_p0`);
     
-    oldGameId = Number(oldGameId);
     const payload = {
       change: 'newGameForRematch',
-      oldGameId : oldGameId,
+      oldGameId,
       gameId: newGame.id,
       newGame: socketEvent.game,
     };
