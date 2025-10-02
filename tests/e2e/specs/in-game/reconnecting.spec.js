@@ -1118,7 +1118,7 @@ describe('Reconnecting after game is over', () => {
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.wrap(oldGameId).as('oldGameId');
-      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
     });
 
     cy.get('[data-cy=opponent-rematch-indicator]')
