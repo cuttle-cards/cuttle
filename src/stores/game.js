@@ -22,15 +22,15 @@ function queenCount(player) {
 }
 
 const compareByRankThenSuit = (card1, card2) => {
+  if (card1.isHidden || card2.isHidden) {
+    return 0;
+  }
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
+const setPlayers = (player) => {
   const sortCards = (cards) => {
-    if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
-      return cards?.sort(compareByRankThenSuit);
-    }
-    return cards;
+    return cards?.sort(compareByRankThenSuit);
   };
 
   return {
@@ -203,7 +203,7 @@ export const useGameStore = defineStore('game', () => {
     p0Ready.value = newGame.p0Ready ?? p0Ready.value;
     p1Ready.value = newGame.p1Ready ?? p1Ready.value;
     passes.value = newGame.passes ?? passes.value;
-    players.value = newGame.players?.map((player) => setPlayers(player, myPNum.value, hasGlassesEight.value, gameHistoryStore.isSpectating)) ?? players.value;
+    players.value = newGame.players?.map((player) => setPlayers(player)) ?? players.value;
     spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
