@@ -68,7 +68,7 @@ module.exports = async function(req, res) {
     const socketEvents = await createSocketEvents(game, gameState);
     
     // Return the appropriate state based on user relationship
-    let response = socketEvents[`${userRelationship}State`];
+    const response = socketEvents[`${userRelationship}State`];
 
     return res.ok(response);
 
