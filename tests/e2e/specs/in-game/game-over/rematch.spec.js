@@ -30,7 +30,7 @@ function startRematchPlayerFirst() {
 
   cy.url().then((url) => {
     const oldGameId = Number(url.split('/').pop());
-    cy.rematchOpponent({ gameId: oldGameId });
+    cy.rematchOpponent({ gameId: oldGameId, rematch: true });
   });
 }
 
