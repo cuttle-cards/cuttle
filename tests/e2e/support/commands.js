@@ -678,10 +678,6 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
   });
 });
 
-Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
-  cy.makeSocketRequest('game', 'rematch', { gameId, rematch: true });
-});
-
 /**
  * @description Requests to accept/reject rematch on behalf of the test-controlled user
  *  Note that when spectating, the caller needs to first update session data to match

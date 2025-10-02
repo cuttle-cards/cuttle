@@ -139,7 +139,7 @@ describe('Playing SEVENS', () => {
     cy.get('[data-cy=gameover-rematch]').click();
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
-      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+      cy.rematchOpponent({ gameId: oldGameId });
     });
     cy.get('#deck').should('not.have.class', 'reveal-top-two');
   });
