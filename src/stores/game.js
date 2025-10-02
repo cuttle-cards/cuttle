@@ -438,7 +438,7 @@ export const useGameStore = defineStore('game', () => {
         return;
       }
       const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
-      throw(new Error(message));
+      throw (new Error(message));
     }
   }
   async function requestSpectateLeave() {

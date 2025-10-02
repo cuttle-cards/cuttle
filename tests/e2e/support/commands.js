@@ -25,26 +25,26 @@ const transformGameUrl = (api, slug, gameId = null) => {
           .window()
           .its('cuttle.gameStore.id')
           .then((gameId) => `/api/game/${gameId}/spectate`);
-    case'draw':
-    case'points':
-    case'faceCard':
-    case'scuttle':
-    case'untargetedOneOff':
-    case'targetedOneOff':
-    case'jack':
-    case'counter':
-    case'resolve':
-    case'resolveThree':
-    case'resolveFour':
-    case'resolveFive':
-    case'seven/points':
-    case'seven/scuttle':
-    case'seven/faceCard':
-    case'seven/jack':
-    case'seven/untargetedOneOff':
-    case'seven/targetedOneOff':
-    case'pass':
-    case'concede':
+    case 'draw':
+    case 'points':
+    case 'faceCard':
+    case 'scuttle':
+    case 'untargetedOneOff':
+    case 'targetedOneOff':
+    case 'jack':
+    case 'counter':
+    case 'resolve':
+    case 'resolveThree':
+    case 'resolveFour':
+    case 'resolveFive':
+    case 'seven/points':
+    case 'seven/scuttle':
+    case 'seven/faceCard':
+    case 'seven/jack':
+    case 'seven/untargetedOneOff':
+    case 'seven/targetedOneOff':
+    case 'pass':
+    case 'concede':
     case 'stalemate':
     case 'stalemate-accept':
     case 'stalemate-reject':
