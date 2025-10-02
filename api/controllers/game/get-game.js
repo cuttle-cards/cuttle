@@ -66,7 +66,7 @@ module.exports = async function(req, res) {
 
     const gameState = unpackGamestate(packedGameState);
     const socketEvents = await createSocketEvents(game, gameState);
-    
+
     // Return the appropriate state based on user relationship
     const response = socketEvents[`${userRelationship}State`];
 
