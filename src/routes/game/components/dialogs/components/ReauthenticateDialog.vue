@@ -35,7 +35,13 @@
         <v-btn variant="text" color="newPrimary" @click="leaveGame">
           {{ t('game.dialogs.reauthentication.leaveGame') }}
         </v-btn>
-        <v-btn color="newPrimary" variant="flat" data-cy="login" :loading="isLoggingIn" @click="submit">
+        <v-btn
+          color="newPrimary"
+          variant="flat"
+          data-cy="login"
+          :loading="isLoggingIn"
+          @click="submit"
+        >
           {{ t('game.dialogs.reauthentication.login') }}
         </v-btn>
       </template>
