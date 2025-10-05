@@ -300,7 +300,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     if (this.goingToForm) {
       this.scrollAndFocusLogin();
     }

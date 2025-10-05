@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
@@ -80,11 +80,12 @@ const close = () => {
   preferenceSaved.value = true;
 };
 
-onMounted(() => { 
-  if (getLocalStorage('announcement') !== announcementData.id) {
-    show.value = true;
-  }
-});
+// Initialisation logic moved from onMounted
+// onMounted(() => { 
+if (getLocalStorage('announcement') !== announcementData.id) {
+  show.value = true;
+}
+// });
 </script>
 
 <style scoped>
