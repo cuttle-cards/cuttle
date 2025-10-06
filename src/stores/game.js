@@ -406,24 +406,21 @@ export const useGameStore = defineStore('game', () => {
       );
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null) {
-    return new Promise((resolve, reject) => {
-      io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
-        switch (jwres.statusCode) {
-          case 200:
-            resetState();
-            updateGame(res.game);
-            return handleInGameEvents(res, route).then(() => {
-              return resolve(res);
-            });
-          case 401:
-            authStore.mustReauthenticate = true;
-            return resolve(jwres.body.message);
-          default:
-            return reject(jwres.body.message);
-        }
-      });
-    });
+  async function requestGameState(gameId, gameStateIndex = -1, route = null) {
+    const slug = `${gameId}?gameStateIndex=${gameStateIndex}`;
+    try {
+      resetState();
+      const res = await makeSocketRequest(slug, {}, 'GET');
+      updateGame(res.body.game);
+      return await handleInGameEvents(res.body, route);
+    } catch (err) {
+      if (authStore.mustReauthenticate) {
+        id.value = gameId;
+        return;
+      }
+      const message = err?.message ?? err ?? `Unable to get game state for game ${gameId}`;
+      throw new Error(message);
+    }
   }
   async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
