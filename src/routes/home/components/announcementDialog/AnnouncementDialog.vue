@@ -80,12 +80,9 @@ const close = () => {
   preferenceSaved.value = true;
 };
 
-// Initialisation logic moved from onMounted
-// onMounted(() => { 
 if (getLocalStorage('announcement') !== announcementData.id) {
   show.value = true;
 }
-// });
 </script>
 
 <style scoped>
