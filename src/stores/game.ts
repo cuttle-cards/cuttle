@@ -143,7 +143,8 @@ class GameCard {
   rank: number;
   isFrozen: boolean;
   name: string;
-  attachments: GameCard[];
+  attachments: GameCard[]
+  scuttledBy: GameCard | null;
 
   constructor(card) {
     const str_rank =
@@ -162,6 +163,7 @@ class GameCard {
     this.isFrozen = card.isFrozen;
     this.name = str_rank + str_suit;
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
+    this.scuttledBy = null;
   }
 }
 const createGameCard = (card: RawCard): null | GameCard => {
