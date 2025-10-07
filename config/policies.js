@@ -36,7 +36,7 @@ module.exports.policies = {
   OAuthController: {
     oAuthRedirect: [ 'hasValidOAuthProvider' ],
     oAuthCallback: [ 'hasValidOAuthProvider', 'verifyOAuthSecretAndCode' ],
-    oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
+    oAuthCompleteRegistration: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
   },
 
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
