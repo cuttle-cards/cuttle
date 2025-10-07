@@ -1,6 +1,10 @@
 <template>
   <div>
-    <BaseDialog id="reauthenticate-dialog" v-model="show" :title="t('game.dialogs.reauthentication.reconnectToGame')">
+    <BaseDialog
+      id="reauthenticate-dialog"
+      v-model="show"
+      :title="t('game.dialogs.reauthentication.reconnectToGame')"
+    >
       <template #body>
         <p class="mb-4">
           {{ t('game.dialogs.reauthentication.youHaveDisconnected') }}
@@ -28,11 +32,11 @@
       </template>
 
       <template #actions>
-        <v-btn variant="text" color="primary" @click="leaveGame">
+        <v-btn variant="text" color="newPrimary" @click="leaveGame">
           {{ t('game.dialogs.reauthentication.leaveGame') }}
         </v-btn>
         <v-btn
-          color="primary"
+          color="newPrimary"
           variant="flat"
           data-cy="login"
           :loading="isLoggingIn"
@@ -110,7 +114,10 @@ export default {
         });
 
         if (this.gameHistoryStore.isSpectating) {
-          await this.gameStore.requestSpectate(this.gameStore.id, this.gameHistoryStore.currentGameStateIndex);
+          await this.gameStore.requestSpectate(
+            this.gameStore.id,
+            this.gameHistoryStore.currentGameStateIndex,
+          );
         } else {
           await this.gameStore.requestGameState(this.gameStore.id);
         }
