@@ -107,6 +107,11 @@ const setupSpectate = async (to) => {
         replace: true,
       };
     }
+    if (gameStore.status === GameStatus.FINISHED) {
+      return {
+        name: 'Home', query: { gameId: gameId, error: `Game with Id: ${gameId} is already finished` },
+      };
+    }
     // Default to first state otherwise
     return {
       ...to,
