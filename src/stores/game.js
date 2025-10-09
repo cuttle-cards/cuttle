@@ -290,22 +290,25 @@ export const useGameStore = defineStore('game', () => {
       p1Rematch.value = rematch;
     }
   }
-  async function processScuttle({ game, playedCardId, targetCardId, playedBy }) {
+  async function processScuttle({ game, playedCard, targetCard, playedBy }) {
     if (!player.value) {
       updateGame(game);
       return;
     }
     const scuttlingPlayer = players.value[playedBy];
     const scuttledPlayer = players.value[(playedBy + 1) % 2];
-    const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
-    const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
-    if (playedCardIndex === -1 || targetCardIndex === -1) {
+    const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCard.id);
+    const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCard.id);
+
+    if (targetCardIndex === -1) {
       updateGame(game);
       return;
     }
-    const [ playedCard ] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
-    const targetCard = scuttledPlayer.points[targetCardIndex];
-    targetCard.scuttledBy = playedCard;
+
+    scuttlingPlayer.hand.splice(playedCardIndex, 1);
+
+    const targetCardOnField = scuttledPlayer.points[targetCardIndex];
+    targetCardOnField.scuttledBy = playedCard;
     await sleep(1000);
     updateGame(game);
   }
