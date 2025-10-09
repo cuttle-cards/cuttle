@@ -90,7 +90,7 @@ export const points = {
     change: MoveType.POINTS,
     happened: true,
     playedBy: 0,
-    playedCardId: 'TS',
+    playedCard: Card.TEN_OF_SPADES,
     pNum: 0,
     game: {
       players: [
