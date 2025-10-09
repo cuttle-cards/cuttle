@@ -58,7 +58,7 @@ module.exports = {
         twos: [],
         playedBy: 1, // p1 "deals"
         playedCard: null,
-        targetCardId: null,
+        targetCard: null,
         discardedCards: [],
         oneOff: null,
         oneOffTarget: null,
