@@ -83,7 +83,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
     // Player scuttles 6 of diamonds with 7 of clubs
     cy.get('[data-player-hand-card=7-0]').click(); // 7 of clubs
     cy.get('[data-move-choice=scuttle]').click();
-    cy.get('[data-opponent-point-card=6-2]').click(); // 6 of hearts
+    cy.get('[data-opponent-point-card=6-2]').click(); // Scuttles the 6 of hearts
+    cy.get('[data-opponent-point-card=6-2] [data-scuttled-by=7-0]').should('be.visible'); // Scuttle transition
+  
     assertGameState(0, {
       p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES ],
       p0Points: [ Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS ],
@@ -108,6 +110,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
     // Opponent scuttles 10 of hearts with 10 of spades
     cy.scuttleOpponent(Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS);
+    cy.get('[data-player-point-card=10-2] [data-scuttled-by=10-3]').should('be.visible');
     assertGameState(0, {
       p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES ],
       p0Points: [ Card.TWO_OF_CLUBS ],
