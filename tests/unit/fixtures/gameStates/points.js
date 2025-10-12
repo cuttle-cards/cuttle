@@ -90,7 +90,7 @@ export const points = {
     change: MoveType.POINTS,
     happened: true,
     playedBy: 0,
-    playedCardId: 'TS',
+    playedCard: Card.TEN_OF_SPADES,
     pNum: 0,
     game: {
       players: [
@@ -176,6 +176,7 @@ export const points = {
       passes: 0,
       turn: 3,
       deck: [
+        Card.SEVEN_OF_SPADES, Card.SEVEN_OF_CLUBS,
         Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
         Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
         Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, 
@@ -189,8 +190,6 @@ export const points = {
         Card.QUEEN_OF_SPADES
       ],
       scrap: [ Card.SIX_OF_CLUBS ],
-      topCard: Card.SEVEN_OF_SPADES,
-      secondCard: Card.SEVEN_OF_CLUBS,
       twos: [],
       resolved: null,
       oneOff: null,

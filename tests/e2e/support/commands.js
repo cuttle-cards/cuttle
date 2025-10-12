@@ -25,26 +25,26 @@ const transformGameUrl = (api, slug, gameId = null) => {
           .window()
           .its('cuttle.gameStore.id')
           .then((gameId) => `/api/game/${gameId}/spectate`);
-    case'draw':
-    case'points':
-    case'faceCard':
-    case'scuttle':
-    case'untargetedOneOff':
-    case'targetedOneOff':
-    case'jack':
-    case'counter':
-    case'resolve':
-    case'resolveThree':
-    case'resolveFour':
-    case'resolveFive':
-    case'seven/points':
-    case'seven/scuttle':
-    case'seven/faceCard':
-    case'seven/jack':
-    case'seven/untargetedOneOff':
-    case'seven/targetedOneOff':
-    case'pass':
-    case'concede':
+    case 'draw':
+    case 'points':
+    case 'faceCard':
+    case 'scuttle':
+    case 'untargetedOneOff':
+    case 'targetedOneOff':
+    case 'jack':
+    case 'counter':
+    case 'resolve':
+    case 'resolveThree':
+    case 'resolveFour':
+    case 'resolveFive':
+    case 'seven/points':
+    case 'seven/scuttle':
+    case 'seven/faceCard':
+    case 'seven/jack':
+    case 'seven/untargetedOneOff':
+    case 'seven/targetedOneOff':
+    case 'pass':
+    case 'concede':
     case 'stalemate':
     case 'stalemate-accept':
     case 'stalemate-reject':
@@ -678,11 +678,6 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
   });
 });
 
-Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
-  cy.makeSocketRequest('game', 'rematch', { gameId, rematch: true });
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId: gameId });
-});
-
 /**
  * @description Requests to accept/reject rematch on behalf of the test-controlled user
  *  Note that when spectating, the caller needs to first update session data to match
@@ -724,10 +719,6 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
 
     cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   }
-});
-
-Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
-  cy.makeSocketRequest('game', 'join-rematch', { oldGameId });
 });
 
 /**

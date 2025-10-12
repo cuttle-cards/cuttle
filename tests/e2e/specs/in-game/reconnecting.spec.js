@@ -744,7 +744,6 @@ describe('Reconnecting to a game', () => {
         p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
-        topCard: Card.NINE_OF_CLUBS,
         scrap: [ Card.SEVEN_OF_CLUBS ],
       });
     });
@@ -1067,7 +1066,7 @@ describe('Reconnecting after game is over', () => {
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.wrap(oldGameId).as('oldGameId');
-      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
     });
 
     cy.get('[data-cy=opponent-rematch-indicator]')
@@ -1119,7 +1118,7 @@ describe('Reconnecting after game is over', () => {
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.wrap(oldGameId).as('oldGameId');
-      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
     });
 
     cy.get('[data-cy=opponent-rematch-indicator]')

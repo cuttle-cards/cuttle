@@ -36,10 +36,21 @@
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
     "joinDiscord": "Join our discord community",
+    "loginDiscord": "Login with Discord",
+    "linkDiscord": "Link Discord",
+    "discordLinked": "Discord Linked",
+    "socials": "Check out our socials for more Cuttle content!",
+    "linkAccount": "Link your account",
+    "createUsername": "Create a username for your new account",
     "snackbar": {
       "usernameIsTaken": "That username is already registered to another user; try logging in!",
       "userNotFound": "Could not find that user with that username. Try signing up!",
-      "wrongPassword": "Username and password do not match"
+      "wrongPassword": "Username and password do not match",
+      "oAuth": {
+        "alreadyLinked": "Account already linked to another user",
+        "providerError": "Error connecting to provider",
+        "invalidProvider" : "invalidProvider"
+      }
     }
   },
   "lobby": {
@@ -522,7 +533,28 @@
     "seasonTotal": "Season Total",
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points Only",
-    "winsOnly": "Wins Only"
+    "winsOnly": "Wins Only",
+    "statsScoring": {
+      "title": "Ranked Scoring",
+      "button": "How are ranks determined?",
+      "displayName": "1 Point | {count} Points",
+      "seasonDescription1a": "Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds, Hearts, and Spades. At the end of each season, the top 8 players play a double elimination championship tournament and the",
+      "seasonDescription1b": "champions are permanently accoladed on the site.",
+      "award1": "Champion player",
+      "award2": "Second Place Player",
+      "award3": "Third Place Player",
+      "seasonDescription2": "Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked matches each player wins against unique opponents (ignoring stalemates) and assign players points based on their weekly standing.",
+      "points": {
+        "5": "The player with the most wins gets 5 points for the week",
+        "4": "The player with the 2nd most wins gets 4 points for the week",
+        "3": "The player with the 3rd most wins gets 3 points for the week",
+        "2": "Each other player who won at least one match gets 2 points for the week",
+        "1": "Each other player who completed a match without winning gets 1 point for the week"
+      },
+      "seasonDescription3": "You can view the statistics and rankings for each season on this page. At the end of each season, the top 8 players compete in a double elimination championship tournament. At the end of the year, the top 8 players from the Season Championships compete in the Cuttle World Championship! Do you have what it takes to become",
+      "lordOfDeep": "Lord of the Deep?",
+      "gotIt": "Got It!"
+    }
   },
   "error": {
     "404": {

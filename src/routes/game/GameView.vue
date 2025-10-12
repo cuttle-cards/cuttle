@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="gameStore.myPNum === null">
+    <template v-if="gameStore.myPNum === null || !gameStore.player || !gameStore.opponent">
       <GameUnavailableView />
     </template>
 
@@ -518,14 +518,7 @@ export default {
       return this.gameHistoryStore.log;
     },
     deckLength() {
-      let res = this.deck.length;
-      if (this.gameStore.topCard) {
-        res++;
-      }
-      if (this.gameStore.secondCard) {
-        res++;
-      }
-      return res;
+      return this.deck.length;
     },
     spectatingUsers() {
       return this.gameStore.spectatingUsers;
@@ -760,10 +753,12 @@ export default {
       }
     }
   },
-  async mounted() {
+  created(){
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
+  },
+  async mounted() {
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
     window.addEventListener('resize', () => {
       // We execute the same script as before
@@ -842,7 +837,7 @@ export default {
      * @param player is the player object
      */
     kingCount(player) {
-      return player.faceCards.reduce((kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0), 0);
+      return player?.faceCards?.reduce((kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0), 0) ?? 0;
     },
     /**
      * Returns the number of points to win
@@ -918,7 +913,7 @@ export default {
               index: deckIndex,
             });
         }
-      } catch(messageKey){
+      } catch (messageKey){
         this.handleError(messageKey);
       } finally {
         this.clearSelection();

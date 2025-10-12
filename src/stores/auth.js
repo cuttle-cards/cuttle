@@ -1,13 +1,6 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
-import { useGameStore } from '@/stores/game';
-
-// TODO Figure out how to reconsolidate this with backend
-const getPlayerPnumByUsername = (players, username) => {
-  const pNum = players.findIndex(({ username: pUsername }) => pUsername === username);
-  return pNum > -1 ? pNum : null;
-};
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -16,6 +9,7 @@ export const useAuthStore = defineStore('auth', {
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
+    identities: []
   }),
   actions: {
     authSuccess(username) {
@@ -25,6 +19,7 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       this.authenticated = false;
       this.username = null;
+      this.identities = [];
     },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
@@ -59,11 +54,7 @@ export const useAuthStore = defineStore('auth', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              const gameStore = useGameStore();
               this.mustReauthenticate = false;
-              const pNum = getPlayerPnumByUsername(gameStore.players, this.username);
-
-              gameStore.myPNum = pNum;
               return resolve(res);
             }
             this.clearAuth();
@@ -72,9 +63,9 @@ export const useAuthStore = defineStore('auth', {
         );
       });
     },
-    async requestStatus() {
+    async requestStatus(force = false) {
       // If we've authenticated before, fast fail
-      if (this.authenticated !== null) {
+      if (this.authenticated !== null && !force) {
         return;
       }
 
@@ -83,7 +74,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username } = status;
+        const { authenticated, username, identities } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -92,6 +83,9 @@ export const useAuthStore = defineStore('auth', {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
+        }
+        if (identities) {
+          this.identities = identities;
         }
 
         return;
@@ -146,5 +140,29 @@ export const useAuthStore = defineStore('auth', {
         throw new Error(err);
       }
     },
+    async oAuth(provider) {
+      const url = `${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;
+      window.location.href = url;
+    },
+    async completeOAuth(provider, credentials) {
+      const { username, password } = credentials;
+      try {
+        await fetch(`/api/user/${provider}/completeOauth`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            provider,
+            username,
+            password
+          }),
+          credentials: 'include',
+        });
+        this.requestStatus(true);
+      } catch (e) {
+        this.clearAuth();
+        throw new Error(e);
+      }}
   },
 });

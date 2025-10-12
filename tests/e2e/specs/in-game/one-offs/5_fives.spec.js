@@ -198,9 +198,6 @@ describe('FIVES', () => {
             Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
             Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
             Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
-          topCard: Card.ACE_OF_SPADES,
-          secondCard: null,
-          deck: [],
         });
         cy.get('#deck').should('contain', '(1)');
       });

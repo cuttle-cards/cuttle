@@ -84,10 +84,11 @@ export const resolveNine = {
     oneOff: Card.NINE_OF_CLUBS,
     pNum: 0,
     playedBy: 0,
-    targetCardId: 'JC',
+    targetCard: Card.JACK_OF_CLUBS,
     game: {
       chat: [],
       deck: [
+        Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS,
         Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS, 
         Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS, 
         Card.KING_OF_CLUBS,
@@ -157,10 +158,8 @@ export const resolveNine = {
       rematchGame: null,
       resolved: Card.NINE_OF_CLUBS,
       scrap: [ Card.NINE_OF_CLUBS ],
-      secondCard: Card.TWO_OF_CLUBS,
       spectatingUsers: [],
       status: 2,
-      topCard: Card.ACE_OF_CLUBS,
       turn: 3,
       turnStalemateWasRequestedByP0: -1,
       turnStalemateWasRequestedByP1: -1,

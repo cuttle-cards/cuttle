@@ -1,0 +1,26 @@
+/**
+ * Identity.js
+ *
+ * @description :: Represents a user's profile from Oauth provider.
+ * @docs        :: http://sailsjs.org/#!documentation/models
+ */
+
+module.exports = {
+  attributes: {
+    user: {
+      model: 'user',
+    },
+    // id of user in 3rd party identity provider
+    providerId: {
+      type:'string',
+      required: true
+    },
+    provider: {
+      type: 'string',
+      required: true
+    },
+    providerUsername: {
+      type: 'string',
+    }
+  },
+};

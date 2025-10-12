@@ -15,6 +15,10 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 
 const mustBeAuthenticated = async (to, from, next) => {
+
+  if ([ 'discord' ].includes(to.query.oauthsignup)){
+    return next();
+  }
   const authStore = useAuthStore();
   if (authStore.authenticated) {
     return next();
@@ -74,7 +78,6 @@ const getGameState = async (to) => {
     const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
     if (response?.victory?.gameOver && response.game.rematchGame) {
       await gameStore.requestGameState(response.game.rematchGame);
-      gameStore.myPNum = (gameStore.myPNum + 1) % 2;
       return { name: to.name, params: { gameId: response.game.rematchGame } };
     }
   } catch (err) {

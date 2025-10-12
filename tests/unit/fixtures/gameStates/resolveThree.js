@@ -90,7 +90,7 @@ export const resolveThree = {
     oneOff: Card.THREE_OF_SPADES,
     chosenCard: Card.TEN_OF_HEARTS,
     playedBy: 0,
-    targetCardId: 'TH',
+    targetCard: Card.TEN_OF_HEARTS,
     pNum: 0,
     game: {
       players: [
@@ -122,6 +122,7 @@ export const resolveThree = {
         },
       ],
       deck: [
+        Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS,
         Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, 
         Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, 
         Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, 
@@ -170,8 +171,7 @@ export const resolveThree = {
       lockedAt: null,
       match: null,
       winner: null,
-      topCard: Card.ACE_OF_CLUBS,
-      secondCard: Card.TWO_OF_CLUBS,
+      
       gameStates:  [
         {
           discardedCards:  [],

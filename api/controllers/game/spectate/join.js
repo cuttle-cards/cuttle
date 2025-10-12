@@ -36,8 +36,8 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'home.snackbar.spectateNoGamestates' });
     }
 
-    // Subscribe socket to game
-    Game.subscribe(req, [ gameId ]);
+    // Subscribe socket to game as spectator
+    sails.sockets.join(req, `game_${gameId}_spectator`);
 
     // Add spectating users to table
     const spectatorAlreadyExisted = await UserSpectatingGame.updateOne(
@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
       await UserSpectatingGame.create({ gameSpectated: game.id, spectator: spectator.id });
     }
 
-    const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
+    const { unpackGamestate, createSocketEvents } = sails.helpers.gameStates;
     // Default to first gamestate for finished games, last for live ones
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
@@ -64,15 +64,16 @@ module.exports = async function (req, res) {
         });
     }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
-    const socketEvent = await createSocketEvent(game, gameState);
+    const socketEvents = await createSocketEvents(game, gameState);
     // Only notify others that a spectator joined, do not send full game state
-    Game.publish([ game.id ], {
-      gameId: game.id,
+    const payload = {
+      gameId,
       change: 'spectatorJoined',
       username: spectator.username,
-    });
+    };
+    sails.helpers.broadcastGameEvent(gameId, payload);
 
-    return res.ok(socketEvent);
+    return res.ok(socketEvents.spectatorState);
 
   } catch (err) {
 
