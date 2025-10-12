@@ -71,7 +71,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.choosingFromScrap', { opponentUsername }) }}
+        {{ choosingFromScrapMessage }}
       </h1>
     </v-overlay>
 
@@ -170,6 +170,9 @@ export default {
     ...mapStores(useGameStore),
     waitingForGameToStart() {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
+    },
+    choosingFromScrapMessage(){
+      return this.t('game.overlays.choosingFromScrap', { opponentUsername: this.opponentUsername });
     },
     showWaitingForOpponentToCounterMessage() {
       const mayCounter = this.t('game.overlays.mayCounter', { opponentUsername: this.opponentUsername });
