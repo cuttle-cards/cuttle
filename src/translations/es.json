@@ -70,14 +70,14 @@
     "overlays": {
       "waitingForGameToStart": "Esperando que comience la partida",
       "leaveGame": "Abandonar la partida",
-      "mayCounter": "puede contrarrestar",
-      "mustResolve": "debe resolver",
-      "isDiscarding": "se está descartando",
-      "skipsDiscarding": "salta descartando",
-      "choosingFromScrap": "está eligiendo del mazo de descarte",
-      "playingFromDeck": "está jugando desde el mazo",
-      "mustDiscardJack": "debe descartar la Sota",
-      "consideringStalemate": "está considerando la solicitud de empate",
+      "mayCounter": "{opponentUsername} Puede Contraatacar",
+      "mustResolve": "{opponentUsername} Debe Resolver",
+      "isDiscarding": "{opponentUsername} Está Descartando",
+      "skipsDiscarding": "{opponentUsername} Omite el Descarte",
+      "choosingFromScrap": "{opponentUsername} Está Eligiendo una Carta del Montón de Descarte",
+      "playingFromDeck": "{opponentUsername} Está Jugando Desde el Mazo",
+      "mustDiscardJack": "{opponentUsername} Debe Descartar una Jota",
+      "consideringStalemate": "{opponentUsername} Está Considerando una Petición de Empate",
       "gameUnavailable": {
         "title": "¡Ups!",
         "content": "Parece que esta partida no está disponible."

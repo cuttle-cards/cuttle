@@ -70,14 +70,14 @@
     "overlays": {
       "waitingForGameToStart": "En attendant le début du jeu",
       "leaveGame": "Quitter le jeu",
-      "mayCounter": "peut contrer",
-      "mustResolve": "doit résoudre",
-      "isDiscarding": "défausse une carte",
-      "skipsDiscarding": "saute la défausse",
-      "choosingFromScrap": "choisit une carte à partir de la défausse",
-      "playingFromDeck": "joue depuis la pioche",
-      "mustDiscardJack": "doit défausser un valet",
-      "consideringStalemate": "envisage une demande d'impasse",
+      "mayCounter": "{opponentUsername} Peut Contre-Attaquer",
+      "mustResolve": "{opponentUsername} Doit Résoudre",
+      "isDiscarding": "{opponentUsername} Est en Train de Défausser",
+      "skipsDiscarding": "{opponentUsername} Passe la Défausse",
+      "choosingFromScrap": "{opponentUsername} Choisit une Carte de la Pile de Défausse",
+      "playingFromDeck": "{opponentUsername} Joue Depuis le Paquet",
+      "mustDiscardJack": "{opponentUsername} Doit Défausser un Valet",
+      "consideringStalemate": "{opponentUsername} Envisage une Demande de Match Nul",
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Cette partie n'est pas disponible."
