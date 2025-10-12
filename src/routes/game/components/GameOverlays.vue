@@ -28,7 +28,7 @@
       scrim="surface-1"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ showWaitingForOpponetToCounterMessage }}
+        {{ showWaitingForOpponentToCounterMessage }}
       </h1>
       <div id="counter-scrim-cards">
         <GameCard
@@ -60,7 +60,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t(opponentDiscardingText) }}
+        {{ opponentDiscardingText }}
       </h1>
     </v-overlay>
 
@@ -71,7 +71,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentChoosingFromScrap') }}
+        {{ choosingFromScrapMessage }}
       </h1>
     </v-overlay>
 
@@ -81,7 +81,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentPlayingFromDeck') }}
+        {{ t('game.overlays.playingFromDeck', { opponentUsername }) }}
       </h1>
     </v-overlay>
 
@@ -92,7 +92,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentMustDiscardJack') }}
+        {{ t('game.overlays.mustDiscardJack', { opponentUsername }) }}
       </h1>
     </v-overlay>
 
@@ -102,7 +102,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        <div>{{ t('game.overlays.opponentConsideringStalemate') }}</div>
+        {{ t('game.overlays.consideringStalemate', { opponentUsername }) }}
       </h1>
     </v-overlay>
 
@@ -154,7 +154,7 @@ export default {
       default: null,
     },
   },
-  emits:[ 'points', 'face-card', 'one-off', 'clear-selection', 'target' ],
+  emits: [ 'points', 'face-card', 'one-off', 'clear-selection', 'target' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -171,9 +171,12 @@ export default {
     waitingForGameToStart() {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
-    showWaitingForOpponetToCounterMessage() {
-      const mayCounter = this.t('game.overlays.opponentMayCounter');
-      const mustResolve = this.t('game.overlays.opponentMustResolve');
+    choosingFromScrapMessage(){
+      return this.t('game.overlays.choosingFromScrap', { opponentUsername: this.opponentUsername });
+    },
+    showWaitingForOpponentToCounterMessage() {
+      const mayCounter = this.t('game.overlays.mayCounter', { opponentUsername: this.opponentUsername });
+      const mustResolve = this.t('game.overlays.mustResolve', { opponentUsername: this.opponentUsername });
       const opponentHasTwo = this.gameStore.opponent.hand.some((card) => card.rank === 2);
       if (this.gameStore.playerQueenCount || (this.gameStore.hasGlassesEight && !opponentHasTwo)) {
         return mustResolve;
@@ -189,12 +192,17 @@ export default {
       );
     },
     showWaitingForOpponentToPlayFromDeck() {
-      return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
+      return (
+        this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck
+      );
+    },
+    opponentUsername() {
+      return this.gameStore.opponentUsername;
     },
     opponentDiscardingText() {
-      return this.gameStore.opponent.hand.length === 0 ?
-        'game.overlays.opponentSkipsDiscarding' :
-        'game.overlays.opponentIsDiscarding';
+      return this.gameStore.opponent.hand.length === 0
+        ? this.t('game.overlays.skipsDiscarding', { opponentUsername: this.opponentUsername })
+        : this.t('game.overlays.isDiscarding', { opponentUsername: this.opponentUsername });
     },
   },
   methods: {
@@ -230,36 +238,36 @@ export default {
   text-align: center;
 }
 .overlay-header {
-    font-weight: bold;
-    background-color: rgba(var(--v-theme-surface-2));
-    color: rgba(var(--v-theme-surface-1));
-    padding: 24px;
-    text-align: center;
-    width: 100vw;
-  }
-  #counter-scrim-cards {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 16px;
-  }
-  .overlay-card {
-    position: relative;
-    display: inline-block;
-    margin-right: -48px !important;
-    min-width: 90px;
-  }
-  .overlay-two-0 {
-    transform: rotate(-5deg);
-  }
-  .overlay-two-1 {
-    transform: rotate(3deg);
-  }
-  .overlay-two-2 {
-    transform: rotate(-10deg);
-  }
-  .overlay-two-3 {
-    transform: rotate(-4deg);
-  }
+  font-weight: bold;
+  background-color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-surface-1));
+  padding: 24px;
+  text-align: center;
+  width: 100vw;
+}
+#counter-scrim-cards {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+}
+.overlay-card {
+  position: relative;
+  display: inline-block;
+  margin-right: -48px !important;
+  min-width: 90px;
+}
+.overlay-two-0 {
+  transform: rotate(-5deg);
+}
+.overlay-two-1 {
+  transform: rotate(3deg);
+}
+.overlay-two-2 {
+  transform: rotate(-10deg);
+}
+.overlay-two-3 {
+  transform: rotate(-4deg);
+}
 </style>

@@ -582,7 +582,7 @@ describe('FIVES', () => {
       cy.get('[data-cy=cannot-counter-dialog]').should('be.visible')
         .click();
       cy.get('[data-cy=cannot-counter-resolve]').click();
-      cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'Opponent Skips Discarding');
+      cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'definitelyNotTheGovernment6969 Skips Discarding');
       cy.resolveFiveOpponent();
       assertGameState(1, {
         p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
