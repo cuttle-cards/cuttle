@@ -36,8 +36,6 @@ function assertGameStarted(noMovesYet = true) {
         expect(game.players[0].hand.length).to.eq(5);
         expect(game.deck.length).to.eq(41);
       }
-      expect(game.topCard.rank).to.be.greaterThan(0);
-      expect(game.secondCard.rank).to.be.greaterThan(0);
       expect(game.scrap.length).to.eq(0);
       expect(game.twos.length).to.eq(0);
     });

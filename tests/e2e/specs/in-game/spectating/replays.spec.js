@@ -68,7 +68,7 @@ describe('Rewatching finished games', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-      });
+      }, true);
     });
   });
 
@@ -120,7 +120,7 @@ describe('Rewatching finished games', () => {
           Card.TEN_OF_CLUBS,
           Card.TEN_OF_DIAMONDS,
         ],
-      });
+      }, true);
     });
 
     it('Allows navigating across states when dialogs and overlays appear', () => {
@@ -142,7 +142,7 @@ describe('Rewatching finished games', () => {
           p1Hand: [ Card.TWO_OF_DIAMONDS ],
           p1Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
           p1FaceCards: [],
-        });
+        }, true);
 
         // Step forward to state 2: play ace one-off
         cy.get('[data-cy=step-forward]').click();
@@ -173,7 +173,7 @@ describe('Rewatching finished games', () => {
             Card.TEN_OF_CLUBS,
             Card.TEN_OF_DIAMONDS,
           ]
-        });
+        }, true);
 
         // Step forward to state 6: gameover
         cy.get('[data-cy=step-forward]').click();

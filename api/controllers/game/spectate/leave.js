@@ -13,11 +13,12 @@ module.exports = async function (req, res) {
     ]);
 
     if (user) {
-      Game.publish([ gameId ], {
+      const payload = {
         gameId,
         change: 'spectatorLeft',
         username: user.username,
-      });
+      };
+      sails.helpers.broadcastGameEvent(gameId, payload);
     }
 
     Game.unsubscribe(req, [ gameId ]);

@@ -50,16 +50,15 @@ module.exports = async function (req, res) {
 
     // Otherwise send socket message that player is ready
     } else {
-
-      await Game.updateOne({ id: game.id }).set(gameUpdates);
-
-      Game.publish([ game.id ], {
+      const { id: gameId } = game;
+      await Game.updateOne({ id: gameId }).set(gameUpdates);
+      const payload = {
         change: 'ready',
         userId: req.session.usr,
         pNum,
-        gameId: game.id,
-      });
-
+        gameId,
+      };
+      sails.helpers.broadcastGameEvent(gameId, payload);
     }
 
     await sails.helpers.unlockGame(game.lock);

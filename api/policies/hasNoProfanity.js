@@ -11,7 +11,7 @@ module.exports = function (req, res, next) {
   const username = req.body.username?.trim() ?? '';
   const gameName = req.body.gameName?.trim() ?? '';
   // Check Profanity 
-  if(hasProfanity(username) || hasProfanity(gameName)) {
+  if (hasProfanity(username) || hasProfanity(gameName)) {
     return res.badRequest({ message: 'Please use respectful language' });
   }
   return next();

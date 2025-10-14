@@ -108,7 +108,7 @@ export default {
       this.setRankedPreference(isRanked);
     },
   },
-  mounted() {
+  created() {
     this.isRanked = this.getRankedPreference();
   },
   methods: {

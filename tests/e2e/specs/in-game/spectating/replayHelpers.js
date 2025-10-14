@@ -111,7 +111,7 @@ function rewatchCasualMatch(firstGameId) {
     ],
     p1Points: [],
     p1FaceCards: [],
-  });
+  }, true);
 
   // Step forward to state 2 (p0 plays nine of clubs for points)
   cy.get('[data-cy=playback-controls]')
@@ -135,7 +135,7 @@ function rewatchCasualMatch(firstGameId) {
     ],
     p1Points: [],
     p1FaceCards: [],
-  });
+  }, true);
 
   // Step forward to state 3 (p1 scuttles nine of clubs with ten of clubs)
   cy.get('[data-cy=playback-controls]')
@@ -159,7 +159,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step forward to state 4 (p0 plays ten of diamonds for points)
   cy.get('[data-cy=playback-controls]')
@@ -183,7 +183,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step forward to state 5 (p1 draws card)
   cy.get('[data-cy=playback-controls]')
@@ -208,7 +208,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step forward to state 6 (p0 plays ten of hearts for points)
   cy.get('[data-cy=playback-controls]')
@@ -233,7 +233,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step forward to state 7 (p1 draws card)
   cy.get('[data-cy=playback-controls]')
@@ -259,7 +259,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step forward to state 8 (p0 plays ten of spades for points)
   cy.get('[data-cy=playback-controls]')
@@ -285,7 +285,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // Step backward to state 7 (p1 draw)
   cy.get('[data-cy=playback-controls]')
@@ -311,7 +311,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   // skip backward to state 0
   cy.get('[data-cy=playback-controls]')
@@ -346,7 +346,7 @@ function rewatchCasualMatch(firstGameId) {
     p1Points: [],
     p1FaceCards: [],
     scrap: [ Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS ],
-  });
+  }, true);
 
   assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
 
@@ -372,7 +372,7 @@ function rewatchCasualMatch(firstGameId) {
     p1FaceCards: [],
     topCard: Card.SEVEN_OF_HEARTS,
     secondCard: Card.FOUR_OF_HEARTS,
-  });
+  }, true);
 
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=step-forward]')

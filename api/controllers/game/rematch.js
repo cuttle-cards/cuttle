@@ -14,7 +14,8 @@ let game;
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
-    const { gameId: oldGameId } = req.params;
+    let { gameId: oldGameId } = req.params;
+    oldGameId = Number(oldGameId);
     const { rematch } = req.body;
 
     game = await sails.helpers.lockGame(oldGameId);
@@ -35,12 +36,14 @@ module.exports = async function (req, res) {
     const bothWantToRematch = p0Rematch && p1Rematch;
 
     if (!bothWantToRematch) {
-      game = await Game.updateOne({ id: game.id }).set(gameUpdates);
-      Game.publish([ game.id ], {
+      const { id } = game;
+      game = await Game.updateOne({ id }).set(gameUpdates);
+      const payload = {
         change: 'rematch',
         game,
         pNum: oldPNum,
-      });
+      };
+      sails.helpers.broadcastGameEvent(id, payload);
   
       await sails.helpers.unlockGame(game.lock);
       return res.ok();
@@ -86,15 +89,21 @@ module.exports = async function (req, res) {
     newGame.p1 = { ...newP1 };
     // Deal cards in new game
     const newFullGame = await sails.helpers.gameStates.dealCards(newGame);
-    const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
+    const { spectatorState: socketEvent } = await sails.helpers.gameStates
+      .createSocketEvents(newGame, newFullGame); // Use spectator state for rematch notification
 
-    Game.publish([ game.id ], {
-      change: 'newGameForRematch',
-      oldGameId : Number(oldGameId),
-      gameId: newGame.id,
-      newGame: socketEvent.game
-    });
+    // Subscribe players to new game (switching perspectives)
+    sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p0`, `game_${newGame.id}_p1`);
+    sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p1`, `game_${newGame.id}_p0`);
     
+    const payload = {
+      change: 'newGameForRematch',
+      oldGameId,
+      gameId: newGame.id,
+      newGame: socketEvent.game,
+    };
+    sails.helpers.broadcastGameEvent(oldGameId, payload);
+
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {

@@ -25,7 +25,11 @@
     />
     <Transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
-        <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`">
+        <img
+          :class="scuttledByClass"
+          :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`"
+          :data-scuttled-by="`${scuttledBy.rank}-${scuttledBy.suit}`"
+        >
       </template>
     </Transition>
     <Transition name="card-flip">

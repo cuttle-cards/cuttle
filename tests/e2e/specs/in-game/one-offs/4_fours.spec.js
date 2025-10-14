@@ -238,7 +238,6 @@ describe('FOURS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
-        topCard: Card.SIX_OF_DIAMONDS,
       });
 
       // Player draws the 6 of diamonds

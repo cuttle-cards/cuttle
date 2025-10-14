@@ -70,14 +70,14 @@
     "overlays": {
       "waitingForGameToStart": "Очікуємо початку гри",
       "leaveGame": "Покинути гру",
-      "opponentMayCounter": "Суперник може заперечити",
-      "opponentMustResolve": "Суперник повинен вирішити",
-      "opponentIsDiscarding": "Суперник скидає карту",
-      "opponentSkipsDiscarding": "Суперник пропускає скидання карти",
-      "opponentChoosingFromScrap": "Суперник вибирає карту з відбою",
-      "opponentPlayingFromDeck": "Суперник грає з колоди",
-      "opponentMustDiscardJack": "Суперник повинен скинути валета",
-      "opponentConsideringStalemate": "Суперник розглядає патову ситуацію",
+      "mayCounter": "{opponentUsername} Може Контратакувати",
+      "mustResolve": "{opponentUsername} Повинен Завершити Дію",
+      "isDiscarding": "{opponentUsername} Скидає Карту",
+      "skipsDiscarding": "{opponentUsername} Пропускає Скидання",
+      "choosingFromScrap": "{opponentUsername} Обирає Карту зі Стісу Скинутих",
+      "playingFromDeck": "{opponentUsername} Грає з Колоди",
+      "mustDiscardJack": "{opponentUsername} Повинен Скинути Валета",
+      "consideringStalemate": "{opponentUsername} Розглядає Пропозицію Нічиєї",
       "gameUnavailable": {
         "title": "Ой!",
         "content": "Схоже, ця гра недоступна."
