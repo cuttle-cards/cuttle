@@ -1,5 +1,5 @@
 <template>
-  <div id="stats-page-wrapper">
+  <div id="stats-page-wrapper" class="text-surface-2">
     <template v-if="loadingData">
       <v-skeleton-loader class="px-4 pa-2 mb-6 mx-auto border mb-2 mt-4" type="heading" />
       <v-skeleton-loader
@@ -20,7 +20,7 @@
             data-cy="season-select"
           >
             <template #selection="{ item }">
-              <h1 class="text-h2" data-cy="selected-season-header">
+              <h1 class="text-h1" data-cy="selected-season-header">
                 {{ item.title }}
               </h1>
             </template>
@@ -242,11 +242,9 @@ export default {
   background-size: 100% auto;
   background-attachment: fixed; /* Optional: keeps background fixed during scroll */
 }
-#stats-wrapper h1 {
-  background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+
+.text-h1 {
+  font-size: 80px;
 }
 
 .filter-select {
