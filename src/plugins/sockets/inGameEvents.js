@@ -52,7 +52,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SEVEN_FACE_CARD:
     case SocketEvent.SEVEN_JACK:
     case SocketEvent.SEVEN_DISCARD:
-    case SocketEvent.SEVEN_SCUTTLE:
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
     case SocketEvent.STALEMATE_REQUEST:
@@ -61,6 +60,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.updateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
+    case SocketEvent.SEVEN_SCUTTLE:
       gameStore.processScuttle(evData);
       break;
     case SocketEvent.RESOLVE_THREE:
