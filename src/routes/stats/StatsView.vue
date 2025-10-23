@@ -8,7 +8,7 @@
       />
     </template>
     <template v-else>
-      <div id="stats-wrapper">
+      <div id="stats-wrapper d-flex flex-column">
         <!-- Upper Service -->
         <section id="upper-surface" class="px-8 pt-8 mb-6">
           <v-select
@@ -33,9 +33,9 @@
             <span data-cy="season-end-date"> {{ seasonEndFormatted }} </span>
           </h4>
         </section>
-        <section class="px-8">
+        <section class="px-8 d-flex flex-column">
           <!-- Season Champions -->
-          <div class="mb-10">
+          <div class="mb-10 d-flex flex-column">
             <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
               {{ t('stats.season.champions') }}
             </h2>
@@ -59,19 +59,21 @@
                 class="mb-4"
               />
             </div>
-            <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
+            <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1 text-center">
               {{ t('global.click') }}
-              <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
+              <a
+                :href="selectedSeason.bracketLink"
+                target="_blank"
+                class="link"
+                data-cy="tournament-bracket-link"
+              >
                 {{ t('stats.season.tournamentBracket') }}
               </a>
             </p>
-            <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
-              {{ t('global.click') }}
-              <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
-                {{ t('stats.season.tournamentFootage') }}
-              </a>
-              {{ t('stats.season.playByPlay') }}
-            </p>
+            <div v-if="selectedSeason && selectedSeason.footageLink" id="tournament-video" class="d-flex flex-column align-items-center">
+              <h3 class="text-h3 text-center mt-4">Tournament Video</h3>
+              <BaseVideo :source="selectedSeason.footageLink" />
+            </div>
           </div>
           <!-- Rankings Table -->
           <template v-if="weeklyRanking">
@@ -115,6 +117,7 @@ import dayjs from 'dayjs';
 import { io } from '@/plugins/sails.js';
 import { useI18n } from 'vue-i18n';
 import AwardCard from '@/components/AwardCard.vue';
+import BaseVideo from '@/components/BaseVideo.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import StatsLeaderboard from '@/routes/stats/components/StatsLeaderboard.vue';
 import StatsUsageChart from '@/routes/stats/components/StatsUsageChart.vue';
@@ -123,6 +126,7 @@ export default {
   name: 'StatsView',
   components: {
     AwardCard,
+    BaseVideo,
     StatsLeaderboard,
     StatsScoringDialog,
     StatsUsageChart,
@@ -246,7 +250,36 @@ export default {
 }
 
 .text-h1 {
+  font-family: 'Luckiest Guy', serif;
   font-size: 80px;
+  line-height: 80px;
+}
+
+.text-h2 {
+  font-family: 'Luckiest Guy', serif;
+  font-size: 64px;
+  line-height: 64px;
+}
+
+.text-h3 {
+  font-family: 'Luckiest Guy', serif;
+  font-size: 48px;
+  line-height: 52px;
+}
+
+.text-body-1 {
+  font-size: 24px !important;
+  line-height: 32px;
+  font-weight: bold;
+}
+
+.link {
+  color: #006064;
+}
+
+#tournament-video {
+  width: 50%;
+  align-self: center;
 }
 
 .filter-select {
