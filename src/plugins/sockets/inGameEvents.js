@@ -6,6 +6,13 @@ import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router
 import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
+// Handles Game Over event asynchronously
+// This ensures any end-of-game animations complete first
+async function handleGameOver(evData,gameStore) {
+  await sleep(1000);
+  gameStore.setGameOver(evData.victory);
+}
+
 // Handles socket updates of game data
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
@@ -26,9 +33,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
   }
   // Handle GameOver
   if (evData.victory?.gameOver) {
-    sleep(1000).then(() => {
-      gameStore.setGameOver(evData.victory);
-    });
+    handleGameOver(evData,gameStore);
   }
   switch (evData.change) {
     case SocketEvent.READY: {
