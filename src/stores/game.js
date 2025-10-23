@@ -277,7 +277,8 @@ export const useGameStore = defineStore('game', () => {
     }
     players.value = players.value.filter((player) => player.pNum === myPNum.value);
   }
-  function setGameOver({ gameOver, conceded: c, winner, currentMatch: cm }) {
+  async function setGameOver({ gameOver, conceded: c, winner, currentMatch: cm }) {
+    await sleep(1000);
     gameIsOver.value = gameOver;
     conceded.value = c;
     winnerPNum.value = winner;

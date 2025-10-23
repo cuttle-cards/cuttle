@@ -26,9 +26,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
   }
   // Handle GameOver
   if (evData.victory?.gameOver) {
-    sleep(1000).then(() => {
-      gameStore.setGameOver(evData.victory);
-    });
+    gameStore.setGameOver(evData.victory);
   }
   switch (evData.change) {
     case SocketEvent.READY: {
