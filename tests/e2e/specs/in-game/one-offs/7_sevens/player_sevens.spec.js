@@ -429,7 +429,7 @@ describe('Playing SEVENS', () => {
   }); // End seven face card describe
 
   describe('Scuttling with sevens', () => {
-    it('Scuttles from a seven', () => {
+    it.only('Scuttles from a seven', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -450,6 +450,8 @@ describe('Playing SEVENS', () => {
       cy.get('[data-move-choice=scuttle]').click();
       // scuttles with 10 of clubs
       cy.get('[data-opponent-point-card=9-0]').click();
+      cy.get('[data-opponent-point-card=9-0] [data-scuttled-by=10-0]').should('be.visible'); // Scuttle transition
+
 
       assertGameState(0, {
         p0Hand: [],
