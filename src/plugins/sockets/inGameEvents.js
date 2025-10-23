@@ -6,8 +6,6 @@ import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router
 import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
-// Handles Game Over event asynchronously
-// This ensures any end-of-game animations complete first
 async function handleGameOver(evData,gameStore) {
   await sleep(1000);
   gameStore.setGameOver(evData.victory);
