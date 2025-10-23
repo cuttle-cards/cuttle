@@ -429,7 +429,7 @@ describe('Playing SEVENS', () => {
   }); // End seven face card describe
 
   describe('Scuttling with sevens', () => {
-    it.only('Scuttles from a seven', () => {
+    it('Scuttles from a seven', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
