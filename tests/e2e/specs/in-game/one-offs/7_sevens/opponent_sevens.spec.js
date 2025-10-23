@@ -330,7 +330,7 @@ describe('Opponent playing SEVENS', () => {
     cy.get('[data-move-choice]').should('have.length', 0);
 
     cy.scuttleFromSevenOpponent(Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS);
-
+    cy.get('[data-player-point-card=9-0] [data-scuttled-by=10-0]').should('be.visible'); // Scuttle transition
     // No longer waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('not.exist');
     cy.log('Done waiting for opponent');
