@@ -55,8 +55,8 @@ After discovery, request a plan before any code changes.
 ### 3. Execution Phase (Implementation)
 Only after plan approval, proceed with implementation.
 
--   **Incremental Changes**: Implement one component at a time, validate, then continue.
--   **Real-time Validation**: Test as you go. Run `npm run lint:fix` and `npm run test:unit` often.
+- **Incremental Changes**: Implement one component at a time, validate, then continue.
+- **Real-time Validation**: Test as you go. Run `npm run lint:fix` and `npm run test:unit` often.
 
 ## Code Review Checklist for AI-Assisted PRs
 
