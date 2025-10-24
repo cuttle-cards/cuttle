@@ -62,11 +62,12 @@ Only after plan approval, proceed with implementation.
 
 When reviewing AI-assisted Pull Requests, check for:
 
-1.  **Pattern Consistency**: Does the code match existing patterns and conventions?
-2.  **No "Magic" Code**: Ensure you understand every line of generated code and can explain its purpose.
-3.  **Correctness**: Does the code correctly solve the problem without introducing new bugs or edge cases?
-4.  **Simplicity**: Is the solution over-engineered? Simplify verbose AI-generated code.
-5.  **No Deprecated Patterns**: Verify the AI didn't introduce outdated syntax or deprecated library methods.
-6.  **Security Compliance**: Ensure no hardcoded secrets or client-side exposure of server-only information.
-7.  **Test Coverage**: If tests were generated, verify they actually test the intended behavior.
-8.  **Agent Hallucination Patterns**: Watch for common AI mistakes like non-existent dependencies, incorrect API signatures, or misunderstood business logic.
+1. **Pattern Consistency**: Does the code match existing patterns and conventions?
+2. **No "Magic" Code**: Ensure you understand every line of generated code and can explain its purpose.
+3. **Correctness**: Does the code correctly solve the problem without introducing new bugs or edge cases?
+4. **Simplicity**: Is the solution over-engineered? Simplify verbose AI-generated code.
+5. **No Deprecated Patterns**: Verify the AI didn't introduce outdated syntax or deprecated library methods.
+6. **Security Compliance**: Ensure no hardcoded secrets or client-side exposure of server-only information.
+7. **Test Coverage**: If tests were generated, verify they actually test the intended behavior.
+8. **Agent Hallucination Patterns**: Watch for common AI mistakes like non-existent dependencies, incorrect API signatures, misunderstood business logic, or hallucinations.
+
