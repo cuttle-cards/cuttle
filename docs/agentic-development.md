@@ -50,7 +50,7 @@ Start every task with discovery to ensure the AI follows existing patterns.
 ### 2. Planning Phase
 After discovery, request a plan before any code changes.
 
--   **Plan First**: Use a prompt that requires the agent to outline the scope, impacted files, and validation steps before changing code. Wait for your approval.
+- **Plan First**: Use a prompt that requires the agent to outline the scope, impacted files, and validation steps before changing code.
 
 ### 3. Execution Phase (Implementation)
 Only after plan approval, proceed with implementation.
