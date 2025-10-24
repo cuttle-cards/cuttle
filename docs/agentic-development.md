@@ -44,8 +44,8 @@ Integrate AI into the development workflow using a **discover-plan-execute** pat
 ### 1. Discovery Phase (Research and Planning)
 Start every task with discovery to ensure the AI follows existing patterns.
 
--   **Pattern Discovery**: "Search the codebase for components similar to {component-type}, analyze 3-5 examples, and identify the common pattern."
--   **Architecture Mapping**: "Find all files related to {feature}, explain how they interact, and identify dependencies."
+- **Pattern Discovery**: "Search the codebase for components similar to {component-type}, analyze 3-5 examples, and identify the common pattern."
+- **Architecture Mapping**: "Find all files related to {feature}, explain how they interact, and identify dependencies."
 
 ### 2. Planning Phase
 After discovery, request a plan before any code changes.
