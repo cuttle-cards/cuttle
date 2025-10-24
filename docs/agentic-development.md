@@ -13,7 +13,7 @@
 
 ## Overview
 
-This guide establishes the standards, workflow, and best practices for using AI tools to accelerate development in the Cuttle codebase. It is written for our human developers.
+This guide establishes the standards, workflow, and best practices for using AI tools to accelerate development in Cuttle.
 
 Technical automation rules for AI agents are maintained separately in [`AGENTS.md`](../AGENTS.md). That file is designed for agent consumption only.
 
