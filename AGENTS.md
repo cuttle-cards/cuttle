@@ -64,7 +64,7 @@ In case of conflicting rules, the following hierarchy applies:
 - **Standards**: Follow existing patterns for state, getters, and actions.
 
 ### Frontend (Vue)
-- **Discovery**: Glob `src/components` for general components and `src/routes` for page-level components.
+- **Discovery**: Glob `src/components` for shared, general-purpose components. Page-specific components are often located in `src/routes/[routeName]/components/`. Page entry points are in `src/routes/[routeName]/[RouteName]View.vue`.
 - **UI Library**: Vuetify is used. See existing components for usage patterns.
 - **Routing**: `src/router.js` defines routes and navigation guards.
 
