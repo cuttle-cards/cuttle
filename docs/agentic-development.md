@@ -23,9 +23,9 @@ The most effective way to use an AI assistant in this project is just by asking 
 
 ## Core Principles
 
--   **Analyze Before Building**: Study existing code patterns before writing new code. Follow established standards. Propose new patterns only when they offer clear advantages.
--   **Be Incremental**: Make small, verifiable changes. This aligns with the project's development and code review processes.
--   **Maintain Oversight**: You are responsible for all code. Review, understand, and validate all AI-generated output.
+- **Analyze Before Building**: Study existing code patterns before writing new code. Follow established standards. Propose new patterns only when they offer clear advantages.
+- **Be Incremental**: Make small, verifiable changes. This aligns with the project's development and code review processes.
+- **Maintain Oversight**: You are responsible for all code. Review, understand, and validate all AI-generated output.
 
 ## When to Use AI
 
