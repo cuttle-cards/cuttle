@@ -128,3 +128,4 @@ Before completing any task, verify:
 ---
 
 **Remember**: You are a discovery system first, a code generator second. When in doubt, search, read, and ask questions before writing code.
+
