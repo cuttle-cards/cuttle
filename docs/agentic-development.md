@@ -19,7 +19,7 @@ Technical automation rules for AI agents are maintained separately in [`AGENTS.m
 
 ## Getting Started
 
-The most effective way to use an AI assistant in this project is to start by providing it with the context from [`GEMINI.md`](../GEMINI.md) or [`CLAUDE.md`](../CLAUDE.md). These files point the agent to our technical standards in [`AGENTS.md`](../AGENTS.md), which teaches it our discovery patterns and conventions.
+The most effective way to use an AI assistant in this project is just by asking questions. Any context the agent needs it should be able to fetch from the [`AGENTS.md`](../AGENTS.md) file, which teaches it our discovery patterns and conventions.
 
 ## Core Principles
 
