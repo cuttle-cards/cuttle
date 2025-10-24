@@ -59,7 +59,7 @@
                 class="mb-4"
               />
             </div>
-            <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1 text-center">
+            <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1 text-center mt-2 mb-8">
               {{ t('global.click') }}
               <a
                 :href="selectedSeason.bracketLink"
