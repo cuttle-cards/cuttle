@@ -15,6 +15,7 @@
           :color="activatorColor"
           variant="text"
           data-cy="ranked-info-button"
+          class="text-button"
         >
           <span v-if="showButtonText">{{ $t('stats.statsScoring.button') }}</span>
           <v-icon class="ml-1" icon="mdi-information-outline" aria-hidden="true" />
