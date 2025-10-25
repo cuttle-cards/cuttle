@@ -384,11 +384,11 @@ export default {
   background-color: rgba(var(--v-theme-surface-2));
   color: rgba(var(--v-theme-surface-1));
 
-  & th:first-child {
+  &:first-child th:first-child {
     border-radius: 8px 0 0 0;
   }
 
-  & th:last-child {
+  &:first-child th:last-child {
     border-radius: 0 8px 0 0;
   }
 }
