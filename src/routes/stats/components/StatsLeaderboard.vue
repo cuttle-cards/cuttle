@@ -18,40 +18,12 @@
         multiple
       />
     </div>
-    <v-table id="leaderboard">
-      <!-- Headers -->
-      <thead>
-        <tr>
-          <th v-for="header in tableColumns" :key="header.value">
-            {{ header.text }}
-          </th>
-        </tr>
-      </thead>
-      <!-- Body -->
-      <tbody>
-        <tr v-for="row in tableRows" :key="row.username" :class="tableRowClass(row)">
-          <!-- Username -->
-          <td :data-username="row.username">
-            {{ row.username }}
-          </td>
-          <!-- Rank -->
-          <td :data-rank="row.username">
-            {{ row.rank }}
-          </td>
-          <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
-            <StatsLeaderboardCell
-              :player-row="row"
-              :week="week"
-              :selected-metric="selectedMetric"
-              :players-beaten="playersBeaten(row.username, week)"
-              :players-lost-to="playersLostTo(row.username, week)"
-              :top-total-scores="topTotalScores"
-              :season-name="seasonName"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+    <v-data-table
+      id="leaderboard"
+      :headers="tableColumns"
+      :items="tableRows"
+      :row-props="tableRowClass"
+    />
   </div>
 </template>
 <script>
@@ -101,12 +73,12 @@ export default {
         return [];
       }
       return [
-        { text: this.t('global.user'), value: 'username' },
-        { text: this.t('global.rank'), value: 'rank' },
-        { text: this.t('stats.seasonTotal'), value: 'week_total' },
+        { title: this.t('global.user'), value: 'username' },
+        { title: this.t('global.rank'), value: 'rank' },
+        { title: this.t('stats.seasonTotal'), value: 'week_total' },
         ...this.selectedWeeks.map((weekNum) => {
           return {
-            text: `${this.t('stats.week')} ${weekNum}`,
+            title: `${this.t('stats.week')} ${weekNum}`,
             value: `week_${weekNum}`,
           };
         }),
@@ -370,8 +342,8 @@ export default {
     isCurrentPlayer(username) {
       return username === this.authStore.username;
     },
-    tableRowClass(item) {
-      return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
+    tableRowClass({ item }) {
+      return { class: item.username === this.authStore.username ? 'active-user-stats' : 'foo' };
     },
     /**
      * @description Compute rank from total score and wins
@@ -412,7 +384,7 @@ export default {
 }
 
 
-#leaderboard tbody tr {
+:deep(#leaderboard table tbody tr) {
   background-color: rgba(48, 32, 27, .7);
   &.active-user-stats {
     background-color: rgba(144,29,68, .7);
