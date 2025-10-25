@@ -20,11 +20,13 @@
     </div>
     <v-table id="leaderboard">
       <!-- Headers -->
-      <tr>
-        <th v-for="header in tableColumns" :key="header.value">
-          {{ header.text }}
-        </th>
-      </tr>
+      <thead>
+        <tr>
+          <th v-for="header in tableColumns" :key="header.value">
+            {{ header.text }}
+          </th>
+        </tr>
+      </thead>
       <!-- Body -->
       <tbody>
         <tr v-for="row in tableRows" :key="row.username" :class="tableRowClass(row)">
@@ -385,10 +387,26 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #leaderboard {
   background: none;
-  color: rgba(var(--v-theme-surface2));
+  color: rgba(var(--v-theme-surface-2));
+}
+
+/* Header Row */
+:deep(#leaderboard table thead > tr) {
+  /* height: 46px; */
+  border-radius: 4px 4px 0 0 !important;
+  background-color: rgba(var(--v-theme-surface-2)) !important;
+  color: rgba(var(--v-theme-surface-1)) !important;
+
+  & th:first-child {
+    border-radius: 8px 0 0 0;
+  }
+
+  & th:last-child {
+    border-radius: 0 8px 0 0;
+  }
 }
 
 :deep(#leaderboard table) {
