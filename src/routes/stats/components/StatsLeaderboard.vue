@@ -18,7 +18,7 @@
         multiple
       />
     </div>
-    <v-table>
+    <v-table id="leaderboard">
       <!-- Headers -->
       <tr>
         <th v-for="header in tableColumns" :key="header.value">
@@ -386,6 +386,19 @@ export default {
 </script>
 
 <style scoped>
+#leaderboard {
+  background: none;
+  color: rgba(var(--v-theme-surface2));
+}
+
+:deep(#leaderboard table) {
+  border-spacing: 0 2px;
+}
+
+#leaderboard tbody tr {
+  background-color: rgba(48, 32, 27, .7)
+}
+
 th {
   text-align: left;
 }
