@@ -75,7 +75,16 @@ export default {
       return [
         { title: this.t('global.user'), value: 'username' },
         { title: this.t('global.rank'), value: 'rank' },
-        { title: this.t('stats.seasonTotal'), value: 'week_total' },
+        { title: this.t('stats.seasonTotal'), children: [
+          {
+            title: 'Points',
+            value: `week_total_points`
+          },
+          {
+            title: 'Wins',
+            value: `week_total_wins`
+          },
+        ] },
         ...this.selectedWeeks.map((weekNum) => {
           return {
             title: `${this.t('stats.week')} ${weekNum}`,
