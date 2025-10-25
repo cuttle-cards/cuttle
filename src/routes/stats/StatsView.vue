@@ -251,8 +251,6 @@ export default {
 
 .text-h1 {
   font-family: 'Luckiest Guy', serif;
-  font-size: 80px;
-  line-height: 80px;
 }
 
 .text-h2 {
