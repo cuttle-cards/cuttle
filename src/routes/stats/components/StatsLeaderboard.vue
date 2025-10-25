@@ -392,7 +392,7 @@ export default {
 }
 
 :deep(#leaderboard table) {
-  border-spacing: 0 2px;
+  border-spacing: 2px 2px;
 }
 
 #leaderboard tbody tr {
