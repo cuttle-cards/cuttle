@@ -74,15 +74,17 @@ export default {
       }
       return [
         { title: this.t('global.user'), value: 'username' },
-        { title: this.t('global.rank'), value: 'rank' },
-        { title: this.t('stats.seasonTotal'), children: [
+        { title: this.t('global.rank'), value: 'rank', align: 'center' },
+        { title: this.t('stats.seasonTotal'), align: 'center', children: [
           {
             title: 'Points',
-            value: `week_total_points`
+            value: `week_total_points`,
+            align: 'center',
           },
           {
             title: 'Wins',
-            value: `week_total_wins`
+            value: `week_total_wins`,
+            align: 'center',
           },
         ] },
         ...this.selectedWeeks.map((weekNum) => {
@@ -92,11 +94,13 @@ export default {
             children: [
               {
                 title: 'Points',
-                value: `week_${weekNum}_points`
+                value: `week_${weekNum}_points`,
+                align: 'center',
               },
               {
                 title: 'Wins',
-                value: `week_${weekNum}_wins`
+                value: `week_${weekNum}_wins`,
+                align: 'center',
               },
             ],
           };
