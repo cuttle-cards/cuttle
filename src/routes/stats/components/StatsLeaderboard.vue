@@ -79,7 +79,17 @@ export default {
         ...this.selectedWeeks.map((weekNum) => {
           return {
             title: `${this.t('stats.week')} ${weekNum}`,
-            value: `week_${weekNum}`,
+            align: 'center',
+            children: [
+              {
+                title: 'Points',
+                value: `week_${weekNum}_points`
+              },
+              {
+                title: 'Wins',
+                value: `week_${weekNum}_wins`
+              },
+            ],
           };
         }),
       ];
