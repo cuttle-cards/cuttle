@@ -393,12 +393,14 @@ export default {
   color: rgba(var(--v-theme-surface-2));
 }
 
+:deep(#leaderboard table) {
+  border-spacing: 2px 2px;
+}
+
 /* Header Row */
 :deep(#leaderboard table thead > tr) {
-  /* height: 46px; */
-  border-radius: 4px 4px 0 0 !important;
-  background-color: rgba(var(--v-theme-surface-2)) !important;
-  color: rgba(var(--v-theme-surface-1)) !important;
+  background-color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-surface-1));
 
   & th:first-child {
     border-radius: 8px 0 0 0;
@@ -409,20 +411,14 @@ export default {
   }
 }
 
-:deep(#leaderboard table) {
-  border-spacing: 2px 2px;
-}
 
 #leaderboard tbody tr {
-  background-color: rgba(48, 32, 27, .7)
+  background-color: rgba(48, 32, 27, .7);
+  &.active-user-stats {
+    background-color: rgba(144,29,68, .7);
+  }
 }
 
-th {
-  text-align: left;
-}
-.active-user-stats {
-  background-color: rgba(var(--v-theme-accent-lighten3));
-}
 .week-select {
   width: 60%;
 }
