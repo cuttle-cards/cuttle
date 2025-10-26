@@ -1,5 +1,4 @@
 <template>
-
   <BaseMenu v-if="points" v-model="showMenu" :title="`${username} ${menuHeader} ${t('stats.results')}`">
     <template #activator="{ props }">
       <v-chip
