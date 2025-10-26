@@ -1,17 +1,15 @@
 <template>
-  <v-menu
-    v-model="show"
-  >
-    <template #activator="{ props }">
-      <span v-bind="props">
+  <v-menu v-model="show">
+    <template #activator="{ props: menuProps }">
+      <span v-bind="menuProps">
         <slot name="activator" />
       </span>
     </template>
 
     <v-card
-    color="surface-2"
-    class="menu-card"
-    :class="variant"
+      color="surface-2"
+      class="menu-card"
+      :class="variant"
     >
       <v-card-title v-if="title">
         {{ title }}
@@ -38,7 +36,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits([ 'update:modelValue' ]);
 
 const show = computed({
   get() {

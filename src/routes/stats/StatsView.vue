@@ -71,7 +71,9 @@
               </a>
             </p>
             <div v-if="selectedSeason && selectedSeason.footageLink" id="tournament-video" class="d-flex flex-column align-items-center">
-              <h3 class="text-h3 text-center mt-4">Tournament Video</h3>
+              <h3 class="text-h3 text-center mt-4">
+                Tournament Video
+              </h3>
               <BaseVideo :source="selectedSeason.footageLink" />
             </div>
           </div>
