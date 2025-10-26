@@ -1,10 +1,12 @@
 <template>
-  <v-menu v-if="points" v-model="showMenu" location="top">
+
+  <BaseMenu v-if="points" v-model="showMenu" :title="`${username} ${menuHeader} ${t('stats.results')}`">
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"
         :variant="variant"
         class="pointer"
+        rounded="sm"
         v-bind="{
           ...props,
           ...dataAttribute,
@@ -13,42 +15,33 @@
         {{ chipText }}
       </v-chip>
     </template>
-    <v-card :data-player-results="`${username}-week-${week}`">
-      <v-card-title>{{ username }} {{ menuHeader }} {{ t('stats.results') }}</v-card-title>
-      <v-card-text>
-        <h3>{{ t('stats.wins') }}</h3>
-        <v-list :data-players-beaten="`${username}-week-${week}`">
-          {{ playersBeatenText }}
-        </v-list>
-        <h3>{{ t('stats.losses') }}</h3>
-        <v-list :data-players-lost-to="`${username}-week-${week}`">
-          {{ playersLostToText }}
-        </v-list>
-        <h3>{{ t('stats.winRate') }}</h3>
-        <v-list :data-win-rate="`${username}-week-${week}`">
-          {{ winRateText }}
-        </v-list>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn
-          data-cy="close-player-results"
-          variant="outlined"
-          color="primary"
-          @click="showMenu = false"
-        >
-          {{ t('global.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-menu>
+    <template #body>
+      <h3>{{ t('stats.wins') }}</h3>
+      <v-list :data-players-beaten="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ playersBeatenText }}
+      </v-list>
+      <h3>{{ t('stats.losses') }}</h3>
+      <v-list :data-players-lost-to="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ playersLostToText }}
+      </v-list>
+      <h3>{{ t('stats.winRate') }}</h3>
+      <v-list :data-win-rate="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ winRateText }}
+      </v-list>
+    </template>
+  </BaseMenu>
 </template>
 
 <script>
 import { Metrics } from '@/routes/stats/components/StatsLeaderboard.vue';
 import { useI18n } from 'vue-i18n';
+import BaseMenu from '@/components/BaseMenu.vue';
 
 export default {
   name: 'StatsLeaderboardCell',
+  components: {
+    BaseMenu,
+  },
   props: {
     playerRow: {
       type: Object,
