@@ -5,6 +5,7 @@
         :color="colorForScore"
         :variant="variant"
         class="pointer"
+        :class="colorForScore === 'surface-2' ? 'text-surface-1' : 'text-surface-2'"
         rounded="sm"
         v-bind="{
           ...props,
@@ -147,8 +148,8 @@ export default {
       switch (this.colorForScore) {
         case this.theme.firstPlace:
         case this.theme.secondPlace:
-        case this.theme.thirdPlace:
-          return 'elevated';
+        case 'surface-2':
+          return 'flat';
         default:
           return 'outlined';
       }
