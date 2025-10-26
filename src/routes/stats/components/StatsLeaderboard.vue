@@ -23,7 +23,22 @@
       :headers="tableColumns"
       :items="tableRows"
       :row-props="tableRowClass"
-    />
+    >
+      <template
+        v-for="weekNum in selectedWeeks"
+        :key="`${item.username}_week_${weekNum}_points`"
+        #[`item.week_${weekNum}_points`]="{ item }"
+      >
+        <StatsLeaderboardCell
+          :player-row="item"
+          :week="weekNum"
+          :selected-metric="2"
+          :players-beaten="playersBeaten(item.username, weekNum)"
+          :players-lost-to="playersLostTo(item.username, weekNum)"
+          :top-total-scores="topTotalScores"
+        />
+      </template>
+    </v-data-table>
   </div>
 </template>
 <script>

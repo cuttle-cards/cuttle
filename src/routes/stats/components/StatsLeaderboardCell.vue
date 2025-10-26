@@ -142,7 +142,7 @@ export default {
         case 4:
           return this.theme.secondPlace;
         case 3:
-          return this.theme.thirdPlace;
+          return 'surface-2';
         case 2:
           return 'primary';
         case 1:
