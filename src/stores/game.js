@@ -475,7 +475,7 @@ export const useGameStore = defineStore('game', () => {
         if (jwres.statusCode === 409) {
           return reject({ message: res.message, gameId: id.value, code: res.code });
         }
-        return reject(new Error('Error readying for game'));
+        return reject(new Error(res.message));
       });
     });
   }

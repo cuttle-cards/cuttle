@@ -59,7 +59,15 @@
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite",
-    "rankedChangedAlert": "Game Mode changed to"
+    "rankedChangedAlert": "Game Mode changed to",
+    "error": {
+      "fallback": "An unknown error has occured.",
+      "forbidden": "You are not a player in this game!",
+      "conflict": "Game",
+      "gameStatus": "Game has not yet started or is over.",
+      "noGameStates":"Game was not populated with .gameStates collection.",
+      "alreadyDealt":"Cards are already dealt."
+    }
   },
   "game": {
     "resolve": "Resolve",
