@@ -21,7 +21,8 @@
       "cardBackAlt": "Card back -- Waiting for {playerUsername}",
       "readyAlt": "Card front -- {playerUsername} is ready",
       "rematchAlt": "Card front -- {playerUsername} wants rematch"
-    }
+    },
+    "profile": "My Profile"
   },
   "login": {
     "noAccount": "Don't have an account?",

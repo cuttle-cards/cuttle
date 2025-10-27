@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import  { useGameStore } from '@/stores/game';
 import { ROUTE_NAME_SPECTATE } from '@/router';
 import GameStatus from '../../utils/GameStatus.json';
+import { io } from '@/plugins/sails';
 
 export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Dependencies
@@ -14,7 +15,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   const gameStates = ref([]);
 
   const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
-  
   
   // Reactive getter for the current game state index from route query
   const currentGameStateIndex = computed(() => {
@@ -74,6 +74,30 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
   });
 
+
+  const games = ref([]);
+
+
+  async function loadMyGames() {
+    return new Promise((resolve, reject) => {
+
+      io.socket.get('/api/game/history', (res, jwres) => {
+
+        console.log('API raw response:', res);
+        console.log('JWRES status:', jwres.statusCode);
+
+        if (jwres.statusCode === 200 && Array.isArray(res.finishedGames)) {
+          games.value = res.finishedGames;
+          console.log('ToReturn', games.value);
+          return resolve(games.value);
+        }
+        return reject(new Error('Failed to load game history'));
+      });
+
+    });
+  }
+
+
   return {
     gameStates,
     isSpectating,
@@ -85,5 +109,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     canGoToPreviousState,
     canGoToNextState,
     clipUrl,
+    games,
+    loadMyGames
   };
 });

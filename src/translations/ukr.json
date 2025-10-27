@@ -21,7 +21,8 @@
       "cardBackAlt": "Зворот сторони карти — Чекаємо на {playerUsername}",
       "readyAlt": "Лицьова сторона карти — {playerUsername} готовий",
       "rematchAlt": "Лицьова сторона карти — {playerUsername} хоче ще один матч"
-    }
+    },
+    "profile": "Мій профіль"
   },
   "login": {
     "noAccount": "Не маєте облікового запису?",

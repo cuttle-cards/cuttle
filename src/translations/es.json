@@ -21,7 +21,8 @@
       "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
       "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
       "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
-    }
+    },
+    "profile": "Mi perfil"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",

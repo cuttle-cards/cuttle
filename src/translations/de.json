@@ -21,7 +21,8 @@
       "cardBackAlt": "Kartenzurückseite -- Wartet auf {playerUsername}",
       "readyAlt": "Kartenfront -- {playerUsername} ist bereit",
       "rematchAlt": "Kartenfront -- {playerUsername} möchte ein Rückspiel"
-    }
+    },
+    "profile": "Mein Profil"
   },
   "login": {
     "noAccount": "Hast du kein Konto?",
