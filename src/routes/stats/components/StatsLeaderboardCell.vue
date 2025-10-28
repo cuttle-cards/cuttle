@@ -104,10 +104,10 @@ export default {
         return this.theme.secondPlace;
       }
       if (this.points === this.topTotalScores.third) {
-        return this.theme.thirdPlace;
+        return 'surface-2';
       }
       if (this.points > 0) {
-        return 'primary';
+        return '#000';
       }
       return '#000';
     },
@@ -120,9 +120,7 @@ export default {
         case 3:
           return 'surface-2';
         case 2:
-          return 'primary';
         case 1:
-          return 'neutral-darken-3';
         default:
           return '#000';
       }
