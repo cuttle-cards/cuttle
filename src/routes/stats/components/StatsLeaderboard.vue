@@ -20,7 +20,7 @@
       :row-props="tableRowClass"
     >
       <template
-        v-for="weekNum in selectedWeeks"
+        v-for="weekNum in ['total', ...selectedWeeks]"
         :key="`${item.username}_week_${weekNum}_points`"
         #[`item.week_${weekNum}_points`]="{ item }"
       >
