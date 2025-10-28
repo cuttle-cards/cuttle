@@ -1,14 +1,7 @@
 <template>
   <div data-cy="stats-leaderboard">
-    <!-- Select Metric and Weeks -->
+    <!-- Select Weeks -->
     <div id="stats-table-upper-surface" class="d-flex align-end">
-      <v-select
-        v-model="selectedMetric"
-        :items="metricChoices"
-        :label="t('stats.selectMetric')"
-        class="filter-select mr-4 fit"
-        data-cy="metric-select"
-      />
       <v-select
         v-model="selectedWeeks"
         :items="weeks"
@@ -16,6 +9,8 @@
         class="week-select"
         data-cy="week-select"
         multiple
+        variant="underlined"
+        :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1' }"
       />
     </div>
     <v-data-table
@@ -32,7 +27,6 @@
         <StatsLeaderboardCell
           :player-row="item"
           :week="weekNum"
-          :selected-metric="2"
           :players-beaten="playersBeaten(item.username, weekNum)"
           :players-lost-to="playersLostTo(item.username, weekNum)"
           :top-total-scores="topTotalScores"
@@ -48,12 +42,6 @@ import { uniq, countBy } from 'lodash';
 import { useI18n } from 'vue-i18n';
 import StatsLeaderboardCell from '@/routes/stats/components/StatsLeaderboardCell.vue';
 import Result from '_/types/Result';
-
-export const Metrics = {
-  POINTS_AND_WINS: 1,
-  POINTS_ONLY: 2,
-  WINS_ONLY: 3,
-};
 
 export default {
   name: 'StatsLeaderboard',
@@ -74,7 +62,6 @@ export default {
   data() {
     return {
       sortBy: 'rank',
-      selectedMetric: Metrics.POINTS_AND_WINS,
       selectedWeeks: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
     };
   },
@@ -304,11 +291,6 @@ export default {
   },
   created() {
     // Define non-reactive attributes for selection options
-    this.metricChoices = [
-      { title: this.t('stats.pointsAndWins'), value: Metrics.POINTS_AND_WINS },
-      { title: this.t('stats.pointsOnly'), value: Metrics.POINTS_ONLY },
-      { title: this.t('stats.winsOnly'), value: Metrics.WINS_ONLY },
-    ];
     this.weeks = [
       { title: `${this.t('stats.week')} 1`, value: 1 },
       { title: `${this.t('stats.week')} 2`, value: 2 },

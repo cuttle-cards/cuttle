@@ -12,7 +12,7 @@
           ...dataAttribute,
         }"
       >
-        {{ chipText }}
+        {{ points }}
       </v-chip>
     </template>
     <template #body>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import { Metrics } from '@/routes/stats/components/StatsLeaderboard.vue';
 import { useI18n } from 'vue-i18n';
 import BaseMenu from '@/components/BaseMenu.vue';
 
@@ -51,10 +50,6 @@ export default {
       type: [ Number, String ],
       required: true,
       validator: (val) => [ 'total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ].includes(val),
-    },
-    selectedMetric: {
-      type: Number,
-      required: true,
     },
     playersBeaten: {
       type: String,
@@ -97,18 +92,6 @@ export default {
     },
     weekCount() {
       return this.playerRow[`week_${this.week}_count`];
-    },
-    chipText() {
-      switch (this.selectedMetric) {
-        case Metrics.POINTS_AND_WINS:
-          return `W: ${this.wins}, P: ${this.points}`;
-        case Metrics.POINTS_ONLY:
-          return `${this.points}`;
-        case Metrics.WINS_ONLY:
-          return `${this.wins}`;
-        default:
-          return `W: ${this.wins}, P: ${this.points}`;
-      }
     },
     colorForScore() {
       return this.week === 'total' ? this.colorForTotalScore : this.colorForWeeklyScore;
