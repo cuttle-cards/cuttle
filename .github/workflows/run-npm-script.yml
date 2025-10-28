@@ -22,7 +22,7 @@ jobs:
       - name: set node version
         uses: actions/setup-node@v3
         with:
-          node-version: '22.21.1'
+          node-version: '22.21'
           cache: 'npm'
       - name: install node modules
         run: npm ci
