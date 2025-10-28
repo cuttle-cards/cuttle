@@ -106,9 +106,6 @@ export default {
       if (this.points === this.topTotalScores.third) {
         return 'surface-2';
       }
-      if (this.points > 0) {
-        return '#000';
-      }
       return '#000';
     },
     colorForWeeklyScore() {
