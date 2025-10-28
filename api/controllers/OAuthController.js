@@ -7,7 +7,7 @@
  * Flow is: 
  *   1) Client navigates to oAuthRedirect(), which redirects to identity provider's auth
  *   2) Identity provider redirects back to our oAuthCallback(), logs user in or preps 1st-time registration
- *   3) New users decide whether to create a new account or link an old one, then hit oAuthCompleteRegistration()
+ *   3) New users decide whether to create a new account or link an old one, then hit oAuthComplete()
  *
  * Covers four cases:
  *   Returning user login, New user signup, Linking account before login, link account after login
@@ -81,7 +81,7 @@ module.exports = {
   },
 
   // Final step in Oauth Registration,
-  oAuthCompleteRegistration: async function(req, res) {
+  oAuthComplete: async function(req, res) {
     const { username, password } = req.body;
     const { fetchIdentity } = sails.helpers.oauth[req.params.provider];
     try {
