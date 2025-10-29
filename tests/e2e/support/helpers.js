@@ -379,7 +379,11 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
 
         // Check Hand
         const checkingCurrentPlayer = i === pNum;
-        const handShouldBeRevealed = checkingCurrentPlayer || playerShouldHaveGlasses || deckShouldBeEmpty || isSpectating;
+        const handShouldBeRevealed =
+          checkingCurrentPlayer ||
+          playerShouldHaveGlasses ||
+          deckShouldBeEmpty ||
+          isSpectating;
         if (handShouldBeRevealed) {
           expect(cardListsMatch(gamePlayer.hand, fixturePlayer.hand)).to.eq(
             true,
