@@ -7,7 +7,6 @@ const __dirname = dirname(__filename);
 
 // https://vitest.dev/config/
 export default defineConfig({
-  cacheDir: '.tmp/vite',
   resolve: {
     alias: {
       _: resolve(__dirname),

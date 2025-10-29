@@ -57,7 +57,7 @@
     "sass": "^1.93.2",
     "storybook": "7.6.0",
     "supertest": "^7.1.4",
-    "vite": "6.4.1",
+    "vite": "^7.1.12",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vite-plugin-vuetify": "^2.1.2",
     "vitest": "^4.0.5"

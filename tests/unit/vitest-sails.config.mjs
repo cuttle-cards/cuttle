@@ -6,7 +6,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(resolve(__filename,'../..'));
 
 export default defineConfig({
-  cacheDir: '.tmp/vite',
   resolve: {
     alias: {
       _: __dirname,
