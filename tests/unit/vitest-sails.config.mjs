@@ -8,10 +8,8 @@ const __dirname = dirname(resolve(__filename,'../..'));
 export default defineConfig({
   resolve: {
     alias: {
-      alias: {
-        _: __dirname,
-        '@': resolve(__dirname, './src'),
-      },
+      _: __dirname,
+      '@': resolve(__dirname, './src'),
     },
   },
   test: {
