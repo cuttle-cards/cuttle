@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(resolve(__filename,'../..'));
 
 export default defineConfig({
+  cacheDir: '.tmp/vite',
   resolve: {
     alias: {
       _: __dirname,
@@ -19,8 +20,8 @@ export default defineConfig({
     environment: 'node',
     setupFiles: [ 'tests/unit/setup-sails.vitest.js' ],
     // Sails tests can not be parallelized
-    async: false,
-    threads: false,
+    pool: 'forks',
+    maxWorkers: 1,
     isolate: false,
     env:{
       VITE_JWT_SECRET: 'cuttle_TEST_JWT_SECRET',

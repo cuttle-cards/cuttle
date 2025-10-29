@@ -47,7 +47,8 @@
     "eslint-plugin-mocha": "^10.5.0",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-storybook": "0.9.0",
-    "eslint-plugin-vitest": "^0.3.26",
+    "@vitest/ui": "^4.0.5",
+    "eslint-plugin-vitest": "^0.5.4",
     "eslint-plugin-vue": "9.28.0",
     "eslint-plugin-vuetify": "^2.5.3",
     "nock": "^14.0.10",
@@ -59,7 +60,7 @@
     "vite": "6.4.1",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vite-plugin-vuetify": "^2.1.2",
-    "vitest": "^0.34.6"
+    "vitest": "^4.0.5"
   },
   "engines": {
     "node": "22.21"
