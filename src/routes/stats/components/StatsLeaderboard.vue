@@ -19,6 +19,14 @@
       :items="tableRows"
       :row-props="tableRowClass"
     >
+      <template #item.username="{ item, value }">
+        <span :data-cy="`username-${item.username}`">{{ value }}</span>
+      </template>
+
+      <template #item.rank="{ item, value }">
+        <span :data-cy="`rank-${item.username}`">{{ value }}</span>
+      </template>
+
       <template
         v-for="weekNum in ['total', ...selectedWeeks]"
         :key="`${item.username}_week_${weekNum}_points`"
@@ -31,6 +39,16 @@
           :players-lost-to="playersLostTo(item.username, weekNum)"
           :top-total-scores="topTotalScores"
         />
+      </template>
+
+      <template
+        v-for="weekNum in ['total', ...selectedWeeks]"
+        :key="`${item.username}_week_${weekNum}_wins`"
+        #[`item.week_${weekNum}_wins`]="{ item, value }"
+      >
+        <span :data-cy="`week-${weekNum}-wins-${item.username}`">
+          {{ value }}
+        </span>
       </template>
     </v-data-table>
   </div>
@@ -363,7 +381,10 @@ export default {
       return username === this.authStore.username;
     },
     tableRowClass({ item }) {
-      return { class: item.username === this.authStore.username ? 'active-user-stats' : 'foo' };
+      return {
+        class: item.username === this.authStore.username ? 'active-user-stats' : 'foo',
+        'data-player-row': item.username,
+      };
     },
     /**
      * @description Compute rank from total score and wins

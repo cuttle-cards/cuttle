@@ -74,7 +74,7 @@
               <h3 class="text-h3 text-center mt-4">
                 Tournament Video
               </h3>
-              <BaseVideo :source="selectedSeason.footageLink" />
+              <BaseVideo :source="selectedSeason.footageLink" data-cy="tournament-video" />
             </div>
           </div>
           <!-- Rankings Table -->

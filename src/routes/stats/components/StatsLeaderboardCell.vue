@@ -7,9 +7,9 @@
         class="pointer"
         :class="colorForScore === 'surface-2' ? 'text-surface-1' : 'text-surface-2'"
         rounded="sm"
+        :data-cy="`week-${week}-points-${playerRow.username}`"
         v-bind="{
           ...props,
-          ...dataAttribute,
         }"
       >
         {{ points }}
@@ -131,16 +131,6 @@ export default {
         default:
           return 'outlined';
       }
-    },
-    /**
-     * Returns an object for v-bind for testing attributes to identify table cell
-     * @example {'data-points-2': 'someUserName'} identifies someUserNames' data-week-2 points
-     */
-    dataAttribute() {
-      const res = {};
-      const attributeName = `data-week-${this.week}`;
-      res[attributeName] = this.username;
-      return res;
     },
     winRatePercentage() {
       const winRate = Math.floor((this.wins / this.weekCount) * 100);
