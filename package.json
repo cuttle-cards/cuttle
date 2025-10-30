@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "13.1.6",
+  "version": "13.1.7",
   "dependencies": {
     "@unhead/vue": "^1.11.14",
     "chart.js": "^4.5.1",
@@ -37,7 +37,7 @@
     "@storybook/vue": "7.6.0",
     "@storybook/vue3": "7.6.0",
     "@storybook/vue3-vite": "7.6.0",
-    "@vitejs/plugin-vue": "5.1.4",
+    "@vitejs/plugin-vue": "6.0.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "cypress": "^15.5.0",
@@ -45,6 +45,8 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-prettier": "^5.5.4",
+    "@vitest/ui": "^4.0.5",
+    "eslint-plugin-vitest": "^0.5.4",
     "eslint-plugin-vue": "^10.5.1",
     "eslint-plugin-vuetify": "^2.5.3",
     "nock": "^14.0.10",
@@ -53,10 +55,10 @@
     "sass": "^1.93.2",
     "storybook": "7.6.0",
     "supertest": "^7.1.4",
-    "vite": "5.4.8",
-    "vite-plugin-vue-devtools": "^7.7.7",
+    "vite": "^7.1.12",
+    "vite-plugin-vue-devtools": "^8.0.3",
     "vite-plugin-vuetify": "^2.1.2",
-    "vitest": "^0.34.6",
+    "vitest": "^4.0.5",
     "vue-eslint-parser": "^10.2.0"
   },
   "engines": {
