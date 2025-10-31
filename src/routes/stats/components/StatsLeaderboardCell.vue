@@ -1,5 +1,10 @@
 <template>
-  <BaseMenu v-if="points" v-model="showMenu" :title="`${username} ${menuHeader} ${t('stats.results')}`">
+  <BaseMenu
+    v-if="points"
+    v-model="showMenu"
+    :title="`${username} ${menuHeader} ${t('stats.results')}`"
+    :data-cy="`player-${playerRow.username}-week-${week}-results`"
+  >
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"

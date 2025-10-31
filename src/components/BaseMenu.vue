@@ -10,6 +10,7 @@
       color="surface-2"
       class="menu-card"
       :class="variant"
+      :data-cy="dataCy"
     >
       <v-card-title v-if="title">
         {{ title }}
@@ -33,6 +34,10 @@ const props = defineProps({
   title: {
     type: String,
     default: '',
+  },
+  dataCy: {
+    type: String,
+    default: ''
   },
 });
 
