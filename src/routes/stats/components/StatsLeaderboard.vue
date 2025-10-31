@@ -38,6 +38,7 @@
           :players-beaten="playersBeaten(item.username, weekNum)"
           :players-lost-to="playersLostTo(item.username, weekNum)"
           :top-total-scores="topTotalScores"
+          :season-name="season?.name"
         />
       </template>
 
