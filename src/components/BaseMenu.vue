@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="show">
+  <v-menu v-model="show" :location="location">
     <template #activator="{ props: menuProps }">
       <span v-bind="menuProps">
         <slot name="activator" />
@@ -34,6 +34,10 @@ const props = defineProps({
   title: {
     type: String,
     default: '',
+  },
+  location: {
+    type: String,
+    default: 'top',
   },
   dataCy: {
     type: String,
