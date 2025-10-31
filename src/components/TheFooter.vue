@@ -1,7 +1,7 @@
 <template>
   <footer>
     <v-bottom-navigation
-      :bg-color="variant === 'light' ? 'surface-2' : 'surface-1'"
+      bg-color="surface-2"
       :elevation="0"
       grow
     >
@@ -27,24 +27,15 @@
 </template>
 
 <script setup>
-import { getPageLinks } from '@/composables/navLink.js';
 import { useRoute } from 'vue-router';
-import { computed, toRefs } from 'vue';
+import { getPageLinks } from '@/composables/navLink.js';
 
-const props = defineProps({
-  variant:{
-    type:String,
-    default:'light'
-  }
-});
 
 const route = useRoute();
-const { variant } = toRefs(props);
 const pageLinks = getPageLinks();
-const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 'text-surface-2');
 
 const tabColor = (page) => {
-  return route.name === page ? 'text-newPrimary' : linkColor.value;
+  return route.name === page ? 'text-newPrimary' : 'text-surface-1';
 };
 
 </script>

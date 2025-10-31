@@ -13,8 +13,8 @@ const seasonFixtures = [
     secondPlace: 'player2',
     thirdPlace: 'player3',
     fourthPlace: 'player4',
-    bracketLink: 'https://github.com/cuttle-cards/cuttle',
-    footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
+    bracketLink: 'https://challonge.com/cuttle_clubs_2022',
+    footageLink: 'https://www.youtube.com/embed/IS8KjTctUvE',
     gameCounts: [ 50, 80, 100, 110 ],
     uniqePlayersPerWeek: [ 10, 15, 17, 22 ],
   },
@@ -53,8 +53,8 @@ const seasonFixtures = [
     secondPlace: 'player2',
     thirdPlace: 'player3',
     fourthPlace: 'player4',
-    bracketLink: 'https://github.com/cuttle-cards/cuttle',
-    footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
+    bracketLink: 'https://challonge.com/cuttle_world_championship_ii',
+    footageLink: 'https://www.youtube.com/embed/IS8KjTctUvE',
   },
 ];
 

@@ -1,54 +1,51 @@
 <template>
-  <v-menu v-if="points" v-model="showMenu" location="top">
+  <BaseMenu
+    v-if="points"
+    v-model="showMenu"
+    :title="`${username} ${menuHeader} ${t('stats.results')}`"
+    :data-cy="`player-${playerRow.username}-week-${week}-results`"
+  >
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"
         :variant="variant"
         class="pointer"
+        :class="colorForScore === 'surface-2' ? 'text-surface-1' : 'text-surface-2'"
+        rounded="sm"
+        :data-cy="`week-${week}-points-${playerRow.username}`"
         v-bind="{
           ...props,
-          ...dataAttribute,
         }"
       >
-        {{ chipText }}
+        {{ points }}
       </v-chip>
     </template>
-    <v-card :data-player-results="`${username}-week-${week}`">
-      <v-card-title>{{ username }} {{ menuHeader }} {{ t('stats.results') }}</v-card-title>
-      <v-card-text>
-        <h3>{{ t('stats.wins') }}</h3>
-        <v-list :data-players-beaten="`${username}-week-${week}`">
-          {{ playersBeatenText }}
-        </v-list>
-        <h3>{{ t('stats.losses') }}</h3>
-        <v-list :data-players-lost-to="`${username}-week-${week}`">
-          {{ playersLostToText }}
-        </v-list>
-        <h3>{{ t('stats.winRate') }}</h3>
-        <v-list :data-win-rate="`${username}-week-${week}`">
-          {{ winRateText }}
-        </v-list>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn
-          data-cy="close-player-results"
-          variant="outlined"
-          color="primary"
-          @click="showMenu = false"
-        >
-          {{ t('global.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-menu>
+    <template #body>
+      <h3>{{ t('stats.wins') }}</h3>
+      <v-list :data-players-beaten="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ playersBeatenText }}
+      </v-list>
+      <h3>{{ t('stats.losses') }}</h3>
+      <v-list :data-players-lost-to="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ playersLostToText }}
+      </v-list>
+      <h3>{{ t('stats.winRate') }}</h3>
+      <v-list :data-win-rate="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+        {{ winRateText }}
+      </v-list>
+    </template>
+  </BaseMenu>
 </template>
 
 <script>
-import { Metrics } from '@/routes/stats/components/StatsLeaderboard.vue';
 import { useI18n } from 'vue-i18n';
+import BaseMenu from '@/components/BaseMenu.vue';
 
 export default {
   name: 'StatsLeaderboardCell',
+  components: {
+    BaseMenu,
+  },
   props: {
     playerRow: {
       type: Object,
@@ -58,10 +55,6 @@ export default {
       type: [ Number, String ],
       required: true,
       validator: (val) => [ 'total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ].includes(val),
-    },
-    selectedMetric: {
-      type: Number,
-      required: true,
     },
     playersBeaten: {
       type: String,
@@ -105,18 +98,6 @@ export default {
     weekCount() {
       return this.playerRow[`week_${this.week}_count`];
     },
-    chipText() {
-      switch (this.selectedMetric) {
-        case Metrics.POINTS_AND_WINS:
-          return `W: ${this.wins}, P: ${this.points}`;
-        case Metrics.POINTS_ONLY:
-          return `${this.points}`;
-        case Metrics.WINS_ONLY:
-          return `${this.wins}`;
-        default:
-          return `W: ${this.wins}, P: ${this.points}`;
-      }
-    },
     colorForScore() {
       return this.week === 'total' ? this.colorForTotalScore : this.colorForWeeklyScore;
     },
@@ -128,10 +109,7 @@ export default {
         return this.theme.secondPlace;
       }
       if (this.points === this.topTotalScores.third) {
-        return this.theme.thirdPlace;
-      }
-      if (this.points > 0) {
-        return 'primary';
+        return 'surface-2';
       }
       return '#000';
     },
@@ -142,11 +120,9 @@ export default {
         case 4:
           return this.theme.secondPlace;
         case 3:
-          return this.theme.thirdPlace;
+          return 'surface-2';
         case 2:
-          return 'primary';
         case 1:
-          return 'neutral-darken-3';
         default:
           return '#000';
       }
@@ -155,21 +131,11 @@ export default {
       switch (this.colorForScore) {
         case this.theme.firstPlace:
         case this.theme.secondPlace:
-        case this.theme.thirdPlace:
-          return 'elevated';
+        case 'surface-2':
+          return 'flat';
         default:
           return 'outlined';
       }
-    },
-    /**
-     * Returns an object for v-bind for testing attributes to identify table cell
-     * @example {'data-points-2': 'someUserName'} identifies someUserNames' data-week-2 points
-     */
-    dataAttribute() {
-      const res = {};
-      const attributeName = `data-week-${this.week}`;
-      res[attributeName] = this.username;
-      return res;
     },
     winRatePercentage() {
       const winRate = Math.floor((this.wins / this.weekCount) * 100);
