@@ -191,11 +191,16 @@ describe('Stats Page', () => {
 
     // Players should be sorted in rank order
     cy.get('[data-cy^=rank-]').should('have.length', 5);
-    cy.get('[data-cy^=rank-]').eq(0).should('contain', 1);
-    cy.get('[data-cy^=rank-]').eq(1).should('contain', 1);
-    cy.get('[data-cy^=rank-]').eq(2).should('contain', 3);
-    cy.get('[data-cy^=rank-]').eq(3).should('contain', 4);
-    cy.get('[data-cy^=rank-]').eq(4).should('contain', 5);
+    cy.get('[data-cy^=rank-]').eq(0)
+      .should('contain', 1);
+    cy.get('[data-cy^=rank-]').eq(1)
+      .should('contain', 1);
+    cy.get('[data-cy^=rank-]').eq(2)
+      .should('contain', 3);
+    cy.get('[data-cy^=rank-]').eq(3)
+      .should('contain', 4);
+    cy.get('[data-cy^=rank-]').eq(4)
+      .should('contain', 5);
 
     // Incomplete match should not contribute to points
     cy.get('[data-cy=week-3-points-Player1]').should('not.exist');
