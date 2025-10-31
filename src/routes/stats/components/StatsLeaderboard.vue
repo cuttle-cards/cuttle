@@ -383,7 +383,7 @@ export default {
     },
     tableRowClass({ item }) {
       return {
-        class: item.username === this.authStore.username ? 'active-user-stats' : 'foo',
+        class: item.username === this.authStore.username ? 'active-user-stats' : '',
         'data-player-row': item.username,
       };
     },
