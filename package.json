@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "13.1.6",
+  "version": "13.1.8",
   "dependencies": {
     "@unhead/vue": "^1.11.14",
     "chart.js": "^4.5.1",
@@ -36,15 +36,13 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "cypress": "^15.5.0",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-cypress": "3.5.0",
-    "eslint-plugin-mocha": "^10.5.0",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-storybook": "0.9.0",
     "@vitest/ui": "^4.0.5",
     "eslint-plugin-vitest": "^0.5.4",
-    "eslint-plugin-vue": "9.28.0",
+    "eslint-plugin-vue": "^10.5.1",
     "eslint-plugin-vuetify": "^2.5.3",
     "nock": "^14.0.10",
     "prettier": "^3.6.2",
@@ -54,7 +52,8 @@
     "vite": "^7.1.12",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vite-plugin-vuetify": "^2.1.2",
-    "vitest": "^4.0.5"
+    "vitest": "^4.0.5",
+    "vue-eslint-parser": "^10.2.0"
   },
   "engines": {
     "node": "22.21"
@@ -84,8 +83,8 @@
     "e2e:server": "cross-env VITE_API_URL=http://localhost:1337 cypress run",
     "e2e:server:gui": "cross-env VITE_API_URL=http://localhost:1337 cypress open",
     "e2e:server:playground": "cross-env VITE_API_URL=http://localhost:1337 cypress run --config-file tests/e2e/playground/playground.config.js",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "eslint --ext .js,.vue .",
+    "lint:fix": "eslint --fix --ext .js,.vue .",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "test:unit:client": "NODE_ENV=development vitest run",
