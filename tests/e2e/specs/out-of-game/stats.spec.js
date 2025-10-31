@@ -80,7 +80,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     const [ seasonOne ] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
@@ -202,11 +202,12 @@ describe('Stats Page', () => {
     cy.get('[data-cy=week-3-points-Player2]').should('not.exist');
   });
 
-  it('Filters table to show selected weeks', () => {
-    // 16 columns: username, rank, total, 13 weeks
-    cy.get('th').should('have.length', 16);
+  it.only('Filters table to show selected weeks', () => {
+    // 44 columns: username, rank, (total + 13 weeks) x 3 (parent + points + wins)
+    cy.get('th').should('have.length', 44);
     // Total counts across all weeks
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
+    cy.get('[data-cy=week-total-points-Player1]').contains('9');
+    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click();
     cy.get('[role=listbox]').contains('Week 2')
@@ -235,11 +236,15 @@ describe('Stats Page', () => {
       .click();
     cy.get('body').type('{esc}');
 
-    // Expect 5 columns: username, rank, total, week_1
-    cy.get('th').should('have.length', 4);
-    // Total counts should only consider the selected weeks
-    cy.get('[data-week-1=Player1]').should('contain', 'W: 4, P: 5');
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
+    // Expect 6 columns: username, rank, (total + week_1) x 3 (wins + points + parent)
+    cy.get('th').should('have.length', 8);
+    // Total counts should only still show season totals
+    cy.get('[data-cy=week-total-points-Player1]').contains('9');
+    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
+    cy.get('[data-cy=week-1-points-Player1]').contains('5');
+    cy.get('[data-cy=week-1-wins-Player1]').contains('4');
+    // Week 2 should not appear
+    cy.get('[data-cy=week-2-wins-Player1]').should('not.exist');
   });
 
   it('Selects different seasons to show their results', () => {
