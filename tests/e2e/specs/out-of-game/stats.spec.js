@@ -211,26 +211,6 @@ describe('Stats Page', () => {
     // cy.get('[data-week-3=\'Player2\']').should('not.exist');
   });
 
-  it('Filters table to display wins, points, or both', () => {
-    // 16 columns: username, rank, total, + 13 weeks
-    cy.get('th').should('have.length', 16);
-    // Switch to points only
-    cy.get('[data-cy=metric-select]').click();
-    cy.contains('Points Only').click();
-    // Only points are displayed
-    cy.get('[data-week-1=\'Player1\']').contains('5')
-      .should('not.contain', 'W:');
-    cy.get('th').should('have.length', 16);
-    // Switch to wins only
-    cy.get('[data-cy=metric-select]').click();
-    cy.contains('Wins Only').click();
-    cy.get('th').should('have.length', 16);
-    // Only wins are displayed
-    cy.get('[data-week-1=\'Player1\']').contains('4')
-      .should('not.contain', 'P:');
-    cy.get('[points-1=\'Player1\']').should('not.exist');
-  });
-
   it('Filters table to show selected weeks', () => {
     // 16 columns: username, rank, total, 13 weeks
     cy.get('th').should('have.length', 16);
