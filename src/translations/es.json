@@ -518,7 +518,7 @@
     "season": {
       "select": "Seleccionar temporada",
       "champions": "Campeones de temporada",
-      "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
+      "tournamentBracket": "aquí para ver el cuadro oficial del torneo"
     },
     "winRate": "Ratio de victorias",
     "wins": "Gana",

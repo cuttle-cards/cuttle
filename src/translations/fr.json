@@ -518,7 +518,7 @@
     "season": {
       "select": "Sélectionnez la saison",
       "champions": "Champions de la saison",
-      "tournamentBracket": "ici pour voir le tableau officiel du tournoi",
+      "tournamentBracket": "ici pour voir le tableau officiel du tournoi"
     },
     "winRate": "Taux de réussite",
     "wins": "Gagne",
