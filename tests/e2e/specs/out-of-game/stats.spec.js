@@ -202,7 +202,7 @@ describe('Stats Page', () => {
     cy.get('[data-cy=week-3-points-Player2]').should('not.exist');
   });
 
-  it.only('Filters table to show selected weeks', () => {
+  it('Filters table to show selected weeks', () => {
     // 44 columns: username, rank, (total + 13 weeks) x 3 (parent + points + wins)
     cy.get('th').should('have.length', 44);
     // Total counts across all weeks
@@ -259,15 +259,20 @@ describe('Stats Page', () => {
     cy.get('[data-tournament]').should('not.exist');
 
     // Stats data table
-    cy.get('[data-week-1=Player1]').should('contain', 'W: 1, P: 3');
+    cy.get('[data-cy=week-1-points-Player1]').contains('3');
+    cy.get('[data-cy=week-1-wins-Player1]').contains('1');
 
     // Switch back to Clubs 2022
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('Clubs 2022')
       .click();
     // Stats data table
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
-    cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
+    // cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
+    // cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
+    cy.get('[data-cy=week-total-points-Player1]').contains('9');
+    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
+    cy.get('[data-cy=week-2-points-Player1]').contains('4');
+    cy.get('[data-cy=week-2-wins-Player1]').contains('3');
   });
 
   it('Hides season that should not be available', () => {
