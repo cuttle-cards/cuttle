@@ -295,9 +295,9 @@ describe('Stats Page', () => {
       'href',
       worldChampionshipSeason.bracketLink,
     );
-    cy.get('[data-cy=tournament-footage-link]').should(
+    cy.get('[data-cy=tournament-video] iframe').should(
       'have.attr',
-      'href',
+      'src',
       worldChampionshipSeason.footageLink,
     );
     // Award Cards
