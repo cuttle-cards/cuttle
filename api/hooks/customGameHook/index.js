@@ -30,26 +30,5 @@ module.exports = function gameHook() {
           });
       });
     },
-    findGame: function (id) {
-      return new Promise(function (resolve, reject) {
-        Game.findOne(id)
-          .populate('players', { sort: 'pNum' })
-          .populate('deck')
-          .populate('topCard')
-          .populate('secondCard')
-          .exec(function (error, game) {
-            if (error || !game) {
-              let res;
-              if (error) {
-                res = error;
-              } else {
-                res = { message: 'home.snackbar.cantFindGame' };
-              }
-              return reject(res);
-            }
-            resolve(game);
-          });
-      });
-    },
   };
 };
