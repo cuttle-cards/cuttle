@@ -272,8 +272,6 @@ describe('Stats Page', () => {
     cy.get('[role=listbox]').contains('Clubs 2022')
       .click();
     // Stats data table
-    // cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
-    // cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
     cy.get('[data-cy=week-total-points-Player1]').contains('9');
     cy.get('[data-cy=week-total-wins-Player1]').contains('7');
     cy.get('[data-cy=week-2-points-Player1]').contains('4');
