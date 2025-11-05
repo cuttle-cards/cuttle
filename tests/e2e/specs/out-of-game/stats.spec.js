@@ -94,7 +94,7 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
 
     // Data Table
-    cy.get('th').should('have.length', 44);
+    cy.get('th').should('have.length', 43);
     // Should be one active player row: Player1
     cy.get('tr.active-user-stats').should('have.length', 1);
     cy.get('[data-player-row=Player1]').should('have.class', 'active-user-stats');
@@ -208,8 +208,8 @@ describe('Stats Page', () => {
   });
 
   it('Filters table to show selected weeks', () => {
-    // 44 columns: username, rank, (total + 13 weeks) x 3 (parent + points + wins)
-    cy.get('th').should('have.length', 44);
+    // 43 columns: rank & username, (total + 13 weeks) x 3 (parent + points + wins)
+    cy.get('th').should('have.length', 43);
     // Total counts across all weeks
     cy.get('[data-cy=week-total-points-Player1]').contains('9');
     cy.get('[data-cy=week-total-wins-Player1]').contains('7');
@@ -241,8 +241,8 @@ describe('Stats Page', () => {
       .click();
     cy.get('body').type('{esc}');
 
-    // Expect 6 columns: username, rank, (total + week_1) x 3 (wins + points + parent)
-    cy.get('th').should('have.length', 8);
+    // Expect 6 columns: rank & username, (total + week_1) x 3 (wins + points + parent)
+    cy.get('th').should('have.length', 7);
     // Total counts should only still show season totals
     cy.get('[data-cy=week-total-points-Player1]').contains('9');
     cy.get('[data-cy=week-total-wins-Player1]').contains('7');
