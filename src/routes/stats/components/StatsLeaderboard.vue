@@ -94,7 +94,6 @@ export default {
       }
       return [
         { title: this.t('global.player'), value: 'username', minWidth: 160, align: 'center' },
-        // { title: this.t('global.rank'), value: 'rank', align: 'center' },
         { title: this.t('stats.seasonTotal'), align: 'center', children: [
           {
             title: 'Points',
