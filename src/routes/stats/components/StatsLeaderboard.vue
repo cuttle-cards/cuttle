@@ -93,7 +93,7 @@ export default {
         return [];
       }
       return [
-        { title: this.t('global.user'), value: 'username', minWidth: 144 },
+        { title: this.t('global.user'), value: 'username', minWidth: 160, align: 'center' },
         // { title: this.t('global.rank'), value: 'rank', align: 'center' },
         { title: this.t('stats.seasonTotal'), align: 'center', children: [
           {
