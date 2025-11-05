@@ -20,11 +20,10 @@
       :row-props="tableRowClass"
     >
       <template #item.username="{ item, value }">
-        <span :data-cy="`username-${item.username}`">{{ value }}</span>
-      </template>
-
-      <template #item.rank="{ item, value }">
-        <span :data-cy="`rank-${item.username}`">{{ value }}</span>
+        <div class="d-flex justify-space-between">
+          <span :data-cy="`rank-${item.username}`">{{ item.rank }}</span>
+          <span :data-cy="`username-${item.username}`">{{ value }}</span>
+        </div>
       </template>
 
       <template
@@ -94,8 +93,8 @@ export default {
         return [];
       }
       return [
-        { title: this.t('global.user'), value: 'username' },
-        { title: this.t('global.rank'), value: 'rank', align: 'center' },
+        { title: this.t('global.user'), value: 'username', minWidth: 144 },
+        // { title: this.t('global.rank'), value: 'rank', align: 'center' },
         { title: this.t('stats.seasonTotal'), align: 'center', children: [
           {
             title: 'Points',
