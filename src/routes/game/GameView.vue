@@ -1098,9 +1098,6 @@ export default {
         this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
       }
     },
-    isBeingDiscarded(card) {
-      return this.gameStore.lastEventDiscardedCards?.some(discardedCard => discardedCard.id === card.id); 
-    }
   },
 };
 </script>

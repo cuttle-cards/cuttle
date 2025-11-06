@@ -95,11 +95,11 @@ export const useGameStore = defineStore('game', () => {
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
   const showIsRankedChangedAlert = ref(false);
+
   // Threes
   const lastEventCardChosen = ref(null);
   const lastEventPlayerChoosing = ref(false);
-  // Fours
-  const lastEventDiscardedCards = ref(null);
+
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
@@ -230,7 +230,6 @@ export const useGameStore = defineStore('game', () => {
       typeof lastEventPlayer === 'number' && myPNum.value !== null
         ? lastEventPlayer === myPNum.value
         : null;
-    lastEventDiscardedCards.value = newGame.lastEvent?.discardedCards ?? null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
     turn.value = newGame.turn ?? turn.value;
@@ -287,7 +286,6 @@ export const useGameStore = defineStore('game', () => {
     showIsRankedChangedAlert.value = false;
     lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
-    lastEventDiscardedCards.value = null;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
     lastEventTargetType.value = null;
@@ -359,7 +357,6 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    lastEventDiscardedCards.value = discardedCards;
     opponent.value.hand = [
       ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
       ...discardedCards
@@ -369,7 +366,6 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFives(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    lastEventDiscardedCards.value = discardedCards;
     if (discardedCards?.length) {
       await sleep(1000);
       opponent.value.hand = opponent.value.hand.filter((card) => !discardedCards.includes(card.id));
@@ -677,7 +673,6 @@ export const useGameStore = defineStore('game', () => {
     showIsRankedChangedAlert,
     lastEventCardChosen,
     lastEventPlayerChoosing,
-    lastEventDiscardedCards,
     lastEventChange,
     lastEventOneOffRank,
     lastEventTargetType,
