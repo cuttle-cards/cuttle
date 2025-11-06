@@ -360,6 +360,10 @@ export const useGameStore = defineStore('game', () => {
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
     lastEventDiscardedCards.value = discardedCards;
+    opponent.value.hand = [
+      ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
+      ...discardedCards
+    ];
     await sleep(1000);
     updateGame(game);
   }

@@ -67,7 +67,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.processThrees(evData.chosenCard, evData.game);
       break;
     case SocketEvent.RESOLVE_FOUR:
-      gameStore.processFours(evData.discardedCards, evData.game);
+      if (evData.playedBy !== gameStore.myPNum) {
+        gameStore.processFours(evData.discardedCards, evData.game);
+      } else {
+        gameStore.updateGame(evData.game);
+      }
       break;
     case SocketEvent.RESOLVE_FIVE:
       gameStore.processFives(evData.discardedCards, evData.game);

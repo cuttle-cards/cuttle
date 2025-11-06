@@ -108,11 +108,11 @@
                     class="opponent-hand-wrapper transition-all"
                   >
                     <GameCard
-                      v-for="(card) in gameStore.opponent.hand"
-                      :key="card.id"
-                      :suit="isBeingDiscarded(card) ? card.suit : undefined"
-                      :rank="isBeingDiscarded(card) ? card.rank : undefined"
-                      data-opponent-hand-card
+                      v-for="(card, index) in gameStore.opponent.hand"
+                      :key="`opponent_hand_card_${index}`"
+                      :suit="card.suit ?? undefined"
+                      :rank="card.rank ?? undefined"
+                      :data-opponent-hand-card="card.suit && card.rank ? `${card.rank}-${card.suit}` : ''"
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
                   </TransitionGroup>
