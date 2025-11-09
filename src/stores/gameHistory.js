@@ -76,27 +76,47 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
 
   const games = ref([]);
+  const page = ref(0);
+  const hasMore = ref(true);
+  const loading = ref(false);
+  const totalGames = ref(0);
 
-
-  async function loadMyGames() {
-    return new Promise((resolve, reject) => {
-
-      io.socket.get('/api/game/history', (res, jwres) => {
-
-        console.log('API raw response:', res);
-        console.log('JWRES status:', jwres.statusCode);
-
-        if (jwres.statusCode === 200 && Array.isArray(res.finishedGames)) {
-          games.value = res.finishedGames;
-          console.log('ToReturn', games.value);
-          return resolve(games.value);
-        }
-        return reject(new Error('Failed to load game history'));
-      });
-
-    });
+  function reset() {
+    games.value = [];
+    page.value = 0;
+    hasMore.value = true;
+    loading.value = false;
   }
 
+  async function loadMyGamesPage(limit = 10, skip = 0, options = {}) {
+    loading.value = true;
+    try {
+      const { sortBy = 'createdAt', sortDirection = 'desc' } = options;
+
+      const query = new URLSearchParams({
+        limit: limit.toString(),
+        skip: skip.toString(),
+        sortBy,
+        sortDirection,
+      });
+
+      const { finishedGames, total } = await new Promise((resolve, reject) => {
+        io.socket.get(`/api/game/history?${query.toString()}`, (res, jwres) => {
+          if (jwres && jwres.statusCode === 200 && Array.isArray(res.finishedGames)) {
+            resolve(res);
+          } else {
+            reject(new Error('Failed to load game history'));
+          }
+        });
+      });
+
+      games.value = finishedGames;
+      totalGames.value = total;
+      hasMore.value = skip + limit < total;
+    } finally {
+      loading.value = false;
+    }
+  }
 
   return {
     gameStates,
@@ -110,6 +130,10 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     canGoToNextState,
     clipUrl,
     games,
-    loadMyGames
+    totalGames,
+    hasMore,
+    page,
+    reset,
+    loadMyGamesPage,
   };
 });
