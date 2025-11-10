@@ -23,6 +23,14 @@ Cypress.on('uncaught:exception', (err) => {
   }
 });
 
+// Hide Vue DevTools panel during tests to prevent it from covering UI elements
+Cypress.on('window:before:load', (win) => {
+  win.document.head.insertAdjacentHTML(
+    'beforeend',
+    '<style>.vue-devtools__panel { display: none !important; }</style>'
+  );
+});
+
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

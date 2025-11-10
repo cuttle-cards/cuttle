@@ -1,14 +1,7 @@
 <template>
   <div data-cy="stats-leaderboard">
-    <!-- Select Metric and Weeks -->
+    <!-- Select Weeks -->
     <div id="stats-table-upper-surface" class="d-flex align-end">
-      <v-select
-        v-model="selectedMetric"
-        :items="metricChoices"
-        :label="t('stats.selectMetric')"
-        class="filter-select mr-4 fit"
-        data-cy="metric-select"
-      />
       <v-select
         v-model="selectedWeeks"
         :items="weeks"
@@ -16,40 +9,48 @@
         class="week-select"
         data-cy="week-select"
         multiple
+        variant="underlined"
+        :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1' }"
       />
     </div>
-    <v-table>
-      <!-- Headers -->
-      <tr>
-        <th v-for="header in tableColumns" :key="header.value">
-          {{ header.text }}
-        </th>
-      </tr>
-      <!-- Body -->
-      <tbody>
-        <tr v-for="row in tableRows" :key="row.username" :class="tableRowClass(row)">
-          <!-- Username -->
-          <td :data-username="row.username">
-            {{ row.username }}
-          </td>
-          <!-- Rank -->
-          <td :data-rank="row.username">
-            {{ row.rank }}
-          </td>
-          <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
-            <StatsLeaderboardCell
-              :player-row="row"
-              :week="week"
-              :selected-metric="selectedMetric"
-              :players-beaten="playersBeaten(row.username, week)"
-              :players-lost-to="playersLostTo(row.username, week)"
-              :top-total-scores="topTotalScores"
-              :season-name="seasonName"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+    <v-data-table
+      id="leaderboard"
+      :headers="tableColumns"
+      :items="tableRows"
+      :row-props="tableRowClass"
+    >
+      <template #item.username="{ item, value }">
+        <div class="d-flex justify-space-between">
+          <span :data-cy="`rank-${item.username}`">{{ item.rank }}</span>
+          <span :data-cy="`username-${item.username}`">{{ value }}</span>
+        </div>
+      </template>
+
+      <template
+        v-for="weekNum in ['total', ...selectedWeeks]"
+        :key="`${item.username}_week_${weekNum}_points`"
+        #[`item.week_${weekNum}_points`]="{ item }"
+      >
+        <StatsLeaderboardCell
+          :player-row="item"
+          :week="weekNum"
+          :players-beaten="playersBeaten(item.username, weekNum)"
+          :players-lost-to="playersLostTo(item.username, weekNum)"
+          :top-total-scores="topTotalScores"
+          :season-name="season?.name"
+        />
+      </template>
+
+      <template
+        v-for="weekNum in ['total', ...selectedWeeks]"
+        :key="`${item.username}_week_${weekNum}_wins`"
+        #[`item.week_${weekNum}_wins`]="{ item, value }"
+      >
+        <span :data-cy="`week-${weekNum}-wins-${item.username}`">
+          {{ value }}
+        </span>
+      </template>
+    </v-data-table>
   </div>
 </template>
 <script>
@@ -59,12 +60,6 @@ import { uniq, countBy } from 'lodash';
 import { useI18n } from 'vue-i18n';
 import StatsLeaderboardCell from '@/routes/stats/components/StatsLeaderboardCell.vue';
 import Result from '_/types/Result';
-
-export const Metrics = {
-  POINTS_AND_WINS: 1,
-  POINTS_ONLY: 2,
-  WINS_ONLY: 3,
-};
 
 export default {
   name: 'StatsLeaderboard',
@@ -85,7 +80,6 @@ export default {
   data() {
     return {
       sortBy: 'rank',
-      selectedMetric: Metrics.POINTS_AND_WINS,
       selectedWeeks: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
     };
   },
@@ -99,13 +93,35 @@ export default {
         return [];
       }
       return [
-        { text: this.t('global.user'), value: 'username' },
-        { text: this.t('global.rank'), value: 'rank' },
-        { text: this.t('stats.seasonTotal'), value: 'week_total' },
+        { title: this.t('global.player'), value: 'username', minWidth: 160, align: 'center' },
+        { title: this.t('stats.seasonTotal'), align: 'center', children: [
+          {
+            title: 'Points',
+            value: `week_total_points`,
+            align: 'center',
+          },
+          {
+            title: 'Wins',
+            value: `week_total_wins`,
+            align: 'center',
+          },
+        ] },
         ...this.selectedWeeks.map((weekNum) => {
           return {
-            text: `${this.t('stats.week')} ${weekNum}`,
-            value: `week_${weekNum}`,
+            title: `${this.t('stats.week')} ${weekNum}`,
+            align: 'center',
+            children: [
+              {
+                title: 'Points',
+                value: `week_${weekNum}_points`,
+                align: 'center',
+              },
+              {
+                title: 'Wins',
+                value: `week_${weekNum}_wins`,
+                align: 'center',
+              },
+            ],
           };
         }),
       ];
@@ -292,11 +308,6 @@ export default {
   },
   created() {
     // Define non-reactive attributes for selection options
-    this.metricChoices = [
-      { title: this.t('stats.pointsAndWins'), value: Metrics.POINTS_AND_WINS },
-      { title: this.t('stats.pointsOnly'), value: Metrics.POINTS_ONLY },
-      { title: this.t('stats.winsOnly'), value: Metrics.WINS_ONLY },
-    ];
     this.weeks = [
       { title: `${this.t('stats.week')} 1`, value: 1 },
       { title: `${this.t('stats.week')} 2`, value: 2 },
@@ -368,8 +379,11 @@ export default {
     isCurrentPlayer(username) {
       return username === this.authStore.username;
     },
-    tableRowClass(item) {
-      return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
+    tableRowClass({ item }) {
+      return {
+        class: item.username === this.authStore.username ? 'active-user-stats' : '',
+        'data-player-row': item.username,
+      };
     },
     /**
      * @description Compute rank from total score and wins
@@ -385,13 +399,38 @@ export default {
 };
 </script>
 
-<style scoped>
-th {
-  text-align: left;
+<style scoped lang="scss">
+#leaderboard {
+  background: none;
+  color: rgba(var(--v-theme-surface-2));
 }
-.active-user-stats {
-  background-color: rgba(var(--v-theme-accent-lighten3));
+
+:deep(#leaderboard table) {
+  border-spacing: 2px 2px;
 }
+
+/* Header Row */
+:deep(#leaderboard table thead > tr) {
+  background-color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-surface-1));
+
+  &:first-child th:first-child {
+    border-radius: 8px 0 0 0;
+  }
+
+  &:first-child th:last-child {
+    border-radius: 0 8px 0 0;
+  }
+}
+
+
+:deep(#leaderboard table tbody tr) {
+  background-color: rgba(48, 32, 27, .7);
+  &.active-user-stats {
+    background-color: rgba(144,29,68, .7);
+  }
+}
+
 .week-select {
   width: 60%;
 }
