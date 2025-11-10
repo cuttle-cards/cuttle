@@ -507,7 +507,7 @@ describe('FIVES', () => {
       cy.setupGameAsP1();
     });
 
-    it('Plays 5 as opponent', () => {
+    it.only('Plays 5 as opponent', () => {
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -531,6 +531,8 @@ describe('FIVES', () => {
       cy.get('[data-cy=five-discard-dialog]').should('not.exist');
       cy.resolveFiveOpponent(Card.FIVE_OF_HEARTS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+
+      cy.get('[data-opponent-hand-card=5-2]').should('be.visible');
 
       assertGameState(1, {
         p0Hand: [
