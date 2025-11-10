@@ -9,7 +9,7 @@ module.exports = async function getHistory(req, res) {
 
   let finishedGames = await Game.find({
     status: 3,
-    or: [{ p0: userId }, { p1: userId }]
+    or: [ { p0: userId }, { p1: userId } ]
   }).sort(`${sortBy} ${sortDirection}`);
 
   const opponentIdsSet = new Set(
@@ -18,7 +18,7 @@ module.exports = async function getHistory(req, res) {
   const opponentIds = Array.from(opponentIdsSet);
 
   const opponents = await User.find({ id: opponentIds });
-  const opponentMap = Object.fromEntries(opponents.map(u => [u.id, u.username]));
+  const opponentMap = Object.fromEntries(opponents.map(u => [ u.id, u.username ]));
 
   const result = finishedGames.map(game => {
     const opponentId = game.p0 === userId ? game.p1 : game.p0;
