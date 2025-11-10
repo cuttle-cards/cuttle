@@ -357,11 +357,13 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    opponent.value.hand = [
-      ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
-      ...discardedCards
-    ];
-    await sleep(1000);
+    if (opponent.value.hand[0]?.isHidden) {
+      opponent.value.hand = [
+        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
+        ...discardedCards
+      ];
+      await sleep(1000);
+    }
     updateGame(game);
   }
   async function processFives(discardedCards, game) {
