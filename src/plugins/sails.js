@@ -15,8 +15,25 @@ export const io = sails(socketIoClient);
 
 export const reconnectSockets = () => {
   return new Promise((resolve, reject) => {
-    io.socket.disconnect();
-    io.socket.reconnect();
+
+    if (io.socket.isConnected()) {
+      try {
+        io.socket.disconnect();
+      } catch (_) { /* empty */ }
+    }
+
+
+    if (!io.socket.isConnecting()) {
+      try {
+        io.socket.reconnect();
+      } catch (_) {
+        /* empty */
+      }
+    }
+
+    // io.socket.disconnect();
+    // io.socket.reconnect();
+    
     const MAX_TRIES = 10; // 10 seconds
     const INTERVAL = 500; // 10 * 500 = 5000 (5 seconds)
     let tries = 1;

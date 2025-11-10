@@ -91,7 +91,7 @@
       :timeout="2000"
       :message="snackbarMessage"
       :color="snackbarColor"
-      data-cy="edit-snackbar"
+      data-cy="lobby-snackbar"
       @clear="snackbarOpen = false"
     />
   </div>
