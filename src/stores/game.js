@@ -368,10 +368,12 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFives(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    if (discardedCards?.length) {
+    if (discardedCards?.length && opponent.value.hand[0]?.isHidden) {
       await sleep(1000);
-      opponent.value.hand = opponent.value.hand.filter((card) => !discardedCards.includes(card.id));
-      player.value.hand = player.value.hand.filter((card) => !discardedCards.includes(card.id));
+      opponent.value.hand = [
+        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
+        ...discardedCards
+      ];
       await sleep(1000);
     }
     updateGame(game);

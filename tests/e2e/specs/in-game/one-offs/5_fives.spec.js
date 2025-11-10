@@ -507,7 +507,7 @@ describe('FIVES', () => {
       cy.setupGameAsP1();
     });
 
-    it.only('Plays 5 as opponent', () => {
+    it('Plays 5 as opponent', () => {
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
