@@ -9,10 +9,7 @@ const props = defineProps({
   },
 });
 
-const text = computed(() => parse(props.markdown, {
-  headerIds: false,
-  mangle: false,
-}));
+const text = computed(() => parse(props.markdown));
 </script>
 
 <template>

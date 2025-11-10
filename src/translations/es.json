@@ -6,7 +6,7 @@
     "rules": "Reglas",
     "play": "Jugar",
     "stats": "Estadísticas",
-    "user": "Usuaria",
+    "player": "Jugador",
     "rank": "Rango",
     "username": "Nombre de usuario",
     "password": "Contraseña",
@@ -519,9 +519,7 @@
     "season": {
       "select": "Seleccionar temporada",
       "champions": "Campeones de temporada",
-      "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
-      "tournamentFootage": "aquí para ver las imágenes oficiales del torneo",
-      "playByPlay": "con comentarios jugada por jugada."
+      "tournamentBracket": "aquí para ver el cuadro oficial del torneo"
     },
     "winRate": "Ratio de victorias",
     "wins": "Gana",
