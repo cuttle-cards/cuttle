@@ -16,19 +16,19 @@ export const io = sails(socketIoClient);
 export const reconnectSockets = () => {
   return new Promise((resolve, reject) => {
 
-    if (io.socket.isConnected()) {
-      try {
+    try {
+      if (io.socket.isConnecting() || io.socket.isConnected()) {
         io.socket.disconnect();
-      } catch (_) { /* empty */ }
-    }
-
-
-    if (!io.socket.isConnecting()) {
-      try {
-        io.socket.reconnect();
-      } catch (_) {
-        /* empty */
       }
+    } catch (_) {
+      // empty
+    }
+    try {
+      if (!io.socket.isConnected()) {
+        io.socket.reconnect();
+      }
+    } catch (_) {
+      // empty
     }
 
     // io.socket.disconnect();
