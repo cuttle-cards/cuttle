@@ -130,7 +130,27 @@ describe('Lobby - Page Content', () => {
     cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
       .should('have.class', 'bg-error');
   });
+
+
+  it('Shows the message itself when it isnt a translated string', () => {
+
+  const generic = 'Random.message.that.isnt.translated';
+
+  cy.window().its('cuttle.gameStore').then((store) => {
+    cy.stub(store, 'requestReady').rejects({ message: generic });
+  });
+
+    cy.get('[data-cy=ready-button]').click();
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('contain', generic);
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-error');
+  });
 });
+
+
 
 describe('Lobby - Page Content (Ranked)', () => {
   beforeEach(() => {

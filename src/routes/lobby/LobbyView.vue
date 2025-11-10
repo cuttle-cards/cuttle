@@ -160,7 +160,7 @@ async function ready() {
     } else {
       const key = err?.message;
 
-      const msg = t(key)/* || 'lobby.error.fallback'*/;
+      const msg = t(key);
       showSnackbar(msg, 'error');
     }
 
