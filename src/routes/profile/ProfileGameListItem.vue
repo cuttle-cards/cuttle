@@ -18,10 +18,13 @@
           <span class="game-name">{{ name }}</span>
         </div>
         <p class="text-surface-1">
-          {{ formattedDate }}
-        </p>
-        <p class="text-surface-1">
-          {{ isRanked ? 'Ranked' : 'Casual' }} • Winner: {{ winnerLabel }}
+          <v-icon
+            class="mr-4"
+            size="medium"
+            :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
+            aria-hidden="true"
+          />
+          {{ isRanked ? 'Ranked' : 'Casual' }} • Opponent: {{ opponentName }}
         </p>
       </v-col>
       <v-col cols="6" class="text-right">
@@ -36,18 +39,25 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 
-const props = defineProps({
-  name: String,
+const _emit = defineEmits([ 'replay' ]);
+
+const _props = defineProps({
+  name: {
+    type: String,
+    required: true
+  },
   isRanked: Boolean,
-  createdAt: String,
-  winnerLabel: String,
+  winnerLabel: {
+    type: String,
+    required: true
+  },
+  opponentName: {
+    type: String,
+    required: true
+  },
 });
 
-const formattedDate = computed(() =>
-  props.createdAt ? new Date(props.createdAt).toLocaleString() : ''
-);
 </script>
 
 <style scoped>

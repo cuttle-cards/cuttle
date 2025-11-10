@@ -23,10 +23,19 @@ module.exports = async function getHistory(req, res) {
     .skip(skip)
     .limit(limit);
 
+  const opponentIds = finishedGames.map(game =>
+    game.p0 === userId ? game.p1 : game.p0
+  );
+
+  const opponents = await User.find({ id: opponentIds });
+  const opponentMap = Object.fromEntries(opponents.map(u => [ u.id, u.username ]));
+
   finishedGames = finishedGames.map(game => {
+    const opponentId = game.p0 === userId ? game.p1 : game.p0;
     return {
       ...game,
-      winnerLabel: game.winner === userId ? 'You' : 'Opponent'
+      winnerLabel: game.winner === userId ? 'You' : 'Opponent',
+      opponentName: opponentMap[opponentId] || 'Unknown'
     };
   });
 

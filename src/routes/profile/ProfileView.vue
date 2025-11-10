@@ -33,8 +33,8 @@
             <ProfileGameListItem
               :name="item.name"
               :is-ranked="item.isRanked"
-              :created-at="item.createdAt"
               :winner-label="item.winnerLabel"
+              :opponent-name="item.opponentName"
               @replay="goToReplay(item.id)"
             />
           </template>
