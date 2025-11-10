@@ -219,6 +219,8 @@ export const useGameStore = defineStore('game', () => {
   const topCard = computed(() => deck.value[0] ?? null);
   const secondCard = computed(() => deck.value[1] ?? null);
 
+  const showOpponentHand = computed(() => gameHistoryStore.isSpectating || hasGlassesEight.value || !topCard.value);
+
   // Actions
   function updateGame(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
@@ -357,7 +359,7 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    if (opponent.value.hand[0]?.isHidden) {
+    if (!showOpponentHand.value) {
       opponent.value.hand = [
         ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
         ...discardedCards
@@ -368,7 +370,7 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFives(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    if (discardedCards?.length && opponent.value.hand[0]?.isHidden) {
+    if (discardedCards?.length && !showOpponentHand.value) {
       await sleep(1000);
       opponent.value.hand = [
         ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
@@ -717,6 +719,7 @@ export const useGameStore = defineStore('game', () => {
     waitingForOpponentToPlayFromDeck,
     waitingForOpponentToStalemate,
     consideringOpponentStalemateRequest,
+    showOpponentHand,
     // Actions
     updateGame,
     opponentJoined,

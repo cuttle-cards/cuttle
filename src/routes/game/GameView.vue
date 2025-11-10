@@ -738,7 +738,7 @@ export default {
       return null;
     },
     showOpponentHand() {
-      return this.gameStore.hasGlassesEight || this.isSpectating || !this.topCard;
+      return this.gameStore.showOpponentHand;
     },
   },
   watch: {
