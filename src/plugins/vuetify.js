@@ -26,7 +26,7 @@ const cuttleTheme = {
     'accent-lighten4': '#9affbb',
     'accent-lighten5': '#b7ffd7',
     firstPlace: '#AF9500',
-    secondPlace: '#B4B4B4',
+    secondPlace: '#636361',
     thirdPlace: '#6A3805',
     neutral: '#A3ADB5',
     'neutral-darken1': '#7D8C97',
