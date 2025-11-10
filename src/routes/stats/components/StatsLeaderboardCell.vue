@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-if="points" v-model="showMenu" location="top">
+  <BaseMenu v-if="points" v-model="showMenu" location="top">
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"
@@ -40,7 +40,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-  </v-menu>
+  </BaseMenu>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
   <span>
     <span class="ml-4" :data-cy="dataCyName"> {{ $t('game.score.goal') }}: {{ pointsToWin }} </span>
-    <v-menu :location="isPlayer ? 'top' : 'bottom'">
+    <BaseMenu :location="isPlayer ? 'top' : 'bottom'">
       <template #activator="{ props }">
         <v-btn
           class="mb-2"
@@ -28,15 +28,19 @@
           {{ explanation }}
         </v-list-item>
       </v-list>
-    </v-menu>
+    </BaseMenu>
   </span>
 </template>
 
 <script>
+import BaseMenu from '_/src/components/BaseMenu.vue';
 import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ScoreGoalTooltip',
+  components: {
+    BaseMenu,  // ← ADD THIS
+  },
   props: {
     kingCount: {
       required: true,

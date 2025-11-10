@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="spectatingMenu">
+  <BaseMenu v-model="spectatingMenu">
     <!-- Activator -->
     <template #activator="{ props }">
       <v-btn
@@ -38,7 +38,7 @@
         {{ spectator }}
       </v-list-item>
     </v-list>
-  </v-menu>
+  </BaseMenu>
 </template>
 
 <script>

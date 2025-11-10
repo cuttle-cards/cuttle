@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu v-model="showGameMenu">
+    <BaseMenu v-model="showGameMenu">
       <!-- Activator -->
       <template #activator="{ props }">
         <v-btn
@@ -57,7 +57,7 @@
           {{ t('game.menus.gameMenu.refresh') }}
         </v-list-item>
       </v-list>
-    </v-menu>
+    </BaseMenu>
 
     <RulesDialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
@@ -102,9 +102,11 @@ import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import BaseMenu from '@/components/BaseMenu.vue';
 export default {
   name: 'GameMenu',
   components: {
+    BaseMenu,
     BaseDialog,
     RulesDialog,
     TheLanguageSelector
