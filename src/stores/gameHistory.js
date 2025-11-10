@@ -76,31 +76,19 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
 
   const games = ref([]);
-  const page = ref(0);
-  const hasMore = ref(true);
   const loading = ref(false);
-  const totalGames = ref(0);
 
-  function reset() {
-    games.value = [];
-    page.value = 0;
-    hasMore.value = true;
-    loading.value = false;
-  }
-
-  async function loadMyGamesPage(limit = 10, skip = 0, options = {}) {
+  async function loadMyGames(options = {}) {
     loading.value = true;
     try {
       const { sortBy = 'createdAt', sortDirection = 'desc' } = options;
 
       const query = new URLSearchParams({
-        limit: limit.toString(),
-        skip: skip.toString(),
         sortBy,
         sortDirection,
       });
 
-      const { finishedGames, total } = await new Promise((resolve, reject) => {
+      const { finishedGames } = await new Promise((resolve, reject) => {
         io.socket.get(`/api/game/history?${query.toString()}`, (res, jwres) => {
           if (jwres && jwres.statusCode === 200 && Array.isArray(res.finishedGames)) {
             resolve(res);
@@ -111,8 +99,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
       });
 
       games.value = finishedGames;
-      totalGames.value = total;
-      hasMore.value = skip + limit < total;
     } finally {
       loading.value = false;
     }
@@ -130,10 +116,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     canGoToNextState,
     clipUrl,
     games,
-    totalGames,
-    hasMore,
-    page,
-    reset,
-    loadMyGamesPage,
+    loadMyGames,
   };
 });

@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import DiscordLink from '@/components/DiscordLink.vue';
 import { useGameHistoryStore } from '@/stores/gameHistory';
@@ -54,31 +54,19 @@ import ProfileGameListItem from './ProfileGameListItem.vue';
 const authStore = useAuthStore();
 const gameHistoryStore = useGameHistoryStore();
 
-const hasDiscord = computed(() => authStore.identities?.some(({ provider }) => provider === 'discord'));
+const hasDiscord = computed(() =>
+  authStore.identities?.some(({ provider }) => provider === 'discord')
+);
 const discordUsername = computed(() => {
   const discordIdentity = authStore.identities?.find(({ provider }) => provider === 'discord');
   return discordIdentity?.username || '';
 });
 
-const currentPage = ref(1);
-const itemsPerPage = ref(50);
-const sortBy = ref([ { key: 'createdAt', order: 'desc' } ]);
 const games = ref([]);
-const totalGames = ref(0);
 
 async function fetchGames() {
-  const skip = (currentPage.value - 1) * itemsPerPage.value;
-  const sort = sortBy.value[0] || { key: 'createdAt', order: 'desc' };
-  const sortField = sort.key;
-  const sortDirection = sort.order;
-
-  await gameHistoryStore.loadMyGamesPage(itemsPerPage.value, skip, {
-    sortBy: sortField,
-    sortDirection,
-  });
-
+  await gameHistoryStore.loadMyGames({ sortBy: 'createdAt', sortDirection: 'desc' });
   games.value = gameHistoryStore.games;
-  totalGames.value = gameHistoryStore.totalGames;
 }
 
 function goToReplay(gameId) {
@@ -86,7 +74,6 @@ function goToReplay(gameId) {
 }
 
 onMounted(fetchGames);
-watch([ sortBy, currentPage, itemsPerPage ], fetchGames, { immediate: true });
 </script>
 
 <style>
