@@ -39,7 +39,7 @@ describe('FOURS', () => {
       });
     });
 
-    it.only('Plays a 4 to make opponent discard two cards of their choice while player has glasses', () => {
+    it('Plays a 4 to make opponent discard two cards of their choice while player has glasses', () => {
       // Set Up
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
