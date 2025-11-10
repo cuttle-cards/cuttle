@@ -1,8 +1,12 @@
 <template>
   <div style="background-color: #4a2416; min-height: 100vh">
     <v-container class="pa-6">
-      <h1 style="color: rgba(var(--v-theme-surface-2))">My Profile</h1>
-      <p style="color: rgba(var(--v-theme-surface-2))">Username: {{ authStore.username }}</p>
+      <h1 style="color: rgba(var(--v-theme-surface-2))">
+        My Profile
+      </h1>
+      <p style="color: rgba(var(--v-theme-surface-2))">
+        Username: {{ authStore.username }}
+      </p>
 
       <!-- Discord -->
       <v-card flat class="pa-4 mt-4" style="background-color: #4a2416; color: rgba(var(--v-theme-surface-2))">
@@ -87,14 +91,14 @@ watch([ sortBy, currentPage, itemsPerPage ], fetchGames, { immediate: true });
 
 <style>
 .v-card {
-  overflow-x: hidden; /* убирает горизонтальный скролл */
+  overflow-x: hidden;
 }
 
 .v-row {
-  margin: 0; /* убирает отрицательные маргины */
+  margin: 0;
 }
 
 .v-col {
-  padding: 0 8px; /* уменьшает отступы */
+  padding: 0 8px;
 }
 </style>
