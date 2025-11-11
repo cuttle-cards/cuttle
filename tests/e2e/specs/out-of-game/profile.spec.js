@@ -13,10 +13,39 @@ describe('Profile Page', () => {
     cy.contains('p', 'Username: myUsername').should('exist');
   });
 
-  it('Shows Discord section', () => {
+  it('Shows Discord section when not connected', () => {
     cy.vueRoute('/my-profile');
     cy.contains('h2', 'Discord');
     cy.contains('span', 'Not connected');
+  });
+
+  it('Shows Discord connected state', () => {
+    cy.vueRoute('/my-profile');
+
+    // Patch auth store to simulate Discord connection
+    cy.window().then((win) => {
+      const pinia = win.cuttle.app.config.globalProperties.$pinia;
+      const authStore = pinia._s.get('auth');
+
+      authStore.$patch({
+        identities: [
+          {
+            provider: 'discord',
+            username: 'TestDiscordUser#1234'
+          }
+        ]
+      });
+    });
+
+    cy.contains('h2', 'Discord').should('be.visible');
+    cy.contains('span', 'Connected as TestDiscordUser#1234').should('be.visible');
+    cy.contains('span', 'Not connected').should('not.exist');
+  });
+
+  it('Shows fallback when no games', () => {
+    cy.vueRoute('/my-profile');
+    cy.contains('h1', 'My Profile').should('be.visible');
+    cy.contains('No games found').should('be.visible');
   });
 
   it('Lists mocked finished games and can replay', () => {
@@ -59,6 +88,7 @@ describe('Profile Page', () => {
     cy.contains('[data-test="game-list-item"]', 'Mocked Game').should('be.visible');
     cy.contains('[data-test="game-list-item"]', 'Second Game').should('be.visible');
 
+    // Test goToReplay function
     cy.get('[data-test="game-list-item"]')
       .contains('Mocked Game')
       .parents('[data-test="game-list-item"]')
@@ -69,47 +99,7 @@ describe('Profile Page', () => {
     cy.url().should('include', '/spectate/game-123');
   });
 
-  it('Can replay mocked game', () => {
-    cy.vueRoute('/my-profile');
-    cy.contains('h1', 'My Profile').should('be.visible');
-    cy.wait(500);
-
-    // Patch store with single mock game
-    cy.window().then((win) => {
-      const pinia = win.cuttle.app.config.globalProperties.$pinia;
-      const gameHistoryStore = pinia._s.get('gameHistory');
-
-      gameHistoryStore.$patch({
-        games: [
-          {
-            id: 'game-123',
-            name: 'Mocked Game',
-            isRanked: true,
-            winnerLabel: 'You',
-            opponentName: 'Test Opponent',
-            createdAt: '2024-01-01'
-          }
-        ],
-        loading: false,
-      });
-    });
-
-    cy.get('[data-test="game-list-item"]', { timeout: 5000 })
-      .should('have.length', 1)
-      .contains('Mocked Game')
-      .should('be.visible');
-
-    cy.get('[data-test="game-list-item"]')
-      .contains('Mocked Game')
-      .parents('[data-test="game-list-item"]')
-      .find('button')
-      .contains('Replay')
-      .click();
-
-    cy.url().should('include', '/spectate/game-123');
-  });
-
-  it('Shows fallback when loadMyGames fails (using stub)', () => {
+  it('Shows fallback when loadMyGames fails', () => {
     // Stub console.error to verify error logging
     cy.visit('/').then((win) => {
       cy.stub(win.console, 'error').as('consoleError');
