@@ -63,10 +63,9 @@
     "error": {
       "fallback": "Сталася невідома помилка.",
       "forbidden": "Ви не гравець у цій грі!",
-      "conflict": "Game",
       "gameStatus": "Гра ще не розпочалася або вже закінчилася",
-      "noGameStates":"Гра не була заповнена колекцією .gameStates",
-      "alreadyDealt":"Карти вже роздані"
+      "noGameStates":"Гра не була заповнена колекцією .gameStates.",
+      "alreadyDealt":"Карти вже роздані."
     }
   },
   "game": {

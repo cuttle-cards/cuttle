@@ -63,7 +63,6 @@
     "error": {
       "fallback": "Ein unbekannter Fehler ist aufgetreten.",
       "forbidden": "Du bist kein Spieler in diesem Spiel!",
-      "conflict": "Game",
       "gameStatus": "Das Spiel hat noch nicht begonnen oder ist bereits beendet.",
       "noGameStates":"Das Spiel wurde nicht mit der .gameStates-Sammlung gefüllt.",
       "alreadyDealt":"Die Karten sind bereits verteilt."
