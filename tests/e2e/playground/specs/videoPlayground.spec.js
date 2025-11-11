@@ -13,7 +13,6 @@ import { assertGameState } from '../../support/helpers';
  */
 describe('Video Playground', () => {
   beforeEach(() => {
-    cy.viewport(1920, 1080);
     cy.setupGameAsP0();
   });
 
@@ -551,7 +550,6 @@ describe('Video Playground', () => {
 
 describe('Playground as p1', () => {
   beforeEach(() => {
-    cy.viewport(1920, 1080);
     cy.setupGameAsP1();
   });
 

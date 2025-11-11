@@ -15,6 +15,8 @@ const cypressConfig = {
     openMode: 0,
   },
   numTestsKeptInMemory: 25,
+  viewportWidth: 1920,
+  viewportHeight: 1080,
   // https://docs.cypress.io/guides/references/configuration#Videos
   video: false,
   // https://docs.cypress.io/guides/references/configuration#Folders-Files
