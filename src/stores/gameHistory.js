@@ -14,25 +14,25 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   const gameStates = ref([]);
 
   const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
-
-
+  
+  
   // Reactive getter for the current game state index from route query
   const currentGameStateIndex = computed(() => {
     // Get the query param and try to convert to number
     const index = Number(route.query.gameStateIndex);
-
+    
     // Return -1 if:
     // 1. The query param is missing (NaN after Number conversion)
     // 2. Not a finite number
     // 3. Index is out of bounds of the gameStates array
     if (
-      isNaN(index) ||
-      !isFinite(index) ||
+      isNaN(index) || 
+      !isFinite(index) || 
       index < 0
     ) {
       return -1;
     }
-
+    
     return index;
   });
 
@@ -41,14 +41,14 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const priorGameStates = computed(() => {
-    return currentGameStateIndex.value === -1 ?
-      [ ...gameStates.value ] :
+    return currentGameStateIndex.value === -1 ? 
+      [ ...gameStates.value ] : 
       gameStates.value.slice(0, currentGameStateIndex.value + 1);
   });
 
   const log = computed(() => {
-    return currentGameStateIndex.value === -1 ?
-      [ ...gameStore.log ] :
+    return currentGameStateIndex.value === -1 ? 
+      [ ...gameStore.log ] : 
       gameStore.log.slice(0, currentGameStateIndex.value + 1);
   });
 
@@ -57,7 +57,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const canGoToPreviousState = computed(() => {
-    return gameStates.value.length >= 2 &&
+    return gameStates.value.length >= 2 && 
       (currentGameStateIndex.value === -1 || currentGameStateIndex.value > 0);
   });
 
@@ -68,7 +68,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   const clipUrl = computed(() => {
     const { origin } = window.location;
     const gameId = gameStore.id;
-    const gameStateIndex =
+    const gameStateIndex = 
       (isSpectating.value && currentGameStateIndex.value !== -1) ?
         currentGameStateIndex.value : gameStates.value.length - 1;
     return `${origin}/spectate/${gameId}?gameStateIndex=${gameStateIndex}`;
