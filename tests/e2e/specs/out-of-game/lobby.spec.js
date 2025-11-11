@@ -134,11 +134,12 @@ describe('Lobby - Page Content', () => {
 
   it('Shows the message itself when it isnt a translated string', () => {
 
-  const generic = 'Random.message.that.isnt.translated';
+    const generic = 'Random.message.that.isnt.translated';
 
-  cy.window().its('cuttle.gameStore').then((store) => {
-    cy.stub(store, 'requestReady').rejects({ message: generic });
-  });
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        cy.stub(store, 'requestReady').rejects({ message: generic });
+      });
 
     cy.get('[data-cy=ready-button]').click();
 
