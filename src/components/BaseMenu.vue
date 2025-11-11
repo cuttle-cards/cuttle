@@ -16,7 +16,7 @@
         {{ title }}
       </v-card-title>
 
-      <slot name="body" />
+      <slot name="body" :list-props="listProps" />
     </v-card>
   </v-menu>
 </template>
@@ -41,6 +41,14 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  listBgColor: {
+    type: String,
+    default: 'surface-2'
+  },
+  listColor: {
+    type: String, 
+    default: 'surface-1'
+  },
 });
 
 const emit = defineEmits([ 'update:modelValue' ]);
@@ -52,6 +60,13 @@ const show = computed({
   set(val) {
     emit('update:modelValue', val);
   },
+});
+
+const listProps = computed(() => {
+  return {
+    bgColor: props.listBgColor,
+    color: props.listColor,
+  };
 });
 </script>
 

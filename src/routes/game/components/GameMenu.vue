@@ -14,8 +14,8 @@
           <v-icon color="neutral-lighten-2" icon="mdi-cog" aria-hidden="true" />
         </v-btn>
       </template>
-      <template #body>
-        <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
+      <template #body="{ listProps }">
+        <v-list id="game-menu" v-bind="listProps">
           <v-list-item data-cy="rules-open" prepend-icon="mdi-information" @click="shownDialog = 'rules'">
             {{ t('game.menus.gameMenu.rules') }}
           </v-list-item>

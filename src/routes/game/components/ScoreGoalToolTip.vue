@@ -19,8 +19,8 @@
           />
         </v-btn>
       </template>
-      <template #body>
-        <v-list class="score-goal-explanation" bg-color="surface-2" color="surface-1">
+      <template #body="{ listProps }">
+        <v-list class="score-goal-explanation" v-bind="listProps">
           <v-list-item 
             v-for="(explanation, index) in kingsPoints" 
             :key="index" 

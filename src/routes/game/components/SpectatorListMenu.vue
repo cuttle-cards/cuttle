@@ -20,13 +20,12 @@
         <span v-if="!$vuetify.display.xs" class="pr-2">{{ spectatingUsers.length }}</span>
       </v-btn>
     </template>
-    <template #body>
+    <template #body="{ listProps }">
       <!-- Menu -->
       <v-list
         id="spectatorList"
         class="pl-2 pr-2"
-        bg-color="surface-2"
-        color="surface-1"
+        v-bind="listProps"
         data-cy="spectate-list-menu"
       >
         <v-list-item-title v-if="spectatingUsers.length > 0">
