@@ -1,8 +1,5 @@
 module.exports = async function getHistory(req, res) {
   const userId = req.session.usr;
-  if (!userId) {
-    return res.status(403).json({ message: 'Forbidden' });
-  }
 
   const sortBy = req.query.sortBy || 'createdAt';
   const sortDirection = req.query.sortDirection === 'asc' ? 'ASC' : 'DESC';
