@@ -59,7 +59,7 @@ describe('Profile Page', () => {
 
 
 
-  describe('Profile Page - Additional Coverage', () => {
+  describe('Profile Page - Scrolling and game list tests', () => {
     beforeEach(() => {
       cy.signupOpponent(myUser);
       cy.signupOpponent(playerOne);
@@ -150,7 +150,7 @@ describe('Profile Page', () => {
 
 
 
-  describe('Populated game list content', () => {
+  describe('Profile Page - Populated game list content', () => {
     beforeEach(() => {
       cy.wipeDatabase();
       cy.visit('/');
