@@ -28,7 +28,12 @@
       >
         <h2>My Games</h2>
 
-        <v-virtual-scroll :items="games" height="600" item-height="100">
+        <v-virtual-scroll
+          v-if="games.length > 0"
+          :items="games"
+          height="600"
+          item-height="100"
+        >
           <template #default="{ item }">
             <ProfileGameListItem
               :name="item.name"
@@ -39,13 +44,18 @@
             />
           </template>
         </v-virtual-scroll>
+
+        <!-- Fallback message when no games -->
+        <p v-else style="color: rgba(var(--v-theme-surface-1))">
+          No games found
+        </p>
       </v-card>
     </v-container>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import DiscordLink from '@/components/DiscordLink.vue';
 import { useGameHistoryStore } from '@/stores/gameHistory';
@@ -62,11 +72,14 @@ const discordUsername = computed(() => {
   return discordIdentity?.username || '';
 });
 
-const games = ref([]);
+const games = computed(() => gameHistoryStore.games);
 
 async function fetchGames() {
-  await gameHistoryStore.loadMyGames({ sortBy: 'createdAt', sortDirection: 'desc' });
-  games.value = gameHistoryStore.games;
+  try {
+    await gameHistoryStore.loadMyGames({ sortBy: 'createdAt', sortDirection: 'desc' });
+  } catch (error) {
+    console.error('Failed to fetch games:', error);
+  }
 }
 
 function goToReplay(gameId) {

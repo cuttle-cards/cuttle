@@ -1,5 +1,5 @@
 <template>
-  <div class="history-item">
+  <div class="history-item" data-test="game-list-item">
     <v-row class="align-center justify-space-between">
       <v-col cols="6">
         <div class="d-flex align-center">
