@@ -566,5 +566,16 @@
     "heading": "Championship Today!",
     "paragraph": "The Clubs 2025 Cuttle Season Championship is Today, April 26th at 12:30pm EST! Watch the top 8 players from the past season of ranked play compete in a double elimination showdown for the title of Clubs 2025 Cuttle Season Champion! Watch it live at ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "profile": {
+    "myGames": "My Games",
+    "noGamesFound": "No games found",
+    "win": "Win",
+    "lose": "Lose",
+    "stalemate": "Stalemate",
+    "opponent": "Opponent",
+    "connectedAs": "Connected",
+    "notConnected": "Not connected",
+    "replay": "Replay"
   }
 }

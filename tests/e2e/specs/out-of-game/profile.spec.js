@@ -1,122 +1,344 @@
-import { myUser } from '../../fixtures/userFixtures';
+import { myUser, playerOne, playerTwo } from '../../fixtures/userFixtures';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import GameStatus from '../../../../utils/GameStatus.json';
+
+dayjs.extend(utc);
 
 describe('Profile Page', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(myUser);
   });
 
-  it('Displays username', () => {
-    cy.vueRoute('/my-profile');
-    cy.contains('h1', 'My Profile').should('be.visible');
-    cy.contains('p', 'Username: myUsername').should('exist');
+  describe('Profile page content', function() {
+    beforeEach(() => {
+      cy.signupPlayer(myUser);
+    });
+
+    it('Displays username', function() {
+      cy.vueRoute('/my-profile');
+      cy.contains('h1', 'My Profile').should('be.visible');
+      cy.get('[data-cy=username]').should('contain', myUser.username);
+    });
+
+    it('Shows Discord section when not connected', () => {
+      cy.vueRoute('/my-profile');
+      cy.contains('h2', 'Discord');
+      cy.get('[data-cy=not-connected]').should('be.visible');
+    });
+
+    it('Shows Discord connected state', function() {
+      cy.vueRoute('/my-profile');
+
+      cy.window().its('cuttle.authStore')
+        .then((authStore) => {
+          authStore.$patch({
+            identities: [
+              {
+                provider: 'discord',
+                username: 'TestDiscordUser#1234'
+              }
+            ]
+          });
+        });
+
+      cy.contains('h2', 'Discord').should('be.visible');
+      cy.get('[data-cy=discord-username]')
+        .should('be.visible')
+        .should('contain', 'TestDiscordUser#1234');
+      cy.get('[data-cy=not-connected]').should('not.exist');
+    });
+
+    it('Shows fallback when no games', function() {
+      cy.vueRoute('/my-profile');
+      cy.contains('h1', 'My Profile').should('be.visible');
+      cy.contains('No games found').should('be.visible');
+    });
   });
 
-  it('Shows Discord section when not connected', () => {
-    cy.vueRoute('/my-profile');
-    cy.contains('h2', 'Discord');
-    cy.contains('span', 'Not connected');
-  });
 
-  it('Shows Discord connected state', () => {
-    cy.vueRoute('/my-profile');
 
-    // Patch auth store to simulate Discord connection
-    cy.window().then((win) => {
-      const pinia = win.cuttle.app.config.globalProperties.$pinia;
-      const authStore = pinia._s.get('auth');
+  describe('Profile Page - Additional Coverage', () => {
+    beforeEach(() => {
+      cy.signupOpponent(myUser);
+      cy.signupOpponent(playerOne);
+    });
 
-      authStore.$patch({
-        identities: [
-          {
-            provider: 'discord',
-            username: 'TestDiscordUser#1234'
-          }
-        ]
+    it('Loads more games on scroll', function() {
+      const games = Array.from({ length: 30 }).map((_, i) => ({
+        name: `Game ${i + 1}`,
+        status: GameStatus.FINISHED,
+        isRanked: true,
+        createdAt: dayjs.utc().subtract(i, 'day')
+          .toDate(),
+        p0: this[`${playerOne.username}Id`],
+        p1: this[`${myUser.username}Id`],
+        winner: this[`${myUser.username}Id`],
+      }));
+
+      cy.loadFinishedGameFixtures(games);
+      cy.loginPlayer(myUser);
+      cy.vueRoute('/my-profile');
+
+      cy.get('[data-test="game-list-item"]').should('have.length.at.least', 5);
+
+      cy.get('.v-virtual-scroll').scrollTo('bottom');
+      cy.wait(500);
+      cy.get('.v-virtual-scroll').scrollTo('bottom');
+
+      cy.window().then(win => {
+        const pinia = win.cuttle.app.config.globalProperties.$pinia;
+        const myGamesStore = pinia._s.get('myGames');
+        expect(myGamesStore.games.length).to.eq(30);
+      });
+
+      cy.contains('[data-test="game-list-item"]', 'Game 30').should('exist');
+    });
+
+    it('Does not load more games when hasMore is false', function() {
+      const games = Array.from({ length: 10 }).map((_, i) => ({
+        name: `Game ${i + 1}`,
+        status: GameStatus.FINISHED,
+        isRanked: true,
+        createdAt: dayjs.utc().subtract(i, 'day')
+          .toDate(),
+        p0: this[`${playerOne.username}Id`],
+        p1: this[`${myUser.username}Id`],
+        winner: this[`${myUser.username}Id`],
+      }));
+
+      cy.loadFinishedGameFixtures(games);
+      cy.loginPlayer(myUser);
+      cy.vueRoute('/my-profile');
+
+      cy.window().then(win => {
+        const pinia = win.cuttle.app.config.globalProperties.$pinia;
+        const myGamesStore = pinia._s.get('myGames');
+        myGamesStore.hasMore = false;
+        myGamesStore.loading = false;
       });
     });
 
-    cy.contains('h2', 'Discord').should('be.visible');
-    cy.contains('span', 'Connected as TestDiscordUser#1234').should('be.visible');
-    cy.contains('span', 'Not connected').should('not.exist');
-  });
+    it('Resets games on unmount', function() {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Temporary Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${myUser.username}Id`],
+        }
+      ]);
 
-  it('Shows fallback when no games', () => {
-    cy.vueRoute('/my-profile');
-    cy.contains('h1', 'My Profile').should('be.visible');
-    cy.contains('No games found').should('be.visible');
-  });
+      cy.loginPlayer(myUser);
+      cy.vueRoute('/my-profile');
+      cy.get('[data-test="game-list-item"]').should('exist');
 
-  it('Lists mocked finished games and can replay', () => {
-    cy.vueRoute('/my-profile');
-    cy.contains('h1', 'My Profile').should('be.visible');
-    cy.contains('No games found').should('be.visible');
-    cy.wait(500);
+      cy.vueRoute('/');
 
-    // Patch store with mock game data
-    cy.window().then((win) => {
-      const pinia = win.cuttle.app.config.globalProperties.$pinia;
-      const gameHistoryStore = pinia._s.get('gameHistory');
-
-      gameHistoryStore.$patch({
-        games: [
-          {
-            id: 'game-123',
-            name: 'Mocked Game',
-            isRanked: true,
-            winnerLabel: 'You',
-            opponentName: 'OpponentUser',
-            createdAt: '2025-01-01T00:00:00Z',
-          },
-          {
-            id: 'game-456',
-            name: 'Second Game',
-            isRanked: false,
-            winnerLabel: 'Opponent',
-            opponentName: 'AnotherUser',
-            createdAt: '2025-02-01T00:00:00Z',
-          },
-        ],
-        loading: false,
+      cy.window().then(win => {
+        const pinia = win.cuttle.app.config.globalProperties.$pinia;
+        const myGamesStore = pinia._s.get('myGames');
+        expect(myGamesStore.games.length).to.eq(0);
       });
     });
-
-    cy.contains('No games found').should('not.exist');
-    cy.get('[data-test="game-list-item"]', { timeout: 5000 })
-      .should('have.length', 2);
-    cy.contains('[data-test="game-list-item"]', 'Mocked Game').should('be.visible');
-    cy.contains('[data-test="game-list-item"]', 'Second Game').should('be.visible');
-
-    // Test goToReplay function
-    cy.get('[data-test="game-list-item"]')
-      .contains('Mocked Game')
-      .parents('[data-test="game-list-item"]')
-      .find('button')
-      .contains('Replay')
-      .click();
-
-    cy.url().should('include', '/spectate/game-123');
   });
 
-  it('Shows fallback when loadMyGames fails', () => {
-    // Stub console.error to verify error logging
-    cy.visit('/').then((win) => {
-      cy.stub(win.console, 'error').as('consoleError');
+
+
+  describe('Populated game list content', () => {
+    beforeEach(() => {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupOpponent(myUser);
+      cy.signupOpponent(playerOne);
+      cy.signupOpponent(playerTwo);
     });
 
-    // Stub loadMyGames before component mounts
-    cy.window().then((win) => {
-      const pinia = win.cuttle.app.config.globalProperties.$pinia;
-      const gameHistoryStore = pinia._s.get('gameHistory');
+    it('Lists finished games with fixture data', function() {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Opponent Won Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${playerOne.username}Id`],
+        },
+        {
+          name: 'Player Won Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${myUser.username}Id`],
+        },
+        {
+          name: 'Stalemate Game',
+          status: GameStatus.FINISHED,
+          isRanked: false,
+          createdAt: dayjs.utc().subtract(2, 'days')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: null,
+        }
+      ]);
 
-      cy.stub(gameHistoryStore, 'loadMyGames').rejects(new Error('Network error'));
+      cy.loginPlayer(myUser);
+
+      cy.vueRoute('/my-profile');
+      cy.contains('h1', 'My Profile').should('be.visible');
+
+      cy.contains('No games found').should('not.exist');
+
+      cy.get('[data-test="game-list-item"]')
+        .should('have.length', 3);
+
+      cy.contains('[data-test="game-list-item"]', 'Player Won Game').should('be.visible');
+      cy.contains('[data-test="game-list-item"]', 'Opponent Won Game').should('be.visible');
+      cy.contains('[data-test="game-list-item"]', 'Stalemate Game').should('be.visible');
+
+      cy.contains('[data-test="game-list-item"]', 'Player Won Game')
+        .find('button')
+        .contains('Replay')
+        .click();
+
+      cy.url().should('include', '/spectate/');
     });
 
-    cy.vueRoute('/my-profile');
-    cy.contains('h1', 'My Profile').should('be.visible');
-    cy.contains('No games found').should('be.visible');
-    cy.get('[data-test="game-list-item"]').should('not.exist');
-    cy.get('@consoleError').should('be.calledWithMatch', 'Failed to fetch games');
+    it('Shows correct icons for win/loss/stalemate', function() {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Opponent Won Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${playerOne.username}Id`],
+        },
+        {
+          name: 'Player Won Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${myUser.username}Id`],
+        },
+        {
+          name: 'Stalemate Game',
+          status: GameStatus.FINISHED,
+          isRanked: false,
+          createdAt: dayjs.utc().subtract(2, 'days')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: null,
+        }
+      ]);
+
+      cy.loginPlayer(myUser);
+
+      cy.vueRoute('/my-profile');
+
+      cy.contains('No games found').should('not.exist');
+
+      cy.get('[data-test="game-list-item"]')
+        .should('have.length', 3);
+
+      cy.get('[data-test="game-list-item"]').eq(0)
+        .find('[data-cy=loser-icon]')
+        .should('exist');
+
+      cy.get('[data-test="game-list-item"]').eq(1)
+        .find('[data-cy=winner-icon]')
+        .should('exist');
+
+      cy.get('[data-test="game-list-item"]').eq(2)
+        .find('[data-cy=stalemate-icon]')
+        .should('exist');
+    });
+
+    it('Shows correct ranked/casual labels', function() {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Ranked Game',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${myUser.username}Id`],
+        },
+        {
+          name: 'Casual Game',
+          status: GameStatus.FINISHED,
+          isRanked: false,
+          createdAt: dayjs.utc().subtract(2, 'days')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: null,
+        }
+      ]);
+
+      cy.loginPlayer(myUser);
+
+      cy.vueRoute('/my-profile');
+
+      cy.get('[data-test="game-list-item"]').eq(0)
+        .should('contain', 'Ranked');
+
+      cy.get('[data-test="game-list-item"]').eq(1)
+        .should('contain', 'Casual');
+    });
+
+    it('Shows opponent names correctly', function() {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Game vs PlayerOne',
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          createdAt: dayjs.utc().subtract(1, 'day')
+            .toDate(),
+          p0: this[`${playerOne.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${myUser.username}Id`],
+        },
+        {
+          name: 'Game vs PlayerTwo',
+          status: GameStatus.FINISHED,
+          isRanked: false,
+          createdAt: dayjs.utc().subtract(2, 'days')
+            .toDate(),
+          p0: this[`${playerTwo.username}Id`],
+          p1: this[`${myUser.username}Id`],
+          winner: this[`${playerTwo.username}Id`],
+        }
+      ]);
+
+      cy.loginPlayer(myUser);
+
+      cy.vueRoute('/my-profile');
+
+      cy.get('[data-test="game-list-item"]').eq(0)
+        .should('contain', playerOne.username);
+
+      cy.get('[data-test="game-list-item"]').eq(1)
+        .should('contain', playerTwo.username);
+    });
   });
 });

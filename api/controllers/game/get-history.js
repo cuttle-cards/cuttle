@@ -1,13 +1,26 @@
+const GameStatus = require('../../../utils/GameStatus.json');
+
 module.exports = async function getHistory(req, res) {
   const userId = req.session.usr;
 
   const sortBy = req.query.sortBy || 'createdAt';
   const sortDirection = req.query.sortDirection === 'asc' ? 'ASC' : 'DESC';
 
-  const finishedGames = await Game.find({
-    status: 3,
+  const limit = parseInt(req.query.limit) || 20;
+  const skip = parseInt(req.query.skip) || 0;
+
+  const totalCount = await Game.count({
+    status: GameStatus.FINISHED,
     or: [ { p0: userId }, { p1: userId } ]
-  }).sort(`${sortBy} ${sortDirection}`);
+  });
+
+  const finishedGames = await Game.find({
+    status: GameStatus.FINISHED,
+    or: [ { p0: userId }, { p1: userId } ]
+  })
+    .sort(`${sortBy} ${sortDirection}`)
+    .limit(limit)
+    .skip(skip);
 
   const opponentIdsSet = new Set(
     finishedGames.map(game => (game.p0 === userId ? game.p1 : game.p0))
@@ -24,10 +37,16 @@ module.exports = async function getHistory(req, res) {
       name: game.name,
       isRanked: game.isRanked,
       createdAt: game.createdAt,
-      winnerLabel: game.winner === userId ? 'You' : 'Opponent',
+      match: game.match,
+      winnerId: game.winner,
+      opponentId: opponentId,
       opponentName: opponentMap[opponentId] || 'Unknown',
     };
   });
 
-  return res.json({ finishedGames: composedGames });
+  return res.json({
+    finishedGames: composedGames,
+    totalCount: totalCount,
+    hasMore: skip + finishedGames.length < totalCount
+  });
 };
