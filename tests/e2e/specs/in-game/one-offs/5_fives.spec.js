@@ -532,6 +532,8 @@ describe('FIVES', () => {
       cy.resolveFiveOpponent(Card.FIVE_OF_HEARTS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
 
+      cy.get('[data-opponent-hand-card=5-2]').should('be.visible');
+
       assertGameState(1, {
         p0Hand: [
           Card.ACE_OF_CLUBS,
