@@ -1,45 +1,63 @@
 <template>
-  <v-menu
-    v-model="internal"
-    v-bind="$attrs"
-  >
-    <template #activator="{ props: menuActivatorProps }">
-      <div v-bind="menuActivatorProps">
+  <v-menu v-model="show" :location="location" v-bind="$attrs">
+    <template #activator="{ props: menuProps }">
+      <span v-bind="menuProps">
         <slot name="activator" />
-      </div>
+      </span>
     </template>
 
-    <div class="base-menu pa-2">
-      <slot />
-    </div>
+    <v-card
+      color="surface-2"
+      class="menu-card"
+      :class="variant"
+      :data-cy="dataCy"
+    >
+      <v-card-title v-if="title">
+        {{ title }}
+      </v-card-title>
+
+      <slot name="body" />
+    </v-card>
   </v-menu>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
-    default: false
-  }
+    required: true,
+  },
+  title: {
+    type: String,
+    default: '',
+  },
+  location: {
+    type: String,
+    default: 'top',
+  },
+  dataCy: {
+    type: String,
+    default: ''
+  },
 });
 
 const emit = defineEmits([ 'update:modelValue' ]);
 
-const internal = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+const show = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emit('update:modelValue', val);
+  },
 });
 </script>
 
 <style scoped lang="scss">
-.base-menu {
-  background-color: var(--surface-2); /* cream */
-  color: var(--surface-1);            /* chocolate */
-  border: none;
-  box-shadow: none;
-  outline: none;
-  border-radius: 8px;
-}
+.menu-card {
+  color: rgba(var(--v-theme-surface-1)) !important;
+ }
 </style>
+

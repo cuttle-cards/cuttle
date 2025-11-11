@@ -1,7 +1,7 @@
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
 
 const config = {
-  staticDirs: ['../public/img'],
+  staticDirs: [ '../public/img' ],
   stories: [
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',

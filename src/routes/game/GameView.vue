@@ -753,10 +753,12 @@ export default {
       }
     }
   },
-  async mounted() {
+  created(){
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
+  },
+  async mounted() {
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
     window.addEventListener('resize', () => {
       // We execute the same script as before
@@ -911,7 +913,7 @@ export default {
               index: deckIndex,
             });
         }
-      } catch(messageKey){
+      } catch (messageKey){
         this.handleError(messageKey);
       } finally {
         this.clearSelection();

@@ -32,6 +32,10 @@ export function hasValidSuitAndRank(card) {
  * @param {suit: number, rank: number} card
  */
 export function printCard(card) {
+  if (card.isHidden) {
+    return 'Hidden Card';
+  }
+
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot print object not shaped like card');
   }
@@ -358,48 +362,63 @@ export function setupSeasons() {
  *   p1FaceCards: {suit: number, rank: number}[],
  * }
  */
-function assertStoreMatchesFixture(fixture) {
+function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
-      // Player 0
-      expect(cardListsMatch(game.players[0].hand, fixture.p0Hand)).to.eq(
-        true,
-        `P0 Hand should match fixture, but actual: ${printCardList(
-          game.players[0].hand,
-        )} did not match ficture: ${printCardList(fixture.p0Hand)}`,
-      );
-      expect(cardListsMatch(game.players[0].points, fixture.p0Points)).to.eq(
-        true,
-        `P0 Points should match fixture, but actual: ${printCardList(
-          game.players[0].points,
-        )} did not match ficture: ${printCardList(fixture.p0Points)}`,
-      );
-      expect(cardListsMatch(game.players[0].faceCards, fixture.p0FaceCards)).to.eq(
-        true,
-        `P0 Face Cards should match fixture, but actual: ${printCardList(
-          game.players[0].faceCards,
-        )} did not match ficture: ${printCardList(fixture.p0FaceCards)}`,
-      );
-      // Player 1
-      expect(cardListsMatch(game.players[1].hand, fixture.p1Hand)).to.eq(
-        true,
-        `P1 Hand should match fixture, but actual: ${printCardList(
-          game.players[1].hand,
-        )} did not match ficture: ${printCardList(fixture.p1Hand)}`,
-      );
-      expect(cardListsMatch(game.players[1].points, fixture.p1Points)).to.eq(
-        true,
-        `P1 Points should match fixture, but actual: ${printCardList(
-          game.players[1].points,
-        )} did not match ficture: ${printCardList(fixture.p1Points)}`,
-      );
-      expect(cardListsMatch(game.players[1].faceCards, fixture.p1FaceCards)).to.eq(
-        true,
-        `P1 Face Cards should match fixture, but actual: ${printCardList(
-          game.players[1].faceCards,
-        )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
-      );
+      const deckShouldBeEmpty  = fixture.deck?.length === 0;
+      const playerShouldHaveGlasses = fixture[`p${pNum}FaceCards`].some((card) => card.rank === 8);
+      for (let i=0; i <= 1; i++) {
+        const gamePlayer = game.players[i];
+
+        const fixturePlayer = {
+          hand: fixture[`p${i}Hand`],
+          points: fixture[`p${i}Points`],
+          faceCards: fixture[`p${i}FaceCards`],
+        };
+
+        // Check Hand
+        const checkingCurrentPlayer = i === pNum;
+        const handShouldBeRevealed =
+          checkingCurrentPlayer ||
+          playerShouldHaveGlasses ||
+          deckShouldBeEmpty ||
+          isSpectating;
+        if (handShouldBeRevealed) {
+          expect(cardListsMatch(gamePlayer.hand, fixturePlayer.hand)).to.eq(
+            true,
+            `P${i} Hand should match fixture, but actual: ${printCardList(
+              gamePlayer.hand,
+            )} did not match fixture: ${printCardList(fixturePlayer.hand)}`,
+          );
+        } else {
+          expect(gamePlayer.hand.length).to.eq(fixturePlayer.hand.length, 
+            `P${i} hand should have length ${fixturePlayer.hand.length}, 
+              but actually had length: ${gamePlayer.hand.length}
+          `);
+
+          const allHidden = gamePlayer.hand.every((card) => card.isHidden && !card.id && !card.rank && !card.suit);
+          expect(allHidden).to.eq(true, `All cards in P${i} Hand should be hidden, 
+            but actual hand included known cards: ${printCardList(gamePlayer.hand)}`);
+        }
+
+        // Points
+        expect(cardListsMatch(gamePlayer.points, fixturePlayer.points)).to.eq(
+          true,
+          `P${i} Points should match fixture, but actual: ${printCardList(
+            gamePlayer.points,
+          )} did not match fixture: ${printCardList(fixturePlayer.points)}`,
+        );
+
+        // Face Cards
+        expect(cardListsMatch(gamePlayer.faceCards, fixturePlayer.faceCards)).to.eq(
+          true,
+          `P${i} Face Cards should match fixture, but actual: ${printCardList(
+            gamePlayer.faceCards,
+          )} did not match fixture: ${printCardList(fixturePlayer.faceCards)}`,
+        );
+      } // End loop through players
+
       // Scrap (if specified)
       if (fixture.scrap) {
         expect(fixture.scrap.every(card => game.scrap.some(scrapCard => cardsMatch(card, scrapCard)))).to.eq(
@@ -409,6 +428,7 @@ function assertStoreMatchesFixture(fixture) {
           )} did not contain: ${printCardList(fixture.scrap)}`,
         );
       }
+
       // Top Card if specified
       if (fixture.topCard) {
         expect(cardsMatch(game.topCard, fixture.topCard)).to.eq(
@@ -418,6 +438,7 @@ function assertStoreMatchesFixture(fixture) {
           )}`,
         );
       }
+
       if (fixture.secondCard) {
         expect(cardsMatch(game.secondCard, fixture.secondCard)).to.eq(
           true,
@@ -670,5 +691,5 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
 export function assertGameState(pNum, fixture, spectating = false) {
   cy.log('Asserting game state:', fixture);
   assertDomMatchesFixture(pNum, fixture, spectating);
-  assertStoreMatchesFixture(fixture);
+  assertStoreMatchesFixture(pNum, fixture, spectating);
 }

@@ -40,8 +40,6 @@ module.exports.routes = {
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch',
 
-  '/api/game/join-rematch': 'game/join-rematch',
-
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
   'DELETE /api/test/wipe-database': 'TestController.wipeDatabase',

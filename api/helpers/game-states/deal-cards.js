@@ -58,18 +58,17 @@ module.exports = {
         twos: [],
         playedBy: 1, // p1 "deals"
         playedCard: null,
-        targetCardId: null,
+        targetCard: null,
         discardedCards: [],
         oneOff: null,
         oneOffTarget: null,
         resolving: null,
       };
 
-      const { saveGamestate, createSocketEvent } = sails.helpers.gameStates;
+      const { saveGamestate, publishGameState } = sails.helpers.gameStates;
       const gameStateRow = await saveGamestate(newGameState);
       game.gameStates.push(gameStateRow);
-      const socketEvent  = await createSocketEvent(game, newGameState);
-      Game.publish([ game.id ], socketEvent);
+      await publishGameState(game, newGameState);
 
       return exits.success(newGameState);
     } catch (err) {

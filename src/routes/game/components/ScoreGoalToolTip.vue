@@ -1,13 +1,13 @@
 <template>
   <span>
     <span class="ml-4" :data-cy="dataCyName"> {{ $t('game.score.goal') }}: {{ pointsToWin }} </span>
-    <BaseMenu :location="isPlayer ? 'top' : 'bottom'">
+    <BaseMenu v-model="show" :location="isPlayer ? 'top' : 'bottom'">
       <template #activator="{ props }">
         <v-btn
           class="mb-2"
           size="x-small"
           icon
-          v-bind="props"
+          v-bind="{ ...props }"
           variant="plain"
           :aria-label="`Open scoring goal menu for ${isPlayer ? 'your score' : 'your opponents score'}`"
         >
@@ -19,27 +19,30 @@
           />
         </v-btn>
       </template>
-      <v-list class="score-goal-explanation">
-        <v-list-item 
-          v-for="(explanation, index) in kingsPoints" 
-          :key="index" 
-          :class="{ 'current-goal': kingCount === index }"
-        >
-          {{ explanation }}
-        </v-list-item>
-      </v-list>
+      <template #body>
+        <v-list class="score-goal-explanation" bg-color="surface-2" color="surface-1">
+          <v-list-item 
+            v-for="(explanation, index) in kingsPoints" 
+            :key="index" 
+            :class="{ 'current-goal': kingCount === index }"
+          >
+            {{ explanation }}
+          </v-list-item>
+        </v-list>
+      </template>
     </BaseMenu>
   </span>
 </template>
 
 <script>
-import BaseMenu from '_/src/components/BaseMenu.vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import BaseMenu from '@/components/BaseMenu.vue';
 
 export default {
   name: 'ScoreGoalTooltip',
   components: {
-    BaseMenu,  // ← ADD THIS
+    BaseMenu,
   },
   props: {
     kingCount: {
@@ -57,7 +60,8 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    const show = ref(false);
+    return { t, show };
   },
   computed: {
     dataCyName() {

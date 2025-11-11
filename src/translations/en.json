@@ -6,7 +6,7 @@
     "rules": "About",
     "play": "Play",
     "stats": "Stats",
-    "user": "User",
+    "player": "Player",
     "rank": "Rank",
     "username": "Username",
     "password": "Password",
@@ -70,14 +70,14 @@
     "overlays": {
       "waitingForGameToStart": "Waiting for Game to Start",
       "leaveGame": "Leave Game",
-      "opponentMayCounter": "Opponent May Counter",
-      "opponentMustResolve": "Opponent Must Resolve",
-      "opponentIsDiscarding": "Opponent Is Discarding",
-      "opponentSkipsDiscarding": "Opponent Skips Discarding",
-      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
-      "opponentPlayingFromDeck": "Opponent Playing from Deck",
-      "opponentMustDiscardJack": "Opponent Must Discard Jack",
-      "opponentConsideringStalemate": "Opponent Considering Stalemate Request",
+      "mayCounter": "{opponentUsername} May Counter",
+      "mustResolve": "{opponentUsername} Must Resolve",
+      "isDiscarding": "{opponentUsername} Is Discarding",
+      "skipsDiscarding": "{opponentUsername} Skips Discarding",
+      "choosingFromScrap": "{opponentUsername} Is Choosing A Card From The Scrap Pile",
+      "playingFromDeck": "{opponentUsername} Is Playing From The Deck",
+      "mustDiscardJack": "{opponentUsername} Must Discard A Jack",
+      "consideringStalemate": "{opponentUsername} Is Considering A Stalemate Request",
       "gameUnavailable": {
         "title": "Oops!",
         "content": "Looks like this game isn't available."
@@ -519,9 +519,7 @@
     "season": {
       "select": "Select Season",
       "champions": "Season Champions",
-      "tournamentBracket": "here to see the official tournament bracket",
-      "tournamentFootage": "here to watch the official tournament footage",
-      "playByPlay": "with play-by-play commentary."
+      "tournamentBracket": "here to see the official tournament bracket"
     },
     "winRate": "Win Rate",
     "wins": "Wins",

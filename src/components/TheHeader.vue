@@ -1,9 +1,9 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
+    <v-toolbar data-cy="nav-drawer" color="surface-2">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between">
-          <TheUserMenu v-if="authStore.authenticated" :variant="variant" />
+          <TheUserMenu v-if="authStore.authenticated" />
           <v-btn
             v-else
             :to="signupButtonLink"
@@ -21,7 +21,7 @@
             <img
               id="logo"
               alt="Cuttle logo"
-              :src="`/img/cuttle_logo_text_${logoColor}.svg`"
+              :src="`/img/cuttle_logo_text_brown.svg`"
               width="60"
               height="60"
               class="ma-md-auto desktop-logo"
@@ -63,33 +63,24 @@ import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN, ROUTE_NAME_HOME } from '@/router.j
 import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
-import { computed, toRefs } from 'vue';
-
-const props = defineProps({
-  variant:{
-    type:String,
-    default:'light'
-  }
-});
+import { computed } from 'vue';
 
 const route = useRoute();
 const { t } = useI18n();
 const authStore = useAuthStore();
 
-const { variant } = toRefs(props);
+
 const { smAndDown } = useDisplay();
 const pageLinks = getPageLinks();
-const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 'text-surface-2');
-const logoColor = computed(() => variant.value === 'light' ? 'brown' : 'white');
 
 const tabColor = (page) => {
 
   // highlight tab when spectate list tab 
-  if(route.name === 'SpectateList') {
-    return page === 'Home' ? 'text-newPrimary' : linkColor.value;
+  if (route.name === 'SpectateList') {
+    return page === 'Home' ? 'text-newPrimary' : 'text-surface-1';
   }
 
-  return route.name === page ? 'text-newPrimary' : linkColor.value;
+  return route.name === page ? 'text-newPrimary' : 'text-surface-1';
 };
 
 const signupButtonText = computed(() => {

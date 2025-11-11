@@ -22,15 +22,15 @@ function queenCount(player) {
 }
 
 const compareByRankThenSuit = (card1, card2) => {
+  if (card1.isHidden || card2.isHidden) {
+    return 0;
+  }
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
+const setPlayers = (player) => {
   const sortCards = (cards) => {
-    if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
-      return cards?.sort(compareByRankThenSuit);
-    }
-    return cards;
+    return cards?.sort(compareByRankThenSuit);
   };
 
   return {
@@ -64,6 +64,10 @@ class GameCard {
 const createGameCard = (card) => {
   if (!card) {
     return null;
+  }
+  // Short-circuit hidden cards to leave them as-is
+  if (card.isHidden) {
+    return card;
   }
   return new GameCard(card);
 };
@@ -125,15 +129,33 @@ export const useGameStore = defineStore('game', () => {
   const playerPointTotal = computed(() => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
   const playerQueenCount = computed(() => queenCount(player.value));
   const playerUsername = computed(() => player.value?.username ?? null);
-  const opponent = computed(() => players.value.length < 2 ? null : players.value[(myPNum.value + 1) % 2]);
-  const opponentIsReady = computed(() => opponent.value ? (myPNum.value === 0 ? p1Ready.value : p0Ready.value) : null);
+  const opponent = computed(() => {
+    if (players.value.length < 2) {
+      return null;
+    }
+
+    const opponentIndex = (myPNum.value + 1) % 2;
+    return players.value[opponentIndex];
+  });
+  const opponentIsReady = computed(() => {
+    if (!opponent.value) {
+      return null;
+    }
+
+    return myPNum.value === 0 ? p1Ready.value : p0Ready.value;
+  });
   const opponentUsername = computed(() => opponent.value?.username ?? null);
-  const opponentPointTotal = computed(() => opponent.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
+  const opponentPointTotal = computed(
+    () => opponent.value?.points?.reduce((total, card) => total + card.rank, 0) || 0,
+  );
   const opponentQueenCount = computed(() => queenCount(opponent.value));
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
-  const hasGlassesEight = computed(() => player.value?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false);
+  const hasGlassesEight = computed(() => {
+    const faceCards = player.value?.faceCards ?? [];
+    return faceCards.some((card) => card.rank === 8);
+  });
   const iWantRematch = computed(() => {
     if (myPNum.value === null) {
       return false;
@@ -160,9 +182,15 @@ export const useGameStore = defineStore('game', () => {
     const numTwosIsEven = twos.value.length % 2 === 0;
     return counteringPhase && isPlayersTurn.value !== numTwosIsEven;
   });
-  const waitingForOpponentToPickFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value);
-  const pickingFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value);
-  const showResolveFour = computed(() => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value);
+  const waitingForOpponentToPickFromScrap = computed(
+    () => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value,
+  );
+  const pickingFromScrap = computed(
+    () => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value,
+  );
+  const showResolveFour = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value,
+  );
   const waitingForOpponentToDiscard = computed(() => {
     switch (phase.value) {
       case GamePhase.RESOLVING_FOUR:
@@ -173,11 +201,21 @@ export const useGameStore = defineStore('game', () => {
         return false;
     }
   });
-  const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
-  const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
-  const waitingForOpponentToPlayFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value);
-  const waitingForOpponentToStalemate = computed(() => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value === myPNum.value);
-  const consideringOpponentStalemateRequest = computed(() => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value !== myPNum.value);
+  const showResolveFive = computed(
+    () => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value,
+  );
+  const playingFromDeck = computed(
+    () => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value,
+  );
+  const waitingForOpponentToPlayFromDeck = computed(
+    () => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value,
+  );
+  const waitingForOpponentToStalemate = computed(
+    () => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value === myPNum.value,
+  );
+  const consideringOpponentStalemateRequest = computed(
+    () => phase.value === GamePhase.CONSIDERING_STALEMATE && lastEventPlayedBy.value !== myPNum.value,
+  );
   const topCard = computed(() => deck.value[0] ?? null);
   const secondCard = computed(() => deck.value[1] ?? null);
 
@@ -187,7 +225,11 @@ export const useGameStore = defineStore('game', () => {
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
     lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
     lastEventCardChosen.value = newGame.lastEvent?.chosenCard ?? null;
-    lastEventPlayerChoosing.value = newGame.lastEvent?.pNum === myPNum.value ?? null;
+    const lastEventPlayer = newGame.lastEvent?.pNum;
+    lastEventPlayerChoosing.value =
+      typeof lastEventPlayer === 'number' && myPNum.value !== null
+        ? lastEventPlayer === myPNum.value
+        : null;
     lastEventDiscardedCards.value = newGame.lastEvent?.discardedCards ?? null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
@@ -199,7 +241,7 @@ export const useGameStore = defineStore('game', () => {
     p0Ready.value = newGame.p0Ready ?? p0Ready.value;
     p1Ready.value = newGame.p1Ready ?? p1Ready.value;
     passes.value = newGame.passes ?? passes.value;
-    players.value = newGame.players?.map((player) => setPlayers(player, myPNum.value, hasGlassesEight.value, gameHistoryStore.isSpectating)) ?? players.value;
+    players.value = newGame.players?.map((player) => setPlayers(player)) ?? players.value;
     spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
@@ -273,7 +315,8 @@ export const useGameStore = defineStore('game', () => {
     }
     players.value = players.value.filter((player) => player.pNum === myPNum.value);
   }
-  function setGameOver({ gameOver, conceded: c, winner, currentMatch: cm }) {
+  async function setGameOver({ gameOver, conceded: c, winner, currentMatch: cm }) {
+    await sleep(1000);
     gameIsOver.value = gameOver;
     conceded.value = c;
     winnerPNum.value = winner;
@@ -286,22 +329,25 @@ export const useGameStore = defineStore('game', () => {
       p1Rematch.value = rematch;
     }
   }
-  async function processScuttle({ game, playedCardId, targetCardId, playedBy }) {
+  async function processScuttle({ game, playedCard, targetCard, playedBy }) {
     if (!player.value) {
       updateGame(game);
       return;
     }
     const scuttlingPlayer = players.value[playedBy];
     const scuttledPlayer = players.value[(playedBy + 1) % 2];
-    const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
-    const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
-    if (playedCardIndex === -1 || targetCardIndex === -1) {
+    const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCard.id);
+    const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCard.id);
+
+    if (targetCardIndex === -1) {
       updateGame(game);
       return;
     }
-    const [ playedCard ] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
-    const targetCard = scuttledPlayer.points[targetCardIndex];
-    targetCard.scuttledBy = playedCard;
+
+    scuttlingPlayer.hand.splice(playedCardIndex, 1);
+
+    const targetCardOnField = scuttledPlayer.points[targetCardIndex];
+    targetCardOnField.scuttledBy = playedCard;
     await sleep(1000);
     updateGame(game);
   }
@@ -434,7 +480,7 @@ export const useGameStore = defineStore('game', () => {
         return;
       }
       const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
-      throw(new Error(message));
+      throw (new Error(message));
     }
   }
   async function requestSpectateLeave() {
@@ -590,16 +636,7 @@ export const useGameStore = defineStore('game', () => {
   async function requestRematch({ gameId: gameIdArg, rematch = true }) {
     await makeSocketRequest('rematch', { gameId: gameIdArg, rematch });
   }
-  async function requestJoinRematch({ oldGameId }) {
-    return new Promise((resolve, reject) => {
-      io.socket.get('/api/game/join-rematch', { oldGameId }, (res, jwres) => {
-        if (jwres.statusCode === 200) {
-          resetState();
-        }
-        return handleGameResponse(jwres, resolve, reject);
-      });
-    });
-  }
+
   function addSpectator(username) {
     if (!username) {
       return;
@@ -726,7 +763,6 @@ export const useGameStore = defineStore('game', () => {
     rejectStalemate,
     requestUnsubscribeFromGame,
     requestRematch,
-    requestJoinRematch,
     addSpectator,
   };
 });
