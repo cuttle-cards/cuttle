@@ -56,7 +56,7 @@ import { computed } from 'vue';
 const { t } = useI18n();
 const _emit = defineEmits([ 'replay' ]);
 
-const _props = defineProps({
+const props = defineProps({
   name: {
     type: String,
     required: true
@@ -73,16 +73,16 @@ const _props = defineProps({
 });
 
 const gameResultText = computed(() => {
-  if (_props.winnerLabel === null) {return t('profile.stalemate');}
-  return _props.winnerLabel ? t('profile.win') : t('profile.lose');
+  if (props.winnerLabel === null) {return t('profile.stalemate');}
+  return props.winnerLabel ? t('profile.win') : t('profile.lose');
 });
 
 const gameModeIcon = computed(() =>
-  _props.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'
+  props.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'
 );
 
 const gameModeText = computed(() =>
-  _props.isRanked ? t('global.ranked') : t('global.casual')
+  props.isRanked ? t('global.ranked') : t('global.casual')
 );
 
 </script>
