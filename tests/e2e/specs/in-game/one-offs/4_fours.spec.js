@@ -25,6 +25,8 @@ describe('FOURS', () => {
       // Opponent chooses two cards to discard
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+      cy.get('[data-opponent-hand-card=1-2]').should('be.visible');
+      cy.get('[data-opponent-hand-card=10-2]').should('be.visible');
       cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 discarded the A♥️ and the 10♥️.');
       assertGameState(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
@@ -34,6 +36,37 @@ describe('FOURS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
+      });
+    });
+
+    it('Plays a 4 to make opponent discard two cards of their choice while player has glasses', () => {
+      // Set Up
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
+
+      cy.get('[data-cy=history-log]').should('contain', 'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must discard two cards.');
+      // Opponent chooses two cards to discard
+      cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS);
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+      cy.get('[data-opponent-hand-card=1-2]').should('be.visible');
+      cy.get('[data-opponent-hand-card=10-2]').should('be.visible');
+      cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 discarded the A♦️ and the 10♥️.');
+      assertGameState(0, {
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.ACE_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
     });
 

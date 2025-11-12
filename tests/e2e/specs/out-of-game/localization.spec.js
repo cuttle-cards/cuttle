@@ -9,7 +9,6 @@ import { announcementData } from '../../../../src/routes/home/components/announc
 
 describe('Localization', () => {
   beforeEach(() => {
-    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);

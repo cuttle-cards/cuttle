@@ -46,7 +46,6 @@ function concedePlayer() {
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
-    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
     window.localStorage.setItem('announcement', announcementData.id);
@@ -255,7 +254,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
 describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
-    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
     window.localStorage.setItem('announcement', announcementData.id);
@@ -367,7 +365,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 describe('Spectating Rematches', () => {
   describe('Spectating Casual Rematches', () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
       window.localStorage.setItem('announcement', announcementData.id);
     });
@@ -427,7 +424,6 @@ describe('Spectating Rematches', () => {
 
   describe('Spectating Ranked Matches', () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
       window.localStorage.setItem('announcement', announcementData.id);
       const [ , , currentSeason ] = seasonFixtures;
