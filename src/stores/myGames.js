@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { io } from '@/plugins/sails';
 
 export const useMyGamesStore = defineStore('myGames', () => {
-  // Game history with pagination
   const games = ref([]);
   const loading = ref(false);
   const hasMore = ref(true);
@@ -32,7 +31,7 @@ export const useMyGamesStore = defineStore('myGames', () => {
 
       const { finishedGames, hasMore: moreAvailable, totalCount: total } = await new Promise((resolve, reject) => {
         io.socket.get(`/api/game/history?${query.toString()}`, (res, jwres) => {
-          if (jwres && jwres.statusCode === 200 && Array.isArray(res.finishedGames)) {
+          if (jwres?.statusCode === 200 && Array.isArray(res.finishedGames)) {
             resolve(res);
           } else {
             reject(new Error('Failed to load game history'));
@@ -40,14 +39,11 @@ export const useMyGamesStore = defineStore('myGames', () => {
         });
       });
 
-      if (reset) {
-        games.value = finishedGames;
-      } else {
-        games.value = [ ...games.value, ...finishedGames ];
-      }
-
+      games.value = reset ? finishedGames : [ ...games.value, ...finishedGames ];
       hasMore.value = moreAvailable;
       totalCount.value = total;
+    } catch (err) {
+      console.error('Error loading games:', err);
     } finally {
       loading.value = false;
     }

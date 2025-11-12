@@ -46,7 +46,7 @@
               :name="item.name"
               :is-ranked="item.isRanked"
               :winner-label="getIsWinner(item)"
-              :opponent-name="item.opponentName"
+              :opponent-name="getOpponentName(item)"
               @replay="goToReplay(item.id)"
             />
           </template>
@@ -88,11 +88,17 @@ const discordUsername = computed(() => {
 
 const games = computed(() => myGamesStore.games);
 
+function getOpponentName(game) {
+  const opponent = game.p0.isOpponent ? game.p0 : game.p1;
+  return opponent.username;
+}
+
 function getIsWinner(game) {
   if (!game.winnerId) {
     return null;
   }
-  return game.winnerId !== game.opponentId;
+  const opponent = game.p0.isOpponent ? game.p0 : game.p1;
+  return game.winnerId !== opponent.id;
 }
 
 async function fetchGames() {

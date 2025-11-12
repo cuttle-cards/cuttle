@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-    :title="t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord')"
+    :title="title"
     prepend-icon="mdi-link"
     :disabled="hasDiscord"
     @click="handleClick"
@@ -16,6 +16,11 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 
 const hasDiscord = computed(() => authStore.identities.some(({ provider }) => provider === 'discord'));
+
+const title = computed(() =>
+  t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord')
+);
+
 
 const handleClick = () => {
   if (hasDiscord.value) {

@@ -81,19 +81,19 @@ describe('Profile Page', () => {
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-test="game-list-item"]').should('have.length.at.least', 5);
+      cy.get('[data-test="game-list-item"]').should('have.length.below', 21);
 
       cy.get('.v-virtual-scroll').scrollTo('bottom');
-      cy.wait(500);
+      cy.contains('[data-test="game-list-item"]', 'Game 20', { timeout: 5000 })
+        .should('be.visible');
       cy.get('.v-virtual-scroll').scrollTo('bottom');
+      cy.contains('[data-test="game-list-item"]', 'Game 30', { timeout: 5000 })
+        .should('be.visible');
 
-      cy.window().then(win => {
-        const pinia = win.cuttle.app.config.globalProperties.$pinia;
-        const myGamesStore = pinia._s.get('myGames');
-        expect(myGamesStore.games.length).to.eq(30);
-      });
-
-      cy.contains('[data-test="game-list-item"]', 'Game 30').should('exist');
+      cy.window().its('cuttle.myGamesStore')
+        .then(myGamesStore => {
+          expect(myGamesStore.games.length).to.eq(30);
+        });
     });
 
     it('Does not load more games when hasMore is false', function() {
@@ -112,12 +112,11 @@ describe('Profile Page', () => {
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
 
-      cy.window().then(win => {
-        const pinia = win.cuttle.app.config.globalProperties.$pinia;
-        const myGamesStore = pinia._s.get('myGames');
-        myGamesStore.hasMore = false;
-        myGamesStore.loading = false;
-      });
+      cy.window().its('cuttle.myGamesStore')
+        .then(myGamesStore => {
+          myGamesStore.hasMore = false;
+          myGamesStore.loading = false;
+        });
     });
 
     it('Resets games on unmount', function() {
@@ -140,11 +139,10 @@ describe('Profile Page', () => {
 
       cy.vueRoute('/');
 
-      cy.window().then(win => {
-        const pinia = win.cuttle.app.config.globalProperties.$pinia;
-        const myGamesStore = pinia._s.get('myGames');
-        expect(myGamesStore.games.length).to.eq(0);
-      });
+      cy.window().its('cuttle.myGamesStore')
+        .then(myGamesStore => {
+          expect(myGamesStore.games.length).to.eq(0);
+        });
     });
   });
 

@@ -25,22 +25,17 @@
             class="mr-2"
           />
           <span class="game-name">
-            {{ winnerLabel === null ?
-              t('profile.stalemate') :
-              winnerLabel === true ?
-                t('profile.win') :
-                t('profile.lose') }} —
-            {{ name }}
+            {{ gameResultText }} — {{ name }}
           </span>
         </div>
         <p class="text-surface-1">
           <v-icon
             class="mr-4"
             size="medium"
-            :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
+            :icon="gameModeIcon"
             aria-hidden="true"
           />
-          {{ isRanked ? t('global.ranked') : t('global.casual') }} • {{ t('profile.opponent') }}: {{ opponentName }}
+          {{ gameModeText }} • {{ t('profile.opponent') }}: {{ opponentName }}
         </p>
       </v-col>
       <v-col cols="6" class="text-right">
@@ -56,6 +51,7 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
 const { t } = useI18n();
 const _emit = defineEmits([ 'replay' ]);
@@ -66,12 +62,28 @@ const _props = defineProps({
     required: true
   },
   isRanked: Boolean,
-  winnerLabel: Boolean,
+  winnerLabel: {
+    type: [ Boolean, null ],
+    default: null
+  },
   opponentName: {
     type: String,
     required: true
-  },
+  }
 });
+
+const gameResultText = computed(() => {
+  if (_props.winnerLabel === null) {return t('profile.stalemate');}
+  return _props.winnerLabel ? t('profile.win') : t('profile.lose');
+});
+
+const gameModeIcon = computed(() =>
+  _props.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'
+);
+
+const gameModeText = computed(() =>
+  _props.isRanked ? t('global.ranked') : t('global.casual')
+);
 
 </script>
 
