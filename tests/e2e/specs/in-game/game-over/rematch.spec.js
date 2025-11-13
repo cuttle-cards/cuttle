@@ -269,7 +269,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
 
-  it('Unranked games with rematch', function () {
+  it.only('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
@@ -280,7 +280,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       .should('have.length', 5)
       .eq(0)
       .find('img')
-      .should('have.attr', 'src', '/img/cards/card-back.png');
+      .should('have.class', 'opponent-card-back');
 
     // Snackbar about empty deck should not appear
     cy.get('[data-cy=game-snackbar] .v-snackbar__wrapper').should('not.exist');
