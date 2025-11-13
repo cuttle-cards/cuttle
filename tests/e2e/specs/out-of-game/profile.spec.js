@@ -2,6 +2,7 @@ import { myUser, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import GameStatus from '../../../../utils/GameStatus.json';
+import { assertSnackbar } from '../../support/helpers';
 
 dayjs.extend(utc);
 
@@ -83,10 +84,10 @@ describe('Profile Page', () => {
 
       cy.get('[data-cy="game-list-item"]').should('have.length.below', 21);
 
-      cy.get('.v-virtual-scroll').scrollTo('bottom');
+      cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
       cy.contains('[data-cy="game-list-item"]', 'Game 20', { timeout: 5000 })
         .should('be.visible');
-      cy.get('.v-virtual-scroll').scrollTo('bottom');
+      cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
       cy.contains('[data-cy="game-list-item"]', 'Game 30', { timeout: 5000 })
         .should('be.visible');
 
@@ -210,7 +211,8 @@ describe('Profile Page', () => {
         .contains('Replay')
         .click();
 
-      cy.url().should('include', '/spectate/');
+      assertSnackbar('Cannot spectate: game is too old', 'error', 'newgame');
+      cy.url().should('not.include', `/spectate/`);
     });
 
     it('Shows correct icons for win/loss/stalemate', function() {

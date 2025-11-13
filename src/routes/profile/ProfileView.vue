@@ -39,6 +39,7 @@
           :items="games"
           height="600"
           item-height="100"
+          data-cy="game-list"
           @scroll="handleScroll"
         >
           <template #default="{ item }">
@@ -73,10 +74,12 @@ import DiscordLink from '@/components/DiscordLink.vue';
 import { useMyGamesStore } from '@/stores/myGames';
 import ProfileGameListItem from './ProfileGameListItem.vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const myGamesStore = useMyGamesStore();
+const router = useRouter();
 
 const hasDiscord = computed(() =>
   authStore.identities?.some(({ provider }) => provider === 'discord')
@@ -136,7 +139,7 @@ async function loadMoreGames() {
 }
 
 function goToReplay(gameId) {
-  window.location.href = `/spectate/${gameId}`;
+  router.push(`/spectate/${gameId}`);
 }
 
 onMounted(fetchGames);
@@ -146,7 +149,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .v-card {
   overflow-x: hidden;
 }
