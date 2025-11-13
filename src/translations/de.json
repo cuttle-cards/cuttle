@@ -21,7 +21,8 @@
       "cardBackAlt": "Kartenzurückseite -- Wartet auf {playerUsername}",
       "readyAlt": "Kartenfront -- {playerUsername} ist bereit",
       "rematchAlt": "Kartenfront -- {playerUsername} möchte ein Rückspiel"
-    }
+    },
+    "profile": "Mein Profil"
   },
   "login": {
     "noAccount": "Hast du kein Konto?",
@@ -564,5 +565,16 @@
     "heading": "Meisterschaft heute!",
     "paragraph": "Die Clubs 2025 Cuttle Saisonmeisterschaft findet HEUTE, am 26. April um 12:30 Uhr EST statt! Sieh dir an, wie die Top 8 Spieler der letzten Ranglistensaison in einem Double-Elimination-Turnier um den Titel des Clubs 2025 Cuttle Saisonmeisters kämpfen! Schau live zu auf ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "profile": {
+    "myGames": "Meine Spiele",
+    "noGamesFound": "Keine Spiele gefunden",
+    "win": "Sieg",
+    "lose": "Niederlage",
+    "stalemate": "Patt",
+    "opponent": "Gegner",
+    "connectedAs": "Verbunden als",
+    "notConnected": "Nicht verbunden",
+    "replay": "Erneut abspielen"
   }
 }

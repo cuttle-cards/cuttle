@@ -39,6 +39,7 @@ module.exports.routes = {
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch',
+  'GET /api/game/history': 'game/get-history',
 
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
