@@ -2,7 +2,6 @@ import { myUser, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import GameStatus from '../../../../utils/GameStatus.json';
-import { assertSnackbar } from '../../support/helpers';
 
 dayjs.extend(utc);
 
@@ -211,8 +210,10 @@ describe('Profile Page', () => {
         .contains('Replay')
         .click();
 
-      assertSnackbar('Cannot spectate: game is too old', 'error', 'newgame');
-      cy.url().should('not.include', `/spectate/`);
+      cy.contains('[data-cy="game-list-item"]', 'Player Won Game')
+        .find('[data-cy="replay-link"] a, [data-cy="replay-link"]')
+        .should('have.attr', 'href')
+        .and('include', '/spectate/');
     });
 
     it('Shows correct icons for win/loss/stalemate', function() {

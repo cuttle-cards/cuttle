@@ -48,7 +48,7 @@
               :is-ranked="item.isRanked"
               :winner-label="getIsWinner(item)"
               :opponent-name="getOpponentName(item)"
-              @replay="goToReplay(item.id)"
+              :game-id="item.id"
             />
           </template>
         </v-virtual-scroll>
@@ -74,12 +74,10 @@ import DiscordLink from '@/components/DiscordLink.vue';
 import { useMyGamesStore } from '@/stores/myGames';
 import ProfileGameListItem from './ProfileGameListItem.vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const myGamesStore = useMyGamesStore();
-const router = useRouter();
 
 const hasDiscord = computed(() =>
   authStore.identities?.some(({ provider }) => provider === 'discord')
@@ -138,10 +136,6 @@ async function loadMoreGames() {
   }
 }
 
-function goToReplay(gameId) {
-  router.push(`/spectate/${gameId}`);
-}
-
 onMounted(fetchGames);
 
 onUnmounted(() => {
@@ -152,6 +146,10 @@ onUnmounted(() => {
 <style scoped>
 .v-card {
   overflow-x: hidden;
+}
+
+.v-card :deep(.v-virtual-scroll__container) {
+  overflow-x: hidden !important;
 }
 
 .v-row {

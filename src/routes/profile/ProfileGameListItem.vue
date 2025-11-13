@@ -39,10 +39,12 @@
         </p>
       </v-col>
       <v-col cols="6" class="text-right">
-        <v-btn variant="outlined" color="surface-1" @click="$emit('replay')">
-          <v-icon icon="mdi-play-circle-outline" class="mr-2" />
-          {{ t('profile.replay') }}
-        </v-btn>
+        <router-link :to="`/spectate/${gameId}`" data-cy="replay-link">
+          <v-btn variant="outlined" color="surface-1">
+            <v-icon icon="mdi-play-circle-outline" class="mr-2" />
+            {{ t('profile.replay') }}
+          </v-btn>
+        </router-link>
       </v-col>
     </v-row>
     <v-divider color="surface-1" class="my-2" />
@@ -68,6 +70,10 @@ const props = defineProps({
   },
   opponentName: {
     type: String,
+    required: true
+  },
+  gameId: {
+    type: [ String, Number ],
     required: true
   }
 });
