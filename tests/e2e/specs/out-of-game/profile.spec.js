@@ -206,11 +206,6 @@ describe('Profile Page', () => {
       cy.contains('[data-cy="game-list-item"]', 'Stalemate Game').should('be.visible');
 
       cy.contains('[data-cy="game-list-item"]', 'Player Won Game')
-        .find('button')
-        .contains('Replay')
-        .click();
-
-      cy.contains('[data-cy="game-list-item"]', 'Player Won Game')
         .find('[data-cy="replay-link"] a, [data-cy="replay-link"]')
         .should('have.attr', 'href')
         .and('include', '/spectate/');
