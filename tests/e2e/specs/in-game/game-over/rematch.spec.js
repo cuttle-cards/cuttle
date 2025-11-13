@@ -276,7 +276,11 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 
     // Game 2: Player concedes
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.get('[data-opponent-hand-card]')
+      .should('have.length', 5)
+      .eq(0)
+      .find('img')
+      .should('have.class', 'opponent-card-back');
 
     // Snackbar about empty deck should not appear
     cy.get('[data-cy=game-snackbar] .v-snackbar__wrapper').should('not.exist');
