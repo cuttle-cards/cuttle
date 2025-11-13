@@ -81,13 +81,13 @@ describe('Profile Page', () => {
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-test="game-list-item"]').should('have.length.below', 21);
+      cy.get('[data-cy="game-list-item"]').should('have.length.below', 21);
 
       cy.get('.v-virtual-scroll').scrollTo('bottom');
-      cy.contains('[data-test="game-list-item"]', 'Game 20', { timeout: 5000 })
+      cy.contains('[data-cy="game-list-item"]', 'Game 20', { timeout: 5000 })
         .should('be.visible');
       cy.get('.v-virtual-scroll').scrollTo('bottom');
-      cy.contains('[data-test="game-list-item"]', 'Game 30', { timeout: 5000 })
+      cy.contains('[data-cy="game-list-item"]', 'Game 30', { timeout: 5000 })
         .should('be.visible');
 
       cy.window().its('cuttle.myGamesStore')
@@ -135,7 +135,7 @@ describe('Profile Page', () => {
 
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
-      cy.get('[data-test="game-list-item"]').should('exist');
+      cy.get('[data-cy="game-list-item"]').should('exist');
 
       cy.vueRoute('/');
 
@@ -198,14 +198,14 @@ describe('Profile Page', () => {
 
       cy.contains('No games found').should('not.exist');
 
-      cy.get('[data-test="game-list-item"]')
+      cy.get('[data-cy="game-list-item"]')
         .should('have.length', 3);
 
-      cy.contains('[data-test="game-list-item"]', 'Player Won Game').should('be.visible');
-      cy.contains('[data-test="game-list-item"]', 'Opponent Won Game').should('be.visible');
-      cy.contains('[data-test="game-list-item"]', 'Stalemate Game').should('be.visible');
+      cy.contains('[data-cy="game-list-item"]', 'Player Won Game').should('be.visible');
+      cy.contains('[data-cy="game-list-item"]', 'Opponent Won Game').should('be.visible');
+      cy.contains('[data-cy="game-list-item"]', 'Stalemate Game').should('be.visible');
 
-      cy.contains('[data-test="game-list-item"]', 'Player Won Game')
+      cy.contains('[data-cy="game-list-item"]', 'Player Won Game')
         .find('button')
         .contains('Replay')
         .click();
@@ -253,18 +253,18 @@ describe('Profile Page', () => {
 
       cy.contains('No games found').should('not.exist');
 
-      cy.get('[data-test="game-list-item"]')
+      cy.get('[data-cy="game-list-item"]')
         .should('have.length', 3);
 
-      cy.get('[data-test="game-list-item"]').eq(0)
+      cy.get('[data-cy="game-list-item"]').eq(0)
         .find('[data-cy=loser-icon]')
         .should('exist');
 
-      cy.get('[data-test="game-list-item"]').eq(1)
+      cy.get('[data-cy="game-list-item"]').eq(1)
         .find('[data-cy=winner-icon]')
         .should('exist');
 
-      cy.get('[data-test="game-list-item"]').eq(2)
+      cy.get('[data-cy="game-list-item"]').eq(2)
         .find('[data-cy=stalemate-icon]')
         .should('exist');
     });
@@ -297,10 +297,10 @@ describe('Profile Page', () => {
 
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-test="game-list-item"]').eq(0)
+      cy.get('[data-cy="game-list-item"]').eq(0)
         .should('contain', 'Ranked');
 
-      cy.get('[data-test="game-list-item"]').eq(1)
+      cy.get('[data-cy="game-list-item"]').eq(1)
         .should('contain', 'Casual');
     });
 
@@ -332,10 +332,10 @@ describe('Profile Page', () => {
 
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-test="game-list-item"]').eq(0)
+      cy.get('[data-cy="game-list-item"]').eq(0)
         .should('contain', playerOne.username);
 
-      cy.get('[data-test="game-list-item"]').eq(1)
+      cy.get('[data-cy="game-list-item"]').eq(1)
         .should('contain', playerTwo.username);
     });
   });
