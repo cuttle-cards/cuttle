@@ -269,7 +269,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
 
-  it.only('Unranked games with rematch', function () {
+  it('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
