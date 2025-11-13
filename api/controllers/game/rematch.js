@@ -89,8 +89,8 @@ module.exports = async function (req, res) {
     newGame.p1 = { ...newP1 };
     // Deal cards in new game
     const newFullGame = await sails.helpers.gameStates.dealCards(newGame);
-    const { spectatorState: socketEvent } = await sails.helpers.gameStates
-      .createSocketEvents(newGame, newFullGame); // Use spectator state for rematch notification
+    const { p0State, p1State, spectatorState } = await sails.helpers.gameStates
+      .createSocketEvents(newGame, newFullGame);
 
     // Subscribe players to new game (switching perspectives)
     sails.sockets.addRoomMembersToRooms(`game_${oldGameId}_p0`, `game_${newGame.id}_p1`);
@@ -100,9 +100,14 @@ module.exports = async function (req, res) {
       change: 'newGameForRematch',
       oldGameId,
       gameId: newGame.id,
-      newGame: socketEvent.game,
     };
-    sails.helpers.broadcastGameEvent(oldGameId, payload);
+    const p0Room = `game_${oldGameId}_p0`;
+    const p1Room = `game_${oldGameId}_p1`;
+    const spectatorRoom = `game_${oldGameId}_spectator`;
+
+    sails.sockets.broadcast(p0Room, 'game', { newGame: p1State.game, ...payload }),
+    sails.sockets.broadcast(p1Room, 'game', { newGame: p0State.game, ...payload }),
+    sails.sockets.broadcast(spectatorRoom, 'game', { newGame: spectatorState.game, ...payload });
 
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
