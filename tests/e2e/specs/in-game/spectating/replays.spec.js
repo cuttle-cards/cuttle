@@ -26,17 +26,28 @@ describe('Rewatching finished games', () => {
 
     beforeEach(createAndFinishCasualMatch);
 
-    it('Rewatches someone else\'s casual match', function () {  
+    it('Rewatches another players casual match as pNum0', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
+      const pNumToSpectate = 0;
 
-      rewatchCasualMatch(this.replayGameId);
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
+    }); // end it('Watches a finished game clicking through the moves one at a time')
+
+    it('Rewatches another players casual match as pNum1', function () {
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+      const pNumToSpectate = 1;
+
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     }); // end it('Watches a finished game clicking through the moves one at a time')
   
     it('Rewatches your own casual match', function () {
       cy.visit('/');
       cy.loginPlayer(playerOne);
-      rewatchCasualMatch(this.replayGameId);
+      const pNumToSpectate = 0;
+
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     });
 
     it('Steps and skips backwards from latest state (-1)', function () {
