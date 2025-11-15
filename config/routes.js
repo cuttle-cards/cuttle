@@ -21,7 +21,7 @@ module.exports.routes = {
   // OAuth
   'GET /api/user/:provider/redirect': 'OAuthController.oAuthRedirect',
   'GET /api/user/:provider/callback': 'OAuthController.oAuthCallback',
-  'POST /api/user/:provider/completeOauth': 'OAuthController.oAuthCompleteRegistration',
+  'POST /api/user/:provider/completeoauthregistration': 'OAuthController.oAuthCompleteRegistration',
 
   // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
