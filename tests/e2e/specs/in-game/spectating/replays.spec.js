@@ -264,7 +264,7 @@ describe('Rewatching finished games', () => {
         cy.window()
           .its('cuttle.gameStore')
           .then((gameStore) => {
-            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1&pNum=0`;
             cy.wrap(win.navigator.clipboard.readText())
               .should('eq', expectedUrl);
           });
@@ -322,7 +322,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
@@ -370,7 +370,7 @@ describe('Rewatching finished games', () => {
 
         cy.visit('/');
         cy.signupPlayer(myUser);
-        cy.visit(`/spectate/${gameId}?gameStateIndex=3`);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=3&pNum=0`);
 
         cy.get('#game-menu-activator').click();
         cy.get('#game-menu').should('be.visible');
