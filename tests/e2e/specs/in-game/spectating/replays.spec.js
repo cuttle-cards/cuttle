@@ -204,7 +204,6 @@ describe('Rewatching finished games', () => {
     });
 
     it('Rewatches a ranked match', () => {
-
       setupGameBetweenTwoUnseenPlayers('replay', true);
       cy.get('@replayGameId').then((gameId) => {
         cy.recoverSessionOpponent(playerOne);
@@ -370,7 +369,7 @@ describe('Rewatching finished games', () => {
 
         cy.visit('/');
         cy.signupPlayer(myUser);
-        cy.visit(`/spectate/${gameId}?gameStateIndex=3&pNum=0`);
+        cy.visit(`/spectate/${gameId}?gameStateIndex=3`);
 
         cy.get('#game-menu-activator').click();
         cy.get('#game-menu').should('be.visible');
@@ -379,7 +378,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
