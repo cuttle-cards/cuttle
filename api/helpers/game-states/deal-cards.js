@@ -21,15 +21,15 @@ module.exports = {
   fn: async ({ game }, exits) => {
     try {
       if (game.status !== GameStatus.STARTED) {
-        return exits.error({ message: 'Game has not yet started or is over' });
+        return exits.error({ message: 'lobby.error.gamestatus' });
       }
 
       if (!game.gameStates) {
-        return exits.error({ message: 'Game was not populated with .gameStates collection' });
+        return exits.error({ message: 'lobby.error.noGameStates' });
       }
 
       if (game.gameStates.length) {
-        return exits.error({ message: 'Cards are already dealt' });
+        return exits.error({ message: 'lobby.error.alreadyDealt' });
       }
 
       const deck = _.shuffle(DeckIds.map((cardId) => sails.helpers.gameStates.convertStrToCard(cardId)));
