@@ -236,6 +236,12 @@ const routes = [
     name: 'Not Found',
     component: () => import('@/routes/error/NotFoundView.vue'),
   },
+  {
+    path: '/my-profile',
+    name: 'MyProfile',
+    component: () => import('@/routes/profile/ProfileView.vue'),
+    meta: { requiresAuth: true }
+  },
 ];
 
 const getInitialPath = () => {
