@@ -23,10 +23,9 @@ describe('Rewatching finished games', () => {
   });
 
   describe('Rewatching a specific casual match', () => {
-
     beforeEach(createAndFinishCasualMatch);
 
-    it('Rewatches another players casual match as pNum0', function () {
+    it('Rewatches another players casual match as p0', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
       const pNumToSpectate = 0;
@@ -34,7 +33,7 @@ describe('Rewatching finished games', () => {
       rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     }); // end it('Watches a finished game clicking through the moves one at a time')
 
-    it('Rewatches another players casual match as pNum1', function () {
+    it('Rewatches another players casual match as p1', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
       const pNumToSpectate = 1;
@@ -42,12 +41,35 @@ describe('Rewatching finished games', () => {
       rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     }); // end it('Watches a finished game clicking through the moves one at a time')
   
-    it('Rewatches your own casual match', function () {
+    it('Rewatches your own casual match as p0', function () {
       cy.visit('/');
       cy.loginPlayer(playerOne);
       const pNumToSpectate = 0;
 
       rewatchCasualMatch(this.replayGameId, pNumToSpectate);
+    });
+      
+    it('Rewatches your own casual match as p1', function () {
+      cy.visit('/');
+      cy.loginPlayer(playerOne);
+      const pNumToSpectate = 1;
+
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
+    });
+
+    it('Rewatches your own casual match as p1 without specifying pNum query param', function () {
+      cy.visit('/');
+      cy.loginPlayer(playerTwo);
+
+      const pNum = 1;
+
+      cy.visit(`/spectate/${this.replayGameId}`);
+
+      cy.get('[data-player-hand-card]').should('have.length', 6);
+      cy.get('[data-cy=history-log]').should('have.length', 1);
+
+      // Validates pNum query param is auto-added if not specified
+      cy.url().should('contain', `gameStateIndex=0&pNum=${pNum}`);
     });
 
     it('Steps and skips backwards from latest state (-1)', function () {
@@ -90,7 +112,6 @@ describe('Rewatching finished games', () => {
     });
 
     it('Navigates directly to a particular state of a finished game', () => {
-
       cy.get('@replayGameId').then((gameId) => {
         cy.visit(`/spectate/${gameId}?gameStateIndex=2`);
       });

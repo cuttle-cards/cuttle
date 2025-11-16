@@ -121,27 +121,26 @@ export const useGameStore = defineStore('game', () => {
 
   // Computed (getters)
   const myPNum = computed(() => {
-    if (gameHistoryStore.isSpectating) {
+    const userPNum = players.value.findIndex(({ username }) => username === authStore.username);
 
+    if (gameHistoryStore.isSpectating) {
       const queryPNum = Number(route.query.pNum);
       // If valid pNum, return
       if (queryPNum === 0 || queryPNum === 1) {
         return queryPNum;
       }
 
-      const userPNum = players.value.findIndex(({ username }) => username === authStore.username);
       const userWasPlayer = userPNum !== -1;
       const gameIsComplete = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(status.value);
 
-      // Check if a complete game is viewed by a player
+      // Check if a completed game is viewed by a player
       if (userWasPlayer && gameIsComplete) {
         return userPNum;
       }
-
       return 0;
     }
-    const pNum = players.value.findIndex(({ username }) => username === authStore.username);
-    return pNum > -1 ? pNum : null;
+
+    return userPNum > -1 ? userPNum : null;
   });
   const player = computed(() => players.value[myPNum.value]);
   const playerPointTotal = computed(
