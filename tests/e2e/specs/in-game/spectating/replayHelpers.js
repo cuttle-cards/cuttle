@@ -83,10 +83,12 @@ function createAndFinishCasualMatch() {
   });
 }
 
-function rewatchCasualMatch(firstGameId) {
-  cy.visit(`/spectate/${firstGameId}`);
+function rewatchCasualMatch(firstGameId, pNum) {
+  cy.visit(`/spectate/${firstGameId}?pNum=${pNum}`);
 
-  cy.get('[data-player-hand-card]').should('have.length', 5);
+  // At state 0, p0 has 5 cards, p1 has 6 cards
+  const expectedHandSize = pNum === 0 ? 5 : 6;
+  cy.get('[data-player-hand-card]').should('have.length', expectedHandSize);
   cy.get('[data-cy=history-log]').should('have.length', 1);
 
   // Step forward to state 1 (loaded fixture)
@@ -94,10 +96,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=1');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=1`);
   cy.get('[data-cy=history-log]').should('have.length', 2);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.NINE_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [],
     p0FaceCards: [],
@@ -118,10 +120,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=2');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=2`);
   cy.get('[data-cy=history-log]').should('have.length', 3);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.NINE_OF_CLUBS ],
     p0FaceCards: [],
@@ -142,10 +144,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=3');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=3`);
   cy.get('[data-cy=history-log]').should('have.length', 4);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [],
     p0FaceCards: [],
@@ -166,10 +168,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=4');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=4`);
   cy.get('[data-cy=history-log]').should('have.length', 5);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS ],
     p0FaceCards: [],
@@ -190,10 +192,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=5');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=5`);
   cy.get('[data-cy=history-log]').should('have.length', 6);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS ],
     p0FaceCards: [],
@@ -215,10 +217,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=6');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=6`);
   cy.get('[data-cy=history-log]').should('have.length', 7);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
     p0FaceCards: [],
@@ -240,10 +242,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=7');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=7`);
   cy.get('[data-cy=history-log]').should('have.length', 8);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
     p0FaceCards: [],
@@ -266,10 +268,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=8');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=8`);
   cy.get('[data-cy=history-log]').should('have.length', 9);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     p0FaceCards: [],
@@ -292,10 +294,10 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=step-backward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=7');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=7`);
   cy.get('[data-cy=history-log]').should('have.length', 8);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
     p0FaceCards: [],
@@ -318,19 +320,20 @@ function rewatchCasualMatch(firstGameId) {
     .find('[data-cy=skip-backward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=0');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=0`);
   cy.get('[data-cy=history-log]').should('have.length', 1);
-  cy.get('[data-player-hand-card]').should('have.length', 5);
+  // Back at state 0: p0 has 5 cards, p1 has 6 cards
+  cy.get('[data-player-hand-card]').should('have.length', pNum === 0 ? 5 : 6);
   
   // skip forward to state -1 (end of game)
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=skip-forward]')
     .click();
 
-  cy.url().should('contain', '?gameStateIndex=-1');
+  cy.url().should('contain', `pNum=${pNum}&gameStateIndex=-1`);
   cy.get('[data-cy=history-log]').should('have.length', 9);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.ACE_OF_CLUBS ],
     p0Points: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     p0FaceCards: [],
@@ -354,16 +357,17 @@ function rewatchCasualMatch(firstGameId) {
   cy.get('[data-cy=gameover-rematch]').click();
 
   // Should start on the first state since game is finished
-  cy.url().should('contain', '?gameStateIndex=0');
+  cy.url().should('contain', `gameStateIndex=0&pNum=${pNum}`);
 
   // Step forward to game 2 state 1 (loaded game fixture)
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=step-forward]')
     .click();
-  cy.url().should('contain', '?gameStateIndex=1');
+
+  cy.url().should('contain', `gameStateIndex=1&pNum=${pNum}`);
   cy.get('[data-cy=history-log]').should('have.length', 2);
 
-  assertGameState(0, {
+  assertGameState(pNum, {
     p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
     p0Points: [],
     p0FaceCards: [],
@@ -377,7 +381,8 @@ function rewatchCasualMatch(firstGameId) {
   cy.get('[data-cy=playback-controls]')
     .find('[data-cy=step-forward]')
     .click();
-  cy.url().should('contain', '?gameStateIndex=2');
+    
+  cy.url().should('contain', `gameStateIndex=2&pNum=${pNum}`);
   cy.get('[data-cy=history-log]')
     .should('have.length', 3)
     .should('contain', 'Player1 conceded');
