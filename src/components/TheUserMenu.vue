@@ -28,7 +28,6 @@
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
       <TheLanguageSelector has-chevron />
-      <DiscordLink />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
         :key="i"
@@ -48,7 +47,6 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
-import DiscordLink from '@/components/DiscordLink.vue';
 
 const authStore = useAuthStore();
 
@@ -64,7 +62,22 @@ defineProps({
 });
 
 const menuItems = computed(() => {
-  return [ { text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' } ];
+  return [
+    {
+      text: t('global.profile'),
+      icon: 'account',
+      page: { name: 'MyProfile' },
+      cyName: 'My Profile'
+    },
+    {
+      text: t('global.logout'),
+      icon: 'logout',
+      page:
+        {
+          name: ROUTE_NAME_LOGOUT
+        },
+      cyName: 'Log Out' }
+  ];
 });
 
 </script>
