@@ -201,18 +201,42 @@ describe('Lobby - Page Content (Ranked)', () => {
   });
 
   // Test correct snackbar 
-  it('Changing modes shows correct snackbar', () => {
+  it('snackbar shows correct colours for ranked toggle and error', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
+    // toggle for surface
     cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
-      .should('contain', 'Game Mode changed to'); // existing English string
-
-    // color (Vuetify): wrapper gets bg-surface-2
+      .should('contain', 'Game Mode changed to');
     cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-surface-2');
+      .should('have.class', 'bg-surface-2')
+      .and('not.have.class', 'bg-error');
 
-    cy.get('[data-cy="close-snackbar"]').click();
+    cy.get('[data-cy=close-snackbar]').click();
     cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+
+    // stub for error
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        cy.stub(store, 'requestReady').rejects({ message: 'lobby.error.fallback' });
+      });
+
+    cy.get('[data-cy=ready-button]').click();
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('exist');
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-error')
+      .and('not.have.class', 'bg-surface-2');
+
+    cy.get('[data-cy=close-snackbar]').click();
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+
+    // toggle again for surface color
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-surface-2')
+      .and('not.have.class', 'bg-error');
+    cy.get('[data-cy=close-snackbar]').click();
   });
 });
 

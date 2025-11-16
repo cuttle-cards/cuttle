@@ -59,7 +59,10 @@
     "unready": "NICHT BEREIT",
     "exit": "VERLASSEN",
     "invite": "Einladen",
-    "rankedChangedAlert": "Spielmodus geändert zu",
+    "rankedChangedAlert": {
+      "casual": "Spielmodus geändert zu Freizeit",
+      "ranked": "Spielmodus geändert zu Rangliste"
+    },
     "error": {
       "fallback": "Ein unbekannter Fehler ist aufgetreten.",
       "forbidden": "Du bist kein Spieler in diesem Spiel!",

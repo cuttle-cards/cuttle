@@ -59,7 +59,10 @@
     "unready": "PAS PRÊT",
     "exit": "SORTIR",
     "invite": "Inviter",
-    "rankedChangedAlert": "Mode de jeu modifié à",
+    "rankedChangedAlert": {
+      "casual": "Mode de jeu modifié à Classique",
+      "ranked": "Mode de jeu modifié à Classée"
+    },
     "error": {
       "fallback": "Une erreur inconnue s'est produite.",
       "forbidden": "Vous n'êtes pas un joueur dans ce jeu !",

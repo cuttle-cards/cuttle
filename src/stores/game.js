@@ -95,6 +95,8 @@ export const useGameStore = defineStore('game', () => {
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
   const showIsRankedChangedAlert = ref(false);
+  const lobbySnackbarMessage = ref(null);
+  const lobbySnackbarColor = ref(null);
 
   // Threes
   const lastEventCardChosen = ref(null);
@@ -286,6 +288,8 @@ export const useGameStore = defineStore('game', () => {
     oneOffTarget.value = null;
     isRanked.value = false;
     showIsRankedChangedAlert.value = false;
+    lobbySnackbarMessage.value = null,
+    lobbySnackbarColor.value = null,
     lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
@@ -520,7 +524,7 @@ export const useGameStore = defineStore('game', () => {
         if (jwres.statusCode === 409) {
           return reject({ message: res.message, gameId: id.value, code: res.code });
         }
-        return reject(new Error(res.message));
+        return reject(new Error(res.message ?? 'Error readying for game'));
       });
     });
   }
@@ -677,6 +681,8 @@ export const useGameStore = defineStore('game', () => {
     oneOffTarget,
     isRanked,
     showIsRankedChangedAlert,
+    lobbySnackbarMessage,
+    lobbySnackbarColor,
     lastEventCardChosen,
     lastEventPlayerChoosing,
     lastEventChange,

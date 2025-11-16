@@ -87,12 +87,12 @@
       </v-row>
     </v-container>
     <BaseSnackbar
-      v-model="snackbarOpen"
+      v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="snackbarMessage"
-      :color="snackbarColor"
+      :message="t(gameStore.lobbySnackbarMessage ?? '')"
+      :color="gameStore.lobbySnackbarColor"
       data-cy="lobby-snackbar"
-      @clear="snackbarOpen = false"
+      @clear="gameStore.showIsRankedChangedAlert = false"
     />
   </div>
 </template>
@@ -138,11 +138,6 @@ const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee')
 
 const opponentUsername = computed(() => gameStore.opponentUsername);
 
-// Snackbar
-const snackbarOpen = ref(false);
-const snackbarMessage = ref('');
-const snackbarColor = ref('surface-2');
-
 // Methods
 async function ready() {
   readying.value = true;
@@ -160,31 +155,20 @@ async function ready() {
     } else {
       const key = err?.message;
 
-      const msg = t(key);
-      showSnackbar(msg, 'error');
+      gameStore.lobbySnackbarMessage = key;
+      gameStore.lobbySnackbarColor = 'error';
+      gameStore.showIsRankedChangedAlert = true;
     }
-
-
     
   }
   readying.value = false;
 }
 
-function showSnackbar(message, color = 'surface-2') {
-  snackbarMessage.value = message;
-  snackbarColor.value = color;
-  snackbarOpen.value = true;
-}
 
 async function setIsRanked() {
   await gameStore.requestSetIsRanked({
     isRanked: gameStore.isRanked,
   });
-
-  showSnackbar(
-    `${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')}`,
-    'surface-2'
-  );
 }
 
 async function leave() {
