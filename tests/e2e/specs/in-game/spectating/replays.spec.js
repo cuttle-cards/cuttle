@@ -26,17 +26,28 @@ describe('Rewatching finished games', () => {
 
     beforeEach(createAndFinishCasualMatch);
 
-    it('Rewatches someone else\'s casual match', function () {  
+    it('Rewatches another players casual match as pNum0', function () {
       cy.visit('/');
       cy.signupPlayer(myUser);
+      const pNumToSpectate = 0;
 
-      rewatchCasualMatch(this.replayGameId);
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
+    }); // end it('Watches a finished game clicking through the moves one at a time')
+
+    it('Rewatches another players casual match as pNum1', function () {
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+      const pNumToSpectate = 1;
+
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     }); // end it('Watches a finished game clicking through the moves one at a time')
   
     it('Rewatches your own casual match', function () {
       cy.visit('/');
       cy.loginPlayer(playerOne);
-      rewatchCasualMatch(this.replayGameId);
+      const pNumToSpectate = 0;
+
+      rewatchCasualMatch(this.replayGameId, pNumToSpectate);
     });
 
     it('Steps and skips backwards from latest state (-1)', function () {
@@ -193,7 +204,6 @@ describe('Rewatching finished games', () => {
     });
 
     it('Rewatches a ranked match', () => {
-
       setupGameBetweenTwoUnseenPlayers('replay', true);
       cy.get('@replayGameId').then((gameId) => {
         cy.recoverSessionOpponent(playerOne);
@@ -253,7 +263,7 @@ describe('Rewatching finished games', () => {
         cy.window()
           .its('cuttle.gameStore')
           .then((gameStore) => {
-            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1`;
+            const expectedUrl = `${currentOrigin}/spectate/${gameStore.id}?gameStateIndex=1&pNum=0`;
             cy.wrap(win.navigator.clipboard.readText())
               .should('eq', expectedUrl);
           });
@@ -311,7 +321,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=1&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
@@ -368,7 +378,7 @@ describe('Rewatching finished games', () => {
         // Clipboard should have spectate link to current gameState
         cy.window().then((win) => {
           const currentOrigin = win.location.origin;
-          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3`;
+          const expectedUrl = `${currentOrigin}/spectate/${gameId}?gameStateIndex=3&pNum=0`;
           cy.wrap(win.navigator.clipboard.readText())
             .should('eq', expectedUrl);
         });
