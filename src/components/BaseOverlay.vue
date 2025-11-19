@@ -1,0 +1,50 @@
+<template>
+  <v-overlay
+    :model-value="modelValue"
+    :persistent="persistent"
+    class="game-overlay"
+    v-bind="$attrs"
+  >
+    <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <slot name="header"></slot>
+    </h1>
+    <slot></slot>
+  </v-overlay>
+</template>
+
+<script>
+export default {
+  name: 'BaseOverlay',
+  inheritAttrs: false,
+  props: {
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+    persistent: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+:deep(.v-overlay__content) {
+  left: 0;
+}
+.game-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.overlay-header {
+  font-weight: bold;
+  background-color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-surface-1));
+  padding: 24px;
+  text-align: center;
+  width: 100vw;
+}
+</style>
