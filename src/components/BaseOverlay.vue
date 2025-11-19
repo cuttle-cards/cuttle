@@ -6,9 +6,9 @@
     v-bind="$attrs"
   >
     <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-      <slot name="header"></slot>
+      <slot name="header" />
     </h1>
-    <slot></slot>
+    <slot />
   </v-overlay>
 </template>
 
