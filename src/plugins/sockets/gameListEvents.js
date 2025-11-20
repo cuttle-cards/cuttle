@@ -46,6 +46,8 @@ export function handleIsRanked(evData) {
   const gameListStore = useGameListStore();
   const gameStore = useGameStore();
   gameStore.isRanked = evData.isRanked;
+  gameStore.lobbySnackbarMessage = `${gameStore.isRanked ? 'lobby.rankedChangedAlert.ranked' : 'lobby.rankedChangedAlert.casual'}`;
+  gameStore.lobbySnackbarColor = 'surface-2';
   gameStore.showIsRankedChangedAlert = true;
   gameListStore.setIsRanked({ gameId: evData.gameId,isRanked: evData.isRanked });
 }

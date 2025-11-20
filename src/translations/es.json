@@ -60,7 +60,17 @@
     "unready": "NO ESTOY LISTO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert": "El modo de juego cambió a"
+    "rankedChangedAlert": {
+      "casual": "El modo de juego cambió a Amistoso",
+      "ranked": "El modo de juego cambió a Competitivo"
+    },
+    "error": {
+      "fallback": "Se ha producido un error desconocido.",
+      "forbidden": "¡No eres un jugador en este juego!",
+      "gameStatus": "El juego aún no ha comenzado o ya ha terminado.",
+      "noGameStates":"El juego no se ha poblado con la colección .gameStates.",
+      "alreadyDealt":"Las cartas ya están repartidas."
+    }
   },
   "game": {
     "resolve": "Resolver",
