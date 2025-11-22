@@ -47,7 +47,7 @@ describe('Login with Discord oAuth', () => {
 
     await discordCallback(agent);
 
-    await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
+    await agent.post('/api/user/discord/completeoauthregistration').send({ username: 'totallynotthegovernment69' });
 
     const { body: status } = await agent
       .get('/api/user/status');
@@ -63,7 +63,7 @@ describe('Login with Discord oAuth', () => {
 
     await discordCallback(agent);
 
-    await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
+    await agent.post('/api/user/discord/completeoauthregistration').send({ username: 'totallynotthegovernment69' });
     await agent.post('/api/user/logout');
 
     await discordCallback(agent, true);
@@ -87,7 +87,7 @@ describe('Login with Discord oAuth', () => {
 
     await discordCallback(agent);
 
-    await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69', password: 'notagoodpassword' });
+    await agent.post('/api/user/discord/completeoauthregistration').send({ username: 'totallynotthegovernment69', password: 'notagoodpassword' });
 
     const { body: status } = await agent
       .get('/api/user/status');
@@ -161,7 +161,7 @@ describe('Oauth Errors', () => {
 
     await discordCallback(agent);
 
-    const res = await agent.post('/api/user/discord/completeOauth').send({ username: 'totallynotthegovernment69' });
+    const res = await agent.post('/api/user/discord/completeoauthregistration').send({ username: 'totallynotthegovernment69' });
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toBe('login.snackbar.usernameIsTaken');

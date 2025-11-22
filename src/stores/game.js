@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
+import { useRoute } from 'vue-router';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
@@ -95,11 +96,11 @@ export const useGameStore = defineStore('game', () => {
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
   const showIsRankedChangedAlert = ref(false);
+
   // Threes
   const lastEventCardChosen = ref(null);
   const lastEventPlayerChoosing = ref(false);
-  // Fours
-  const lastEventDiscardedCards = ref(null);
+
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
@@ -116,17 +117,35 @@ export const useGameStore = defineStore('game', () => {
   // Stores
   const authStore = useAuthStore();
   const gameHistoryStore = useGameHistoryStore();
+  const route = useRoute();
 
   // Computed (getters)
   const myPNum = computed(() => {
+    const userPNum = players.value.findIndex(({ username }) => username === authStore.username);
+
     if (gameHistoryStore.isSpectating) {
+      const queryPNum = Number(route.query.pNum);
+      // If valid pNum, return
+      if (queryPNum === 0 || queryPNum === 1) {
+        return queryPNum;
+      }
+
+      const userWasPlayer = userPNum !== -1;
+      const gameIsComplete = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(status.value);
+
+      // Check if a completed game is viewed by a player
+      if (userWasPlayer && gameIsComplete) {
+        return userPNum;
+      }
       return 0;
     }
-    const pNum = players.value.findIndex(({ username }) => username === authStore.username);
-    return pNum > -1 ? pNum : null;
+
+    return userPNum > -1 ? userPNum : null;
   });
   const player = computed(() => players.value[myPNum.value]);
-  const playerPointTotal = computed(() => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0);
+  const playerPointTotal = computed(
+    () => player.value?.points?.reduce((total, card) => total + card.rank, 0) || 0,
+  );
   const playerQueenCount = computed(() => queenCount(player.value));
   const playerUsername = computed(() => player.value?.username ?? null);
   const opponent = computed(() => {
@@ -171,7 +190,9 @@ export const useGameStore = defineStore('game', () => {
     return key.value;
   });
   const opponentDeclinedRematch = computed(() => opponentWantsRematch.value === false);
-  const someoneDeclinedRematch = computed(() => iWantRematch.value === false || opponentDeclinedRematch.value);
+  const someoneDeclinedRematch = computed(
+    () => iWantRematch.value === false || opponentDeclinedRematch.value,
+  );
   const waitingForOpponentToCounter = computed(() => {
     const counteringPhase = phase.value === GamePhase.COUNTERING;
     const numTwosIsEven = twos.value.length % 2 === 0;
@@ -185,12 +206,8 @@ export const useGameStore = defineStore('game', () => {
   const waitingForOpponentToPickFromScrap = computed(
     () => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value,
   );
-  const pickingFromScrap = computed(
-    () => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value,
-  );
-  const showResolveFour = computed(
-    () => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value,
-  );
+  const pickingFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value);
+  const showResolveFour = computed(() => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value);
   const waitingForOpponentToDiscard = computed(() => {
     switch (phase.value) {
       case GamePhase.RESOLVING_FOUR:
@@ -201,12 +218,8 @@ export const useGameStore = defineStore('game', () => {
         return false;
     }
   });
-  const showResolveFive = computed(
-    () => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value,
-  );
-  const playingFromDeck = computed(
-    () => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value,
-  );
+  const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
+  const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
     () => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value,
   );
@@ -219,6 +232,10 @@ export const useGameStore = defineStore('game', () => {
   const topCard = computed(() => deck.value[0] ?? null);
   const secondCard = computed(() => deck.value[1] ?? null);
 
+  const showOpponentHand = computed(
+    () => gameHistoryStore.isSpectating || hasGlassesEight.value || !topCard.value,
+  );
+
   // Actions
   function updateGame(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
@@ -227,10 +244,7 @@ export const useGameStore = defineStore('game', () => {
     lastEventCardChosen.value = newGame.lastEvent?.chosenCard ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
-      typeof lastEventPlayer === 'number' && myPNum.value !== null
-        ? lastEventPlayer === myPNum.value
-        : null;
-    lastEventDiscardedCards.value = newGame.lastEvent?.discardedCards ?? null;
+      typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
     turn.value = newGame.turn ?? turn.value;
@@ -287,7 +301,6 @@ export const useGameStore = defineStore('game', () => {
     showIsRankedChangedAlert.value = false;
     lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
-    lastEventDiscardedCards.value = null;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
     lastEventTargetType.value = null;
@@ -359,17 +372,23 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    lastEventDiscardedCards.value = discardedCards;
-    await sleep(1000);
+    if (!showOpponentHand.value) {
+      opponent.value.hand = [
+        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
+        ...discardedCards,
+      ];
+      await sleep(1000);
+    }
     updateGame(game);
   }
   async function processFives(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    lastEventDiscardedCards.value = discardedCards;
-    if (discardedCards?.length) {
+    if (discardedCards?.length && !showOpponentHand.value) {
       await sleep(1000);
-      opponent.value.hand = opponent.value.hand.filter((card) => !discardedCards.includes(card.id));
-      player.value.hand = player.value.hand.filter((card) => !discardedCards.includes(card.id));
+      opponent.value.hand = [
+        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
+        ...discardedCards,
+      ];
       await sleep(1000);
     }
     updateGame(game);
@@ -434,18 +453,15 @@ export const useGameStore = defineStore('game', () => {
   }
   async function requestSubscribe(gameId) {
     return new Promise((resolve, reject) => {
-      io.socket.post(
-        `/api/game/${gameId}/join`,
-        (res, jwres) => {
-          if (jwres.statusCode === 200) {
-            resetState();
-            updateGame(res.game);
-            return resolve(res);
-          }
-          const message = res.message ?? 'error subscribing';
-          return reject(new Error(message));
-        },
-      );
+      io.socket.post(`/api/game/${gameId}/join`, (res, jwres) => {
+        if (jwres.statusCode === 200) {
+          resetState();
+          updateGame(res.game);
+          return resolve(res);
+        }
+        const message = res.message ?? 'error subscribing';
+        return reject(new Error(message));
+      });
     });
   }
   function requestGameState(gameId, gameStateIndex = -1, route = null) {
@@ -480,7 +496,7 @@ export const useGameStore = defineStore('game', () => {
         return;
       }
       const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
-      throw (new Error(message));
+      throw new Error(message);
     }
   }
   async function requestSpectateLeave() {
@@ -605,7 +621,14 @@ export const useGameStore = defineStore('game', () => {
     await makeSocketRequest('seven/untargetedOneOff', { moveType: MoveType.SEVEN_ONE_OFF, cardId, index });
   }
   async function requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
-    await makeSocketRequest('seven/targetedOneOff', { moveType: MoveType.SEVEN_ONE_OFF, cardId, targetId, pointId, targetType, index });
+    await makeSocketRequest('seven/targetedOneOff', {
+      moveType: MoveType.SEVEN_ONE_OFF,
+      cardId,
+      targetId,
+      pointId,
+      targetType,
+      index,
+    });
   }
   async function requestPass() {
     const moveType = MoveType.PASS;
@@ -673,7 +696,6 @@ export const useGameStore = defineStore('game', () => {
     showIsRankedChangedAlert,
     lastEventCardChosen,
     lastEventPlayerChoosing,
-    lastEventDiscardedCards,
     lastEventChange,
     lastEventOneOffRank,
     lastEventTargetType,
@@ -714,6 +736,7 @@ export const useGameStore = defineStore('game', () => {
     waitingForOpponentToPlayFromDeck,
     waitingForOpponentToStalemate,
     consideringOpponentStalemateRequest,
+    showOpponentHand,
     // Actions
     updateGame,
     opponentJoined,

@@ -147,7 +147,7 @@ export const useAuthStore = defineStore('auth', {
     async completeOAuth(provider, credentials) {
       const { username, password } = credentials;
       try {
-        await fetch(`/api/user/${provider}/completeOauth`, {
+        await fetch(`/api/user/${provider}/completeoauthregistration`, {
           method: 'POST',
           headers: new Headers({
             'Content-Type': 'application/json',
