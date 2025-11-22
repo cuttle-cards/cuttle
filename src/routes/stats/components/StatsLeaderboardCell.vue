@@ -20,17 +20,17 @@
         {{ points }}
       </v-chip>
     </template>
-    <template #body>
+    <template #body="{ listProps }">
       <h3>{{ t('stats.wins') }}</h3>
-      <v-list :data-players-beaten="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+      <v-list :data-players-beaten="`${username}-week-${week}`" v-bind="listProps">
         {{ playersBeatenText }}
       </v-list>
       <h3>{{ t('stats.losses') }}</h3>
-      <v-list :data-players-lost-to="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+      <v-list :data-players-lost-to="`${username}-week-${week}`" v-bind="listProps">
         {{ playersLostToText }}
       </v-list>
       <h3>{{ t('stats.winRate') }}</h3>
-      <v-list :data-win-rate="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
+      <v-list :data-win-rate="`${username}-week-${week}`" v-bind="listProps">
         {{ winRateText }}
       </v-list>
     </template>

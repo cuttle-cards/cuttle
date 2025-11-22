@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-menu v-model="showGameMenu">
+    <BaseMenu v-model="showGameMenu">
       <!-- Activator -->
       <template #activator="{ props }">
         <v-btn
           id="game-menu-activator"
           class="ml-0"
-          v-bind="props"
+          v-bind="{ ...props }"
           icon
           variant="text"
           aria-label="Open Game Menu"
@@ -14,50 +14,53 @@
           <v-icon color="neutral-lighten-2" icon="mdi-cog" aria-hidden="true" />
         </v-btn>
       </template>
-      <!-- Menu -->
-      <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
-        <v-list-item data-cy="rules-open" prepend-icon="mdi-information" @click="shownDialog = 'rules'">
-          {{ t('game.menus.gameMenu.rules') }}
-        </v-list-item>
-        <!-- Stop Spectating -->
-        <v-list-item
-          v-if="isSpectating"
-          data-cy="stop-spectating"
-          prepend-icon="mdi-home"
-          @click.stop="stopSpectate"
-        >
-          {{ t('game.menus.gameMenu.home') }}
-        </v-list-item>
-        <!-- Concede Dialog (Initiate + Confirm) -->
-        <template v-else>
+      <template #body="{ listProps }">
+        <v-list id="game-menu" v-bind="listProps">
+          <v-list-item data-cy="rules-open" prepend-icon="mdi-information" @click="shownDialog = 'rules'">
+            {{ t('game.menus.gameMenu.rules') }}
+          </v-list-item>
+          <!-- Stop Spectating -->
           <v-list-item
-            data-cy="concede-initiate"
-            prepend-icon="mdi-flag-variant-outline"
-            @click="shownDialog = 'concede'"
+            v-if="isSpectating"
+            data-cy="stop-spectating"
+            prepend-icon="mdi-home"
+            @click.stop="stopSpectate"
           >
-            {{ t('game.menus.gameMenu.concede') }}
+            {{ t('game.menus.gameMenu.home') }}
           </v-list-item>
-          <v-list-item data-cy="stalemate-initiate" prepend-icon="mdi-handshake" @click="shownDialog = 'stalemate'">
-            {{ t('game.menus.gameMenu.stalemate') }}
+          <!-- Concede Dialog (Initiate + Confirm) -->
+          <template v-else>
+            <v-list-item
+              data-cy="concede-initiate"
+              prepend-icon="mdi-flag-variant-outline"
+              @click="shownDialog = 'concede'"
+            >
+              {{ t('game.menus.gameMenu.concede') }}
+            </v-list-item>
+            <v-list-item data-cy="stalemate-initiate" prepend-icon="mdi-handshake" @click="shownDialog = 'stalemate'">
+              {{ t('game.menus.gameMenu.stalemate') }}
+            </v-list-item>
+          </template>
+    
+          <v-list-item
+            v-if="!clipCopiedToClipboard"
+            data-cy="clip-highlight"
+            prepend-icon="mdi-movie-open"
+            @click.stop="clipHighlight"
+          >
+            {{ t('game.menus.gameMenu.clipHighlight') }}
           </v-list-item>
-        </template>
-        <v-list-item
-          v-if="!clipCopiedToClipboard"
-          data-cy="clip-highlight"
-          prepend-icon="mdi-movie-open"
-          @click.stop="clipHighlight"
-        >
-          {{ t('game.menus.gameMenu.clipHighlight') }}
-        </v-list-item>
-        <v-list-item v-else data-cy="highlight-copied" prepend-icon="mdi-check-bold">
-          {{ t('game.menus.gameMenu.highlightCopied') }}
-        </v-list-item>
-        <TheLanguageSelector />
-        <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
-          {{ t('game.menus.gameMenu.refresh') }}
-        </v-list-item>
-      </v-list>
-    </v-menu>
+          <v-list-item v-else data-cy="highlight-copied" prepend-icon="mdi-check-bold">
+            {{ t('game.menus.gameMenu.highlightCopied') }}
+          </v-list-item>
+          <TheLanguageSelector />
+          <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
+            {{ t('game.menus.gameMenu.refresh') }}
+          </v-list-item>
+        </v-list>
+      </template>
+      <!-- Menu -->
+    </BaseMenu>
 
     <RulesDialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
@@ -102,9 +105,11 @@ import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import BaseMenu from '@/components/BaseMenu.vue';
 export default {
   name: 'GameMenu',
   components: {
+    BaseMenu,
     BaseDialog,
     RulesDialog,
     TheLanguageSelector
