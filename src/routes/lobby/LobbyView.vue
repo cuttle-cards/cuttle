@@ -89,10 +89,9 @@
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')
-      }`"
-      color="surface-1"
-      data-cy="edit-snackbar"
+      :message="t(gameStore.lobbySnackbarMessage ?? '')"
+      :color="gameStore.lobbySnackbarColor"
+      data-cy="lobby-snackbar"
       @clear="gameStore.showIsRankedChangedAlert = false"
     />
   </div>
@@ -153,10 +152,18 @@ async function ready() {
           gameId: err.gameId,
         },
       });
+    } else {
+      const key = err?.message;
+
+      gameStore.lobbySnackbarMessage = key;
+      gameStore.lobbySnackbarColor = 'error';
+      gameStore.showIsRankedChangedAlert = true;
     }
+    
   }
   readying.value = false;
 }
+
 
 async function setIsRanked() {
   await gameStore.requestSetIsRanked({
