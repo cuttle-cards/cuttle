@@ -1,13 +1,13 @@
 <template>
   <span>
     <span class="ml-4" :data-cy="dataCyName"> {{ $t('game.score.goal') }}: {{ pointsToWin }} </span>
-    <v-menu :location="isPlayer ? 'top' : 'bottom'">
+    <BaseMenu v-model="show" :location="isPlayer ? 'top' : 'bottom'">
       <template #activator="{ props }">
         <v-btn
           class="mb-2"
           size="x-small"
           icon
-          v-bind="props"
+          v-bind="{ ...props }"
           variant="plain"
           :aria-label="`Open scoring goal menu for ${isPlayer ? 'your score' : 'your opponents score'}`"
         >
@@ -19,24 +19,31 @@
           />
         </v-btn>
       </template>
-      <v-list class="score-goal-explanation">
-        <v-list-item 
-          v-for="(explanation, index) in kingsPoints" 
-          :key="index" 
-          :class="{ 'current-goal': kingCount === index }"
-        >
-          {{ explanation }}
-        </v-list-item>
-      </v-list>
-    </v-menu>
+      <template #body="{ listProps }">
+        <v-list class="score-goal-explanation" v-bind="listProps">
+          <v-list-item 
+            v-for="(explanation, index) in kingsPoints" 
+            :key="index" 
+            :class="{ 'current-goal': kingCount === index }"
+          >
+            {{ explanation }}
+          </v-list-item>
+        </v-list>
+      </template>
+    </BaseMenu>
   </span>
 </template>
 
 <script>
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import BaseMenu from '@/components/BaseMenu.vue';
 
 export default {
   name: 'ScoreGoalTooltip',
+  components: {
+    BaseMenu,
+  },
   props: {
     kingCount: {
       required: true,
@@ -53,7 +60,8 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    const show = ref(false);
+    return { t, show };
   },
   computed: {
     dataCyName() {
@@ -74,6 +82,7 @@ export default {
 
 <style lang="scss" scoped>
 .score-goal-explanation .current-goal {
-  background-color: rgba(var(--v-theme-accent-lighten1));
+  background-color: rgba(var(--v-theme-accent));
+  color: rgba(var(--v-theme-surface-2));
 }
 </style>
