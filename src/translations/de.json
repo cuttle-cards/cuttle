@@ -6,7 +6,7 @@
     "rules": "Spielregeln",
     "play": "Spielen",
     "stats": "Statistiken",
-    "user": "Benutzer",
+    "player": "Spieler",
     "rank": "Rang",
     "username": "Benutzername",
     "password": "Passwort",
@@ -21,7 +21,8 @@
       "cardBackAlt": "Kartenzurückseite -- Wartet auf {playerUsername}",
       "readyAlt": "Kartenfront -- {playerUsername} ist bereit",
       "rematchAlt": "Kartenfront -- {playerUsername} möchte ein Rückspiel"
-    }
+    },
+    "profile": "Mein Profil"
   },
   "login": {
     "noAccount": "Hast du kein Konto?",
@@ -59,7 +60,17 @@
     "unready": "NICHT BEREIT",
     "exit": "VERLASSEN",
     "invite": "Einladen",
-    "rankedChangedAlert": "Spielmodus geändert zu"
+    "rankedChangedAlert": {
+      "casual": "Spielmodus geändert zu Freizeit",
+      "ranked": "Spielmodus geändert zu Rangliste"
+    },
+    "error": {
+      "fallback": "Ein unbekannter Fehler ist aufgetreten.",
+      "forbidden": "Du bist kein Spieler in diesem Spiel!",
+      "gameStatus": "Das Spiel hat noch nicht begonnen oder ist bereits beendet.",
+      "noGameStates":"Das Spiel wurde nicht mit der .gameStates-Sammlung gefüllt.",
+      "alreadyDealt":"Die Karten sind bereits verteilt."
+    }
   },
   "game": {
     "resolve": "Lösen",
@@ -518,9 +529,7 @@
     "season": {
       "select": "Saison auswählen",
       "champions": "Saison-Champions",
-      "tournamentBracket": "hier, um das offizielle Turnier-Bracket zu sehen",
-      "tournamentFootage": "hier, um die offiziellen Turnieraufnahmen anzusehen",
-      "playByPlay": "mit Spiel-für-Spiel-Kommentaren."
+      "tournamentBracket": "hier, um das offizielle Turnier-Bracket zu sehen"
     },
     "winRate": "Gewinnrate",
     "wins": "Siege",
@@ -566,5 +575,16 @@
     "heading": "Meisterschaft heute!",
     "paragraph": "Die Clubs 2025 Cuttle Saisonmeisterschaft findet HEUTE, am 26. April um 12:30 Uhr EST statt! Sieh dir an, wie die Top 8 Spieler der letzten Ranglistensaison in einem Double-Elimination-Turnier um den Titel des Clubs 2025 Cuttle Saisonmeisters kämpfen! Schau live zu auf ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "profile": {
+    "myGames": "Meine Spiele",
+    "noGamesFound": "Keine Spiele gefunden",
+    "win": "Sieg",
+    "lose": "Niederlage",
+    "stalemate": "Patt",
+    "opponent": "Gegner",
+    "connectedAs": "Verbunden als",
+    "notConnected": "Nicht verbunden",
+    "replay": "Erneut abspielen"
   }
 }

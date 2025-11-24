@@ -15,7 +15,6 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 
 const mustBeAuthenticated = async (to, from, next) => {
-
   if ([ 'discord' ].includes(to.query.oauthsignup)){
     return next();
   }
@@ -62,7 +61,10 @@ const checkAndSubscribeToLobby = async (to) => {
     }
     return true;
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
+    return {
+      name: 'Home',
+      query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` },
+    };
   }
 };
 
@@ -81,43 +83,69 @@ const getGameState = async (to) => {
       return { name: to.name, params: { gameId: response.game.rematchGame } };
     }
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
+    return {
+      name: 'Home',
+      query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` },
+    };
   }
   return;
 };
 
 const setupSpectate = async (to) => {
   const gameStore = useGameStore();
+  const authStore = useAuthStore();
   const gameId = Number(to.params.gameId);
   const gameStateIndex = Number(to.query.gameStateIndex);
   const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+
+  const pNum = Number(to.query.pNum);
+  const isValidPNum = pNum === 0 || pNum === 1;
+
   try {
     await gameStore.requestSpectate(gameId, gameStateIndex, to);
-    if (isValidGameStateIndex) {
-      return;
+
+    const updatedQuery = { ...to.query };
+    let needsRedirect = false;
+
+    if (!isValidGameStateIndex) {
+      needsRedirect = true;
+      // Default to latest gameState if game is ongoing
+      if (gameStore.status === GameStatus.STARTED) {
+        updatedQuery.gameStateIndex = -1;
+      } else {
+        // Default to first state otherwise
+        updatedQuery.gameStateIndex = 0;
+      }
     }
-    // Default to latest gameState if game is ongoing
-    if (gameStore.status === GameStatus.STARTED) {
+
+    if (!isValidPNum) {
+      needsRedirect = true;
+      // Check if user was a player in this game
+      const userPNum = gameStore.players.findIndex(({ username }) => username === authStore.username);
+      const userWasPlayer = userPNum !== -1;
+      const gameIsComplete = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(gameStore.status);
+
+      if (userWasPlayer && gameIsComplete) {
+        updatedQuery.pNum = userPNum;
+      } else {
+        updatedQuery.pNum = 0;
+      }
+    }
+
+    if (needsRedirect) {
       return {
         ...to,
-        query: {
-          ...to.query,
-          gameStateIndex: -1,
-        },
+        query: updatedQuery,
         replace: true,
       };
     }
-    // Default to first state otherwise
-    return {
-      ...to,
-      query: {
-        ...to.query,
-        gameStateIndex: 0,
-      },
-      replace: true,
-    };
+
+    return;
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` } };
+    return {
+      name: 'Home',
+      query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` },
+    };
   }
 };
 
@@ -132,7 +160,7 @@ const routes = [
     name: ROUTE_NAME_SPECTATE_LIST,
     path: '/spectate-list',
     component: () => import('@/routes/home/HomeView.vue'),
-    beforeEnter: mustBeAuthenticated
+    beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login/:lobbyRedirectId?',
@@ -207,6 +235,12 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'Not Found',
     component: () => import('@/routes/error/NotFoundView.vue'),
+  },
+  {
+    path: '/my-profile',
+    name: 'MyProfile',
+    component: () => import('@/routes/profile/ProfileView.vue'),
+    meta: { requiresAuth: true }
   },
 ];
 

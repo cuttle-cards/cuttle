@@ -6,7 +6,7 @@
     "rules": "About",
     "play": "Play",
     "stats": "Stats",
-    "user": "User",
+    "player": "Player",
     "rank": "Rank",
     "username": "Username",
     "password": "Password",
@@ -21,7 +21,8 @@
       "cardBackAlt": "Card back -- Waiting for {playerUsername}",
       "readyAlt": "Card front -- {playerUsername} is ready",
       "rematchAlt": "Card front -- {playerUsername} wants rematch"
-    }
+    },
+    "profile": "My Profile"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -59,7 +60,17 @@
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite",
-    "rankedChangedAlert": "Game Mode changed to"
+    "rankedChangedAlert": {
+      "casual": "Game Mode changed to Casual",
+      "ranked": "Game Mode changed to Ranked"
+    },
+    "error": {
+      "fallback": "An unknown error has occured.",
+      "forbidden": "You are not a player in this game!",
+      "gameStatus": "Game has not yet started or is over.",
+      "noGameStates":"Game was not populated with .gameStates collection.",
+      "alreadyDealt":"Cards are already dealt."
+    }
   },
   "game": {
     "resolve": "Resolve",
@@ -519,9 +530,7 @@
     "season": {
       "select": "Select Season",
       "champions": "Season Champions",
-      "tournamentBracket": "here to see the official tournament bracket",
-      "tournamentFootage": "here to watch the official tournament footage",
-      "playByPlay": "with play-by-play commentary."
+      "tournamentBracket": "here to see the official tournament bracket"
     },
     "winRate": "Win Rate",
     "wins": "Wins",
@@ -567,5 +576,16 @@
     "heading": "Championship Today!",
     "paragraph": "The Clubs 2025 Cuttle Season Championship is Today, April 26th at 12:30pm EST! Watch the top 8 players from the past season of ranked play compete in a double elimination showdown for the title of Clubs 2025 Cuttle Season Champion! Watch it live at ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "profile": {
+    "myGames": "My Games",
+    "noGamesFound": "No games found",
+    "win": "Win",
+    "lose": "Lose",
+    "stalemate": "Stalemate",
+    "opponent": "Opponent",
+    "connectedAs": "Connected",
+    "notConnected": "Not connected",
+    "replay": "Replay"
   }
 }

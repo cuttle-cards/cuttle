@@ -16,7 +16,11 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 
 const hasDiscord = computed(() => authStore.identities.some(({ provider }) => provider === 'discord'));
-const title = t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord');
+
+const title = computed(() =>
+  t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord')
+);
+
 
 const handleClick = () => {
   if (hasDiscord.value) {
