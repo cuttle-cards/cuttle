@@ -24,7 +24,8 @@ describe('Video Playground', () => {
   }
 
   function playerScuttleWithDelay(
-    playedCard, targetCard,
+    playedCard,
+    targetCard,
     firstClickDelay = 1500,
     secondClickDelay = 800,
     thirdClickDelay = 1500
@@ -33,6 +34,21 @@ describe('Video Playground', () => {
     cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
     cy.wait(secondClickDelay);
     cy.get('[data-move-choice=scuttle]').click();
+    cy.wait(thirdClickDelay);
+    cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
+  }
+
+  function playerJackWithDelay(
+    playedCard,
+    targetCard,
+    firstClickDelay = 1500,
+    secondClickDelay = 800,
+    thirdClickDelay = 1500
+  ) {
+    cy.wait(firstClickDelay);
+    cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
+    cy.wait(secondClickDelay);
+    cy.get('[data-move-choice=jack]').click();
     cy.wait(thirdClickDelay);
     cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
   }
@@ -112,6 +128,23 @@ describe('Video Playground', () => {
 
       // P0 Scuttles
       playerScuttleWithDelay(Card.NINE_OF_SPADES, Card.NINE_OF_DIAMONDS);
+    });
+
+    it.only('Shows turning initiative around with a jack', () => {
+      const p0Hand = [ ...initialState.p0Hand, Card.JACK_OF_DIAMONDS ];
+      cy.loadGameFixture(0, {
+        ...initialState,
+        p0Hand, // Add Jack of Diamonds to p0 hand
+      });
+      cy.wait(4000);
+
+
+      playerPointsWithDelay(Card.EIGHT_OF_HEARTS);
+  
+      // P1 plays points (check)
+      opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
+
+      playerJackWithDelay(Card.JACK_OF_DIAMONDS, Card.NINE_OF_DIAMONDS);
     });
   });
 
