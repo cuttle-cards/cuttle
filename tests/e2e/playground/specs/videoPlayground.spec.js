@@ -58,7 +58,7 @@ describe('Video Playground', () => {
       topCard: Card.NINE_OF_SPADES,
     };
 
-    it.only('Shows poor use of initiative', () => {
+    it('Shows poor use of initiative', () => {
       cy.loadGameFixture(0, initialState);
       cy.wait(3000);
   
@@ -77,15 +77,41 @@ describe('Video Playground', () => {
       // P0 scuttles again
       playerScuttleWithDelay(Card.TEN_OF_SPADES, Card.NINE_OF_DIAMONDS);
 
-      // // P1 points (check)
+      // P1 points (check)
       opponentPointsWithDelay(Card.TEN_OF_HEARTS);
 
-      // // P0 Draws
+      // P0 Draws
       cy.wait(2000);
       cy.get('#deck').click();
 
-      // // P1 Points ftw
+      // P1 Points ftw
       opponentPointsWithDelay(Card.FOUR_OF_HEARTS);
+    });
+
+    it('Shows good use of initiative', () => {
+      cy.loadGameFixture(0, initialState);
+      cy.wait(4000);
+
+      // P0 Draws
+      cy.get('#deck').click();
+
+      // P1 plays points
+      opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
+
+      // P0 Scuttles
+      playerScuttleWithDelay(Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_SPADES);
+      
+      // P1 plays points
+      opponentPointsWithDelay(Card.EIGHT_OF_SPADES);
+      
+      // P0 scuttles
+      playerScuttleWithDelay(Card.NINE_OF_CLUBS, Card.EIGHT_OF_SPADES);
+      
+      // P1 plays points
+      opponentPointsWithDelay(Card.TEN_OF_HEARTS);
+
+      // P0 Scuttles
+      playerScuttleWithDelay(Card.NINE_OF_SPADES, Card.NINE_OF_DIAMONDS);
     });
   });
 
