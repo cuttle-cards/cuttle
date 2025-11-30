@@ -16,11 +16,14 @@ describe('Video Playground', () => {
     cy.setupGameAsP0();
   });
 
-  function playerPointsWithDelay(card, firstClickDelay = 4000, secondClickDelay = 1500) {
+  function playerMoveWithDelay(playedCard, moveType, firstClickDelay = 1500, secondClickDelay = 800) {
     cy.wait(firstClickDelay);
-    cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
+    cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
     cy.wait(secondClickDelay);
-    cy.get('[data-move-choice=points]').click();
+    cy.get(`[data-move-choice=${moveType}]`).click();
+  }
+  function playerPointsWithDelay(card, firstClickDelay = 4000, secondClickDelay = 1500) {
+    playerMoveWithDelay(card, 'points', firstClickDelay, secondClickDelay);
   }
 
   function playerScuttleWithDelay(
@@ -30,10 +33,7 @@ describe('Video Playground', () => {
     secondClickDelay = 800,
     thirdClickDelay = 1500
   ) {
-    cy.wait(firstClickDelay);
-    cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
-    cy.wait(secondClickDelay);
-    cy.get('[data-move-choice=scuttle]').click();
+    playerMoveWithDelay(playedCard, 'scuttle', firstClickDelay, secondClickDelay);
     cy.wait(thirdClickDelay);
     cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
   }
@@ -45,10 +45,7 @@ describe('Video Playground', () => {
     secondClickDelay = 800,
     thirdClickDelay = 1500
   ) {
-    cy.wait(firstClickDelay);
-    cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
-    cy.wait(secondClickDelay);
-    cy.get('[data-move-choice=jack]').click();
+    playerMoveWithDelay(playedCard, 'jack', firstClickDelay, secondClickDelay);
     cy.wait(thirdClickDelay);
     cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
   }
@@ -137,7 +134,6 @@ describe('Video Playground', () => {
         p0Hand, // Add Jack of Diamonds to p0 hand
       });
       cy.wait(4000);
-
 
       playerPointsWithDelay(Card.EIGHT_OF_HEARTS);
   
