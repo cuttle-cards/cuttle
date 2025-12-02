@@ -5,7 +5,7 @@
     class="game-overlay"
     v-bind="$attrs"
   >
-    <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+    <h1 :class="[$vuetify.display.xs ? 'text-h5' : 'text-h3', 'overlay-header']">
       <slot name="header" />
     </h1>
     <slot />
