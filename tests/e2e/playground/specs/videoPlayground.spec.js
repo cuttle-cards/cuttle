@@ -55,13 +55,23 @@ describe('Video Playground', () => {
     cy.playPointsOpponent(playedCard);
   }
 
+  function opponentScuttleWithDelay(playedCard, targetCard, delay = 2000) {
+    cy.wait(delay);
+    cy.scuttleOpponent(playedCard, targetCard);
+  }
+
+  function opponentDrawWithDelay(delay = 1000) {
+    cy.wait(delay);
+    cy.drawCardOpponent();
+  }
+
   describe('Initiative Tutorial', () => {
     const initialState = {
       p0Hand: [ Card.EIGHT_OF_HEARTS, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [
-        Card.FOUR_OF_HEARTS,
+        Card.THREE_OF_HEARTS,
         Card.EIGHT_OF_SPADES,
         Card.NINE_OF_DIAMONDS,
         Card.TEN_OF_HEARTS,
@@ -69,6 +79,7 @@ describe('Video Playground', () => {
       p1Points: [ Card.SEVEN_OF_SPADES ],
       p1FaceCards: [],
       topCard: Card.NINE_OF_SPADES,
+      secondCard: Card.SIX_OF_CLUBS,
     };
 
     it('Shows poor use of initiative', () => {
@@ -98,7 +109,7 @@ describe('Video Playground', () => {
       cy.get('#deck').click();
 
       // P1 Points ftw
-      opponentPointsWithDelay(Card.FOUR_OF_HEARTS);
+      opponentPointsWithDelay(Card.THREE_OF_HEARTS);
     });
 
     it('Shows good use of initiative', () => {
@@ -113,13 +124,13 @@ describe('Video Playground', () => {
 
       // P0 Scuttles
       playerScuttleWithDelay(Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_SPADES);
-      
+
       // P1 plays points
       opponentPointsWithDelay(Card.EIGHT_OF_SPADES);
-      
+
       // P0 scuttles
       playerScuttleWithDelay(Card.NINE_OF_CLUBS, Card.EIGHT_OF_SPADES);
-      
+
       // P1 plays points
       opponentPointsWithDelay(Card.TEN_OF_HEARTS);
 
@@ -127,7 +138,7 @@ describe('Video Playground', () => {
       playerScuttleWithDelay(Card.NINE_OF_SPADES, Card.NINE_OF_DIAMONDS);
     });
 
-    it.only('Shows turning initiative around with a jack', () => {
+    it('Shows turning initiative around with a jack', () => {
       const p0Hand = [ ...initialState.p0Hand, Card.JACK_OF_DIAMONDS ];
       cy.loadGameFixture(0, {
         ...initialState,
@@ -141,6 +152,23 @@ describe('Video Playground', () => {
       opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
 
       playerJackWithDelay(Card.JACK_OF_DIAMONDS, Card.NINE_OF_DIAMONDS);
+
+      opponentScuttleWithDelay(Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS);
+
+      playerPointsWithDelay(Card.NINE_OF_CLUBS, 2000);
+
+      opponentScuttleWithDelay(Card.TEN_OF_HEARTS, Card.NINE_OF_DIAMONDS);
+
+      cy.wait(1000);
+      cy.get('#deck').click();
+
+      opponentDrawWithDelay();
+
+      playerPointsWithDelay(Card.TEN_OF_SPADES, 2000);
+
+      opponentDrawWithDelay();
+
+      playerPointsWithDelay(Card.NINE_OF_SPADES, 1500);
     });
   });
 
