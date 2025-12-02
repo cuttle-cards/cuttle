@@ -12,21 +12,22 @@
   </v-overlay>
 </template>
 
-<script>
-export default {
+<script setup>
+defineOptions({
   name: 'BaseOverlay',
   inheritAttrs: false,
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-    persistent: {
-      type: Boolean,
-      default: false,
-    },
+});
+
+const _props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
   },
-};
+  persistent: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped lang="scss">
