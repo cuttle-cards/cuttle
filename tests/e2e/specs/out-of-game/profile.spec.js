@@ -81,7 +81,9 @@ describe('Profile Page', () => {
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-cy="game-list-item"]').should('have.length.below', 21);
+      cy.get('[data-cy="game-list-item"]')
+        .should('have.length.above', 5)
+        .should('have.length.below', 21);
 
       cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
       cy.contains('[data-cy="game-list-item"]', 'Game 20', { timeout: 5000 })
