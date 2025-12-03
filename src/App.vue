@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss">
 
-@import '@/sass/typography';
+@use '@/sass/typography';
 
 .gradient-text {
   background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
