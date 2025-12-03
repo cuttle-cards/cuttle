@@ -308,6 +308,7 @@ export default {
             ...route,
             query: {
               gameStateIndex,
+              pNum: this.gameStore.myPNum,
             }
           });
         } catch (err) {

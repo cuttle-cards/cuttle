@@ -1,16 +1,13 @@
 <template>
-  <v-overlay
+  <BaseOverlay
     id="unavailable-game-scrim"
     data-cy="unavailable-game-overlay"
     :model-value="show"
-    class="game-overlay text-center d-flex justify-center align-center"
   >
-    <div class="overlay-header">
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
-        {{ t('game.overlays.gameUnavailable.title') }}
-      </h1>
-      <p>{{ t('game.overlays.gameUnavailable.content') }}</p>
-    </div>
+    <template #header>
+      {{ t('game.overlays.gameUnavailable.title') }}
+    </template>
+    <p>{{ t('game.overlays.gameUnavailable.content') }}</p>
     <v-btn
       color="secondary"
       class="mt-4"
@@ -19,13 +16,18 @@
     >
       Go Home
     </v-btn>
-  </v-overlay>
+  </BaseOverlay>
 </template>
 
 <script>
 import { useI18n } from 'vue-i18n';
+import BaseOverlay from '@/components/BaseOverlay.vue';
+
 export default {
   name: 'GameUnavailable',
+  components: {
+    BaseOverlay,
+  },
   props: {
     show: {
       type: Boolean,
@@ -38,23 +40,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-:deep(.v-overlay__content) {
-  left: 0;
-}
-.game-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.overlay-header {
-  font-weight: bold;
-  background-color: rgba(var(--v-theme-surface-2));
-  color: rgba(var(--v-theme-surface-1));
-  padding: 24px;
-  text-align: center;
-  width: 100vw;
-}
-</style>

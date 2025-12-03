@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <TheHeader v-if="showNav" :variant="variant" class="sticky" />
+    <TheHeader v-if="showNav" class="sticky" />
     <v-main>
       <RouterView />
     </v-main>
-    <TheFooter v-if="showFooter" :variant="variant" />
+    <TheFooter v-if="showFooter" />
   </v-app>
 </template>
 
@@ -15,6 +15,7 @@ import TheFooter from '@/components/TheFooter.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { useGameListStore } from '@/stores/gameList';
+import { useMyGamesStore } from '@/stores/myGames';
 
 export default {
   components: {
@@ -34,10 +35,6 @@ export default {
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
-    variant() {
-      const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
-      return isHomeView ? 'light' : 'dark';
-    },
     showFooter() {
       return this.showNav && this.isSmallDevice && this.isAuthenticated;
     }
@@ -53,6 +50,7 @@ export default {
       window.cuttle.gameStore = useGameStore();
       window.cuttle.authStore = useAuthStore();
       window.cuttle.gameListStore = useGameListStore();
+      window.cuttle.myGamesStore = useMyGamesStore();
     }
   },
 };

@@ -1,26 +1,15 @@
 <template>
   <v-card
-    class="d-flex align-center"
-    :color="theme['neutral-lighten2']"
+    class="d-flex align-center pa-5"
+    color="surface-1"
     :data-tournament="`${place}${suffix}`"
+    min-width="224"
     :variant="isCard ? 'elevated' : 'text'"
   >
-    <div class="medal-icon d-flex align-center bg-surface-2 pa-5">
-      <v-icon
-        size="48"
-        :color="medalColor"
-        icon="mdi-medal"
-        aria-label="medal icon"
-        aria-hidden="false"
-        role="img"
-      />
-    </div>
-    <div class="bg-surface-1 text text-center text-surface-2 px-10 py-5 d-flex flex-column align-center justify-center">
-      <h3 class="mx-4">
-        {{ username }}
-      </h3>
-      {{ isCard ? placeWithSuffix : '' }}
-    </div>
+    <img :src="`/img/statsView/medal-${placeWithSuffix}-place.svg`" :alt="`Medal for ${placeWithSuffix} place`">
+    <h3 class="mx-4 text-surface-2">
+      {{ username }}
+    </h3>
   </v-card>
 </template>
 

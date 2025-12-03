@@ -6,6 +6,7 @@
     :title="$t('stats.statsScoring.title')"
     :max-width="1250"
     :opacity="1"
+    variant="light"
   >
     <!-- Activator -->
     <template #activator="{ props }">
@@ -15,6 +16,7 @@
           :color="activatorColor"
           variant="text"
           data-cy="ranked-info-button"
+          class="text-button"
         >
           <span v-if="showButtonText">{{ $t('stats.statsScoring.button') }}</span>
           <v-icon class="ml-1" icon="mdi-information-outline" aria-hidden="true" />
@@ -35,33 +37,33 @@
       <p>
         {{ $t('stats.statsScoring.seasonDescription2') }}
       </p>
-      <v-list class="mt-4" bg-color="surface-2" base-color="surface-1">
+      <v-list class="mt-4" bg-color="surface-1" base-color="surface-2">
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
+          <v-chip variant="flat" class="mr-2 mb-1" :color="theme.firstPlace">
             {{ $t('stats.statsScoring.displayName', 5) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.5') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
+          <v-chip variant="flat" class="mr-2 mb-1" :color="theme.secondPlace">
             {{ $t('stats.statsScoring.displayName', 4) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.4') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
+          <v-chip variant="flat" class="mr-2 mb-1" color="surface-2">
             {{ $t('stats.statsScoring.displayName', 3) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.3') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
+          <v-chip variant="outlined" class="mr-2 mb-1" color="surface-2">
             {{ $t('stats.statsScoring.displayName', 2) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.2') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
+          <v-chip variant="outlined" class="mr-2 mb-1" color="surface-2">
             {{ $t('stats.statsScoring.displayName') }}
           </v-chip>
           {{ $t('stats.statsScoring.points.1') }}

@@ -1,14 +1,13 @@
 <template>
   <div class="game-overlays">
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-game-to-start-scrim"
       v-model="waitingForGameToStart"
       persistent
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ t('game.overlays.waitingForGameToStart') }}
-      </h1>
+      </template>
       <v-btn
         color="secondary"
         class="mt-4"
@@ -18,18 +17,17 @@
       >
         {{ t('game.overlays.leaveGame') }}
       </v-btn>
-    </v-overlay>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-counter-scrim"
       v-model="gameStore.waitingForOpponentToCounter"
       persistent
-      class="d-flex flex-column justify-center align-center"
       scrim="surface-1"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ showWaitingForOpponentToCounterMessage }}
-      </h1>
+      </template>
       <div id="counter-scrim-cards">
         <GameCard
           v-if="gameStore.oneOff"
@@ -51,60 +49,55 @@
           />
         </div>
       </div>
-    </v-overlay>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-discard-scrim"
       v-model="gameStore.waitingForOpponentToDiscard"
       persistent
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ opponentDiscardingText }}
-      </h1>
-    </v-overlay>
+      </template>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="gameStore.waitingForOpponentToPickFromScrap"
       persistent
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ choosingFromScrapMessage }}
-      </h1>
-    </v-overlay>
+      </template>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-play-from-deck-scrim"
       v-model="showWaitingForOpponentToPlayFromDeck"
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ t('game.overlays.playingFromDeck', { opponentUsername }) }}
-      </h1>
-    </v-overlay>
+      </template>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       persistent
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ t('game.overlays.mustDiscardJack', { opponentUsername }) }}
-      </h1>
-    </v-overlay>
+      </template>
+    </BaseOverlay>
 
-    <v-overlay
+    <BaseOverlay
       id="waiting-for-opponent-stalemate-scrim"
       v-model="gameStore.waitingForOpponentToStalemate"
-      class="game-overlay"
     >
-      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <template #header>
         {{ t('game.overlays.consideringStalemate', { opponentUsername }) }}
-      </h1>
-    </v-overlay>
+      </template>
+    </BaseOverlay>
 
     <MoveChoiceOverlay
       v-if="selectedCard || cardSelectedFromDeck"
@@ -131,12 +124,14 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 
+import BaseOverlay from '@/components/BaseOverlay.vue';
 import MoveChoiceOverlay from '@/routes/game/components/MoveChoiceOverlay.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
 export default {
   name: 'GameOverlays',
   components: {
+    BaseOverlay,
     MoveChoiceOverlay,
     GameCard,
   },
@@ -165,8 +160,6 @@ export default {
     };
   },
   computed: {
-    // Since we're not using namespacing, we need to destructure the game module
-    // off of the global state to directly access the state values
     ...mapStores(useGameStore),
     waitingForGameToStart() {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
@@ -228,23 +221,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-:deep(.v-overlay__content) {
-  left: 0;
-}
-.game-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.overlay-header {
-  font-weight: bold;
-  background-color: rgba(var(--v-theme-surface-2));
-  color: rgba(var(--v-theme-surface-1));
-  padding: 24px;
-  text-align: center;
-  width: 100vw;
-}
 #counter-scrim-cards {
   position: absolute;
   display: flex;

@@ -46,7 +46,6 @@ function concedePlayer() {
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
-    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
     window.localStorage.setItem('announcement', announcementData.id);
@@ -255,7 +254,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
 describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
-    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
     window.localStorage.setItem('announcement', announcementData.id);
@@ -278,7 +276,11 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 
     // Game 2: Player concedes
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.get('[data-opponent-hand-card]')
+      .should('have.length', 5)
+      .eq(0)
+      .find('img')
+      .should('have.class', 'opponent-card-back');
 
     // Snackbar about empty deck should not appear
     cy.get('[data-cy=game-snackbar] .v-snackbar__wrapper').should('not.exist');
@@ -367,7 +369,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 describe('Spectating Rematches', () => {
   describe('Spectating Casual Rematches', () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
       window.localStorage.setItem('announcement', announcementData.id);
     });
@@ -427,7 +428,6 @@ describe('Spectating Rematches', () => {
 
   describe('Spectating Ranked Matches', () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
       window.localStorage.setItem('announcement', announcementData.id);
       const [ , , currentSeason ] = seasonFixtures;

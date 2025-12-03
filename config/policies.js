@@ -36,12 +36,13 @@ module.exports.policies = {
   OAuthController: {
     oAuthRedirect: [ 'hasValidOAuthProvider' ],
     oAuthCallback: [ 'hasValidOAuthProvider', 'verifyOAuthSecretAndCode' ],
-    oAuthComplete: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
+    oAuthCompleteRegistration: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
   },
 
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
   'game/get-list': 'isLoggedIn',
   'game/get-game': [ 'isLoggedIn', 'hasGameId', 'isSocket' ],
+  'game/get-history': [ 'isLoggedIn' ],
   'game/join': [ 'isLoggedIn', 'hasGameId' ],
   'game/spectate/join': [ 'isLoggedIn', 'hasGameId', 'isSocket' ],
   'game/spectate/leave': [ 'isLoggedIn', 'hasGameId' ],

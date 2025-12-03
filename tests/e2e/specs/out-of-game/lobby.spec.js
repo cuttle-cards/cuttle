@@ -112,7 +112,46 @@ describe('Lobby - Page Content', () => {
       cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should('not.have.class', 'ready');
     });
   });
+
+  it('shows error snackbar when ready() returns a translated error key', () => {
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        cy.stub(store, 'requestReady').rejects({ message: 'lobby.error.fallback' })
+          .as('readyStub');
+      });
+
+    cy.get('[data-cy=ready-button]').click();
+
+    const expected = 'An unknown error has occured.';
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('contain', expected);
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-error');
+  });
+
+
+  it('Shows the message itself when it isnt a translated string', () => {
+
+    const generic = 'Random.message.that.isnt.translated';
+
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        cy.stub(store, 'requestReady').rejects({ message: generic });
+      });
+
+    cy.get('[data-cy=ready-button]').click();
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('contain', generic);
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-error');
+  });
 });
+
+
 
 describe('Lobby - Page Content (Ranked)', () => {
   beforeEach(() => {
@@ -159,6 +198,45 @@ describe('Lobby - Page Content (Ranked)', () => {
       .type('{enter}');
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+  });
+
+  // Test correct snackbar 
+  it('snackbar shows correct colours for ranked toggle and error', () => {
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
+
+    // toggle for surface
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('contain', 'Game Mode changed to');
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-surface-2')
+      .and('not.have.class', 'bg-error');
+
+    cy.get('[data-cy=close-snackbar]').click();
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+
+    // stub for error
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        cy.stub(store, 'requestReady').rejects({ message: 'lobby.error.fallback' });
+      });
+
+    cy.get('[data-cy=ready-button]').click();
+
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
+      .should('exist');
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-error')
+      .and('not.have.class', 'bg-surface-2');
+
+    cy.get('[data-cy=close-snackbar]').click();
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+
+    // toggle again for surface color
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
+    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+      .should('have.class', 'bg-surface-2')
+      .and('not.have.class', 'bg-error');
+    cy.get('[data-cy=close-snackbar]').click();
   });
 });
 
@@ -296,9 +374,9 @@ describe('Lobby - P0 Perspective', () => {
   });
 
   it('Shows when opponent changes game to ranked or casual', function () {
+    cy.signupOpponent(opponentOne);
     const { gameId } = this.gameSummary;
     // Opponent subscribes & Changes Mode
-    cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(gameId);
 
     checkRanked(false);

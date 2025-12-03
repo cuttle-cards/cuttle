@@ -6,7 +6,7 @@
     "rules": "Reglas",
     "play": "Jugar",
     "stats": "Estadísticas",
-    "user": "Usuaria",
+    "player": "Jugador",
     "rank": "Rango",
     "username": "Nombre de usuario",
     "password": "Contraseña",
@@ -21,7 +21,8 @@
       "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
       "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
       "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
-    }
+    },
+    "profile": "Mi perfil"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -59,7 +60,17 @@
     "unready": "NO ESTOY LISTO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert": "El modo de juego cambió a"
+    "rankedChangedAlert": {
+      "casual": "El modo de juego cambió a Amistoso",
+      "ranked": "El modo de juego cambió a Competitivo"
+    },
+    "error": {
+      "fallback": "Se ha producido un error desconocido.",
+      "forbidden": "¡No eres un jugador en este juego!",
+      "gameStatus": "El juego aún no ha comenzado o ya ha terminado.",
+      "noGameStates":"El juego no se ha poblado con la colección .gameStates.",
+      "alreadyDealt":"Las cartas ya están repartidas."
+    }
   },
   "game": {
     "resolve": "Resolver",
@@ -518,9 +529,7 @@
     "season": {
       "select": "Seleccionar temporada",
       "champions": "Campeones de temporada",
-      "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
-      "tournamentFootage": "aquí para ver las imágenes oficiales del torneo",
-      "playByPlay": "con comentarios jugada por jugada."
+      "tournamentBracket": "aquí para ver el cuadro oficial del torneo"
     },
     "winRate": "Ratio de victorias",
     "wins": "Gana",
@@ -566,5 +575,16 @@
     "heading": "¡El Campeonato es Hoy!",
     "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es HOY, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "profile": {
+    "myGames": "Mis juegos",
+    "noGamesFound": "No se han encontrado juegos.",
+    "win": "Victoria",
+    "lose": "Derrota",
+    "stalemate": "Tablas",
+    "opponent": "Oponente",
+    "connectedAs": "Conectado como",
+    "notConnected": "No conectado",
+    "replay": "Repetir"
   }
 }
