@@ -81,7 +81,7 @@ module.exports = {
   },
 
   // Final step in Oauth Registration,
-  oAuthComplete: async function(req, res) {
+  oAuthCompleteRegistration: async function(req, res) {
     const { username, password } = req.body;
     const { fetchIdentity } = sails.helpers.oauth[req.params.provider];
     try {
