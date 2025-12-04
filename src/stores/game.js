@@ -468,13 +468,15 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null) {
+  function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
     return new Promise((resolve, reject) => {
       io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
         switch (jwres.statusCode) {
           case 200:
-            resetState();
-            updateGame(res.game);
+            if (resetStateBeforeUpdate) {
+              resetState();
+              updateGame(res.game);
+            }
             return handleInGameEvents(res, route).then(() => {
               return resolve(res);
             });
