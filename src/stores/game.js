@@ -347,6 +347,7 @@ export const useGameStore = defineStore('game', () => {
     }
   }
   async function processScuttle({ game, playedCard, targetCard, playedBy }) {
+    debugger;
     if (!player.value) {
       updateGame(game);
       return;
@@ -473,8 +474,6 @@ export const useGameStore = defineStore('game', () => {
       io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
         switch (jwres.statusCode) {
           case 200:
-            resetState();
-            updateGame(res.game);
             return handleInGameEvents(res, route).then(() => {
               return resolve(res);
             });
