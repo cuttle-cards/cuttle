@@ -347,7 +347,6 @@ export const useGameStore = defineStore('game', () => {
     }
   }
   async function processScuttle({ game, playedCard, targetCard, playedBy }) {
-    debugger;
     if (!player.value) {
       updateGame(game);
       return;
@@ -469,11 +468,15 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null) {
+  function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
     return new Promise((resolve, reject) => {
       io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
         switch (jwres.statusCode) {
           case 200:
+            if (resetStateBeforeUpdate) {
+              resetState();
+              updateGame(res.game);
+            }
             return handleInGameEvents(res, route).then(() => {
               return resolve(res);
             });
