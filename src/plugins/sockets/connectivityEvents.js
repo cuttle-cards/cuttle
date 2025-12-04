@@ -20,7 +20,7 @@ export async function handleConnect() {
       const gameStateIndex = gameHistoryStore.currentGameStateIndex;
       const response = await gameStore.requestGameState(gameId, gameStateIndex);
       if (response?.victory?.gameOver && response.game.rematchGame) {
-        await gameStore.requestGameState(response.game.rematchGame);
+        await gameStore.requestGameState(response.game.rematchGame, -1, null, true);
         router.push({ name: ROUTE_NAME_GAME, params: { gameId: response.game.rematchGame } });
       }
       return;
