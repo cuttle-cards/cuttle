@@ -7,7 +7,6 @@ module.exports = async function (req, res) {
     const promisePlayer = userService.findUser({ userId: req.session.usr });
     const [ game, player ] = await Promise.all([ promiseGame, promisePlayer ]);
   
-    // no-op if the game is complete
     if (game.status !== GameStatus.CREATED) {
       return res.badRequest({ message: 'Can\'t quit game once it\'s started' });
     }
