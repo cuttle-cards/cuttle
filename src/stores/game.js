@@ -397,15 +397,15 @@ export const useGameStore = defineStore('game', () => {
     }
     updateGame(game);
   }
-  function handleGameResponse(jwres, resolve, reject) {
+  function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
     switch (jwres.statusCode) {
       case 200:
         return resolve(jwres);
       case 401:
         authStore.mustReauthenticate = true;
-        return reject(jwres.body.message);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
       default:
-        return reject(jwres.body.message);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
     }
   }
   function transformGameUrl(slug) {
@@ -440,7 +440,7 @@ export const useGameStore = defineStore('game', () => {
         return `/api/game/${slug}`;
     }
   }
-  function makeSocketRequest(slug, data, method = 'POST') {
+  function makeSocketRequest(slug, data, method = 'POST', returnFullResponse = false) {
     const url = transformGameUrl(slug);
     return new Promise((resolve, reject) => {
       io.socket.request(
@@ -450,7 +450,7 @@ export const useGameStore = defineStore('game', () => {
           data,
         },
         (_res, jwres) => {
-          return handleGameResponse(jwres, resolve, reject);
+          return handleGameResponse(jwres, resolve, reject, returnFullResponse);
         },
       );
     });
@@ -493,7 +493,7 @@ export const useGameStore = defineStore('game', () => {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
     try {
       resetState();
-      const res = await makeSocketRequest(slug, {});
+      const res = await makeSocketRequest(slug, {}, 'POST', true);
       updateGame(res.body.game);
       return handleInGameEvents(res.body, route);
     } catch (err) {
@@ -501,7 +501,11 @@ export const useGameStore = defineStore('game', () => {
         id.value = gameId;
         return;
       }
-      const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
+      // Failed to join as spectator becuase currently playing
+      if (err?.statusCode === 409) {
+        throw err;
+      }
+      const message = err?.message ?? err?.body?.message ?? err ?? `Unable to spectate game ${gameId}`;
       throw new Error(message);
     }
   }

@@ -24,7 +24,7 @@ module.exports = async function (req, res) {
     // Can't spectate if you're a player in an ongoing game
     const { p0, p1 } = game;
     if (game.status === GameStatus.STARTED && [ p0?.id, p1?.id ].includes(spectator.id)) {
-      return res.forbidden({ message: 'home.snackbar.cannotSpectate' });
+      return res.status(409).json({ message: 'home.snackbar.cannotSpectate' });
     }
 
     // Can't spectate if the game hasn't started
