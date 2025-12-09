@@ -397,18 +397,15 @@ export const useGameStore = defineStore('game', () => {
     }
     updateGame(game);
   }
-  function handleGameResponse(jwres, resolve, reject) {
+  function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
     switch (jwres.statusCode) {
       case 200:
         return resolve(jwres);
       case 401:
         authStore.mustReauthenticate = true;
-        return reject(jwres.body.message);
-      case 409:
-        // Reject with full response for callers to detect status code
-        return reject(jwres);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
       default:
-        return reject(jwres.body.message);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
     }
   }
   function transformGameUrl(slug) {
@@ -443,7 +440,7 @@ export const useGameStore = defineStore('game', () => {
         return `/api/game/${slug}`;
     }
   }
-  function makeSocketRequest(slug, data, method = 'POST') {
+  function makeSocketRequest(slug, data, method = 'POST', returnFullResponse = false) {
     const url = transformGameUrl(slug);
     return new Promise((resolve, reject) => {
       io.socket.request(
@@ -453,7 +450,7 @@ export const useGameStore = defineStore('game', () => {
           data,
         },
         (_res, jwres) => {
-          return handleGameResponse(jwres, resolve, reject);
+          return handleGameResponse(jwres, resolve, reject, returnFullResponse);
         },
       );
     });
@@ -496,7 +493,7 @@ export const useGameStore = defineStore('game', () => {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
     try {
       resetState();
-      const res = await makeSocketRequest(slug, {});
+      const res = await makeSocketRequest(slug, {}, 'POST', true);
       updateGame(res.body.game);
       return handleInGameEvents(res.body, route);
     } catch (err) {
