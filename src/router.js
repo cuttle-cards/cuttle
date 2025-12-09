@@ -142,6 +142,7 @@ const setupSpectate = async (to) => {
 
     return;
   } catch (err) {
+    // If active player in ongoing game, redirect to /game/:gameId
     if (err?.statusCode === 409) {
       return {
         name: ROUTE_NAME_GAME,

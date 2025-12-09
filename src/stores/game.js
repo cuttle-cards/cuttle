@@ -405,6 +405,7 @@ export const useGameStore = defineStore('game', () => {
         authStore.mustReauthenticate = true;
         return reject(jwres.body.message);
       case 409:
+        // Reject with full response for callers to detect status code
         return reject(jwres);
       default:
         return reject(jwres.body.message);
