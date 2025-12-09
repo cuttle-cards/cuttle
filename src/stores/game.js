@@ -404,6 +404,8 @@ export const useGameStore = defineStore('game', () => {
       case 401:
         authStore.mustReauthenticate = true;
         return reject(jwres.body.message);
+      case 409:
+        return reject(jwres);
       default:
         return reject(jwres.body.message);
     }
@@ -500,6 +502,10 @@ export const useGameStore = defineStore('game', () => {
       if (authStore.mustReauthenticate) {
         id.value = gameId;
         return;
+      }
+      // Failed to join as spectator becuase currently playing
+      if (err?.statusCode === 409) {
+        throw err;
       }
       const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
       throw new Error(message);

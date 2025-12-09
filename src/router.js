@@ -142,6 +142,14 @@ const setupSpectate = async (to) => {
 
     return;
   } catch (err) {
+    if (err?.statusCode === 409) {
+      return {
+        name: ROUTE_NAME_GAME,
+        params: {
+          gameId,
+        }
+      };
+    }
     return {
       name: 'Home',
       query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` },
