@@ -505,7 +505,7 @@ export const useGameStore = defineStore('game', () => {
       if (err?.statusCode === 409) {
         throw err;
       }
-      const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
+      const message = err?.message ?? err?.body?.message ?? err ?? `Unable to spectate game ${gameId}`;
       throw new Error(message);
     }
   }
