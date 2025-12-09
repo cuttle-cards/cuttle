@@ -139,10 +139,6 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      if (this.gameStore.players.some(({ username }) => username === this.authStore.username)) {
-        this.$router.push(`/game/${this.gameId}`);
-        return;
-      }
       this.$router.push(`/spectate/${this.gameId}?gameStateIndex=-1`);
     },
   },
