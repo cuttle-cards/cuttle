@@ -39,7 +39,7 @@
           type="submit"
           :loading="loading"
           :disabled="!isFormValid"
-          :color="isFormValid ? 'newPrimary' : 'disabled'"
+          :color="isFormValid ? 'primary' : 'disabled'"
         >
           {{ submitText }}
         </v-btn>

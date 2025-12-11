@@ -97,7 +97,7 @@ const wrapperClass = computed(() => {
   justify-content: center;
   align-items: center;
   &.ranked {
-    background-color: rgba(var(--v-theme-newPrimary));
+    background-color: rgba(var(--v-theme-primary));
   }
   &.casual {
     background-color: rgba(var(--v-theme-newSecondary));

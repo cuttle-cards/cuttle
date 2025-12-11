@@ -43,7 +43,7 @@
     <template #actions>
       <v-btn
         data-cy="counter"
-        color="newPrimary"
+        color="primary"
         variant="flat"
         @click="$emit('choose-to-counter')"
       >

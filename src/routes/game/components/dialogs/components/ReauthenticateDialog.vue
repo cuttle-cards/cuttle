@@ -32,11 +32,11 @@
       </template>
 
       <template #actions>
-        <v-btn variant="text" color="newPrimary" @click="leaveGame">
+        <v-btn variant="text" color="primary" @click="leaveGame">
           {{ t('game.dialogs.reauthentication.leaveGame') }}
         </v-btn>
         <v-btn
-          color="newPrimary"
+          color="primary"
           variant="flat"
           data-cy="login"
           :loading="isLoggingIn"

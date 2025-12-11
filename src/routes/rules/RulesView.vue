@@ -161,7 +161,7 @@
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
-              <v-btn to="/" color="newPrimary" data-cy="ready-to-play-button">
+              <v-btn to="/" color="primary" data-cy="ready-to-play-button">
                 {{ buttonText }}
               </v-btn>
             </v-row>
@@ -461,7 +461,7 @@ export default {
 
 .section-title {
   font-family: 'Luckiest Guy', serif !important;
-  background-color: rgba(var(--v-theme-newPrimary));
+  background-color: rgba(var(--v-theme-primary));
   width: 100%;
   padding-top: 16px;
   padding-left: 24px;

@@ -79,7 +79,7 @@ watch(() => props.activeTitle,
 }
 
 .active-title {
-  background-color: rgba(var(--v-theme-newPrimary));
+  background-color: rgba(var(--v-theme-primary));
 }
 
 @media (min-width: 960px) {

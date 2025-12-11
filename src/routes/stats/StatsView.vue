@@ -18,7 +18,7 @@
             return-object
             variant="underlined"
             :label="t('stats.season.select')"
-            :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1', color: 'newPrimary' }"
+            :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1', color: 'primary' }"
             data-cy="season-select"
           >
             <template #selection="{ item }">
