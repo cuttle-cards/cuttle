@@ -226,19 +226,19 @@
                 <AwardCard
                   :username="t('rules.tournaments.championPlayer')"
                   :place="1"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
                 <AwardCard
                   :username="t('rules.tournaments.secondPlacePlayer')"
                   :place="2"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
                 <AwardCard
                   :username="t('rules.tournaments.thirdPlacePlayer')"
                   :place="3"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
               </div>

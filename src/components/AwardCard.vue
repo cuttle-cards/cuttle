@@ -1,13 +1,13 @@
 <template>
   <v-card
     class="d-flex align-center pa-5"
-    color="surface-1"
+    :color=" variant === 'dark' ? 'surface-1' : 'surface-2'"
     :data-tournament="`${place}${suffix}`"
     min-width="224"
     :variant="isCard ? 'elevated' : 'text'"
   >
     <img :src="`/img/statsView/medal-${placeWithSuffix}-place.svg`" :alt="`Medal for ${placeWithSuffix} place`">
-    <h3 class="mx-4 text-surface-2">
+    <h3 class="mx-4" :class="variant === 'dark' ? 'text-surface-2' : 'text-surface-1'">
       {{ username }}
     </h3>
   </v-card>
@@ -28,6 +28,11 @@ export default {
     isCard: {
       type: Boolean,
       default: true,
+    },
+    variant: {
+      type: String,
+      default: 'dark',
+      validator: (val) => [ 'light', 'dark' ].includes(val),
     },
   },
   computed: {
