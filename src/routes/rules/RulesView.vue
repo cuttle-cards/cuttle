@@ -247,31 +247,56 @@
               </p>
               <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-1" base-color="surface-2">
                 <v-list-item>
-                  <v-chip variant="flat" class="mr-2 mb-1" :color="theme.firstPlace" rounded="sm">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    :color="theme.firstPlace"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 5) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.firstPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="flat" class="mr-2 mb-1" :color="theme.secondPlace" rounded="sm">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    :color="theme.secondPlace"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 4) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.secondPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="flat" class="mr-2 mb-1" color="surface-2" rounded="sm">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 3) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.thirdPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="outlined" class="mr-2 mb-1" color="surface-2" rounded="sm">
+                  <v-chip
+                    variant="outlined"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 2) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.oneWin') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="outlined" class="mr-2 mb-1" color="surface-2" rounded="sm">
+                  <v-chip
+                    variant="outlined"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints') }}
                   </v-chip>
                   &nbsp; {{ t('rules.tournaments.scoring.completedMatch') }}
