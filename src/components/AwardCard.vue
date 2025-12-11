@@ -4,7 +4,7 @@
     :color=" variant === 'dark' ? 'surface-1' : 'surface-2'"
     :data-tournament="`${place}${suffix}`"
     min-width="224"
-    :variant="isCard ? 'elevated' : 'text'"
+    variant="elevated"
   >
     <img :src="`/img/statsView/medal-${placeWithSuffix}-place.svg`" :alt="`Medal for ${placeWithSuffix} place`">
     <h3 class="mx-4" :class="variant === 'dark' ? 'text-surface-2' : 'text-surface-1'">
@@ -24,10 +24,6 @@ export default {
     place: {
       type: Number,
       required: true,
-    },
-    isCard: {
-      type: Boolean,
-      default: true,
     },
     variant: {
       type: String,
