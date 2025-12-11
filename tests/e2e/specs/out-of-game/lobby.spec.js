@@ -383,12 +383,12 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
     cy.setIsRankedOpponent(gameId, true);
 
-    checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+    checkRanked(true);
 
     cy.setIsRankedOpponent(gameId, false);
-    checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
+    checkRanked(false);
   });
 
   it('Game starts when both players are ready - opponent first', function () {
