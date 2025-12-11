@@ -85,7 +85,7 @@
           <template v-if="weeklyRanking">
             <h2 class="text-h2 mb-4">
               {{ t('stats.weeklyRankings') }}
-              <StatsScoringDialog activator-color="surface-2" />
+              <StatsScoringDialog />
             </h2>
             <StatsLeaderboard :loading="loadingData" :season="selectedSeason" />
           </template>
