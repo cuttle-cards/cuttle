@@ -281,7 +281,7 @@
   
             <v-row>
               <v-img
-                src="/img/rulesView/leaderboard_example.jpg"
+                src="/img/rulesView/leaderboard_example.png"
                 alt="leader board"
                 class="mr-2 my-3 rounded-xl"
                 aria-hidden="false"
