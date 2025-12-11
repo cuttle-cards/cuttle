@@ -222,7 +222,7 @@
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
   
-              <div class="d-flex flex-column my-5">
+              <div class="d-flex flex-row my-5 flex-wrap justify-space-around w-100">
                 <AwardCard
                   :username="t('rules.tournaments.championPlayer')"
                   :place="1"
