@@ -35,7 +35,7 @@ const route = useRoute();
 const pageLinks = getPageLinks();
 
 const tabColor = (page) => {
-  return route.name === page ? 'text-newPrimary' : 'text-surface-1';
+  return route.name === page ? 'text-primary' : 'text-surface-1';
 };
 
 </script>

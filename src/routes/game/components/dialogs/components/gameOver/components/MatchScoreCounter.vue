@@ -86,7 +86,7 @@ const lossesLabel = computed(() => props.isSpectating ? 'P2' : 'L');
   padding: 8px;
 
   .ranked &.selected {
-    background-color: rgba(var(--v-theme-newPrimary));
+    background-color: rgba(var(--v-theme-primary));
     color: rgba(var(--v-theme-surface-2));
   }
 

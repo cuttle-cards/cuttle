@@ -35,7 +35,7 @@
           <div class="mx-auto my-4 my-xl-2 homeContent">
             <v-btn
               class="px-16 w-100"
-              color="newPrimary"
+              color="primary"
               size="x-large"
               text-color="white"
               data-cy="ready-button"
@@ -57,7 +57,7 @@
                   class="mx-md-4 pl-2 flex-shrink-0"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
-                  color="newPrimary"
+                  color="primary"
                   hide-details
                   @update:model-value="setIsRanked"
                   @keydown.enter.stop="(e) => e.target.click()"

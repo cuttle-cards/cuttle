@@ -246,7 +246,7 @@ export default {
       if (this.rematchButtonDisabled) {
         return undefined;
       }
-      return this.isRanked ? 'newPrimary' : 'newSecondary';
+      return this.isRanked ? 'primary' : 'newSecondary';
     },
     rematchButtonText() {
       if (this.gameHistoryStore.isSpectating) {

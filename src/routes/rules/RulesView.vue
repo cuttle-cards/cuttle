@@ -161,7 +161,7 @@
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
-              <v-btn to="/" color="newPrimary" data-cy="ready-to-play-button">
+              <v-btn to="/" color="primary" data-cy="ready-to-play-button">
                 {{ buttonText }}
               </v-btn>
             </v-row>
@@ -222,56 +222,81 @@
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
   
-              <div class="d-flex flex-column my-5">
+              <div class="d-flex flex-row my-5 flex-wrap justify-space-around w-100">
                 <AwardCard
                   :username="t('rules.tournaments.championPlayer')"
                   :place="1"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
                 <AwardCard
                   :username="t('rules.tournaments.secondPlacePlayer')"
                   :place="2"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
                 <AwardCard
                   :username="t('rules.tournaments.thirdPlacePlayer')"
                   :place="3"
-                  :is-card="false"
+                  variant="light"
                   class="mb-4"
                 />
               </div>
               <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle2') }}
               </p>
-              <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
+              <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-1" base-color="surface-2">
                 <v-list-item>
-                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    :color="theme.firstPlace"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 5) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.firstPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    :color="theme.secondPlace"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 4) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.secondPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
+                  <v-chip
+                    variant="flat"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 3) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.thirdPlace') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
+                  <v-chip
+                    variant="outlined"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints', 2) }}
                   </v-chip>
                   {{ t('rules.tournaments.scoring.oneWin') }}
                 </v-list-item>
                 <v-list-item>
-                  <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
+                  <v-chip
+                    variant="outlined"
+                    class="mr-2 mb-1"
+                    color="surface-2"
+                    rounded="sm"
+                  >
                     {{ t('rules.tournaments.scoring.numPoints') }}
                   </v-chip>
                   &nbsp; {{ t('rules.tournaments.scoring.completedMatch') }}
@@ -281,7 +306,7 @@
   
             <v-row>
               <v-img
-                src="/img/rulesView/leaderboard_example.jpg"
+                src="/img/rulesView/leaderboard_example.png"
                 alt="leader board"
                 class="mr-2 my-3 rounded-xl"
                 aria-hidden="false"
@@ -436,7 +461,7 @@ export default {
 
 .section-title {
   font-family: 'Luckiest Guy', serif !important;
-  background-color: rgba(var(--v-theme-newPrimary));
+  background-color: rgba(var(--v-theme-primary));
   width: 100%;
   padding-top: 16px;
   padding-left: 24px;

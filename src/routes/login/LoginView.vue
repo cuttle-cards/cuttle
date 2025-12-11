@@ -32,7 +32,7 @@
               class="rulesBtn w-100 mt-8"
               size="x-large"
               to="/rules"
-              color="newPrimary"
+              color="primary"
               data-cy="rules-link"
             >
               {{ t('login.readRules') }}
@@ -98,7 +98,7 @@
                   class="px-16"
                   :loading="loading"
                   :disabled="!isFormValid"
-                  :color="isFormValid ? 'newPrimary' : 'disabled'"
+                  :color="isFormValid ? 'primary' : 'disabled'"
                   type="submit"
                   size="x-large"
                   text-color="white"
