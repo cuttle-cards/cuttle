@@ -46,13 +46,6 @@
         </v-btn>
       </template>
     </BaseDialog>
-
-    <BaseSnackbar
-      v-model="showSnackBar"
-      :message="snackBarMessage"
-      data-cy="reauth-snackbar"
-      @clear="clearSnackBar"
-    />
   </div>
 </template>
 
@@ -61,15 +54,14 @@ import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
+import { useSnackbarStore } from '@/stores/snackbar';
 import BaseDialog from '@/components/BaseDialog.vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ReauthenticateDialog',
   components: {
     BaseDialog,
-    BaseSnackbar,
   },
   props: {
     modelValue: {
@@ -86,12 +78,10 @@ export default {
       username: '',
       password: '',
       isLoggingIn: false,
-      showSnackBar: false,
-      snackBarMessage: '',
     };
   },
   computed: {
-    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore, useSnackbarStore),
     show: {
       get() {
         return this.modelValue;
@@ -121,7 +111,7 @@ export default {
         } else {
           await this.gameStore.requestGameState(this.gameStore.id);
         }
-        this.clearSnackBar();
+        this.snackbarStore.clear();
         this.clearForm();
         this.isLoggingIn = false;
       } catch (err) {
@@ -129,19 +119,16 @@ export default {
       }
     },
     handleError(message) {
-      this.showSnackBar = true;
-      this.snackBarMessage = message;
+      this.snackbarStore.showSnackbar = true;
+      this.snackbarStore.snackMessage = this.t(message);
       this.isLoggingIn = false;
-    },
-    clearSnackBar() {
-      this.showSnackBar = false;
-      this.snackBarMessage = '';
     },
     clearForm() {
       this.username = '';
       this.password = '';
     },
     leaveGame() {
+      this.snackbarStore.clear();
       this.clearForm();
       this.clearSnackBar();
       this.$router.push('/');
