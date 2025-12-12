@@ -128,9 +128,9 @@ describe('Lobby - Page Content', () => {
 
     const expected = 'An unknown error has occured.';
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content').should('contain', expected);
+    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', expected);
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
   });
 
   it('Shows the message itself when it isnt a translated string', () => {
@@ -144,9 +144,9 @@ describe('Lobby - Page Content', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content').should('contain', generic);
+    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', generic);
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
   });
 });
 
@@ -200,13 +200,13 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content').should('contain', 'Game Mode changed to');
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', 'Game Mode changed to');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
       .should('have.class', 'bg-surface-2')
       .and('not.have.class', 'bg-error');
 
     cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('not.exist');
 
     // stub for error
     cy.window()
@@ -217,17 +217,17 @@ describe('Lobby - Page Content (Ranked)', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content').should('exist');
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('exist');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
       .should('have.class', 'bg-error')
       .and('not.have.class', 'bg-surface-2');
 
     cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('not.exist');
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
+    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
       .should('have.class', 'bg-surface-2')
       .and('not.have.class', 'bg-error');
     cy.get('[data-cy=close-snackbar]').click();
@@ -710,7 +710,7 @@ describe('Lobby invite links', () => {
     assertSnackbar(SnackBarError.CANT_FIND_GAME, 'error');
     cy.visit('/rules');
     cy.visit('/');
-    cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
+    cy.get(`[data-cy=global-snackbar] .v-snackbar__wrapper`).should('not.exist');
   });
 
   it('Navigates Home and shows error snackbar when user visits invite link of full game', function () {
