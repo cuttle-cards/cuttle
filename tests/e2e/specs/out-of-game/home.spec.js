@@ -23,8 +23,6 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h5', `${gameState.name}`);
 }
 
-
-
 describe('Home - Page Content', () => {
   beforeEach(setup);
 
@@ -158,7 +156,7 @@ describe('Home - Game List', () => {
         .click()
         .should('be.disabled');
 
-      assertSnackbar(SnackBarError.GAME_IS_FULL, 'error', 'newgame');
+      assertSnackbar(SnackBarError.GAME_IS_FULL, 'error');
     });
   });
 
@@ -213,8 +211,7 @@ describe('Home - Game List', () => {
         .then((store) => store.reconnectSocket());
 
       // Wait for the game list to refresh and show the new game
-      cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual')
-        .should('exist');
+      cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual').should('exist');
     });
   });
 
@@ -357,7 +354,6 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by stalemate');
       setupGameBetweenTwoUnseenPlayers('stalemate');
 
-      
       // make sure button is still enabled after 1 person stalemates
       cy.get('@stalemateGameId').then(function (stalemateGameId) {
         cy.stalemateOpponent(stalemateGameId);
@@ -492,8 +488,8 @@ describe('Home - Create Game', () => {
       .type('shitGame');
     cy.get('[data-cy=submit-create-game]').should('be.visible')
       .click();
-    assertSnackbar('Please use respectful language', 'error', 'newgame');
-  }); 
+    assertSnackbar('Please use respectful language', 'error');
+  });
   it('Creates a new game by hitting enter in text field', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
@@ -617,7 +613,7 @@ describe('Home - Create Game', () => {
 
     cy.get('[data-cy=submit-create-game]').should('be.visible')
       .click();
-    assertSnackbar('Game name cannot exceed 50 characters', 'error', 'newgame');
+    assertSnackbar('Game name cannot exceed 50 characters', 'error');
   });
 
   it('Cancels create game dialog', () => {
@@ -654,7 +650,7 @@ describe('Home - Create Game', () => {
       .then((store) => {
         expect(store.openGames.length).to.eq(0, 'Game list should be empty in store, but is not');
       });
-    assertSnackbar('Game name cannot be blank', 'error', 'newgame');
+    assertSnackbar('Game name cannot be blank', 'error');
   });
 
   it('Removes a game when both players are ready', () => {

@@ -86,14 +86,6 @@
         <v-spacer />
       </v-row>
     </v-container>
-    <BaseSnackbar
-      v-model="gameStore.showIsRankedChangedAlert"
-      :timeout="2000"
-      :message="t(gameStore.lobbySnackbarMessage ?? '')"
-      :color="gameStore.lobbySnackbarColor"
-      data-cy="lobby-snackbar"
-      @clear="gameStore.showIsRankedChangedAlert = false"
-    />
   </div>
 </template>
 
@@ -103,9 +95,9 @@ import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 import { ROUTE_NAME_GAME } from '_/src/router';
 
@@ -120,6 +112,7 @@ const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
 // Stores
 const authStore = useAuthStore();
 const gameStore = useGameStore();
+const snackbarStore = useSnackbarStore();
 
 // Refs
 const readying = ref(false);
@@ -134,9 +127,11 @@ const iAmReady = computed(() => {
 
 const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
 
-const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
+const rankedIcon = computed(() => (gameStore.isRanked ? 'sword-cross' : 'coffee'));
 
 const opponentUsername = computed(() => gameStore.opponentUsername);
+
+const lobbyMessage = computed(() => gameStore.lobbySnackbarMessage);
 
 // Methods
 async function ready() {
@@ -159,11 +154,9 @@ async function ready() {
       gameStore.lobbySnackbarColor = 'error';
       gameStore.showIsRankedChangedAlert = true;
     }
-    
   }
   readying.value = false;
 }
-
 
 async function setIsRanked() {
   await gameStore.requestSetIsRanked({
@@ -173,6 +166,7 @@ async function setIsRanked() {
 
 async function leave() {
   await gameStore.requestLeaveLobby();
+  snackbarStore.clear();
   router.push('/');
 }
 
@@ -182,6 +176,13 @@ watch(opponentUsername, (newVal) => {
     playAudio(joinAudio);
   } else {
     playAudio(leaveAudio);
+  }
+});
+
+watch(lobbyMessage, (newMessage) => {
+  if (newMessage) {
+    snackbarStore.alert(t(newMessage ?? ''), gameStore.lobbySnackbarColor);
+    snackbarStore.showSnackbar = gameStore.showIsRankedChangedAlert;
   }
 });
 

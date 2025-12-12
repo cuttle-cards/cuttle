@@ -132,21 +132,15 @@
         </v-col>
       </v-row>
     </v-container>
-    <BaseSnackbar
-      v-model="showSnackBar"
-      :message="snackBarMessage"
-      data-cy="newgame-snackbar"
-      @clear="clearSnackBar"
-    />
   </div>
 </template>
 <script>
 import { mapStores } from 'pinia';
 import { useGameListStore } from '@/stores/gameList';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import GameListItem from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
@@ -162,7 +156,6 @@ export default {
   components: {
     GameListItem,
     CreateGameDialog,
-    BaseSnackbar,
     HowItWorksDialog,
     AnnouncementDialog,
     OauthSignupDialog,
@@ -179,14 +172,12 @@ export default {
     return {
       TABS,
       tab: TABS.PLAY,
-      showSnackBar: false,
-      snackBarMessage: '',
       loadingData: true,
       oAuthSignup: false,
     };
   },
   computed: {
-    ...mapStores(useGameListStore),
+    ...mapStores(useGameListStore, useSnackbarStore),
     playableGameList() {
       return this.gameListStore.openGames;
     },
@@ -230,18 +221,14 @@ export default {
       this.$router.replace(url);
       return (this.tab = url);
     },
-    clearSnackBar() {
-      this.snackMessage = '';
-      this.showSnackBar = false;
-    },
     handleSubscribeError(gameId, message) {
       this.gameListStore.updateGameStatus({ id: gameId, newStatus: GameStatus.STARTED });
       this.handleError(message);
     },
     handleError(message) {
       this.creatingGame = false;
-      this.showSnackBar = true;
-      this.snackBarMessage = message;
+      this.snackbarStore.snackMessage = message;
+      this.snackbarStore.showSnackbar = true;
       this.showCreateGameDialog = false;
     },
     logout() {
