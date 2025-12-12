@@ -7,7 +7,11 @@
 
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="menuWrapperStyle">
+      <div
+        id="game-menu-wrapper"
+        class="d-flex flex-column flex-sm-row align-center"
+        :style="menuWrapperStyle"
+      >
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" @handle-error="handleError" />
         <v-icon
@@ -399,13 +403,13 @@
         </div>
       </div>
 
-      <BaseSnackbar
+      <!-- <BaseSnackbar
         v-model="showSnackbar"
         :message="snackBarMessage"
         :color="snackBarColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"
-      />
+      /> -->
       <GameOverlays
         :targeting="targeting"
         :selected-card="selectedCard"
@@ -428,7 +432,8 @@ import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import { useSnackbarStore } from '@/stores/snackbar';
+// import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import GameDialogs from '@/routes/game/components/dialogs/GameDialogs.vue';
@@ -453,7 +458,7 @@ export default {
     TargetSelectionOverlay,
     ScrapDialog,
     UsernameToolTip,
-    BaseSnackbar,
+    // BaseSnackbar,
     SpectatorListMenu,
     PlaybackControls,
   },
@@ -463,9 +468,9 @@ export default {
   },
   data() {
     return {
-      showSnackbar: false,
-      snackBarMessage: '',
-      snackBarColor: 'error',
+      // showSnackbar: false,
+      // snackBarMessage: '',
+      // snackBarColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -479,13 +484,13 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore, useSnackbarStore),
     isSpectating() {
       return this.gameHistoryStore.isSpectating;
     },
     menuWrapperStyle() {
       return {
-        zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
+        zIndex: this.isSpectating ? 2411 : 3, // Allows spectators to access game menu wrapper in any moment
       };
     },
 
@@ -751,9 +756,9 @@ export default {
       if (this.gameStore.id && oldTopCard && !newTopCard) {
         this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
       }
-    }
+    },
   },
-  created(){
+  created() {
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
@@ -768,20 +773,18 @@ export default {
     this.scrollToLastLog();
   },
   methods: {
-    clearSnackBar() {
-      this.snackBarMessage = '';
-      this.showSnackbar = false;
-    },
+    // clearSnackBar() {
+    //   this.snackBarMessage = '';
+    //   this.showSnackbar = false;
+    // },
     handleError(messageKey) {
-      this.snackBarMessage = this.t(messageKey);
-      this.showSnackbar = true;
-      this.snackBarColor = 'error';
+      this.snackbarStore.snackMessage = this.t(messageKey);
+      this.snackbarStore.showSnackbar = true;
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
-      this.snackBarMessage = this.t(messageKey);
-      this.showSnackbar = true;
-      this.snackBarColor = 'surface-1';
+      this.snackbarStore.alert(this.t(messageKey), 'surface-1');
+      this.snackbarStore.showSnackbar = true;
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -904,16 +907,14 @@ export default {
         const { resolvingSeven } = this.gameStore;
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         if (!resolvingSeven) {
-          await this.gameStore
-            .requestPlayFaceCard(this.selectedCard.id);
+          await this.gameStore.requestPlayFaceCard(this.selectedCard.id);
         } else {
-          await this.gameStore
-            .requestPlayFaceCardSeven({
-              cardId: this.cardSelectedFromDeck.id,
-              index: deckIndex,
-            });
+          await this.gameStore.requestPlayFaceCardSeven({
+            cardId: this.cardSelectedFromDeck.id,
+            index: deckIndex,
+          });
         }
-      } catch (messageKey){
+      } catch (messageKey) {
         this.handleError(messageKey);
       } finally {
         this.clearSelection();
