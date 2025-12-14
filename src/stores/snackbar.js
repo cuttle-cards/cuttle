@@ -10,8 +10,8 @@ export const useSnackbarStore = defineStore('snackbar', () => {
   function alert(message, color = 'error', timeout = 0) {
     snackColor.value = color;
     snackMessage.value = message;
-    snackTimeout = timeout;
-    showSnackbar = true;
+    snackTimeout.value = timeout;
+    showSnackbar.value = true;
   }
 
   function clear() {
