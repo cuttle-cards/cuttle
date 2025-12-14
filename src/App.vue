@@ -7,6 +7,7 @@
     <TheFooter v-if="showFooter" />
     <BaseSnackbar
       v-model="snackbarStore.showSnackbar"
+      :timeout="snackbarStore.snackTimeout"
       :message="snackbarStore.snackMessage"
       :color="snackbarStore.snackColor"
       data-cy="global-snackbar"
