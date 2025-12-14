@@ -131,7 +131,6 @@ const rankedIcon = computed(() => (gameStore.isRanked ? 'sword-cross' : 'coffee'
 
 const opponentUsername = computed(() => gameStore.opponentUsername);
 
-const lobbyMessage = computed(() => gameStore.lobbySnackbarMessage);
 
 // Methods
 async function ready() {
@@ -149,10 +148,7 @@ async function ready() {
       });
     } else {
       const key = err?.message;
-
-      gameStore.lobbySnackbarMessage = key;
-      gameStore.lobbySnackbarColor = 'error';
-      gameStore.showIsRankedChangedAlert = true;
+      snackbarStore.alert(t(key));
     }
   }
   readying.value = false;
@@ -179,12 +175,7 @@ watch(opponentUsername, (newVal) => {
   }
 });
 
-watch(lobbyMessage, (newMessage) => {
-  if (newMessage) {
-    snackbarStore.alert(t(newMessage ?? ''), gameStore.lobbySnackbarColor);
-    snackbarStore.showSnackbar = gameStore.showIsRankedChangedAlert;
-  }
-});
+
 
 // Lifecycle
 onMounted(() => {
