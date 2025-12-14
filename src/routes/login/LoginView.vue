@@ -332,8 +332,7 @@ export default {
       this.authStore.oAuth(provider);
     },
     handleError(messageKey) {
-      this.snackbarStore.snackMessage = this.t(messageKey);
-      this.snackbarStore.showSnackbar = true;
+      this.snackbarStore.alert(this.t(messageKey));
       this.loading = false;
     },
     isAlphaNumeric(val) {
