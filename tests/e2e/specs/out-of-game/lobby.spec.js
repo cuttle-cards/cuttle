@@ -128,9 +128,7 @@ describe('Lobby - Page Content', () => {
 
     const expected = 'An unknown error has occured.';
 
-    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', expected);
-
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
+    assertSnackbar(expected)
   });
 
   it('Shows the message itself when it isnt a translated string', () => {
@@ -144,9 +142,7 @@ describe('Lobby - Page Content', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', generic);
-
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('have.class', 'bg-error');
+    assertSnackbar(generic);
   });
 });
 
@@ -200,13 +196,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('contain', 'Game Mode changed to');
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-surface-2')
-      .and('not.have.class', 'bg-error');
-
-    cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('not.exist');
+    assertSnackbar('Game Mode changed to Casual', 'surface-2')
 
     // stub for error
     cy.window()
@@ -217,20 +207,11 @@ describe('Lobby - Page Content (Ranked)', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=global-snackbar] .v-snackbar__content').should('exist');
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-error')
-      .and('not.have.class', 'bg-surface-2');
-
-    cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper').should('not.exist');
+    assertSnackbar('An unknown error has occured.');
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
-    cy.get('[data-cy=global-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-surface-2')
-      .and('not.have.class', 'bg-error');
-    cy.get('[data-cy=close-snackbar]').click();
+    assertSnackbar('Game Mode changed to Ranked', 'surface-2');
   });
 });
 
