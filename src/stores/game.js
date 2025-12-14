@@ -95,9 +95,6 @@ export const useGameStore = defineStore('game', () => {
   const oneOff = ref(null);
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
-  const showIsRankedChangedAlert = ref(false);
-  const lobbySnackbarMessage = ref(null);
-  const lobbySnackbarColor = ref(null);
 
   // Threes
   const lastEventCardChosen = ref(null);
@@ -300,9 +297,6 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = null;
     oneOffTarget.value = null;
     isRanked.value = false;
-    showIsRankedChangedAlert.value = false;
-    lobbySnackbarMessage.value = null,
-    lobbySnackbarColor.value = null,
     lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
@@ -703,9 +697,6 @@ export const useGameStore = defineStore('game', () => {
     oneOff,
     oneOffTarget,
     isRanked,
-    showIsRankedChangedAlert,
-    lobbySnackbarMessage,
-    lobbySnackbarColor,
     lastEventCardChosen,
     lastEventPlayerChoosing,
     lastEventChange,
