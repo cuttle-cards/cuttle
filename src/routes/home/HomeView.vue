@@ -227,8 +227,7 @@ export default {
     },
     handleError(message) {
       this.creatingGame = false;
-      this.snackbarStore.snackMessage = message;
-      this.snackbarStore.showSnackbar = true;
+      this.snackbarStore.alert(message);
       this.showCreateGameDialog = false;
     },
     logout() {
