@@ -4,10 +4,10 @@ import { ref } from 'vue';
 export const useSnackbarStore = defineStore('snackbar', () => {
   const showSnackbar = ref(false);
   const snackMessage = ref('');
-  const snackColor = ref('error');
+  const snackColor = ref('');
   const snackTimeout = ref(0);
 
-  function alert(message, color = 'error', timeout = 0) {
+  function alert(message, color = 'error', timeout = 5000) {
     snackColor.value = color;
     snackMessage.value = message;
     snackTimeout.value = timeout;
