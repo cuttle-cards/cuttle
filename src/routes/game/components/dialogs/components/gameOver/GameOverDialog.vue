@@ -284,8 +284,7 @@ export default {
         }
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
       } catch (e) {
-        this.snackbarStore.showSnackbar = true;
-        this.snackbarStore.snackMessage = 'Error requesting rematch';
+        this.snackbarStore.alert('Error requesting rematch')
         this.$router.push('/');
       }
     },
