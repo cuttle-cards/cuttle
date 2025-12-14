@@ -119,7 +119,7 @@ export default {
       }
     },
     handleError(message) {
-      this.snackbarStore.alert(this.t(message))
+      this.snackbarStore.alert(this.t(message));
       this.isLoggingIn = false;
     },
     clearForm() {

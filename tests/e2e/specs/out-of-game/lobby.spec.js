@@ -128,7 +128,7 @@ describe('Lobby - Page Content', () => {
 
     const expected = 'An unknown error has occured.';
 
-    assertSnackbar(expected)
+    assertSnackbar(expected);
   });
 
   it('Shows the message itself when it isnt a translated string', () => {
@@ -196,7 +196,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    assertSnackbar('Game Mode changed to Casual', 'surface-2')
+    assertSnackbar('Game Mode changed to Casual', 'surface-2');
 
     // stub for error
     cy.window()

@@ -147,7 +147,9 @@
             @click="drawCard"
           >
             <template v-if="!gameStore.resolvingSeven">
-              <v-card-actions class="c-deck-count"> ({{ deckLength }}) </v-card-actions>
+              <v-card-actions class="c-deck-count">
+                ({{ deckLength }})
+              </v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">
                 {{ t('game.pass') }}
               </h1>
@@ -305,7 +307,12 @@
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
-              <p v-for="(log, index) in logs" :key="index" class="my-2" data-cy="history-log">
+              <p
+                v-for="(log, index) in logs"
+                :key="index"
+                class="my-2"
+                data-cy="history-log"
+              >
                 {{ log }}
               </p>
             </div>
@@ -658,10 +665,10 @@ export default {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
           });
-          return [...opponentFaceCardIds, ...opponentJackIds];
+          return [ ...opponentFaceCardIds, ...opponentJackIds ];
         }
         case 1:
-          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [ this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id ];
         default:
           return [];
       }
@@ -681,10 +688,10 @@ export default {
           return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
-          let res = [...this.validFaceCardTargetIds];
+          let res = [ ...this.validFaceCardTargetIds ];
           // Nines can additionally target points if opponent has no queens
           if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
+            res = [ ...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id) ];
           }
           return res;
         }
@@ -755,7 +762,7 @@ export default {
   },
   methods: {
     handleError(messageKey) {
-      this.snackbarStore.alert(this.t(messageKey))
+      this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
