@@ -755,13 +755,11 @@ export default {
   },
   methods: {
     handleError(messageKey) {
-      this.snackbarStore.snackMessage = this.t(messageKey);
-      this.snackbarStore.showSnackbar = true;
+      this.snackbarStore.alert(this.t(messageKey))
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
       this.snackbarStore.alert(this.t(messageKey), 'surface-1');
-      this.snackbarStore.showSnackbar = true;
     },
     clearOverlays() {
       this.nineTargetIndex = null;
