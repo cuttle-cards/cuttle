@@ -24,15 +24,15 @@ export const useSnackbarStore = defineStore('snackbar', () => {
   }
 
   function getSnackMessage() {
-    return snackMessage.value
+    return snackMessage.value;
   }
 
   function getSnackColor() {
-    return snackColor.value
+    return snackColor.value;
   }
 
   function getSnackTimeout() {
-    return snackTimeout.value
+    return snackTimeout.value;
   }
 
   return {

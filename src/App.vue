@@ -5,7 +5,7 @@
       <RouterView />
     </v-main>
     <TheFooter v-if="showFooter" />
-    <TheSnackbar/>
+    <TheSnackbar />
   </v-app>
 </template>
 
