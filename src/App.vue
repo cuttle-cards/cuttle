@@ -5,14 +5,7 @@
       <RouterView />
     </v-main>
     <TheFooter v-if="showFooter" />
-    <BaseSnackbar
-      v-model="snackbarStore.showSnackbar"
-      :timeout="snackbarStore.snackTimeout"
-      :message="snackbarStore.snackMessage"
-      :color="snackbarStore.snackColor"
-      data-cy="global-snackbar"
-      @clear="snackbarStore.clear"
-    />
+    <TheSnackbar/>
   </v-app>
 </template>
 
@@ -20,10 +13,9 @@
 import { mapStores } from 'pinia';
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import TheSnackbar from '@/components/TheSnackbar.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import { useSnackbarStore } from '@/stores/snackbar';
 import { useGameListStore } from '@/stores/gameList';
 import { useMyGamesStore } from '@/stores/myGames';
 
@@ -31,7 +23,7 @@ export default {
   components: {
     TheHeader,
     TheFooter,
-    BaseSnackbar,
+    TheSnackbar,
   },
   data() {
     return {
@@ -39,7 +31,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore, useSnackbarStore),
+    ...mapStores(useAuthStore),
     isAuthenticated() {
       return this.authStore.authenticated;
     },
