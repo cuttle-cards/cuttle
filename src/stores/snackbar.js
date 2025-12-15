@@ -19,12 +19,28 @@ export const useSnackbarStore = defineStore('snackbar', () => {
     snackMessage.value = '';
   }
 
+  function getShowSnackbar() {
+    return showSnackbar.value;
+  }
+
+  function getSnackMessage() {
+    return snackMessage.value
+  }
+
+  function getSnackColor() {
+    return snackColor.value
+  }
+
+  function getSnackTimeout() {
+    return snackTimeout.value
+  }
+
   return {
-    showSnackbar,
-    snackMessage,
-    snackColor,
-    snackTimeout,
     alert,
     clear,
+    getShowSnackbar,
+    getSnackColor,
+    getSnackTimeout,
+    getSnackMessage,
   };
 });
