@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export const useSnackbarStore = defineStore('snackbar', () => {
   const showSnackbar = ref(false);
@@ -19,21 +19,13 @@ export const useSnackbarStore = defineStore('snackbar', () => {
     snackMessage.value = '';
   }
 
-  function getShowSnackbar() {
-    return showSnackbar.value;
-  }
+  const getShowSnackbar = computed(() => showSnackbar.value);
 
-  function getSnackMessage() {
-    return snackMessage.value;
-  }
+  const getSnackMessage = computed(() => snackMessage.value);
 
-  function getSnackColor() {
-    return snackColor.value;
-  }
+  const getSnackColor = computed(() => snackColor.value);
 
-  function getSnackTimeout() {
-    return snackTimeout.value;
-  }
+  const getSnackTimeout = computed(() => snackTimeout.value);
 
   return {
     alert,

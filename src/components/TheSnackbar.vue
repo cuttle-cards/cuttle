@@ -40,16 +40,16 @@ export default {
     ...mapStores(useSnackbarStore),
 
     showSnackbar() {
-      return this.snackbarStore.getShowSnackbar();
+      return this.snackbarStore.getShowSnackbar;
     },
     color() {
-      return this.snackbarStore.getSnackColor();
+      return this.snackbarStore.getSnackColor;
     },
     message() {
-      return this.snackbarStore.getSnackMessage();
+      return this.snackbarStore.getSnackMessage;
     },
     timeout() {
-      return this.snackbarStore.getSnackTimeout();
+      return this.snackbarStore.getSnackTimeout;
     },
   },
 
