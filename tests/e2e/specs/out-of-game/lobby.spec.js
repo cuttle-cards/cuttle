@@ -67,8 +67,7 @@ describe('Lobby - Page Content', () => {
     const { gameId } = this.gameSummary;
     // 1. Player hits ready
     cy.get('[data-cy=ready-button]').click();
-    cy.get('[data-cy=my-indicator] [data-cy="lobby-ready-card"]')
-      .should('exist');
+    cy.get('[data-cy=my-indicator] [data-cy="lobby-ready-card"]').should('exist');
 
     // 2. Opponent Signs up and readies
     cy.signupOpponent(opponentOne);
@@ -94,7 +93,8 @@ describe('Lobby - Page Content', () => {
       cy.get('#game-menu').should('be.visible')
         .get('[data-cy=concede-initiate]')
         .click();
-      cy.get('#request-gameover-dialog').should('be.visible')
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
         .click();
       // 7. Player hits the button to go home in the #game-over-dialog
@@ -109,12 +109,16 @@ describe('Lobby - Page Content', () => {
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
       cy.get('[data-cy=opponent-indicator]').contains(opponentTwo.username);
       cy.get('[data-cy=my-indicator] [data-cy="lobby-card-container"]').should('not.have.class', 'ready');
-      cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should('not.have.class', 'ready');
+      cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should(
+        'not.have.class',
+        'ready',
+      );
     });
   });
 
   it('shows error snackbar when ready() returns a translated error key', () => {
-    cy.window().its('cuttle.gameStore')
+    cy.window()
+      .its('cuttle.gameStore')
       .then((store) => {
         cy.stub(store, 'requestReady').rejects({ message: 'lobby.error.fallback' })
           .as('readyStub');
@@ -124,34 +128,23 @@ describe('Lobby - Page Content', () => {
 
     const expected = 'An unknown error has occured.';
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
-      .should('contain', expected);
-
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-error');
+    assertSnackbar(expected);
   });
 
-
   it('Shows the message itself when it isnt a translated string', () => {
-
     const generic = 'Random.message.that.isnt.translated';
 
-    cy.window().its('cuttle.gameStore')
+    cy.window()
+      .its('cuttle.gameStore')
       .then((store) => {
         cy.stub(store, 'requestReady').rejects({ message: generic });
       });
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
-      .should('contain', generic);
-
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-error');
+    assertSnackbar(generic);
   });
 });
-
-
 
 describe('Lobby - Page Content (Ranked)', () => {
   beforeEach(() => {
@@ -183,8 +176,7 @@ describe('Lobby - Page Content (Ranked)', () => {
   });
 
   it('Changes games to ranked and casual on pressing Enter', () => {
-    cy.get('[data-cy=edit-game-ranked-switch] input')
-      .focus()
+    cy.get('[data-cy=edit-game-ranked-switch] input').focus()
       .type('{enter}');
     // Set To Casual Mode
     cy.contains('Game Mode changed to').should('exist');
@@ -193,50 +185,33 @@ describe('Lobby - Page Content (Ranked)', () => {
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
     // Set To Ranked Mode
-    cy.get('[data-cy=edit-game-ranked-switch] input')
-      .focus()
+    cy.get('[data-cy=edit-game-ranked-switch] input').focus()
       .type('{enter}');
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
 
-  // Test correct snackbar 
+  // Test correct snackbar
   it('snackbar shows correct colours for ranked toggle and error', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
-      .should('contain', 'Game Mode changed to');
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-surface-2')
-      .and('not.have.class', 'bg-error');
-
-    cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+    assertSnackbar('Game Mode changed to Casual', 'surface-2');
 
     // stub for error
-    cy.window().its('cuttle.gameStore')
+    cy.window()
+      .its('cuttle.gameStore')
       .then((store) => {
         cy.stub(store, 'requestReady').rejects({ message: 'lobby.error.fallback' });
       });
 
     cy.get('[data-cy=ready-button]').click();
 
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__content')
-      .should('exist');
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-error')
-      .and('not.have.class', 'bg-surface-2');
-
-    cy.get('[data-cy=close-snackbar]').click();
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper').should('not.exist');
+    assertSnackbar('An unknown error has occured.');
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
-    cy.get('[data-cy=lobby-snackbar] .v-snackbar__wrapper')
-      .should('have.class', 'bg-surface-2')
-      .and('not.have.class', 'bg-error');
-    cy.get('[data-cy=close-snackbar]').click();
+    assertSnackbar('Game Mode changed to Ranked', 'surface-2');
   });
 });
 
@@ -713,10 +688,10 @@ describe('Lobby invite links', () => {
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('/lobby/100000');
-    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'error', 'newgame');
+    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'error');
     cy.visit('/rules');
     cy.visit('/');
-    cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
+    cy.get(`[data-cy=global-snackbar] .v-snackbar__wrapper`).should('not.exist');
   });
 
   it('Navigates Home and shows error snackbar when user visits invite link of full game', function () {
@@ -725,6 +700,6 @@ describe('Lobby invite links', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
     cy.visit(`/lobby/${this.gameSummary.gameId}`);
-    assertSnackbar(SnackBarError.GAME_IS_FULL, 'error', 'newgame');
+    assertSnackbar(SnackBarError.GAME_IS_FULL, 'error');
   });
 });

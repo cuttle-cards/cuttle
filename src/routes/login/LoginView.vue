@@ -167,12 +167,6 @@
                 </v-btn>
               </div>
             </div>
-            <BaseSnackbar
-              v-model="showSnackBar"
-              :message="snackBarMessage"
-              data-cy="auth-snackbar"
-              @clear="clearSnackBar"
-            />
           </v-col>
         </v-row>
       </v-container>
@@ -216,10 +210,10 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { useThemedLogo } from '@/composables/themedLogo';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import { useHead } from '@unhead/vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -227,7 +221,6 @@ import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 export default {
   name: 'LoginView',
   components: {
-    BaseSnackbar,
     BaseVideo,
     MarkdownContent,
     TheLanguageSelector,
@@ -256,8 +249,6 @@ export default {
     return {
       username: '',
       pw: '',
-      showSnackBar: false,
-      snackBarMessage: '',
       loading: false,
       showPass: false,
       isFormValid: false,
@@ -266,7 +257,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useSnackbarStore),
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
@@ -297,8 +288,8 @@ export default {
           this.handleError(this.t(this.$route.query.error));
           this.$router.replace('/');
         }
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (this.goingToForm) {
@@ -337,17 +328,12 @@ export default {
       }
       return this.$router.push(`/lobby/${lobbyRedirectId}`);
     },
-    oAuth(provider){
+    oAuth(provider) {
       this.authStore.oAuth(provider);
     },
     handleError(messageKey) {
-      this.showSnackBar = true;
-      this.snackBarMessage = this.t(messageKey);
+      this.snackbarStore.alert(this.t(messageKey));
       this.loading = false;
-    },
-    clearSnackBar() {
-      this.showSnackBar = false;
-      this.snackBarMessage = '';
     },
     isAlphaNumeric(val) {
       return /^[\w.@-]+$/.test(val) || 'Username must contain only letters or numbers';
