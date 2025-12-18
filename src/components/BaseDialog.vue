@@ -13,6 +13,7 @@
           <v-fab
             :active="isMinimized"
             color="primary"
+            class="dialog-activator"
             variant="flat"
             absolute
             location="center center"
@@ -162,5 +163,53 @@ export default {
     background-color: rgba(var(--v-theme-surface-2));
   }
 
+}
+
+.dialog-activator :deep(button) {
+  position: relative;
+  overflow: hidden;
+  animation: pulse-glow 2s infinite ease-in-out;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    animation: strong-shimmer 4s infinite;
+    z-index: 1;
+  }
+  
+  &:hover {
+    &::before {
+      animation: strong-shimmer 2s infinite;
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+    100% {
+      box-shadow: 0 0 15px rgba(225, 48, 108, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 35px rgba(225, 48, 108, 1);
+    }
+  }
+
+@keyframes strong-shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-20deg);
+  }
 }
 </style>
