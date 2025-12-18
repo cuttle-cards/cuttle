@@ -9,8 +9,9 @@
   >
     <template #activator="{ props }">
       <span v-bind="props">
-        <template v-if="minimizable && isMinimized">
+        <template v-if="minimizable">
           <v-fab
+            :active="isMinimized"
             color="primary"
             variant="flat"
             absolute
