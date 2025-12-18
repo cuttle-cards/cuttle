@@ -9,22 +9,21 @@
   >
     <template #activator="{ props }">
       <span v-bind="props">
-        <template v-if="minimizable">
-          <v-fab
-            :active="isMinimized"
-            color="primary"
-            class="dialog-activator"
-            variant="flat"
-            absolute
-            location="center center"
-            size="large"
-            transition="scale-transition"
-            :data-cy="`${id}-activator`"
-            @click="isMinimized = false"
-          >
-            {{ title }}
-          </v-fab>
-        </template>
+        <v-fab
+          v-if="minimizable"
+          :active="isMinimized"
+          color="primary"
+          class="dialog-activator"
+          variant="flat"
+          absolute
+          location="center center"
+          size="large"
+          transition="scale-transition"
+          :data-cy="`${id}-activator`"
+          @click="isMinimized = false"
+        >
+          {{ title }}
+        </v-fab>
         <slot v-else name="activator" />
       </span>
     </template>
