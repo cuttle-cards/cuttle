@@ -4,6 +4,7 @@
     id="choose-two-dialog"
     v-model="show"
     :title="t('game.dialogs.counterDialogs.chooseTwoTitle')"
+    :minimizable="true"
   >
     <template #body>
       <p class="mb-4">

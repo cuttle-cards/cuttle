@@ -1,5 +1,10 @@
 <template>
-  <BaseDialog id="counter-dialog" v-model="show" :title="t('game.dialogs.counterDialogs.counterTitle')">
+  <BaseDialog
+    id="counter-dialog"
+    v-model="show"
+    :title="t('game.dialogs.counterDialogs.counterTitle')"
+    :minimizable="true"
+  >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
         {{ t('game.dialogs.counterDialogs.opponentPlayed') }}
