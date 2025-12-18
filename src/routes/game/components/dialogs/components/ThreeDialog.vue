@@ -4,34 +4,9 @@
     id="three-dialog"
     v-model="show"
     scrollable
+    :title="t('game.dialogs.threeDialog.title')"
+    :minimizable="true"
   >
-    <template v-if="isMinimized" #activator>
-      <v-fab
-        color="primary"
-        variant="flat"
-        absolute
-        location="center center"
-        size="large"
-        transition="scale-transition"
-        data-cy="three-dialog-activator"
-        @click="isMinimized = false"
-      >
-        {{ t('game.dialogs.threeDialog.title') }}
-      </v-fab>
-    </template>
-    <template #title>
-      <div class="d-flex justify-space-between align-center w-100">
-        <h1>{{ t('game.dialogs.threeDialog.title') }}</h1>
-        <v-btn
-          icon="mdi-window-minimize"
-          color="surface-2"
-          variant="text"
-          data-cy="close-three-dialog-x"
-          aria-label="Close three dialog"
-          @click="minimizeDialog"
-        />
-      </div>
-    </template>
     <template #body>
       <div class="d-flex flex-wrap justify-center align-center my-8">
         <CardListSortable

@@ -104,7 +104,7 @@ describe('Playing THREEs', () => {
     });
   });
 
-  it.only('Closes and reopens ThreeDialog before selecting card', () => {
+  it('Closes and reopens ThreeDialog before selecting card', () => {
     const scrap = [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ];
 
     // Set Up
@@ -134,14 +134,14 @@ describe('Playing THREEs', () => {
     cy.get('[data-cy=three-resolve').should('be.disabled');
 
     // Close the dialog using the close button
-    cy.get('[data-cy="close-three-dialog-x"]').click();
+    cy.get('[data-cy="minimize-dialog-button"]').click();
     
     // Verify dialog is closed
     cy.get('#three-dialog').should('not.exist');
 
     // Reopen the dialog using the activator button
     // The activator button contains the dialog title text
-    cy.get('[data-cy="three-dialog-activator"] button').click();
+    cy.get('[data-cy="dialog-activator"] button').click();
 
     // Verify dialog is open again
     cy.get('#three-dialog').should('be.visible');

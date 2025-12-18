@@ -9,7 +9,21 @@
   >
     <template #activator="{ props }">
       <span v-bind="props">
-        <slot name="activator" />
+        <template v-if="minimizable && isMinimized">
+          <v-fab
+            color="primary"
+            variant="flat"
+            absolute
+            location="center center"
+            size="large"
+            transition="scale-transition"
+            data-cy="dialog-activator"
+            @click="isMinimized = false"
+          >
+            {{ title }}
+          </v-fab>
+        </template>
+        <slot v-else name="activator" />
       </span>
     </template>
     <v-card
@@ -21,9 +35,20 @@
       :style="`opacity:${opacity}`"
     >
       <v-card-title class="d-flex justify-space-between pt-4">
-        <h1 v-if="title">
-          {{ title }}
-        </h1>
+        <template v-if="title">
+          <h1>
+            {{ title }}
+          </h1>
+          <v-btn
+            v-if="minimizable"
+            icon="mdi-window-minimize"
+            color="surface-2"
+            variant="text"
+            data-cy="minimize-dialog-button"
+            aria-label="Minimize dialog"
+            @click="isMinimized = true"
+          />
+        </template>
 
         <slot v-else name="title" />
       </v-card-title>
@@ -74,12 +99,21 @@ export default {
       type: Number,
       default: 650,
     },
+    minimizable: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [ 'update:modelValue' ],
+  data() {
+    return {
+      isMinimized: false,
+    };
+  },
   computed: {
     show: {
       get() {
-        return this.modelValue;
+        return this.modelValue && !this.isMinimized;
       },
       set(val) {
         this.$emit('update:modelValue', val);
