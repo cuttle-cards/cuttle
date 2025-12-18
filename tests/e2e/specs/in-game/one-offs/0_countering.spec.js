@@ -104,7 +104,7 @@ describe('Countering One-Offs', () => {
     cy.get('#counter-dialog').should('be.visible');
     cy.get('[data-cy="minimize-dialog-button"]').click();
     cy.get('#counter-dialog').should('not.exist');
-    cy.get('[data-cy="dialog-activator"] button').click();
+    cy.get('[data-cy="counter-dialog-activator"] button').click();
     // Player counters
     cy.get('#counter-dialog').should('be.visible')
       .get('[data-cy=counter]')
@@ -113,7 +113,7 @@ describe('Countering One-Offs', () => {
     cy.get('#choose-two-dialog').should('be.visible');
     cy.get('[data-cy="minimize-dialog-button"]').click();
     cy.get('#choose-two-dialog').should('not.exist');
-    cy.get('[data-cy="dialog-activator"] button').click();
+    cy.get('[data-cy="counter-dialog-activator"] button').click();
     cy.get('#choose-two-dialog').should('be.visible')
       .get('[data-counter-dialog-card=2-3]')
       .click();

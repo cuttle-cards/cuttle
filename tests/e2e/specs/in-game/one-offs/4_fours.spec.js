@@ -340,13 +340,13 @@ describe('FOURS', () => {
         .click();
 
       // Four Dialog appears (you must discard)
-      cy.get('#four-discard-dialog').should('be.visible');
+      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
       // Minimize the dialog
       cy.get('[data-cy="minimize-dialog-button"]').click();
       // Reopen the dialog
-      cy.get('[data-cy="dialog-activator"] button').click();
+      cy.get('[data-cy="four-discard-dialog-activator"] button').click();
       // Verify dialog is open again
-      cy.get('#four-discard-dialog').should('be.visible');
+      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
       // Choosing cards to discard
       cy.log('Choosing two cards to discard');
       cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit

@@ -137,14 +137,14 @@ describe('Playing THREEs', () => {
     cy.get('[data-cy="minimize-dialog-button"]').click();
     
     // Verify dialog is closed
-    cy.get('#three-dialog').should('not.exist');
+    cy.get('[data-cy=three-dialog]').should('not.exist');
 
     // Reopen the dialog using the activator button
     // The activator button contains the dialog title text
-    cy.get('[data-cy="dialog-activator"] button').click();
+    cy.get('[data-cy="three-dialog-activator"] button').click();
 
     // Verify dialog is open again
-    cy.get('#three-dialog').should('be.visible');
+    cy.get('[data-cy=three-dialog]').should('be.visible');
     cy.get('[data-cy=three-resolve').should('be.disabled');
 
     // Player selects a card from scrap

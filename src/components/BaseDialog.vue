@@ -19,7 +19,7 @@
             location="center center"
             size="large"
             transition="scale-transition"
-            data-cy="dialog-activator"
+            :data-cy="`${id}-activator`"
             @click="isMinimized = false"
           >
             {{ title }}
