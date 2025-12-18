@@ -3,7 +3,7 @@
     id="counter-dialog"
     v-model="show"
     :title="t('game.dialogs.counterDialogs.counterTitle')"
-    :minimizable="true"
+    minimizable
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">

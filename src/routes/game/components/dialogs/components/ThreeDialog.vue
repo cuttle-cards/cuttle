@@ -5,7 +5,7 @@
     v-model="show"
     scrollable
     :title="t('game.dialogs.threeDialog.title')"
-    :minimizable="true"
+    minimizable
   >
     <template #body>
       <div class="d-flex flex-wrap justify-center align-center my-8">

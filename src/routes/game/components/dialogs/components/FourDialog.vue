@@ -3,7 +3,7 @@
     id="four-discard-dialog"
     v-model="show"
     :title="t('game.dialogs.four.discardTwoCards')"
-    :minimizable="true"
+    minimizable
   >
     <template #body>
       <p class="mb-4">

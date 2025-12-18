@@ -3,7 +3,7 @@
     id="seven-double-jacks-dialog"
     v-model="show"
     :title="t('game.dialogs.sevenDoubleJacksDialog.title')"
-    :minimizable="true"
+    minimizable
   >
     <template #body>
       <span>{{ t('game.dialogs.sevenDoubleJacksDialog.cannotMove') }}</span>
