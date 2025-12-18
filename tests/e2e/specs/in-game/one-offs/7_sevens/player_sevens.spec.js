@@ -198,6 +198,10 @@ describe('Playing SEVENS', () => {
         .get('[data-seven-double-jacks-dialog-card=11-0]')
         .click();
 
+      cy.get('[data-cy="minimize-dialog-button"]').click();
+      cy.get('#seven-double-jacks-dialog').should('not.exist');
+      cy.get('[data-cy="dialog-activator"] button').click();
+      cy.get('#seven-double-jacks-dialog').should('be.visible');
       cy.get('[data-cy=seven-double-jacks-resolve]').click();
 
       assertGameState(0, {
