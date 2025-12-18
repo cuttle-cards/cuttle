@@ -267,6 +267,7 @@ describe('FIVES', () => {
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
         cy.get('[data-cy="minimize-dialog-button"]').click();
+        cy.get('[data-cy=five-discard-dialog]').should('not.exist');
         cy.get('[data-cy="dialog-activator"] button').click();
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
         cy.get('[data-discard-card=2-0]').click();
