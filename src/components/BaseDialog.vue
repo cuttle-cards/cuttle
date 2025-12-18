@@ -192,6 +192,12 @@ export default {
       animation: strong-shimmer 2s infinite;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      animation: none;
+    }
+  }
 }
 
 @keyframes pulse-glow {
