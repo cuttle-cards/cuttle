@@ -18,7 +18,7 @@
           absolute
           location="center center"
           size="large"
-          transition="scale-transition"
+          transition="fab-transition"
           :data-cy="`${id}-activator`"
           @click="isMinimized = false"
         >
