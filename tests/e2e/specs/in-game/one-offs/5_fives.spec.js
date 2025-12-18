@@ -253,6 +253,35 @@ describe('FIVES', () => {
         });
       });
 
+      it('Minimizes FiveDialog and reopens it before discarding', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.ACE_OF_CLUBS ],
+        });
+
+        cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+        cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+        cy.get('[data-cy="minimize-dialog-button"]').click();
+        cy.get('[data-cy="dialog-activator"] button').click();
+        cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+        cy.get('[data-discard-card=2-0]').click();
+        cy.get('[data-cy=submit-five-dialog]').click();
+
+        assertGameState(0, {
+          p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+        });
+      });
+
       it('Plays multiple 5s', () => {
         cy.loadGameFixture(0, {
           // Player is P0
