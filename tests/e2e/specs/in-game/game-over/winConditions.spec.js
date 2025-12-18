@@ -288,6 +288,10 @@ describe('Stalemates', () => {
       // Opponent requests stalemate
       cy.stalemateOpponent();
 
+      cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
+      cy.get('[data-cy="minimize-dialog-button"]').click();
+      cy.get('#opponent-requested-stalemate-dialog').should('not.exist');
+      cy.get('[data-cy="dialog-activator"] button').click();
       // Player accepts stalemate
       cy.get('#opponent-requested-stalemate-dialog')
         .should('be.visible')
