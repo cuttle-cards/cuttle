@@ -3,8 +3,8 @@
     v-if="oneOff"
     id="three-dialog"
     v-model="show"
-    scrollable
     :title="t('game.dialogs.threeDialog.title')"
+    scrollable
     minimizable
   >
     <template #body>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
@@ -60,68 +59,48 @@ export default {
     },
   },
   emits: [ 'resolveThree' ],
-  setup(props, { emit }) {
+  setup() {
     const { t } = useI18n();
-    const isMinimized = ref(false);
-    const selectedCard = ref(null);
-
-    // Dialog shows only when modelValue is true AND isMinimized is false
-    const show = computed({
+    return { t };
+  },
+  data() {
+    return {
+      choseToCounter: false,
+      selectedCard: null,
+    };
+  },
+  computed: {
+    show: {
       get() {
-        return props.modelValue && !isMinimized.value;
+        return this.modelValue;
       },
       set() {
         // do nothing - parent controls whether dialog is open
       },
-    });
-
-    // Reset isMinimized when modelValue becomes true (dialog reopened via activator)
-    watch(() => props.modelValue, (newValue) => {
-      if (newValue) {
-        isMinimized.value = false;
-      }
-    });
-
-    const minimizeDialog = () => {
-      isMinimized.value = true;
-    };
-
-    const selectedIds = computed(() => {
+    },
+    selectedIds() {
       const res = [];
-      if (selectedCard.value) {
-        res.push(selectedCard.value.id);
+      if (this.selectedCard) {
+        res.push(this.selectedCard.id);
       }
       return res;
-    });
-
-    const moveToHand = () => {
-      emit('resolveThree', selectedCard.value.id);
-      clearSelection();
-    };
-
-    const selectCard = (card) => {
-      if (selectedCard.value && card.id === selectedCard.value.id) {
-        clearSelection();
+    },
+  },
+  methods: {
+    moveToHand() {
+      this.$emit('resolveThree', this.selectedCard.id);
+      this.clearSelection();
+    },
+    selectCard(card) {
+      if (this.selectedCard && card.id === this.selectedCard.id) {
+        this.clearSelection();
       } else {
-        selectedCard.value = card;
+        this.selectedCard = card;
       }
-    };
-
-    const clearSelection = () => {
-      selectedCard.value = null;
-    };
-
-    return {
-      t,
-      show,
-      isMinimized,
-      selectedCard,
-      selectedIds,
-      minimizeDialog,
-      moveToHand,
-      selectCard,
-      clearSelection,
-    };
+    },
+    clearSelection() {
+      this.selectedCard = null;
+    },
   },
 };
 </script>
