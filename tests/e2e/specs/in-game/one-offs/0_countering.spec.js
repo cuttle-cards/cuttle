@@ -84,7 +84,7 @@ describe('Countering One-Offs', () => {
     });
   });
 
-  it.only('Minizes counter dialogs', () => {
+  it('Minizes counter dialogs', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
