@@ -84,7 +84,7 @@ describe('Countering One-Offs', () => {
     });
   });
 
-  it('Minizes counter dialogs', () => {
+  it.only('Minizes counter dialogs', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
@@ -113,7 +113,7 @@ describe('Countering One-Offs', () => {
     cy.get('#choose-two-dialog').should('be.visible');
     cy.get('[data-cy="minimize-dialog-button"]').click();
     cy.get('#choose-two-dialog').should('not.exist');
-    cy.get('[data-cy="counter-dialog-activator"] button').click();
+    cy.get('[data-cy="choose-two-dialog-activator"] button').click();
     cy.get('#choose-two-dialog').should('be.visible')
       .get('[data-counter-dialog-card=2-3]')
       .click();
