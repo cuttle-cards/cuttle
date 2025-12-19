@@ -322,6 +322,49 @@ describe('FOURS', () => {
       });
     });
 
+    it('Minimizes FourDialog and reopens it before discarding', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Opponent plays four
+      cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
+      // Player cannot counter
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      // Four Dialog appears (you must discard)
+      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
+      // Minimize the dialog
+      cy.get('[data-cy="minimize-dialog-button"]').click();
+      // Reopen the dialog
+      cy.get('[data-cy="four-discard-dialog-activator"] button').click();
+      // Verify dialog is open again
+      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
+      // Choosing cards to discard
+      cy.log('Choosing two cards to discard');
+      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
+      cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
+      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
+      cy.get('[data-discard-card=4-3]').click(); // four of spades
+      cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES ],
+      });
+    });
     it('Discards last card when FOURd with one card in hand', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],

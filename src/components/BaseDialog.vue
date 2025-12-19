@@ -9,7 +9,22 @@
   >
     <template #activator="{ props }">
       <span v-bind="props">
-        <slot name="activator" />
+        <v-fab
+          v-if="minimizable"
+          :active="isMinimized"
+          color="primary"
+          class="dialog-activator"
+          variant="flat"
+          absolute
+          location="center center"
+          size="large"
+          transition="fab-transition"
+          :data-cy="`${id}-activator`"
+          @click="isMinimized = false"
+        >
+          {{ title }}
+        </v-fab>
+        <slot v-else name="activator" />
       </span>
     </template>
     <v-card
@@ -21,9 +36,20 @@
       :style="`opacity:${opacity}`"
     >
       <v-card-title class="d-flex justify-space-between pt-4">
-        <h1 v-if="title">
-          {{ title }}
-        </h1>
+        <template v-if="title">
+          <h1>
+            {{ title }}
+          </h1>
+          <v-btn
+            v-if="minimizable"
+            icon="mdi-window-minimize"
+            color="surface-2"
+            variant="text"
+            data-cy="minimize-dialog-button"
+            aria-label="Minimize dialog"
+            @click="isMinimized = true"
+          />
+        </template>
 
         <slot v-else name="title" />
       </v-card-title>
@@ -74,12 +100,21 @@ export default {
       type: Number,
       default: 650,
     },
+    minimizable: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [ 'update:modelValue' ],
+  data() {
+    return {
+      isMinimized: false,
+    };
+  },
   computed: {
     show: {
       get() {
-        return this.modelValue;
+        return this.modelValue && !this.isMinimized;
       },
       set(val) {
         this.$emit('update:modelValue', val);
@@ -127,5 +162,59 @@ export default {
     background-color: rgba(var(--v-theme-surface-2));
   }
 
+}
+
+.dialog-activator :deep(button) {
+  position: relative;
+  overflow: hidden;
+  animation: pulse-glow 2s infinite ease-in-out;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    animation: strong-shimmer 4s infinite;
+    z-index: 1;
+  }
+  
+  &:hover {
+    &::before {
+      animation: strong-shimmer 2s infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      animation: none;
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+    100% {
+      box-shadow: 0 0 15px rgba(225, 48, 108, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 35px rgba(225, 48, 108, 1);
+    }
+  }
+
+@keyframes strong-shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-20deg);
+  }
 }
 </style>

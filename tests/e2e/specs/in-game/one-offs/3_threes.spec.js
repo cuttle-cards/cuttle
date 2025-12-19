@@ -104,6 +104,65 @@ describe('Playing THREEs', () => {
     });
   });
 
+  it('Closes and reopens ThreeDialog before selecting card', () => {
+    const scrap = [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ];
+
+    // Set Up
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.THREE_OF_CLUBS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap,
+    });
+
+    // Player plays three
+    cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
+    cy.get('[data-move-choice=oneOff]').click();
+
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+    cy.resolveOpponent();
+
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+    cy.get('[data-cy="history-log"]').should('contain', 'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.');
+
+    cy.get('#three-dialog').should('be.visible');
+    // resolve button should be disabled
+    cy.get('[data-cy=three-resolve').should('be.disabled');
+
+    // Close the dialog using the close button
+    cy.get('[data-cy="minimize-dialog-button"]').click();
+    
+    // Verify dialog is closed
+    cy.get('[data-cy=three-dialog]').should('not.exist');
+
+    // Reopen the dialog using the activator button
+    // The activator button contains the dialog title text
+    cy.get('[data-cy="three-dialog-activator"] button').click();
+
+    // Verify dialog is open again
+    cy.get('[data-cy=three-dialog]').should('be.visible');
+    cy.get('[data-cy=three-resolve').should('be.disabled');
+
+    // Player selects a card from scrap
+    cy.get('[data-three-dialog-card=10-2]').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+      .click();
+
+    assertGameState(0, {
+      p0Hand: [ Card.TEN_OF_HEARTS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ],
+    });
+  });
+
   it('Opponent plays 3s successfully', () => {
     // Set Up
     cy.loadGameFixture(0, {

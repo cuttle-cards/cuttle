@@ -3,6 +3,7 @@
     id="opponent-requested-stalemate-dialog"
     v-model="show"
     :title="t('game.dialogs.opponentRequestedStalemateDialog.title')"
+    minimizable
   >
     <template #body>
       <p>{{ t('game.dialogs.opponentRequestedStalemateDialog.opponentHasRequested') }} </p>

@@ -84,6 +84,58 @@ describe('Countering One-Offs', () => {
     });
   });
 
+  it('Minizes counter dialogs', () => {
+    cy.loadGameFixture(1, {
+      // Opponent is P0
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      // Player is P1
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+    });
+
+    // Opponent plays ace of clubs as one-off
+    cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+    cy.get('#cannot-counter-dialog').should('not.exist');
+
+    // Minimize ChooseWhetherToCounterDialog, then re-open
+    cy.get('#counter-dialog').should('be.visible');
+    cy.get('[data-cy="minimize-dialog-button"]').click();
+    cy.get('#counter-dialog').should('not.exist');
+    cy.get('[data-cy="counter-dialog-activator"] button').click();
+    // Player counters
+    cy.get('#counter-dialog').should('be.visible')
+      .get('[data-cy=counter]')
+      .click();
+    // Minimize ChooseTwoDialog and re-open
+    cy.get('#choose-two-dialog').should('be.visible');
+    cy.get('[data-cy="minimize-dialog-button"]').click();
+    cy.get('#choose-two-dialog').should('not.exist');
+    cy.get('[data-cy="choose-two-dialog-activator"] button').click();
+    cy.get('#choose-two-dialog').should('be.visible')
+      .get('[data-counter-dialog-card=2-3]')
+      .click();
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    // Opponent resolves
+    cy.resolveOpponent();
+
+    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+
+    assertGameState(1, {
+      // Opponent is P0
+      p0Hand: [ Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      // Player is P1
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.TWO_OF_SPADES, Card.ACE_OF_CLUBS ],
+    });
+  });
+
   it('Declining option to counter resolves stack', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
