@@ -201,7 +201,7 @@
                   </div>
                 </Transition>  -->
                 <GameCard
-                  v-for="(card, index) in scrap.slice(0, 10)"
+                  v-for="(card, index) in scrapDisplay"
                   :key="`scrap-card-${card.id}`"
                   :suit="card.suit"
                   :rank="card.rank"
@@ -209,7 +209,24 @@
                   data-cy="scrap-card"
                   class="position-absolute"
                   :class="`scrap-card-${index % 10}`"
-                />
+                >
+                  <template v-if="index === scrapDisplay.length - 1" #overlay>
+                    <v-overlay
+                      :model-value="true"
+                      contained
+                      persistent
+                      scrim="surface-1"
+                      opacity=".46"
+                      class="d-flex flex-column justify-space-around align-center"
+                    >
+                      <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+                      <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
+                      <v-btn variant="outlined" color="surface-2">
+                        View Scrap
+                      </v-btn>
+                    </v-overlay>
+                  </template>
+                </GameCard>
               </div>
             </template>
           </ScrapDialog>
@@ -516,6 +533,9 @@ export default {
     },
     scrap() {
       return this.gameStore.scrap;
+    },
+    scrapDisplay() {
+      return this.scrap.slice(0, 10);
     },
     logs() {
       return this.gameHistoryStore.log;
@@ -1327,6 +1347,13 @@ export default {
   }
   & #scrap {
     cursor: pointer;
+    & #scrap-header {
+      font-family: 'Luckiest Guy';
+      color: rgba(var(--v-theme-surface-2));
+      text-align: center;
+      font-size: 40px;
+      line-height: 40px;
+    }
     @for $i from 0 through 10 {
       & .scrap-card-#{$i} {
         $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */

@@ -23,10 +23,7 @@
       contained
       class="valid-move target-overlay"
     />
-    <v-overlay
-      v-if="scrim"
-      contained
-    />
+    <slot name="overlay" />
     <Transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
         <img

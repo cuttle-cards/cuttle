@@ -4,6 +4,7 @@
     v-model="show"
     :scrollable="true"
     :persistent="false"
+    :attach="false"
   >
     <template #activator="{ props }">
       <span v-bind="props">
