@@ -1334,8 +1334,6 @@ export default {
         $translateY: sin($i * 60) * 5px;
 
         transform: translate($translateX, $translateY) rotate($rotation);
-
-        filter: drop-shadow(#{abs(sin($i * 90)) * 0.5}px #{abs(cos($i * 90)) * 0.5}px 2px rgba(0,0,0,0.1));
       }
     }
   }
