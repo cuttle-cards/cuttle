@@ -184,7 +184,7 @@
           <ScrapDialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
-                <Transition :name="threesTransition">
+                <!-- <Transition :name="threesTransition">
                   <GameCard
                     v-if="showScrapChoice"
                     :suit="gameStore.lastEventCardChosen.suit"
@@ -199,7 +199,17 @@
                       {{ $t('game.view') }}
                     </v-btn>
                   </div>
-                </Transition>
+                </Transition>  -->
+                <GameCard
+                  v-for="(card, index) in scrap.slice(0, 10)"
+                  :key="`scrap-card-${card.id}`"
+                  :suit="card.suit"
+                  :rank="card.rank"
+                  :custom-elevation="index"
+                  data-cy="scrap-card"
+                  class="position-absolute"
+                  :class="`scrap-card-${index % 10}`"
+                />
               </div>
             </template>
           </ScrapDialog>
@@ -1317,6 +1327,17 @@ export default {
   }
   & #scrap {
     background-image: url('/img/game/bg-scrap.png');
+    @for $i from 0 through 10 {
+      & .scrap-card-#{$i} {
+        $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
+        $translateX: cos($i * 45) * 8px; /* cos(degrees) returns -1 to 1 */
+        $translateY: sin($i * 60) * 5px;
+
+        transform: translate($translateX, $translateY) rotate($rotation);
+
+        filter: drop-shadow(#{abs(sin($i * 90)) * 0.5}px #{abs(cos($i * 90)) * 0.5}px 2px rgba(0,0,0,0.1));
+      }
+    }
   }
 }
 #field-center {

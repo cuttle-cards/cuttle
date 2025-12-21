@@ -23,6 +23,10 @@
       contained
       class="valid-move target-overlay"
     />
+    <v-overlay
+      v-if="scrim"
+      contained
+    />
     <Transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
         <img
@@ -103,6 +107,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    customElevation: {
+      type: Number,
+      default: null,
+    },
+    scrim: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     suitName() {
@@ -155,6 +167,9 @@ export default {
       return `${this.rankName} of ${this.suitName}`;
     },
     elevation() {
+      if (this.customElevation !== null) {
+        return this.customElevation;
+      }
       if (this.isGlasses) {
         return '0';
       }
