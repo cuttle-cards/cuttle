@@ -1326,7 +1326,7 @@ export default {
     background-image: url('/img/game/bg-deck.png');
   }
   & #scrap {
-    background-image: url('/img/game/bg-scrap.png');
+    cursor: pointer;
     @for $i from 0 through 10 {
       & .scrap-card-#{$i} {
         $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
