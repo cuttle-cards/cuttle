@@ -183,51 +183,7 @@
           </v-card>
           <ScrapDialog :scrap="scrap">
             <template #activator>
-              <div id="scrap" class="d-flex flex-column align-center">
-                <!-- <Transition :name="threesTransition">
-                  <GameCard
-                    v-if="showScrapChoice"
-                    :suit="gameStore.lastEventCardChosen.suit"
-                    :rank="gameStore.lastEventCardChosen.rank"
-                    class="gameCard"
-                    data-cy="scrap-chosen-card"
-                  />
-                  <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('game.scrap') }}</h3>
-                    <span>({{ scrap.length }})</span>
-                    <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('game.view') }}
-                    </v-btn>
-                  </div>
-                </Transition>  -->
-                <GameCard
-                  v-for="(card, index) in scrapDisplay"
-                  :key="`scrap-card-${card.id}`"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  :custom-elevation="index"
-                  data-cy="scrap-card"
-                  class="position-absolute"
-                  :class="`scrap-card-${index % 10}`"
-                >
-                  <template v-if="index === scrapDisplay.length - 1" #overlay>
-                    <v-overlay
-                      :model-value="true"
-                      contained
-                      persistent
-                      scrim="surface-1"
-                      opacity=".46"
-                      class="d-flex flex-column justify-space-around align-center"
-                    >
-                      <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
-                      <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-                      <v-btn variant="outlined" color="surface-2">
-                        View Scrap
-                      </v-btn>
-                    </v-overlay>
-                  </template>
-                </GameCard>
-              </div>
+
             </template>
           </ScrapDialog>
         </div>
@@ -533,9 +489,6 @@ export default {
     },
     scrap() {
       return this.gameStore.scrap;
-    },
-    scrapDisplay() {
-      return this.scrap.slice(0, 10);
     },
     logs() {
       return this.gameHistoryStore.log;
@@ -1323,8 +1276,7 @@ export default {
       color: white;
     }
   }
-  & #deck,
-  & #scrap {
+  & #deck {
     background-size: cover;
     position: relative;
     margin: 10px;
@@ -1335,6 +1287,7 @@ export default {
     justify-content: center;
     align-items: center;
     transition: all 0.3 ease-in-out;
+    background-image: url('/img/game/bg-deck.png');
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);
@@ -1342,28 +1295,7 @@ export default {
       z-index: 1;
     }
   }
-  & #deck {
-    background-image: url('/img/game/bg-deck.png');
-  }
-  & #scrap {
-    cursor: pointer;
-    & #scrap-header {
-      font-family: 'Luckiest Guy';
-      color: rgba(var(--v-theme-surface-2));
-      text-align: center;
-      font-size: 40px;
-      line-height: 40px;
-    }
-    @for $i from 0 through 10 {
-      & .scrap-card-#{$i} {
-        $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
-        $translateX: cos($i * 45) * 8px; /* cos(degrees) returns -1 to 1 */
-        $translateY: sin($i * 60) * 5px;
 
-        transform: translate($translateX, $translateY) rotate($rotation);
-      }
-    }
-  }
 }
 #field-center {
   width: 100%;
@@ -1601,8 +1533,7 @@ export default {
 
   #field-left {
     flex-direction: row;
-    & #deck,
-    & #scrap {
+    & #deck {
       height: 13vh;
       width: calc(13vh / 1.3);
     }
