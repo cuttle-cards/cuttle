@@ -18,13 +18,6 @@
                     class="gameCard"
                     data-cy="scrap-chosen-card"
                   />
-                  <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('game.scrap') }}</h3>
-                    <span>({{ scrap.length }})</span>
-                    <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('game.view') }}
-                    </v-btn>
-                  </div>
                 </Transition>  -->
           <GameCard
             v-for="(card, index) in scrapDisplay"
@@ -53,6 +46,13 @@
               </v-overlay>
             </template>
           </GameCard>
+          <div v-if="!scrap.length" id="empty-scrap-activator">
+            <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+            <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
+            <v-btn variant="outlined" color="surface-2">
+              View Scrap
+            </v-btn>
+          </div>
         </div>
       </span>
     </template>
@@ -152,6 +152,18 @@ export default {
       text-align: center;
       font-size: 40px;
       line-height: 40px;
+    }
+
+    & #empty-scrap-activator {
+      height: 100%;
+      width: 100%;
+      background-color: rgba(var(--v-theme-surface-1), .46);
+      padding: 16px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
     }
 
     @for $i from 0 through 10 {
