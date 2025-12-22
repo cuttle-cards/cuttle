@@ -364,6 +364,9 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
+    const three = game.resolved;
+    scrap.value.push(three);
+    await sleep(800);
     lastEventCardChosen.value = chosenCard;
     await sleep(1200);
     updateGame(game);
