@@ -24,7 +24,7 @@
             :key="`scrap-card-${card.id}`"
             :suit="card.suit"
             :rank="card.rank"
-            :custom-elevation="index"
+            :custom-elevation="index > straightendIndex ? index : 0"
             data-cy="scrap-card"
             class="position-absolute scrap-card"
             :class="index > straightendIndex ? `scrap-card-${index % 10}` : ''"
@@ -40,7 +40,7 @@
               >
                 <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
                 <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-                <v-btn variant="outlined" color="surface-2" @click="straightendIndex = scrap.length">
+                <v-btn variant="outlined" color="surface-2" @click="lastStraightenedCardId = scrap[scrap.length -1].id">
                   View Scrap
                 </v-btn>
               </v-overlay>
@@ -123,13 +123,16 @@ export default {
   data() {
     return {
       show: false,
-      straightendIndex: -1,
+      lastStraightenedCardId: null,
     };
   },
   computed: {
     scrapDisplay() {
-      return this.scrap;
+      return this.scrap.slice(-10);
     },
+    straightendIndex() {
+      return this.scrapDisplay.map(card => card.id).indexOf(this.lastStraightenedCardId);
+    }
   }
 };
 </script>
