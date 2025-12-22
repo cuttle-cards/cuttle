@@ -44,7 +44,7 @@
                 class="d-flex flex-column justify-space-around align-center rounded-lg"
               >
                 <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
-                <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
+                <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
                 <v-btn variant="outlined" color="surface-2">
                   View Scrap
                 </v-btn>
@@ -159,13 +159,17 @@ function onActivatorClick(e) {
     align-items: center;
     transition: all 0.3 ease-in-out;
     cursor: pointer;
-
+    
     & #scrap-header {
       font-family: 'Luckiest Guy';
       color: rgba(var(--v-theme-surface-2));
       text-align: center;
       font-size: 40px;
       line-height: 40px;
+    }
+
+    & #scrap-length {
+      font-family: 'Luckiest Guy';
     }
 
     & #empty-scrap-activator {
