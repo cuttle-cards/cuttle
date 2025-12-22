@@ -226,6 +226,7 @@ function onActivatorClick(e) {
 .threes-opponent-enter-from {
   opacity: 0;
   transform: scale(.7);
+  transform: rotate(10deg);
 }
 .threes-player-leave-to {
   opacity: 0;
