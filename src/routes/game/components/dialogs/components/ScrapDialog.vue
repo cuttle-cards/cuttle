@@ -208,9 +208,6 @@ function onActivatorClick(e) {
 }
 
 .scrap-chosen-card {
-  // transition: opacity 1s ease in, transform 3s ease-in;
-  // transition: opacity 3s ease-in;
-  // transition: transform 3s ease-in;
   transition: all 1.2s ease-in;
 }
 

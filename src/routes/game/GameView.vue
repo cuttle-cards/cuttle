@@ -1116,10 +1116,6 @@ export default {
   transition: all 1s ease-out;
 }
 
-.scrapPile {
-  transition: all 1s ease;
-}
-
 ////////////
 // Styles //
 ////////////
