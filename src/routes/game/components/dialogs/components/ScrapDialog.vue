@@ -26,8 +26,8 @@
             :rank="card.rank"
             :custom-elevation="index"
             data-cy="scrap-card"
-            class="position-absolute"
-            :class="`scrap-card-${index % 10}`"
+            class="position-absolute scrap-card"
+            :class="index > straightendIndex ? `scrap-card-${index % 10}` : ''"
           >
             <template v-if="index === scrapDisplay.length - 1" #overlay>
               <v-overlay
@@ -40,7 +40,7 @@
               >
                 <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
                 <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-                <v-btn variant="outlined" color="surface-2">
+                <v-btn variant="outlined" color="surface-2" @click="straightendIndex = scrap.length">
                   View Scrap
                 </v-btn>
               </v-overlay>
@@ -49,7 +49,7 @@
           <div v-if="!scrap.length" id="empty-scrap-activator">
             <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
             <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-            <v-btn variant="outlined" color="surface-2">
+            <v-btn variant="outlined" color="surface-2" >
               View Scrap
             </v-btn>
           </div>
@@ -123,11 +123,12 @@ export default {
   data() {
     return {
       show: false,
+      straightendIndex: -1,
     };
   },
   computed: {
     scrapDisplay() {
-      return this.scrap.slice(-10);
+      return this.scrap;
     },
   }
 };
@@ -164,6 +165,10 @@ export default {
       flex-direction: column;
       justify-content: space-around;
       align-items: center;
+    }
+
+    & .scrap-card {
+      transition: transform .3s ease-in;
     }
 
     @for $i from 0 through 10 {
