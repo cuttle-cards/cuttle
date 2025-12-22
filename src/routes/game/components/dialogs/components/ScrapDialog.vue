@@ -15,33 +15,35 @@
       >
         <slot name="activator" />
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <GameCard
-            v-for="(card, index) in scrapDisplay"
-            :key="`scrap-card-${card.id}`"
-            :suit="card.suit"
-            :rank="card.rank"
-            :custom-elevation="index > straightendIndex ? index : 0"
-            data-cy="scrap-card"
-            class="position-absolute scrap-card"
-            :class="index > straightendIndex ? `scrap-card-${index % 10}` : ''"
-          >
-            <template v-if="index === scrapDisplay.length - 1" #overlay>
-              <v-overlay
-                :model-value="true"
-                contained
-                persistent
-                scrim="surface-1"
-                opacity=".46"
-                class="d-flex flex-column justify-space-around align-center rounded-lg"
-              >
-                <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
-                <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                <v-btn variant="outlined" color="surface-2">
-                  View Scrap
-                </v-btn>
-              </v-overlay>
-            </template>
-          </GameCard>
+          <TransitionGroup name="scrap-card">
+            <GameCard
+              v-for="(card, index) in scrapDisplay"
+              :key="`scrap-card-${card.id}`"
+              :suit="card.suit"
+              :rank="card.rank"
+              :custom-elevation="index > straightendIndex ? index : 0"
+              data-cy="scrap-card"
+              class="position-absolute scrap-card"
+              :class="index > straightendIndex ? `scrap-card-${index % 10}` : ''"
+            >
+              <template v-if="index === scrapDisplay.length - 1" #overlay>
+                <v-overlay
+                  :model-value="true"
+                  contained
+                  persistent
+                  scrim="surface-1"
+                  opacity=".46"
+                  class="d-flex flex-column justify-space-around align-center rounded-lg"
+                >
+                  <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+                  <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
+                  <v-btn variant="outlined" color="surface-2">
+                    View Scrap
+                  </v-btn>
+                </v-overlay>
+              </template>
+            </GameCard>
+          </TransitionGroup>
           <Transition :name="threesTransition">
             <GameCard
               v-if="showScrapChoice"
@@ -209,6 +211,15 @@ function onActivatorClick(e) {
 
 .scrap-chosen-card {
   transition: all 1.2s ease-in;
+}
+
+#scrap .scrap-card.scrap-card-enter-from {
+  opacity: 0;
+  transform: rotate(0deg) translateX(100px);
+}
+
+#scrap .scrap-card-leave-active, #scrap .scrap-card-enter-active {
+  transition: all 0.8s ease-out;
 }
 
 .threes-player-enter-from,
