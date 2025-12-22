@@ -7,9 +7,14 @@
     :attach="false"
   >
     <template #activator="{ props }">
-      <span v-bind="props">
+      <span
+        v-bind="props"
+        @click="onActivatorClick"
+        @mousedown="onActivatorMouseDown"
+        @touchstart="onActivatorTouchStart"
+      >
         <slot name="activator" />
-        <div id="scrap" class="d-flex flex-column align-center">
+        <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
           <!-- <Transition :name="threesTransition">
                   <GameCard
                     v-if="showScrapChoice"
@@ -40,7 +45,7 @@
               >
                 <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
                 <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-                <v-btn variant="outlined" color="surface-2" @click="lastStraightenedCardId = scrap[scrap.length -1].id">
+                <v-btn variant="outlined" color="surface-2">
                   View Scrap
                 </v-btn>
               </v-overlay>
@@ -98,8 +103,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { onLongPress } from '@vueuse/core';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -115,9 +121,39 @@ const { t } = useI18n();
 
 const show = ref(false);
 const lastStraightenedCardId = ref(null);
+const scrapWrapper = useTemplateRef('scrap');
+const isLongPressing = ref(false);
 
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
+
+// Straighten pile on long press; prevent opening dialog
+onLongPress(scrapWrapper, () => {
+  isLongPressing.value = true;
+  lastStraightenedCardId.value = props.scrap[props.scrap.length -1].id;
+}, {
+  stop: true
+});
+
+// Prevent dialog on long press
+const onActivatorClick = (e) => {
+  if (isLongPressing.value) {
+    e.preventDefault();
+    e.stopPropagation();
+    isLongPressing.value = false;
+    return;
+  }
+  // Allow normal click
+};
+
+// Reset on new interaction
+const onActivatorMouseDown = (_e) => {
+  isLongPressing.value = false;
+};
+
+const onActivatorTouchStart = (_e) => {
+  isLongPressing.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
