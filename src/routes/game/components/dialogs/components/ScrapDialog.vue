@@ -10,8 +10,8 @@
       <span
         v-bind="props"
         @click="onActivatorClick"
-        @mousedown="onActivatorMouseDown"
-        @touchstart="onActivatorTouchStart"
+        @mousedown="isLongPressing = false"
+        @touchstart="isLongPressing = false"
       >
         <slot name="activator" />
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
@@ -136,7 +136,7 @@ onLongPress(scrapWrapper, () => {
 });
 
 // Prevent dialog on long press
-const onActivatorClick = (e) => {
+function onActivatorClick(e) {
   if (isLongPressing.value) {
     e.preventDefault();
     e.stopPropagation();
@@ -144,15 +144,6 @@ const onActivatorClick = (e) => {
     return;
   }
   // Allow normal click
-};
-
-// Reset on new interaction
-const onActivatorMouseDown = (_e) => {
-  isLongPressing.value = false;
-};
-
-const onActivatorTouchStart = (_e) => {
-  isLongPressing.value = false;
 };
 </script>
 
