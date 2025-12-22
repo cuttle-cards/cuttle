@@ -210,7 +210,7 @@ function onActivatorClick(e) {
 }
 
 .scrap-chosen-card {
-  transition: all 1.2s ease-in;
+  transition: all .8s ease-in;
 }
 
 #scrap .scrap-card.scrap-card-enter-from {
