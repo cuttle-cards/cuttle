@@ -365,7 +365,7 @@ export const useGameStore = defineStore('game', () => {
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
     lastEventCardChosen.value = chosenCard;
-    await sleep(1000);
+    await sleep(1200);
     updateGame(game);
   }
   async function processFours(discardedCards, game) {

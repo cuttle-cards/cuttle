@@ -520,15 +520,6 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
-    showScrapChoice() {
-      return (
-        this.gameStore.lastEventCardChosen &&
-        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
-      );
-    },
-    threesTransition() {
-      return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
-    },
     playerPointsTransition() {
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
@@ -1129,31 +1120,6 @@ export default {
   transition: all 1s ease;
 }
 
-.threes-player-enter-from.scrapPile,
-.threes-opponent-enter-from.scrapPile {
-  opacity: 0;
-}
-.threes-player-leave-to.gameCard {
-  opacity: 0;
-  transform: translate(200px, 50px);
-}
-
-.threes-opponent-leave-to.gameCard {
-  transform: translate(200px, -200px);
-  opacity: 0;
-}
-
-@media (max-width: 600px) {
-  .threes-player-leave-to {
-    opacity: 0;
-    transform: translateY(200px);
-  }
-
-  .threes-opponent-leave-to {
-    transform: translate(-200px);
-    opacity: 0;
-  }
-}
 ////////////
 // Styles //
 ////////////

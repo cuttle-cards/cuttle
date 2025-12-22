@@ -15,15 +15,6 @@
       >
         <slot name="activator" />
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <!-- <Transition :name="threesTransition">
-                  <GameCard
-                    v-if="showScrapChoice"
-                    :suit="gameStore.lastEventCardChosen.suit"
-                    :rank="gameStore.lastEventCardChosen.rank"
-                    class="gameCard"
-                    data-cy="scrap-chosen-card"
-                  />
-                </Transition>  -->
           <GameCard
             v-for="(card, index) in scrapDisplay"
             :key="`scrap-card-${card.id}`"
@@ -51,6 +42,15 @@
               </v-overlay>
             </template>
           </GameCard>
+          <Transition :name="threesTransition">
+            <GameCard
+              v-if="showScrapChoice"
+              :suit="gameStore.lastEventCardChosen.suit"
+              :rank="gameStore.lastEventCardChosen.rank"
+              class="position-absolute scrap-chosen-card"
+              data-cy="scrap-chosen-card"
+            />
+          </Transition> 
           <div v-if="!scrap.length" id="empty-scrap-activator">
             <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
             <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
@@ -106,6 +106,7 @@
 import { ref, computed, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onLongPress } from '@vueuse/core';
+import { useGameStore } from '_/src/stores/game';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -118,6 +119,7 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
+const gameStore = useGameStore();
 
 const show = ref(false);
 const lastStraightenedCardId = ref(null);
@@ -126,6 +128,12 @@ const isLongPressing = ref(false);
 
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
+const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+const showScrapChoice = computed(() => {
+  return gameStore.lastEventCardChosen &&
+        props.scrap?.some(({ id }) => id === gameStore.lastEventCardChosen.id);
+});
+
 
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
@@ -199,10 +207,42 @@ function onActivatorClick(e) {
     }
 }
 
+.scrap-chosen-card {
+  // transition: opacity 1s ease in, transform 3s ease-in;
+  // transition: opacity 3s ease-in;
+  // transition: transform 3s ease-in;
+  transition: all 1.2s ease-in;
+}
+
+.threes-player-enter-from,
+.threes-opponent-enter-from {
+  opacity: 0;
+  transform: scale(.7);
+}
+.threes-player-leave-to {
+  opacity: 0;
+  transform: translate(200px, 50px);
+}
+
+.threes-opponent-leave-to {
+  transform: translate(200px, -200px);
+  opacity: 0;
+}
+
 @media (max-width: 600px) {
   #scrap {
-      height: 13vh;
-      width: calc(13vh / 1.3);
-    }
+    height: 13vh;
+    width: calc(13vh / 1.3);
+  }
+
+  .threes-player-leave-to {
+    opacity: 0;
+    transform: translateY(200px);
+  }
+  
+  .threes-opponent-leave-to {
+    transform: translate(-200px);
+    opacity: 0;
+  }
 }
 </style>
