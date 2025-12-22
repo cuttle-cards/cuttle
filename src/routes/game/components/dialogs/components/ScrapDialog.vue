@@ -41,7 +41,7 @@
                 persistent
                 scrim="surface-1"
                 opacity=".46"
-                class="d-flex flex-column justify-space-around align-center"
+                class="d-flex flex-column justify-space-around align-center rounded-lg"
               >
                 <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
                 <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
