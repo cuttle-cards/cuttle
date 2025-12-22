@@ -49,7 +49,7 @@
           <div v-if="!scrap.length" id="empty-scrap-activator">
             <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
             <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-            <v-btn variant="outlined" color="surface-2" >
+            <v-btn variant="outlined" color="surface-2">
               View Scrap
             </v-btn>
           </div>
@@ -97,44 +97,27 @@
   </BaseDialog>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
-export default {
-  name: 'ScrapDialog',
-  components: {
-    CardListSortable,
-    BaseDialog,
-    GameCard,
+const props = defineProps({
+  scrap: {
+    type: Array,
+    required: true,
   },
-  props: {
-    scrap: {
-      type: Array,
-      required: true,
-    },
-  },
-  setup() {
-    const { t } = useI18n();
-    return { t };
-  },
-  data() {
-    return {
-      show: false,
-      lastStraightenedCardId: null,
-    };
-  },
-  computed: {
-    scrapDisplay() {
-      return this.scrap.slice(-10);
-    },
-    straightendIndex() {
-      return this.scrapDisplay.map(card => card.id).indexOf(this.lastStraightenedCardId);
-    }
-  }
-};
+});
+
+const { t } = useI18n();
+
+const show = ref(false);
+const lastStraightenedCardId = ref(null);
+
+const scrapDisplay = computed(() => props.scrap.slice(-10));
+const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
 </script>
 
 <style lang="scss" scoped>
