@@ -74,8 +74,8 @@ describe('Playing THREEs', () => {
       .click();
 
     // check scrap card shows and then disappears
-    cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
-    cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
+    cy.get('[data-scrap-card="10-2"].threes-player-leave-active').should('be.visible');
+    cy.get('[data-scrap-card="10-2"]').should('not.exist');
 
     assertGameState(0, {
       p0Hand: [ Card.TEN_OF_HEARTS ],
@@ -205,9 +205,9 @@ describe('Playing THREEs', () => {
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
 
-    // check scrap card shows and then disappears
-    cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
-    cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
+    // selected card appears and transitions towards opponent
+    cy.get('[data-scrap-card="1-3"].threes-opponent-leave-active').should('be.visible');
+    cy.get('[data-scrap-card="10-1-3"]').should('not.exist');
 
     assertGameState(0, {
       p0Hand: [],

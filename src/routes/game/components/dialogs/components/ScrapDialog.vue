@@ -23,6 +23,7 @@
               :rank="card.rank"
               :custom-elevation="index > straightendIndex ? index : 0"
               data-cy="scrap-card"
+              :data-scrap-card="`${card.rank}-${card.suit}`"
               class="position-absolute scrap-card"
               :class="index > straightendIndex ? `scrap-card-${index % 10}` : ''"
             >
