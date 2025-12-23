@@ -1208,8 +1208,6 @@ export default {
     position: relative;
     background-color: rgba(255, 255, 255, 0);
     &.reveal-top-two {
-      height: auto;
-      align-self: start;
       color: white;
       background-image: none;
       & .resolving-seven-card {
