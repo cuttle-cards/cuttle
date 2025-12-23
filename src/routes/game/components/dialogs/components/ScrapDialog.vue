@@ -35,9 +35,9 @@
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center rounded-lg"
                 >
-                  <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+                  <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn variant="outlined" color="surface-2">
+                  <v-btn v-if="!xs" variant="outlined" color="surface-2">
                     View Scrap
                   </v-btn>
                 </v-overlay>
@@ -46,9 +46,9 @@
           </TransitionGroup>
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
-              <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+              <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn variant="outlined" color="surface-2">
+              <v-btn v-if="!xs" variant="outlined" color="surface-2">
                 View Scrap
               </v-btn>
             </div>
@@ -99,6 +99,7 @@
 
 <script setup>
 import { ref, computed, useTemplateRef } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { onLongPress } from '@vueuse/core';
 import { useGameStore } from '_/src/stores/game';
@@ -124,6 +125,7 @@ const isLongPressing = ref(false);
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+const { xs } = useDisplay();
 
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
