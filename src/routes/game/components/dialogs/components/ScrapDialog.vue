@@ -13,7 +13,6 @@
         @mousedown="isLongPressing = false"
         @touchstart="isLongPressing = false"
       >
-        <slot name="activator" />
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
           <TransitionGroup :name="threesTransition">
             <GameCard

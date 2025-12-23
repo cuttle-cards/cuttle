@@ -181,11 +181,7 @@
               </div>
             </template>
           </v-card>
-          <ScrapDialog :scrap="scrap">
-            <template #activator>
-
-            </template>
-          </ScrapDialog>
+          <ScrapDialog :scrap="scrap" />
         </div>
       </div>
 
