@@ -126,7 +126,12 @@ const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `thr
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
   isLongPressing.value = true;
-  lastStraightenedCardId.value = props.scrap[props.scrap.length -1].id;
+  const topScrapCardId = props.scrap[props.scrap.length -1].id;
+  if (lastStraightenedCardId.value === topScrapCardId) {
+    lastStraightenedCardId.value = null;
+  } else {
+    lastStraightenedCardId.value = topScrapCardId;
+  }
 }, {
   stop: true
 });
