@@ -188,7 +188,7 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
 
-    cy.get('.v-overlay').should('not.exist');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', function() {
