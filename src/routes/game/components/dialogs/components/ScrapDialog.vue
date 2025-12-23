@@ -207,11 +207,14 @@ function onActivatorClick(e) {
   transform: rotate(0deg) translateX(100px);
 }
 
-#scrap .scrap-card.threes-player-enter-active,
-#scrap .scrap-card.threes-opponent-enter-active,
 #scrap .scrap-card.threes-player-leave-active,
 #scrap .scrap-card.threes-opponent-leave-active {
   transition: all 1.2s ease-out;
+}
+
+#scrap .scrap-card.threes-player-enter-active,
+#scrap .scrap-card.threes-opponent-enter-active {
+  transition: all .8s ease-out;
 }
 
 #scrap .scrap-card.threes-player-leave-to {

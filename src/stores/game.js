@@ -367,7 +367,7 @@ export const useGameStore = defineStore('game', () => {
     const three = game.resolved;
     // Add three to scrap
     scrap.value.push(three);
-    await sleep(800);
+    await sleep(1000);
 
     // Put selected card on top of scrap
     lastEventCardChosen.value = chosenCard;
