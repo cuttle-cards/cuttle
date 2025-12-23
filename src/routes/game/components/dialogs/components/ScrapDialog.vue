@@ -44,13 +44,15 @@
               </template>
             </GameCard>
           </TransitionGroup>
-          <div v-if="!scrap.length" id="empty-scrap-activator">
-            <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
-            <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-            <v-btn variant="outlined" color="surface-2">
-              View Scrap
-            </v-btn>
-          </div>
+          <Transition name="scrap-empty">
+            <div v-if="!scrap.length" id="empty-scrap-activator">
+              <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
+              <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
+              <v-btn variant="outlined" color="surface-2">
+                View Scrap
+              </v-btn>
+            </div>
+          </Transition>
         </div>
       </span>
     </template>
@@ -224,6 +226,15 @@ function onActivatorClick(e) {
 #scrap .scrap-card.threes-opponent-leave-to {
   opacity: 0;
   transform: translate(200px, -200px);
+}
+
+#scrap .scrap-empty-enter-active,
+#scrap .scrap-empty-leave-active {
+  transition: all .5s ease-in;
+}
+
+#scrap .scrap-empty-leave-to {
+  opacity: 0;
 }
 
 @media (max-width: 600px) {
