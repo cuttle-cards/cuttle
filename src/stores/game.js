@@ -365,10 +365,18 @@ export const useGameStore = defineStore('game', () => {
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
     const three = game.resolved;
+    // Add three to scrap
     scrap.value.push(three);
     await sleep(800);
+
+    // Put selected card on top of scrap
     lastEventCardChosen.value = chosenCard;
+    scrap.value = [
+      ...scrap.value.filter(card => card.id !== chosenCard.id),
+      chosenCard,
+    ];
     await sleep(1200);
+    // Finish update (moving card from scrap to hand)
     updateGame(game);
   }
   async function processFours(discardedCards, game) {

@@ -15,7 +15,7 @@
       >
         <slot name="activator" />
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <TransitionGroup name="scrap-card">
+          <TransitionGroup :name="threesTransition">
             <GameCard
               v-for="(card, index) in scrapDisplay"
               :key="`scrap-card-${card.id}`"
@@ -44,15 +44,6 @@
               </template>
             </GameCard>
           </TransitionGroup>
-          <Transition :name="threesTransition">
-            <GameCard
-              v-if="showScrapChoice"
-              :suit="gameStore.lastEventCardChosen.suit"
-              :rank="gameStore.lastEventCardChosen.rank"
-              class="position-absolute scrap-chosen-card"
-              data-cy="scrap-chosen-card"
-            />
-          </Transition> 
           <div v-if="!scrap.length" id="empty-scrap-activator">
             <h3 id="scrap-header">{{ $t('game.scrap') }}</h3>
             <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
@@ -131,11 +122,6 @@ const isLongPressing = ref(false);
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
-const showScrapChoice = computed(() => {
-  return gameStore.lastEventCardChosen &&
-        props.scrap?.some(({ id }) => id === gameStore.lastEventCardChosen.id);
-});
-
 
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
@@ -209,33 +195,27 @@ function onActivatorClick(e) {
     }
 }
 
-.scrap-chosen-card {
-  transition: all .8s ease-in;
-}
-
-#scrap .scrap-card.scrap-card-enter-from {
+#scrap .scrap-card.threes-player-enter-from,
+#scrap .scrap-card.threes-opponent-enter-from {
   opacity: 0;
   transform: rotate(0deg) translateX(100px);
 }
 
-#scrap .scrap-card-leave-active, #scrap .scrap-card-enter-active {
-  transition: all 0.8s ease-out;
+#scrap .scrap-card.threes-player-enter-from-active,
+#scrap .scrap-card.threes-opponent-enter-from-active,
+#scrap .scrap-card.threes-player-leave-active,
+#scrap .scrap-card.threes-opponent-leave-active {
+  transition: all 1.2s ease-out;
 }
 
-.threes-player-enter-from,
-.threes-opponent-enter-from {
-  opacity: 0;
-  transform: scale(.7);
-  transform: rotate(10deg);
-}
-.threes-player-leave-to {
+#scrap .scrap-card.threes-player-leave-to {
   opacity: 0;
   transform: translate(200px, 50px);
 }
 
-.threes-opponent-leave-to {
-  transform: translate(200px, -200px);
+#scrap .scrap-card.threes-opponent-leave-to {
   opacity: 0;
+  transform: translate(200px, -200px);
 }
 
 @media (max-width: 600px) {
@@ -244,12 +224,12 @@ function onActivatorClick(e) {
     width: calc(13vh / 1.3);
   }
 
-  .threes-player-leave-to {
+  #scrap .scrap-card.threes-player-leave-to {
     opacity: 0;
     transform: translateY(200px);
   }
   
-  .threes-opponent-leave-to {
+  #scrap .scrap-card.threes-opponent-leave-to {
     transform: translate(-200px);
     opacity: 0;
   }
