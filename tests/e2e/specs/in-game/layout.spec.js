@@ -37,7 +37,7 @@ describe('Game View Layout', () => {
 
     cy.resolveOpponent();
 
-    cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
     cy.get('#three-dialog').should('be.visible');
     // resolve button should be disabled
