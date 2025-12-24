@@ -108,10 +108,6 @@ export default {
       type: Number,
       default: null,
     },
-    scrim: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     suitName() {
