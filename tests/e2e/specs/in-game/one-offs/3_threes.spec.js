@@ -207,7 +207,7 @@ describe('Playing THREEs', () => {
 
     // selected card appears and transitions towards opponent
     cy.get('[data-scrap-card="1-3"].threes-opponent-leave-active').should('be.visible');
-    cy.get('[data-scrap-card="10-1-3"]').should('not.exist');
+    cy.get('[data-scrap-card="1-3"]').should('not.exist');
 
     assertGameState(0, {
       p0Hand: [],
