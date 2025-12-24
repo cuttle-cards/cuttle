@@ -9,7 +9,7 @@
     <template #activator="{ props }">
       <span
         v-bind="props"
-        @click="onActivatorClick"
+        @click="openDialog"
         @mousedown="isLongPressing = false"
         @touchstart="isLongPressing = false"
       >
@@ -141,7 +141,7 @@ onLongPress(scrapWrapper, () => {
 });
 
 // Prevent dialog on long press
-function onActivatorClick(e) {
+function openDialog(e) {
   if (isLongPressing.value) {
     e.preventDefault();
     e.stopPropagation();
