@@ -181,7 +181,7 @@
               </div>
             </template>
           </v-card>
-          <ScrapDialog :scrap="scrap" />
+          <ScrapPile :scrap="scrap" />
         </div>
       </div>
 
@@ -413,7 +413,7 @@ import GameOverlays from '@/routes/game/components/GameOverlays.vue';
 import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
 import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vue';
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
-import ScrapDialog from '@/routes/game/components/dialogs/components/ScrapDialog.vue';
+import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
 
@@ -427,7 +427,7 @@ export default {
     ScoreGoalToolTip,
     GameUnavailableView,
     TargetSelectionOverlay,
-    ScrapDialog,
+    ScrapPile,
     UsernameToolTip,
     SpectatorListMenu,
     PlaybackControls,
