@@ -37,7 +37,7 @@
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
                   <v-btn v-if="!xs" variant="outlined" color="surface-2">
-                    View Scrap
+                    {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
               </template>
@@ -48,7 +48,7 @@
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
               <v-btn v-if="!xs" variant="outlined" color="surface-2">
-                View Scrap
+                {{ $t('game.view') }}
               </v-btn>
             </div>
           </Transition>
