@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     id="scrap-dialog"
-    v-model="show"
+    v-model="showDialog"
     :scrollable="true"
     :persistent="false"
     :attach="false"
@@ -66,7 +66,7 @@
           variant="text"
           data-cy="close-scrap-dialog-x"
           aria-label="Close scrap dialog" 
-          @click="show = false"
+          @click="showDialog = false"
         >
           <v-icon
             icon="mdi-close"
@@ -90,7 +90,7 @@
         data-cy="close-scrap-dialog-button"
         color="surface-1"
         variant="flat"
-        @click="show = false"
+        @click="showDialog = false"
       >
         {{ t('global.close') }}
       </v-btn>
@@ -119,7 +119,7 @@ const { t } = useI18n();
 const { xs } = useDisplay();
 const gameStore = useGameStore();
 
-const show = ref(false);
+const showDialog = ref(false);
 const lastStraightenedCardId = ref(null);
 const scrapWrapper = useTemplateRef('scrap');
 const isLongPressing = ref(false);
