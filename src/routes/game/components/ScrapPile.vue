@@ -163,7 +163,7 @@ function openDialog(e) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3 ease-in-out;
+    transition: all 0.3 ease-in-out; // for tidying/messing up pile
     cursor: pointer;
     
     & #scrap-header {
@@ -194,6 +194,7 @@ function openDialog(e) {
       transition: transform .3s ease-in;
     }
 
+    // Psuedo-random rotation+translation of cards in the pile
     @for $i from 0 through 10 {
       & .scrap-card-#{$i} {
         $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
@@ -205,32 +206,40 @@ function openDialog(e) {
     }
 }
 
+// Entering Scrap Transition
+#scrap .scrap-card.threes-player-enter-active,
+#scrap .scrap-card.threes-opponent-enter-active {
+  transition: all .8s ease-out;
+}
+
 #scrap .scrap-card.threes-player-enter-from,
 #scrap .scrap-card.threes-opponent-enter-from {
   opacity: 0;
   transform: rotate(0deg) translateX(100px);
 }
 
+//////////////////////////////
+// Leaving Scrap Transition //
+//////////////////////////////
 #scrap .scrap-card.threes-player-leave-active,
 #scrap .scrap-card.threes-opponent-leave-active {
   transition: all 1.2s ease-out;
 }
 
-#scrap .scrap-card.threes-player-enter-active,
-#scrap .scrap-card.threes-opponent-enter-active {
-  transition: all .8s ease-out;
-}
-
+// Leaving towards player hand
 #scrap .scrap-card.threes-player-leave-to {
   opacity: 0;
   transform: translate(200px, 50px);
 }
 
+// Leaving towards opponent hand
 #scrap .scrap-card.threes-opponent-leave-to {
   opacity: 0;
   transform: translate(200px, -200px);
 }
-
+////////////////////////////////////////
+// Empty Pile dissapearing transition //
+////////////////////////////////////////
 #scrap .scrap-empty-enter-active,
 #scrap .scrap-empty-leave-active {
   transition: all .5s ease-in;
