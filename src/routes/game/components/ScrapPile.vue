@@ -212,7 +212,9 @@ function openDialog(e) {
     }
 }
 
-// Entering Scrap Transition
+///////////////////////////////
+// Entering Scrap Transition //
+///////////////////////////////
 #scrap .scrap-card.threes-player-enter-active,
 #scrap .scrap-card.threes-opponent-enter-active {
   transition: all .8s ease-out;
