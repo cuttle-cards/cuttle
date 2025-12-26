@@ -6,9 +6,9 @@
     :persistent="false"
     :attach="false"
   >
-    <template #activator="{ props }">
+    <template #activator="{ props: dialogProps }">
       <span
-        v-bind="props"
+        v-bind="dialogProps"
         @click="openDialog"
         @mousedown="isLongPressing = false"
         @touchstart="isLongPressing = false"
