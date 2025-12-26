@@ -124,7 +124,9 @@ const scrapWrapper = useTemplateRef('scrap');
 const isLongPressing = ref(false);
 
 const scrapDisplay = computed(() => props.scrap.slice(-10));
-const straightendIndex = computed(() => scrapDisplay.value.map(card => card.id).indexOf(lastStraightenedCardId.value));
+const straightendIndex = computed(
+  () => scrapDisplay.value.findIndex(card => card.id === lastStraightenedCardId.value)
+);
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
 const { xs } = useDisplay();
 
