@@ -116,6 +116,7 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
+const { xs } = useDisplay();
 const gameStore = useGameStore();
 
 const show = ref(false);
@@ -128,7 +129,6 @@ const straightendIndex = computed(
   () => scrapDisplay.value.findIndex(card => card.id === lastStraightenedCardId.value)
 );
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
-const { xs } = useDisplay();
 
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
