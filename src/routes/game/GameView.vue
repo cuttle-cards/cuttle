@@ -181,28 +181,7 @@
               </div>
             </template>
           </v-card>
-          <ScrapDialog :scrap="scrap">
-            <template #activator>
-              <div id="scrap" class="d-flex flex-column align-center">
-                <Transition :name="threesTransition">
-                  <GameCard
-                    v-if="showScrapChoice"
-                    :suit="gameStore.lastEventCardChosen.suit"
-                    :rank="gameStore.lastEventCardChosen.rank"
-                    class="gameCard"
-                    data-cy="scrap-chosen-card"
-                  />
-                  <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('game.scrap') }}</h3>
-                    <span>({{ scrap.length }})</span>
-                    <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('game.view') }}
-                    </v-btn>
-                  </div>
-                </Transition>
-              </div>
-            </template>
-          </ScrapDialog>
+          <ScrapPile :scrap="scrap" />
         </div>
       </div>
 
@@ -434,7 +413,7 @@ import GameOverlays from '@/routes/game/components/GameOverlays.vue';
 import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
 import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vue';
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
-import ScrapDialog from '@/routes/game/components/dialogs/components/ScrapDialog.vue';
+import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
 
@@ -448,7 +427,7 @@ export default {
     ScoreGoalToolTip,
     GameUnavailableView,
     TargetSelectionOverlay,
-    ScrapDialog,
+    ScrapPile,
     UsernameToolTip,
     SpectatorListMenu,
     PlaybackControls,
@@ -537,15 +516,6 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
-    showScrapChoice() {
-      return (
-        this.gameStore.lastEventCardChosen &&
-        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
-      );
-    },
-    threesTransition() {
-      return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
-    },
     playerPointsTransition() {
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
@@ -1142,35 +1112,6 @@ export default {
   transition: all 1s ease-out;
 }
 
-.scrapPile {
-  transition: all 1s ease;
-}
-
-.threes-player-enter-from.scrapPile,
-.threes-opponent-enter-from.scrapPile {
-  opacity: 0;
-}
-.threes-player-leave-to.gameCard {
-  opacity: 0;
-  transform: translate(200px, 50px);
-}
-
-.threes-opponent-leave-to.gameCard {
-  transform: translate(200px, -200px);
-  opacity: 0;
-}
-
-@media (max-width: 600px) {
-  .threes-player-leave-to {
-    opacity: 0;
-    transform: translateY(200px);
-  }
-
-  .threes-opponent-leave-to {
-    transform: translate(-200px);
-    opacity: 0;
-  }
-}
 ////////////
 // Styles //
 ////////////
@@ -1267,8 +1208,6 @@ export default {
     position: relative;
     background-color: rgba(255, 255, 255, 0);
     &.reveal-top-two {
-      height: auto;
-      align-self: start;
       color: white;
       background-image: none;
       & .resolving-seven-card {
@@ -1293,8 +1232,7 @@ export default {
       color: white;
     }
   }
-  & #deck,
-  & #scrap {
+  & #deck {
     background-size: cover;
     position: relative;
     margin: 10px;
@@ -1305,6 +1243,7 @@ export default {
     justify-content: center;
     align-items: center;
     transition: all 0.3 ease-in-out;
+    background-image: url('/img/game/bg-deck.png');
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);
@@ -1312,12 +1251,7 @@ export default {
       z-index: 1;
     }
   }
-  & #deck {
-    background-image: url('/img/game/bg-deck.png');
-  }
-  & #scrap {
-    background-image: url('/img/game/bg-scrap.png');
-  }
+
 }
 #field-center {
   width: 100%;
@@ -1555,8 +1489,7 @@ export default {
 
   #field-left {
     flex-direction: row;
-    & #deck,
-    & #scrap {
+    & #deck {
       height: 13vh;
       width: calc(13vh / 1.3);
     }
