@@ -97,7 +97,6 @@ export const useGameStore = defineStore('game', () => {
   const isRanked = ref(false);
 
   // Threes
-  const lastEventCardChosen = ref(null);
   const lastEventPlayerChoosing = ref(false);
 
   // Last Event
@@ -240,7 +239,6 @@ export const useGameStore = defineStore('game', () => {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
     lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
-    lastEventCardChosen.value = newGame.lastEvent?.chosenCard ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
@@ -297,7 +295,6 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = null;
     oneOffTarget.value = null;
     isRanked.value = false;
-    lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
@@ -370,7 +367,6 @@ export const useGameStore = defineStore('game', () => {
     await sleep(1000);
 
     // Put selected card on top of scrap
-    lastEventCardChosen.value = chosenCard;
     scrap.value = [
       ...scrap.value.filter(card => card.id !== chosenCard.id),
       chosenCard,
@@ -708,7 +704,6 @@ export const useGameStore = defineStore('game', () => {
     oneOff,
     oneOffTarget,
     isRanked,
-    lastEventCardChosen,
     lastEventPlayerChoosing,
     lastEventChange,
     lastEventOneOffRank,
