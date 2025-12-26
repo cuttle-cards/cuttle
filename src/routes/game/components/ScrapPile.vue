@@ -32,7 +32,8 @@
                   persistent
                   scrim="surface-1"
                   opacity=".46"
-                  class="d-flex flex-column justify-space-around align-center rounded-lg"
+                  class="d-flex flex-column justify-space-around align-center"
+                  :class="xs ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
