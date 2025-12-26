@@ -3,6 +3,12 @@ import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 const { _ } = Cypress;
 
+function assertThreeTransition (card, whichPlayer = 'player') {
+  cy.get(`[data-scrap-card="${card.rank}-${card.suit}"].threes-${whichPlayer}-leave-active`).should('be.visible');
+  cy.get(`[data-scrap-card="${card.rank}-${card.suit}"]`).should('not.exist');
+}
+
+
 describe('Playing THREEs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -74,8 +80,7 @@ describe('Playing THREEs', () => {
       .click();
 
     // check scrap card shows and then disappears
-    cy.get('[data-scrap-card="10-2"].threes-player-leave-active').should('be.visible');
-    cy.get('[data-scrap-card="10-2"]').should('not.exist');
+    assertThreeTransition(Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
       p0Hand: [ Card.TEN_OF_HEARTS ],
@@ -206,8 +211,7 @@ describe('Playing THREEs', () => {
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
 
     // selected card appears and transitions towards opponent
-    cy.get('[data-scrap-card="1-3"].threes-opponent-leave-active').should('be.visible');
-    cy.get('[data-scrap-card="1-3"]').should('not.exist');
+    assertThreeTransition(Card.ACE_OF_SPADES, 'opponent');
 
     assertGameState(0, {
       p0Hand: [],
