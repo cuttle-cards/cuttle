@@ -119,16 +119,20 @@ const { t } = useI18n();
 const { xs } = useDisplay();
 const gameStore = useGameStore();
 
+// Dialog
 const showDialog = ref(false);
-const lastStraightenedCardId = ref(null);
-const scrapWrapper = useTemplateRef('scrap');
-const isLongPressing = ref(false);
 
+// Displayed Pile
 const scrapDisplay = computed(() => props.scrap.slice(-10));
+const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+
+// Tidying + messing up pile
+const scrapWrapper = useTemplateRef('scrap');
+const lastStraightenedCardId = ref(null);
 const straightendIndex = computed(
   () => scrapDisplay.value.findIndex(card => card.id === lastStraightenedCardId.value)
 );
-const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+const isLongPressing = ref(false);
 
 // Straighten pile on long press; prevent opening dialog
 onLongPress(scrapWrapper, () => {
