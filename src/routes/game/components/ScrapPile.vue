@@ -36,7 +36,7 @@
                   :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
-                  <h3 v-if="!smAndDown" id="scrap-header">{{ $t('game.scrap') }}</h3>
+                  <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
                   <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                     {{ $t('game.view') }}
@@ -47,7 +47,7 @@
           </TransitionGroup>
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
-              <h3 v-if="!smAndDown" id="scrap-header">{{ $t('game.scrap') }}</h3>
+              <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
               <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                 {{ $t('game.view') }}
@@ -257,10 +257,19 @@ function openDialog(e) {
   opacity: 0;
 }
 
+@media (max-width: 960px) and (orientation: landscape) {
+   #scrap #scrap-header {
+      font-size: 18px;
+      line-height: 18px;
+    }
+}
+
 @media (max-width: 600px) {
   #scrap {
     height: 13vh;
     width: calc(13vh / 1.3);
+
+
   }
 
   #scrap .scrap-card.threes-player-leave-to {
