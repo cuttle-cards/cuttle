@@ -272,5 +272,11 @@ function openDialog(e) {
     transform: translate(-200px);
     opacity: 0;
   }
+
+#scrap .scrap-card.threes-player-enter-from,
+#scrap .scrap-card.threes-opponent-enter-from {
+  transform: translateY(-200px);
+  opacity: 0;
+}
 }
 </style>
