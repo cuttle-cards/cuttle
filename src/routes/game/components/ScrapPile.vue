@@ -33,12 +33,12 @@
                   scrim="surface-1"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
-                  :class="xs ? 'rounded-sm' : 'rounded-lg'"
+                  :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
-                  <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
+                  <h3 v-if="!smAndDown" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!xs" variant="outlined" color="surface-2">
+                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
@@ -47,9 +47,9 @@
           </TransitionGroup>
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
-              <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
+              <h3 v-if="!smAndDown" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!xs" variant="outlined" color="surface-2">
+              <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -116,7 +116,7 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
-const { xs } = useDisplay();
+const { xs, smAndDown } = useDisplay();
 const gameStore = useGameStore();
 
 // Dialog
