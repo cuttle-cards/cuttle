@@ -171,6 +171,7 @@ function openDialog(e) {
     align-items: center;
     transition: all 0.3 ease-in-out; // for tidying/messing up pile
     cursor: pointer;
+    user-select: none;
     
     & #scrap-header {
       font-family: 'Luckiest Guy';
@@ -268,8 +269,6 @@ function openDialog(e) {
   #scrap {
     height: 13vh;
     width: calc(13vh / 1.3);
-
-
   }
 
   #scrap .scrap-card.threes-player-leave-to {
