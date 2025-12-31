@@ -21,6 +21,10 @@ module.exports = {
     status: {
       type: 'number',
     },
+    isVsAi: {
+      type: 'boolean',
+      defaultsTo: false,
+    },
     p0Ready: {
       type: 'boolean',
       defaultsTo: false,
