@@ -269,7 +269,7 @@ function openDialog(e) {
   }
   
   #scrap .scrap-card.threes-opponent-leave-to {
-    transform: translate(-200px);
+    transform: translateY(-200px);
     opacity: 0;
   }
 
