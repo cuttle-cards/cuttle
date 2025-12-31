@@ -168,40 +168,31 @@ describe('Playing THREEs', () => {
     });
   });
 
+});
+
+describe('Opponent Threes', () => {
+  beforeEach(() => {
+    cy.setupGameAsP1();
+  });
+
   it('Opponent plays 3s successfully', () => {
     // Set Up
-    cy.loadGameFixture(0, {
-      p0Hand: [ Card.ACE_OF_SPADES ],
-      p0Points: [ Card.TEN_OF_SPADES ],
-      p0FaceCards: [],
-      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
-      p1Points: [ Card.TEN_OF_HEARTS ],
-      p1FaceCards: [ Card.KING_OF_HEARTS ],
-    });
-
-    // put some cards into scrap
-    cy.get('[data-player-hand-card=1-3]').click(); // ace of space
-    cy.get('[data-move-choice=oneOff]').click();
-
-    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
-
-    cy.resolveOpponent();
-
-    assertGameState(0, {
-      p0Hand: [],
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
+      p1Hand: [],
       p1Points: [],
       p1FaceCards: [ Card.KING_OF_HEARTS ],
-      scrap: [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
+      scrap: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS, Card.ACE_OF_SPADES ]
     });
 
     // opponent plays 3
     cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
 
     // player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+    cy.get('[data-cy=cannot-counter-resolve]')
+      .should('be.visible')
       .click();
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
@@ -213,11 +204,11 @@ describe('Playing THREEs', () => {
     // selected card appears and transitions towards opponent
     assertThreeTransition(Card.ACE_OF_SPADES, 'opponent');
 
-    assertGameState(0, {
-      p0Hand: [],
+    assertGameState(1, {
+      p0Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.ACE_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.ACE_OF_SPADES ],
+      p1Hand: [],
       p1Points: [],
       p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.THREE_OF_CLUBS ],
