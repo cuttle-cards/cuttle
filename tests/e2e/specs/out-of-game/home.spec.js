@@ -450,6 +450,10 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
+  it.only('Creates a vs AI game', () => {
+    cy.get('[data-cy=create-ai-game]').click();
+  });
+
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
     cy.window().then((win) => {
