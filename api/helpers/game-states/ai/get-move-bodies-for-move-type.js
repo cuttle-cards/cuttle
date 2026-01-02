@@ -48,6 +48,15 @@ module.exports = {
           .filter((card) => [ 8, 12, 13 ].includes(card.rank))
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+      case MoveType.SCUTTLE: {
+        const numberCardsInHand = playerHand.filter((card) => card.rank <= 10);
+        for (let scuttlingCard of numberCardsInHand) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: scuttlingCard.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
