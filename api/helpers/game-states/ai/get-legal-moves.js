@@ -30,13 +30,13 @@ module.exports = {
     for (let moveType of moveTypes) {
       try {
         const { execute, validate } = sails.helpers.gameStates.moves[moveType];
-        const possibleMove = {
-          moveType,
-          playedBy,
-        };
-        validate(currentState, possibleMove, playedBy, priorStates);
-        const legalMove = execute(currentState, possibleMove, playedBy, priorStates);
-        res.push(legalMove);
+        const possibleCardsAndTargets = sails.helpers.gameStates.ai
+          .getMoveBodiesForMoveType(currentState, playedBy, moveType);
+        for (let possibleMove of possibleCardsAndTargets) {
+          validate(currentState, possibleMove, playedBy, priorStates);
+          const legalMove = execute(currentState, possibleMove, playedBy, priorStates);
+          res.push(legalMove);
+        }
       } catch (err) {
         // Ignore illegal moves
       }
