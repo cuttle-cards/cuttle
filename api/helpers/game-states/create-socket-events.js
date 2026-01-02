@@ -88,7 +88,7 @@ module.exports = {
       const hideOpponentHand = (playerIndex, originalPlayers) => {
         const hasGlassesEight = originalPlayers[playerIndex]?.faceCards?.some(card => card.rank === 8);
         const deckIsEmpty = gameState.deck.length === 0;
-        
+
         return originalPlayers.map((player, index) => {
           const isPlayer = index === playerIndex;
           if (isPlayer || hasGlassesEight || deckIsEmpty) {
@@ -129,8 +129,6 @@ module.exports = {
         p1Ready: game.p1Ready,
         p0Rematch: game.p0Rematch,
         p1Rematch: game.p1Rematch,
-        turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
-        turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
         lock: game.lock,
         lockedAt: game.lockedAt,
         rematchGame: game.rematchGame,
