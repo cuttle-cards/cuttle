@@ -14,6 +14,8 @@ module.exports = async function (req, res) {
     p0: player.id,
     status: GameStatus.STARTED,
     isRanked: false,
+    p0Ready: true,
+    p1Ready: true,
   }).fetch();
 
   const gameId = newGame.id;
