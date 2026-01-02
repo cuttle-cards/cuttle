@@ -53,6 +53,9 @@ module.exports = async function (req, res) {
     // Execute & Publish Changes //
     ///////////////////////////////
     const updatedState = sails.helpers.gameStates.ai.chooseAiMove(gameState, playedBy, game.gameStates);
+    if (!updatedState) {
+      throw new BadRequestError('AI has no legal moves!');
+    }
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
     await publishGameState(game, { ...updatedState, id: gameStateRow.id });
@@ -64,6 +67,22 @@ module.exports = async function (req, res) {
     return res.ok();
 
   } catch (err) {
-    return res.serverError(err);
+    try {
+      await sails.helpers.unlockGame(game.lock);
+    } catch (err) {
+      // Swallow if unlockGame errors, then respond based on error type
+    }
+
+    const message = err?.message ?? err ?? 'Error making move';
+    switch (err?.code) {
+      case CustomErrorType.NOT_FOUND:
+        return res.status(404).json({ message });
+      case CustomErrorType.FORBIDDEN:
+        return res.forbidden({ message });
+      case CustomErrorType.BAD_REQUEST:
+        return res.badRequest({ message });
+      default:
+        return res.serverError({ message });
+    }
   }
 };

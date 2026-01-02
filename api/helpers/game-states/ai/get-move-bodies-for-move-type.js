@@ -57,6 +57,15 @@ module.exports = {
         }
         break;
       }
+      case MoveType.JACK: {
+        const jacksInHand = playerHand.filter((card) => card.rank === 11);
+        for (let jack of jacksInHand) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: jack.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
