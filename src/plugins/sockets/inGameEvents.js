@@ -148,7 +148,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     });
   }
 
-  if (gameStore.isVsAi) {
+  if (gameStore.isVsAi && evData.playedBy === gameStore.myPNum) {
     await sleep(1200);
     try {
       await gameStore.requestMakeAiMove();

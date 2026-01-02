@@ -36,10 +36,10 @@ module.exports = async function (req, res) {
     let playedBy;
     switch (req.session.usr) {
       case game.p0.id:
-        playedBy = 0;
+        playedBy = 1;
         break;
       case game.p1.id:
-        playedBy = 1;
+        playedBy = 0;
         break;
       default:
         throw new ForbiddenError('You are not a player in this game!');
@@ -48,8 +48,22 @@ module.exports = async function (req, res) {
     if ([ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status)) {
       throw new ConflictError('game', game.id, 'Can\'t make move: this game is over');
     }
+
+    ///////////////////////////////
+    // Execute & Publish Changes //
+    ///////////////////////////////
+    const updatedState = sails.helpers.gameStates.ai.chooseAiMove(gameState, playedBy, game.gameStates);
+    const gameStateRow = await saveGamestate(updatedState);
+    game.gameStates.push(gameStateRow);
+    await publishGameState(game, { ...updatedState, id: gameStateRow.id });
+
+    //////////////////////////
+    // Unlock & Respond 200 //
+    //////////////////////////
+    await sails.helpers.unlockGame(game.lock);
+    return res.ok();
+
   } catch (err) {
     return res.serverError(err);
   }
-  return res.ok();
 };
