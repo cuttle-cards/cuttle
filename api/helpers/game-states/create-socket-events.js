@@ -22,10 +22,12 @@ module.exports = {
   fn: async function ({ game, gameState }, exits) {
     try {
       // Combine game and gamestate users and delete passwords
-      const p0 = { ...game.p0, ...gameState.p0, pNum: 0 };
+      const botPlayer = game.isVsAi ? { username: 'CuttleBot' } : {};
+      const p0 = { ...botPlayer, ...game.p0, ...gameState.p0, pNum: 0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game.p1, ...gameState.p1, pNum: 1 };
+      const p1 = { ...botPlayer, ...game.p1, ...gameState.p1, pNum: 1 };
       delete p1.encryptedPassword;
+
       const players = [ p0, p1 ];
 
       const countPasses = (function () {
