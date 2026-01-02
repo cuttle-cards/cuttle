@@ -66,6 +66,26 @@ module.exports = {
         }
         break;
       }
+      case MoveType.ONE_OFF: {
+        const untargetedOneOffsInHand = playerHand.filter((card) => [ 1, 3, 4, 5, 6, 7 ].includes(card.rank));
+        for (let oneOff of untargetedOneOffsInHand) {
+          res.push({ moveType, playedBy, cardId: oneOff.id });
+        }
+
+        const twosAndNines = playerHand.filter((card) => [ 2, 9 ].includes(card.rank));
+        for (let twoOrNine of twosAndNines) {
+          for (let potentialTarget of opponentFaceCards) {
+            res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: potentialTarget.id, targetType: 'faceCard' });
+          }
+
+          for (let pointCard of opponentPoints) {
+            if (pointCard.attachments.length) {
+              res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: pointCard.attachments.at(-1).id });
+            }
+          }
+        }
+        break;
+      }
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
