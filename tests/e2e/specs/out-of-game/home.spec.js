@@ -452,6 +452,7 @@ describe('Home - Create Game', () => {
 
   it.only('Creates a vs AI game', () => {
     cy.get('[data-cy=create-ai-game]').click();
+    cy.get('#deck').click();
   });
 
   it('Saves ranked setting between sessions', () => {
