@@ -39,6 +39,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   'POST /api/game/:gameId/move': 'game/move',
+  'POST /api/game/:gameId/move/ai': 'game/ai/ai-move',
   'POST /api/game/:gameId/rematch': 'game/rematch',
   'GET /api/game/history': 'game/get-history',
 
