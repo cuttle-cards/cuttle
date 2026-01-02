@@ -26,6 +26,8 @@ module.exports = {
   fn: ({ currentState, playedBy, priorStates }, exits) => {
     try {
 
+      const legalMoves = sails.helpers.gameStates.ai.getLegalMoves(currentState, playedBy, priorStates);
+
       const aiMove = {
         moveType: MoveType.DRAW,
         playedBy,
