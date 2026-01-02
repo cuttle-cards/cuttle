@@ -28,12 +28,8 @@ module.exports = {
 
       const legalMoves = sails.helpers.gameStates.ai.getLegalMoves(currentState, playedBy, priorStates);
 
-      const aiMove = {
-        moveType: MoveType.DRAW,
-        playedBy,
-      };
-
-      const res = sails.helpers.gameStates.moves.draw.execute(currentState, aiMove, playedBy, priorStates);
+      // Pro gamer move
+      const res = _.sample(legalMoves, 1);
 
       return exits.success(res);
     } catch (err) {
