@@ -238,7 +238,8 @@ export default {
       this.showCreateGameDialog = false;
     },
     async createAIGame() {
-      await this.gameListStore.requestCreateAIGame();
+      const gameId = await this.gameListStore.requestCreateAIGame();
+      this.$router.push(`/ai/${gameId}`);
     },
     logout() {
       this.gameListStore

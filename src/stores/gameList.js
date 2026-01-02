@@ -113,7 +113,10 @@ export const useGameListStore = defineStore('gameList', {
     requestCreateAIGame() {
       return new Promise((resolve, reject) => {
         io.socket.post('/api/game/ai', function (res, jwres) {
-          debugger;
+          if (jwres.statusCode === 200) {
+            return resolve(res);
+          }
+          return reject(new Error('Could not create new vs AI game'));
         });
       });
     }
