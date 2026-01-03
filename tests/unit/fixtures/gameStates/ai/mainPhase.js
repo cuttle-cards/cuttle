@@ -1,6 +1,7 @@
 import { Card } from '../../Card';
 import GamePhase from '../../../../../utils/GamePhase.json';
 import MoveType from '../../../../../utils/MoveType.json';
+import { omit } from 'lodash';
 
 const gameState = {
   p0: {
@@ -55,48 +56,48 @@ const gameState = {
   targetCard: null,
 };
 
-const passMoveBodies = [ { moveType: MoveType.PASS, playedBy: 0 } ];
+const passMoveBodies = [ { moveType: MoveType.PASS, playedBy: 0, isValid: false } ];
 
-const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0 } ];
+const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0, isValid: true } ];
 
 const pointsMoveBodies = [
-  { moveType: MoveType.POINTS, playedBy: 0, cardId: 'AS' },
-  { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H' },
-  { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D' },
+  { moveType: MoveType.POINTS, playedBy: 0, cardId: 'AS', isValid: true },
+  { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true },
+  { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D', isValid: true },
 ];
 
 const faceCardMoveBodies = [
-  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD' },
-  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'KC' },
+  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true },
+  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'KC', isValid: true },
 ];
 
 const scuttleMoveBodies = [
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'TH' },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'AC' },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'TH' },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'AC' },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'TH' },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'TH', isValid: false },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'AC', isValid: true },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'TH', isValid: false },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'AC', isValid: true },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'TH', isValid: false },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC', isValid: false },
 ];
 
 const jackMoveBodies = [
-  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'TH' },
-  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'AC' },
+  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'TH', isValid: true },
+  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'AC', isValid: true },
 ];
 
 const oneOffMoveBodies = [
-  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: 'AS' },
-  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '3H' },
-  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '7D' },
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: 'AS', isValid: true },
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '3H', isValid: true },
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '7D', isValid: true },
 ];
 
 export const mainPhase = {
   gameState,
-  drawMoveBodies,
-  pointsMoveBodies,
-  faceCardMoveBodies,
-  scuttleMoveBodies,
-  jackMoveBodies,
-  oneOffMoveBodies,
-  passMoveBodies,
+  drawMoveBodies: drawMoveBodies.map((move) => omit(move, 'isValid')),
+  pointsMoveBodies:   pointsMoveBodies.map((move) => omit(move, 'isValid')),
+  faceCardMoveBodies: faceCardMoveBodies.map((move) => omit(move, 'isValid')),
+  scuttleMoveBodies: scuttleMoveBodies.map((move) => omit(move, 'isValid')),
+  jackMoveBodies: jackMoveBodies.map((move) => omit(move, 'isValid')),
+  oneOffMoveBodies: oneOffMoveBodies.map((move) => omit(move, 'isValid')),
+  passMoveBodies: passMoveBodies.map((move) => omit(move, 'isValid')),
 };
