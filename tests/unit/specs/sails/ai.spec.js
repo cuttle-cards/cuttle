@@ -25,4 +25,9 @@ describe('getMoveBodiesForMoveType()', () => {
     expect(moveBodies).to.deep.eq(mainPhase.faceCardMoveBodies);
   });
 
+  it('Creates valid move bodies for SCUTTLE', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.SCUTTLE);
+    expect(moveBodies).to.deep.eq(mainPhase.scuttleMoveBodies);
+  });
+
 });

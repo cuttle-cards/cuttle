@@ -67,9 +67,19 @@ const faceCardMoveBodies = [
   { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'KC' },
 ];
 
+const scuttleMoveBodies = [
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'TH' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: 'AS', targetId: 'AC' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'TH' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'AC' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'TH' },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC' },
+];
+
 export const mainPhase = {
   gameState,
   drawMoveBodies,
   pointsMoveBodies,
   faceCardMoveBodies,
+  scuttleMoveBodies,
 };
