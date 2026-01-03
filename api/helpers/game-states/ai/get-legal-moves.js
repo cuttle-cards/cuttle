@@ -24,7 +24,7 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, playedBy, priorStates }, exits) => {
-    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST' ];
+    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST', 'FIZZLE' ];
     const moveTypes = Object.values(_.omit(MoveType, disallowedMoveTypes));
     const res = [];
     for (let moveType of moveTypes) {
