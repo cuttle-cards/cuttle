@@ -91,6 +91,9 @@ module.exports = {
           .filter((card) => card.rank === 2)
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+      case MoveType.RESOLVE:
+        res = [ { moveType, playedBy } ];
+        break;
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
