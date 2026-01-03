@@ -98,6 +98,13 @@ module.exports = {
       case MoveType.RESOLVE_THREE:
         res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+      case MoveType.FIVE:
+        if (!playerHand.length) {
+          res = [ { moveType, playedBy } ];
+        } else {
+          res = playerHand.map((card) => ({ moveType, playedBy, cardId: card.id }));
+        }
+        break;
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
