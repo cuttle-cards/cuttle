@@ -12,6 +12,6 @@ describe('getMoveBodiesForMoveType()', () => {
     const moveBodies = sails.helpers.gameStates.ai
       .getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.POINTS);
 
-    expect(moveBodies).to.deep.eq(mainPhase.moveBodies);
+    expect(moveBodies).to.deep.eq(mainPhase.pointsMoveBodies);
   });
 });

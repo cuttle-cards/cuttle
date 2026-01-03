@@ -48,7 +48,7 @@ const gameState = {
   targetCard: null,
 };
 
-const moveBodies = [
+const pointsMoveBodies = [
   { moveType: MoveType.POINTS, playedBy: 0, cardId: 'AS' },
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H' },
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D' },
@@ -56,5 +56,5 @@ const moveBodies = [
 
 export const mainPhase = {
   gameState,
-  moveBodies,
+  pointsMoveBodies,
 };
