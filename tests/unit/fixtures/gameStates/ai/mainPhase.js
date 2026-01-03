@@ -54,7 +54,7 @@ const moveBodies = [
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D' },
 ];
 
-export const pointsForAiMoves = {
+export const mainPhase = {
   gameState,
   moveBodies,
 };
