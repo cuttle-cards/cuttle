@@ -8,17 +8,15 @@ describe('getMoveBodiesForMoveType()', () => {
     await sails.helpers.wipeDatabase();
   });
 
-  it('Creates valid move bodies for POINTS', () => {
-    const moveBodies = sails.helpers.gameStates.ai
-      .getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.POINTS);
+  const { getMoveBodiesForMoveType } = sails.helpers.gameStates.ai;
 
+  it('Creates valid move bodies for POINTS', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.POINTS);
     expect(moveBodies).to.deep.eq(mainPhase.pointsMoveBodies);
   });
 
   it('Creates valid move bodies for FACE_CARD', () => {
-    const moveBodies = sails.helpers.gameStates.ai
-      .getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.FACE_CARD);
-
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.FACE_CARD);
     expect(moveBodies).to.deep.eq(mainPhase.faceCardMoveBodies);
   });
 });
