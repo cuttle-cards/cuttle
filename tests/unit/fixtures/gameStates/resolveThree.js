@@ -156,8 +156,6 @@ export const resolveThree = {
       oneOffTargetType: null,
       turn: 1,
       log: [ 'myUsername took the 10♥️ from the Scrap pile to their hand.' ],
-      turnStalemateWasRequestedByP0: -1,
-      turnStalemateWasRequestedByP1: -1,
       chat: [],
       isRanked: false,
       lastEvent: {

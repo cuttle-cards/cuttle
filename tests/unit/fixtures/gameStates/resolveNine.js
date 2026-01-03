@@ -161,8 +161,6 @@ export const resolveNine = {
       spectatingUsers: [],
       status: 2,
       turn: 3,
-      turnStalemateWasRequestedByP0: -1,
-      turnStalemateWasRequestedByP1: -1,
       twos: [],
       winner: null,
       gameStates: [
