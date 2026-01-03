@@ -82,6 +82,12 @@ const jackMoveBodies = [
   { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'AC' },
 ];
 
+const oneOffMoveBodies = [
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: 'AS' },
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '3H' },
+  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '7D' },
+];
+
 export const mainPhase = {
   gameState,
   drawMoveBodies,
@@ -89,4 +95,5 @@ export const mainPhase = {
   faceCardMoveBodies,
   scuttleMoveBodies,
   jackMoveBodies,
+  oneOffMoveBodies,
 };

@@ -35,4 +35,9 @@ describe('getMoveBodiesForMoveType()', () => {
     expect(moveBodies).to.deep.eq(mainPhase.jackMoveBodies);
   });
 
+  it('Creates valid move bodies for ONE_OFF', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.ONE_OFF);
+    expect(moveBodies).to.deep.eq(mainPhase.oneOffMoveBodies);
+  });
+
 });
