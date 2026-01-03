@@ -86,6 +86,11 @@ module.exports = {
         }
         break;
       }
+      case MoveType.COUNTER:
+        res = playerHand
+          .filter((card) => card.rank === 2)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
