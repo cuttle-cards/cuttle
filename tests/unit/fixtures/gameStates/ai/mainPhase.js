@@ -4,7 +4,13 @@ import MoveType from '../../../../../utils/MoveType.json';
 
 const gameState = {
   p0: {
-    hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
+    hand: [
+      Card.ACE_OF_SPADES,
+      Card.THREE_OF_HEARTS,
+      Card.SEVEN_OF_DIAMONDS,
+      Card.QUEEN_OF_DIAMONDS,
+      Card.KING_OF_CLUBS,
+    ],
     points: [
       Card.TEN_OF_SPADES,
       {
@@ -21,10 +27,10 @@ const gameState = {
   },
   deck: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_CLUBS,
     Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
-    Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
+    Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS,
     Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, 
     Card.SIX_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, 
-    Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, 
+    Card.JACK_OF_DIAMONDS, Card.KING_OF_DIAMONDS, 
     Card.TWO_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, 
     Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, 
     Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, 
@@ -54,7 +60,13 @@ const pointsMoveBodies = [
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D' },
 ];
 
+const faceCardMoveBodies = [
+  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD' },
+  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'KC' },
+];
+
 export const mainPhase = {
   gameState,
   pointsMoveBodies,
+  faceCardMoveBodies,
 };
