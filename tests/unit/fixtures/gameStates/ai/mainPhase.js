@@ -55,6 +55,8 @@ const gameState = {
   targetCard: null,
 };
 
+const passMoveBodies = [ { moveType: MoveType.PASS, playedBy: 0 } ];
+
 const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0 } ];
 
 const pointsMoveBodies = [
@@ -96,4 +98,5 @@ export const mainPhase = {
   scuttleMoveBodies,
   jackMoveBodies,
   oneOffMoveBodies,
+  passMoveBodies,
 };

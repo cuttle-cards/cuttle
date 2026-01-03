@@ -9,6 +9,10 @@ describe('getMoveBodiesForMoveType()', () => {
     ({ getMoveBodiesForMoveType } = sails.helpers.gameStates.ai);
   });
 
+  it('Creates valid move bodies for PASS', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.PASS);
+    expect(moveBodies).to.deep.eq(mainPhase.passMoveBodies);
+  });
 
   it('Creates valid move bodies for DRAW', () => {
     const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.DRAW);
