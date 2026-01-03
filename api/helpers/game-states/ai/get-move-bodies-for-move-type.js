@@ -32,6 +32,7 @@ module.exports = {
     const opponentHand = opponent.hand;
     const opponentPoints = opponent.points;
     const opponentFaceCards = opponent.faceCards;
+    const { deck, scrap } = currentState;
 
     let res = [];
     switch (moveType) {
@@ -93,6 +94,9 @@ module.exports = {
         break;
       case MoveType.RESOLVE:
         res = [ { moveType, playedBy } ];
+        break;
+      case MoveType.RESOLVE_THREE:
+        res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
