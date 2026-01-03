@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { points } from '../../fixtures/gameStates/points';
+import { pointsForAiMoves } from '../../fixtures/gameStates/ai/points';
 import MoveType from '../../../../utils/MoveType';
 
 
@@ -9,8 +9,9 @@ describe('getMoveBodiesForMoveType()', () => {
   });
 
   it('Creates valid move bodies for POINTS', () => {
-    const moveBodies = sails.helpers.gameStates.ai.getMoveBodiesForMoveType(points.gameState, 0, MoveType.POINTS);
-    expect(moveBodies.length).to.eq(1);
-    expect(moveBodies).to.deep.eq([ { moveType: MoveType.POINTS, playedBy: 0, cardId: 'AS' } ]);
+    const moveBodies = sails.helpers.gameStates.ai
+      .getMoveBodiesForMoveType(pointsForAiMoves.gameState, 0, MoveType.POINTS);
+
+    expect(moveBodies).to.deep.eq(pointsForAiMoves.moveBodies);
   });
 });
