@@ -2,13 +2,18 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import MoveType from '../../../../utils/MoveType';
 
-
+let getMoveBodiesForMoveType;
 describe('getMoveBodiesForMoveType()', () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
+    ({ getMoveBodiesForMoveType } = sails.helpers.gameStates.ai);
   });
 
-  const { getMoveBodiesForMoveType } = sails.helpers.gameStates.ai;
+
+  it('Creates valid move bodies for DRAW', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.DRAW);
+    expect(moveBodies).to.deep.eq(mainPhase.drawMoveBodies);
+  });
 
   it('Creates valid move bodies for POINTS', () => {
     const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.POINTS);
@@ -19,4 +24,5 @@ describe('getMoveBodiesForMoveType()', () => {
     const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.FACE_CARD);
     expect(moveBodies).to.deep.eq(mainPhase.faceCardMoveBodies);
   });
+
 });

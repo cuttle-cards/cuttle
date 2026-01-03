@@ -54,6 +54,8 @@ const gameState = {
   targetCard: null,
 };
 
+const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0 } ];
+
 const pointsMoveBodies = [
   { moveType: MoveType.POINTS, playedBy: 0, cardId: 'AS' },
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H' },
@@ -67,6 +69,7 @@ const faceCardMoveBodies = [
 
 export const mainPhase = {
   gameState,
+  drawMoveBodies,
   pointsMoveBodies,
   faceCardMoveBodies,
 };
