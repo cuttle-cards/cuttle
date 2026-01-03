@@ -98,7 +98,7 @@ module.exports = {
       case MoveType.RESOLVE_THREE:
         res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
-      case MoveType.FIVE:
+      case MoveType.RESOLVE_FIVE:
         if (!playerHand.length) {
           res = [ { moveType, playedBy } ];
         } else {
