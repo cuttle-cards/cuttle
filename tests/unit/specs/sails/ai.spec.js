@@ -30,4 +30,9 @@ describe('getMoveBodiesForMoveType()', () => {
     expect(moveBodies).to.deep.eq(mainPhase.scuttleMoveBodies);
   });
 
+  it('Creates valid move bodies for JACK', () => {
+    const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.JACK);
+    expect(moveBodies).to.deep.eq(mainPhase.jackMoveBodies);
+  });
+
 });

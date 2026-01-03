@@ -8,6 +8,7 @@ const gameState = {
       Card.ACE_OF_SPADES,
       Card.THREE_OF_HEARTS,
       Card.SEVEN_OF_DIAMONDS,
+      Card.JACK_OF_HEARTS,
       Card.QUEEN_OF_DIAMONDS,
       Card.KING_OF_CLUBS,
     ],
@@ -33,7 +34,7 @@ const gameState = {
     Card.JACK_OF_DIAMONDS, Card.KING_OF_DIAMONDS, 
     Card.TWO_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, 
     Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, 
-    Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, 
+    Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, 
     Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.FIVE_OF_SPADES, 
     Card.SIX_OF_SPADES,  Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, 
     Card.QUEEN_OF_SPADES
@@ -76,10 +77,16 @@ const scuttleMoveBodies = [
   { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC' },
 ];
 
+const jackMoveBodies = [
+  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'TH' },
+  { moveType: MoveType.JACK, playedBy: 0, cardId: 'JH', targetId: 'AC' },
+];
+
 export const mainPhase = {
   gameState,
   drawMoveBodies,
   pointsMoveBodies,
   faceCardMoveBodies,
   scuttleMoveBodies,
+  jackMoveBodies,
 };
