@@ -118,14 +118,26 @@
                 </v-btn>
               </div>
               <v-btn
-                class="w-100 mt-10 mb-8 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+                class="w-100 mt-10 mb-2 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
                 type="button"
                 @click="oAuth('discord')"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                <span class="discordButton"> {{ t('login.loginDiscord') }} </span>
+                <span class="oauthButton"> {{ t('login.loginDiscord') }} </span>
+              </v-btn>
+              <v-btn
+                class="w-100 mb-8 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+                size="large"
+                color="newSecondary"
+                type="button"
+                @click="oAuth('google')"
+              >
+                <template #prepend>
+                  <v-icon class="mr-2" icon="mdi-google" size="48" />
+                </template>
+                <span class="oauthButton"> Login with Google </span>
               </v-btn>
             </v-form>
             <div class="d-flex align-center flex-column m-10">
@@ -415,7 +427,7 @@ export default {
   margin-right: 18px;
 }
 
-.discordButton {
+.oauthButton {
   white-space: normal;
 }
 
