@@ -237,9 +237,20 @@ function openDialog(e) {
   transform: rotate(0deg) translateX(100px);
 }
 
-//////////////////////////////
-// Leaving Scrap Transition //
-//////////////////////////////
+//////////////////////
+// Three Transition //
+//////////////////////
+#scrap .threes-player-enter-active,
+#scrap .threes-opponent-enter-active {
+  transition: all .5s ease-in;
+}
+
+#scrap .threes-player-enter-from,
+#scrap .threes-opponent-enter-from {
+  opacity: 0;
+  transform: rotate(15deg);
+}
+
 #scrap .threes-player-leave-active,
 #scrap .threes-opponent-leave-active {
   transition: all 1.2s ease-out;
