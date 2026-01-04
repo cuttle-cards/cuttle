@@ -33,12 +33,12 @@
                   scrim="surface-1"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
-                  :class="xs ? 'rounded-sm' : 'rounded-lg'"
+                  :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!xs" variant="outlined" color="surface-2">
+                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
@@ -49,7 +49,7 @@
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!xs" variant="outlined" color="surface-2">
+              <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -116,7 +116,7 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
-const { xs } = useDisplay();
+const { xs, smAndDown } = useDisplay();
 const gameStore = useGameStore();
 
 // Dialog
@@ -171,6 +171,7 @@ function openDialog(e) {
     align-items: center;
     transition: all 0.3 ease-in-out; // for tidying/messing up pile
     cursor: pointer;
+    user-select: none;
     
     & #scrap-header {
       font-family: 'Luckiest Guy';
@@ -257,6 +258,13 @@ function openDialog(e) {
   opacity: 0;
 }
 
+@media (max-width: 960px) and (orientation: landscape) {
+   #scrap #scrap-header {
+      font-size: 18px;
+      line-height: 18px;
+    }
+}
+
 @media (max-width: 600px) {
   #scrap {
     height: 13vh;
@@ -269,7 +277,13 @@ function openDialog(e) {
   }
   
   #scrap .scrap-card.threes-opponent-leave-to {
-    transform: translate(-200px);
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+
+  #scrap .scrap-card.threes-player-enter-from,
+  #scrap .scrap-card.threes-opponent-enter-from {
+    transform: translateY(-200px);
     opacity: 0;
   }
 }
