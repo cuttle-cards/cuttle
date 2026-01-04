@@ -5,7 +5,7 @@
         color="primary"
         v-bind="menuProps"
       >
-        Linked Accounts
+        {{ t('profile.linkedAccounts') }}
       </v-btn>
     </template>
 

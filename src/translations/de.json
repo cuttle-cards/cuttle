@@ -589,6 +589,7 @@
     "opponent": "Gegner",
     "connectedAs": "Verbunden als",
     "notConnected": "Nicht verbunden",
-    "replay": "Erneut abspielen"
+    "replay": "Erneut abspielen",
+    "linkedAccounts": "Verknüpfte Konten"
   }
 }

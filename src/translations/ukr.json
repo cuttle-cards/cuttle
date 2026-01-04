@@ -589,6 +589,7 @@
     "opponent": "Суперник",
     "connectedAs": "Підключено як",
     "notConnected": "Не підключено",
-    "replay": "Повтор"
+    "replay": "Повтор",
+    "linkedAccounts": "Прив'язані облікові записи"
   }
 }

@@ -589,6 +589,7 @@
     "opponent": "Adversaire",
     "connectedAs": "Connecté en tant que",
     "notConnected": "Non connecté",
-    "replay": "Rejouer"
+    "replay": "Rejouer",
+    "linkedAccounts": "Comptes liés"
   }
 }
