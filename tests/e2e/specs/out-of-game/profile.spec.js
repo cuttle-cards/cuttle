@@ -22,32 +22,39 @@ describe('Profile Page', () => {
       cy.get('[data-cy=username]').should('contain', myUser.username);
     });
 
-    it('Shows Discord section when not connected', () => {
+    it('Shows provider section when not connected', () => {
       cy.vueRoute('/my-profile');
-      cy.contains('h2', 'Discord');
-      cy.get('[data-cy=not-connected]').should('be.visible');
+
+      [ 'Discord', 'Google' ].forEach((provider) => {
+        cy.get('[data-cy=linked-accounts-btn]').click();
+        cy.contains('.v-list-item-title', provider);
+        cy.get(`[data-cy=${provider.toLowerCase()}Link]`).should('be.visible');
+      });
     });
 
     it('Shows Discord connected state', function() {
       cy.vueRoute('/my-profile');
 
-      cy.window().its('cuttle.authStore')
-        .then((authStore) => {
-          authStore.$patch({
-            identities: [
-              {
-                provider: 'discord',
-                username: 'TestDiscordUser#1234'
-              }
-            ]
+      [ 'Discord', 'Google' ].forEach((provider) => {
+        cy.window().its('cuttle.authStore')
+          .then((authStore) => {
+            authStore.$patch({
+              identities: [
+                {
+                  provider: provider.toLowerCase(),
+                  username: `Test${provider}User#1234`
+                }
+              ]
+            });
           });
-        });
 
-      cy.contains('h2', 'Discord').should('be.visible');
-      cy.get('[data-cy=discord-username]')
-        .should('be.visible')
-        .should('contain', 'TestDiscordUser#1234');
-      cy.get('[data-cy=not-connected]').should('not.exist');
+        cy.get('[data-cy=linked-accounts-btn]').click();
+        cy.contains('.v-list-item-title', provider).should('be.visible');
+        cy.get(`[data-cy=${provider.toLowerCase()}-username]`)
+          .should('be.visible')
+          .should('contain', `Test${provider}User#1234`);
+        cy.get(`[data-cy=${provider.toLowerCase()}Link]`).should('not.exist');
+      });
     });
 
     it('Shows fallback when no games', function() {

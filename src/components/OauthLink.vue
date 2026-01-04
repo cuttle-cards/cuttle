@@ -1,5 +1,6 @@
 <template>
   <v-list-item
+    :data-cy="`${provider}Link`"
     :title="title"
     prepend-icon="mdi-link"
     :disabled="hasDiscord"
