@@ -14,7 +14,7 @@
         @touchstart="isLongPressing = false"
       >
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <TransitionGroup :name="threesTransition">
+          <TransitionGroup name="scrap">
             <GameCard
               v-for="(card, index) in scrapDisplay"
               :key="`scrap-card-${card.id}`"
@@ -216,13 +216,11 @@ function openDialog(e) {
 ///////////////////////////////
 // Entering Scrap Transition //
 ///////////////////////////////
-#scrap .scrap-card.threes-player-enter-active,
-#scrap .scrap-card.threes-opponent-enter-active {
+#scrap .scrap-card.scrap-enter-active {
   transition: all .8s ease-out;
 }
 
-#scrap .scrap-card.threes-player-enter-from,
-#scrap .scrap-card.threes-opponent-enter-from {
+#scrap .scrap-card.scrap-enter-from {
   opacity: 0;
   transform: rotate(0deg) translateX(100px);
 }
@@ -281,8 +279,7 @@ function openDialog(e) {
     opacity: 0;
   }
 
-  #scrap .scrap-card.threes-player-enter-from,
-  #scrap .scrap-card.threes-opponent-enter-from {
+  #scrap .scrap-card.scrap-enter-from {
     transform: translateY(-200px);
     opacity: 0;
   }
