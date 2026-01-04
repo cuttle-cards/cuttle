@@ -45,6 +45,15 @@
               </template>
             </GameCard>
           </TransitionGroup>
+          <Transition :name="threesTransition">
+            <GameCard
+              v-if="threeTarget"
+              :rank="threeTarget.rank"
+              :suit="threeTarget.suit"
+              class="position-absolute"
+              :data-three-target="`${threeTarget.rank}-${threeTarget.suit}`"
+            />
+          </Transition>
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
@@ -125,6 +134,9 @@ const showDialog = ref(false);
 // Displayed Pile
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+
+// Threes transition
+const threeTarget = computed(() => gameStore.lastEventThreeTarget);
 
 // Tidying + messing up pile
 const scrapWrapper = useTemplateRef('scrap');
@@ -228,19 +240,19 @@ function openDialog(e) {
 //////////////////////////////
 // Leaving Scrap Transition //
 //////////////////////////////
-#scrap .scrap-card.threes-player-leave-active,
-#scrap .scrap-card.threes-opponent-leave-active {
+#scrap .threes-player-leave-active,
+#scrap .threes-opponent-leave-active {
   transition: all 1.2s ease-out;
 }
 
 // Leaving towards player hand
-#scrap .scrap-card.threes-player-leave-to {
+#scrap .threes-player-leave-to {
   opacity: 0;
   transform: translate(200px, 50px);
 }
 
 // Leaving towards opponent hand
-#scrap .scrap-card.threes-opponent-leave-to {
+#scrap .threes-opponent-leave-to {
   opacity: 0;
   transform: translate(200px, -200px);
 }
@@ -269,12 +281,12 @@ function openDialog(e) {
     width: calc(13vh / 1.3);
   }
 
-  #scrap .scrap-card.threes-player-leave-to {
+  #scrap .threes-player-leave-to {
     opacity: 0;
     transform: translateY(200px);
   }
   
-  #scrap .scrap-card.threes-opponent-leave-to {
+  #scrap .threes-opponent-leave-to {
     transform: translateY(-200px);
     opacity: 0;
   }
