@@ -4,8 +4,8 @@ import { SnackBarError } from '../../../fixtures/snackbarError';
 const { _ } = Cypress;
 
 function assertThreeTransition (card, whichPlayer = 'player') {
-  cy.get(`[data-scrap-card="${card.rank}-${card.suit}"].threes-${whichPlayer}-leave-active`).should('be.visible');
-  cy.get(`[data-scrap-card="${card.rank}-${card.suit}"]`).should('not.exist');
+  cy.get(`[data-three-target="${card.rank}-${card.suit}"].threes-${whichPlayer}-leave-active`).should('be.visible');
+  cy.get(`[data-three-target="${card.rank}-${card.suit}"]`).should('not.exist');
 }
 
 
