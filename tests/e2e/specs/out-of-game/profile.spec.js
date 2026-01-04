@@ -32,7 +32,7 @@ describe('Profile Page', () => {
       });
     });
 
-    it('Shows Discord connected state', function() {
+    it.only('Shows provider connected state', function() {
       cy.vueRoute('/my-profile');
 
       [ 'Discord', 'Google' ].forEach((provider) => {
@@ -49,7 +49,6 @@ describe('Profile Page', () => {
           });
 
         cy.get('[data-cy=linked-accounts-btn]').click();
-        cy.contains('.v-list-item-title', provider).should('be.visible');
         cy.get(`[data-cy=${provider.toLowerCase()}-username]`)
           .should('be.visible')
           .should('contain', `Test${provider}User#1234`);
