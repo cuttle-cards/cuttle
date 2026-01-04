@@ -30,7 +30,7 @@
 
       <h4>Google</h4>
       <div v-if="hasGoogle">
-        <span data-cy="discord-username" style="color: rgba(var(--v-theme-surface-1))">
+        <span data-cy="google-username" style="color: rgba(var(--v-theme-surface-1))">
           {{ t('profile.connectedAs') }} {{ googleUsername }}
         </span>
       </div>
@@ -66,8 +66,8 @@ const hasGoogle = computed(() =>
   authStore.identities?.some(({ provider }) => provider === 'google')
 );
 const googleUsername = computed(() => {
-  const discordIdentity = authStore.identities?.find(({ provider }) => provider === 'google');
-  return discordIdentity?.username || '';
+  const googleIdentity = authStore.identities?.find(({ provider }) => provider === 'google');
+  return googleIdentity?.username || '';
 });
 
 </script>
