@@ -8,26 +8,7 @@
         {{ t('global.username') }}: {{ authStore.username }}
       </p>
 
-      <!-- Discord -->
-      <v-card
-        flat
-        class="pa-4 mt-4"
-        style="background-color: rgba(var(--v-theme-surface-1)); color: rgba(var(--v-theme-surface-2))"
-      >
-        <h2>Discord</h2>
-        <div v-if="hasDiscord">
-          <span data-cy="discord-username" style="color: rgba(var(--v-theme-surface-1))">
-            {{ t('profile.connectedAs') }} {{ discordUsername }}
-          </span>
-        </div>
-        <div v-else style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
-          <span data-cy="not-connected" style="color: #ccc">{{ t('profile.notConnected') }}</span>
-          <OauthLink provider="discord" />
-        </div>
-      </v-card>
-      
-
-
+      <LinkedAccountsList />
       <!-- Games List -->
       <v-card
         flat
@@ -72,22 +53,16 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import OauthLink from '_/src/components/OauthLink.vue';
+
 import { useMyGamesStore } from '@/stores/myGames';
 import ProfileGameListItem from './ProfileGameListItem.vue';
+import LinkedAccountsList from './LinkedAccountsList.vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const myGamesStore = useMyGamesStore();
 
-const hasDiscord = computed(() =>
-  authStore.identities?.some(({ provider }) => provider === 'discord')
-);
-const discordUsername = computed(() => {
-  const discordIdentity = authStore.identities?.find(({ provider }) => provider === 'discord');
-  return discordIdentity?.username || '';
-});
 
 const games = computed(() => myGamesStore.games);
 
