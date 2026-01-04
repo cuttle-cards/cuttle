@@ -9,7 +9,7 @@
 module.exports = function (req, res, next) {
   const { provider } = req.params;
 
-  if (![ 'discord' ].includes(provider)){
+  if (![ 'discord', 'google' ].includes(provider)){
 
     // Regular error if we're coming from oauth complete registration form
     if (req.url.includes('oauthcompleteregistration')){

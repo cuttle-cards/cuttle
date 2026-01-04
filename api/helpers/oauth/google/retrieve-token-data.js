@@ -20,7 +20,7 @@ module.exports = {
         redirect_uri: `${process.env.VITE_API_URL}/api/user/google/callback`,
       };
 
-      const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+      const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
