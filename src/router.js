@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 import GameStatus from '_/utils/GameStatus.json';
 
 export const ROUTE_NAME_GAME = 'Game';
+export const ROUTE_NAME_VS_AI = 'VsAi';
 export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
 export const ROUTE_NAME_HOME = 'Home';
@@ -217,9 +218,15 @@ const routes = [
     path: '/game/:gameId?',
     component: () => import('@/routes/game/GameView.vue'),
     beforeEnter: getGameState,
-    // TODO: Add logic to redirect if a given game does not exist
-    // mustBeAuthenticated intentionally left off here
-    // If a user refreshes the relogin modal will fire and allow them to continue playing
+    meta: {
+      hideNavigation: true,
+    },
+  },
+  {
+    name: ROUTE_NAME_VS_AI,
+    path: '/ai/:gameId?',
+    component: () => import('@/routes/game/GameView.vue'),
+    beforeEnter: getGameState,
     meta: {
       hideNavigation: true,
     },

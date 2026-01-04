@@ -46,6 +46,11 @@ module.exports = {
         throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
+      // TODO: Translate this
+      if (currentState.deck.length) {
+        throw new BadRequestError('Can\'t pass while there are cards in deck');
+      }
+
       return exits.success();
     } catch (err) {
       return exits.error(err);

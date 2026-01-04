@@ -29,8 +29,6 @@ export const gameFixture = {
     game: 1,
     frozenId: null,
   },
-  turnStalemateWasRequestedByP0: -1,
-  turnStalemateWasRequestedByP1: -1,
   spectatingUsers: [],
   p0Ready: true,
   p1Ready: true,
