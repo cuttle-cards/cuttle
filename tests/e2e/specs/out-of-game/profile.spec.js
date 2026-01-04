@@ -32,7 +32,7 @@ describe('Profile Page', () => {
       });
     });
 
-    it.only('Shows provider connected state', function() {
+    it('Shows provider connected state', function() {
       cy.vueRoute('/my-profile');
 
       [ 'Discord', 'Google' ].forEach((provider) => {
