@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { orderBy } from 'lodash';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import MoveType from '../../../../utils/MoveType';
 
@@ -43,5 +44,25 @@ describe('getMoveBodiesForMoveType()', () => {
     const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.ONE_OFF);
     expect(moveBodies).to.deep.eq(mainPhase.oneOffMoveBodies);
   });
+});
 
+describe('getLegalMoves()', () => {
+  let getLegalMoves;
+  beforeEach(async () => {
+    await sails.helpers.wipeDatabase();
+    ({ getLegalMoves } = sails.helpers.gameStates.ai);
+  });
+
+  it('Gets legal moves for main phase', () => {
+    const legalMoves = orderBy(
+      getLegalMoves(mainPhase.gameState, 0, [ mainPhase.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
+    );
+    const expectedLegalMoves = orderBy(mainPhase.validMoveBodies.map((moveBody) => {
+      const { execute } = sails.helpers.gameStates.moves[moveBody.moveType];
+      return execute(mainPhase.gameState, moveBody, 0, [ mainPhase.gameState ]);
+    }), [ 'moveType', 'cardId', 'targetId' ]);
+    console.log(legalMoves.map((state) => state.moveType));
+    console.log('expected', expectedLegalMoves.map((move) => move.moveType));
+    expect(legalMoves).to.deep.eq(expectedLegalMoves);
+  });
 });

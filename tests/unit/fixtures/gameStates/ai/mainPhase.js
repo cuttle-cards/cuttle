@@ -49,9 +49,9 @@ const gameState = {
   resolved: null,
   playedCard: Card.TEN_OF_SPADES,
   gameId: 1,
-  playedBy: 0,
-  moveType: MoveType.POINTS,
-  turn: 3,
+  playedBy: 1,
+  moveType: MoveType.DRAW,
+  turn: 4,
   phase: GamePhase.MAIN,
   targetCard: null,
 };
@@ -77,7 +77,7 @@ const scuttleMoveBodies = [
   { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'TH', isValid: false },
   { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'AC', isValid: true },
   { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'TH', isValid: false },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC', isValid: false },
+  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC', isValid: true },
 ];
 
 const jackMoveBodies = [
@@ -91,6 +91,16 @@ const oneOffMoveBodies = [
   { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '7D', isValid: true },
 ];
 
+const validMoveBodies = [
+  ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(pointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(faceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(scuttleMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(jackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(oneOffMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(passMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+];
+
 export const mainPhase = {
   gameState,
   drawMoveBodies: drawMoveBodies.map((move) => omit(move, 'isValid')),
@@ -100,4 +110,5 @@ export const mainPhase = {
   jackMoveBodies: jackMoveBodies.map((move) => omit(move, 'isValid')),
   oneOffMoveBodies: oneOffMoveBodies.map((move) => omit(move, 'isValid')),
   passMoveBodies: passMoveBodies.map((move) => omit(move, 'isValid')),
+  validMoveBodies,
 };
