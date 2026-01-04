@@ -240,9 +240,25 @@ function openDialog(e) {
 //////////////////////
 // Three Transition //
 //////////////////////
+
+@keyframes slide-left-then-back {
+  0% {
+    opacity: 0;
+    transform: rotate(20deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 #scrap .threes-player-enter-active,
 #scrap .threes-opponent-enter-active {
-  transition: all .5s ease-in;
+  // transition: all .5s ease-in;
+  animation: slide-left-then-back 1s ease-in-out forwards;
 }
 
 #scrap .threes-player-enter-from,
