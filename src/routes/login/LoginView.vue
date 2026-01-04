@@ -137,7 +137,7 @@
                 <template #prepend>
                   <v-icon class="mr-2" icon="mdi-google" size="48" />
                 </template>
-                <span class="oauthButton"> Login with Google </span>
+                <span class="oauthButton"> {{ t('login.loginGoogle') }} </span>
               </v-btn>
             </v-form>
             <div class="d-flex align-center flex-column m-10">
