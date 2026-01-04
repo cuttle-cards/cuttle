@@ -12,21 +12,28 @@ import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useI18n } from 'vue-i18n';
 
+const props = defineProps({
+  provider: {
+    type: String,
+    required: true
+  }
+});
+
 const { t } = useI18n();
 const authStore = useAuthStore();
 
-const hasDiscord = computed(() => authStore.identities.some(({ provider }) => provider === 'discord'));
+const hasOauth = computed(() => authStore.identities.some(({ provider }) => provider === props.provider));
 
 const title = computed(() =>
-  t(hasDiscord.value ? 'login.discordLinked' : 'login.linkDiscord')
+  t(hasOauth.value ? `login.${props.provider}Linked` : `login.link${props.provider}`)
 );
 
 
 const handleClick = () => {
-  if (hasDiscord.value) {
+  if (hasOauth.value) {
     return;
   }
 
-  return authStore.oAuth('discord');
+  return authStore.oAuth(props.provider);
 };
 </script>
