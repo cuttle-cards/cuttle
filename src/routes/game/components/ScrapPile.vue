@@ -240,31 +240,16 @@ function openDialog(e) {
 //////////////////////
 // Three Transition //
 //////////////////////
-
-@keyframes slide-left-then-back {
-  0% {
-    opacity: 0;
-    transform: rotate(20deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(100px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 #scrap .threes-player-enter-active,
 #scrap .threes-opponent-enter-active {
-  // transition: all .5s ease-in;
-  animation: slide-left-then-back 1s ease-in-out forwards;
+  transition: all .5s ease-in;
 }
 
 #scrap .threes-player-enter-from,
 #scrap .threes-opponent-enter-from {
   opacity: 0;
-  transform: rotate(15deg);
+  transform: rotate(15deg) translateX(80px);
+  rotate: y -90deg;
 }
 
 #scrap .threes-player-leave-active,
