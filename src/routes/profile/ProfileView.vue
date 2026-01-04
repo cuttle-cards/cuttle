@@ -22,9 +22,11 @@
         </div>
         <div v-else style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
           <span data-cy="not-connected" style="color: #ccc">{{ t('profile.notConnected') }}</span>
-          <DiscordLink />
+          <OauthLink provider="discord" />
         </div>
       </v-card>
+      
+
 
       <!-- Games List -->
       <v-card
@@ -70,7 +72,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import DiscordLink from '@/components/DiscordLink.vue';
+import OauthLink from '_/src/components/OauthLink.vue';
 import { useMyGamesStore } from '@/stores/myGames';
 import ProfileGameListItem from './ProfileGameListItem.vue';
 import { useI18n } from 'vue-i18n';
