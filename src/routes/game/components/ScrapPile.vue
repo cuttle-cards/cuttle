@@ -283,6 +283,7 @@ function openDialog(e) {
 
 #scrap .scrap-empty-leave-to {
   opacity: 0;
+  rotate: y -90deg;
 }
 
 @media (max-width: 960px) and (orientation: landscape) {
