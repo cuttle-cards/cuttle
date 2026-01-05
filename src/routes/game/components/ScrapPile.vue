@@ -14,7 +14,7 @@
         @touchstart="isLongPressing = false"
       >
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <TransitionGroup name="scrap">
+          <TransitionGroup :name="disableEnterTransition ? 'no-transition' : 'scrap'">
             <GameCard
               v-for="(card, index) in scrapDisplay"
               :key="`scrap-card-${card.id}`"
@@ -113,6 +113,7 @@ import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { onLongPress } from '@vueuse/core';
 import { useGameStore } from '_/src/stores/game';
+import MoveType from '_/utils/MoveType';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -137,6 +138,10 @@ const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `thr
 
 // Threes transition
 const threeTarget = computed(() => gameStore.lastEventThreeTarget);
+const disableEnterTransition = computed(() => {
+  // Disable scrap-enter transition when three reorders the top 10 cards
+  return gameStore.lastEventChange === MoveType.RESOLVE_THREE && !threeTarget.value;
+});
 
 // Tidying + messing up pile
 const scrapWrapper = useTemplateRef('scrap');
