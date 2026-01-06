@@ -1,4 +1,4 @@
-const GameStatus = require('../../../utils/GameStatus');
+const GameStatus = require('../../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
   const player = await User.findOne(req.session.usr);
