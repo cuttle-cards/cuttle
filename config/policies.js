@@ -41,6 +41,7 @@ module.exports.policies = {
 
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
   'game/ai/create-vs-ai': [ 'isLoggedIn', 'isSocket' ],
+  'game/ai/ai-move': [ 'isLoggedIn', 'isSocket' ],
   'game/get-list': 'isLoggedIn',
   'game/get-game': [ 'isLoggedIn', 'hasGameId', 'isSocket' ],
   'game/get-history': [ 'isLoggedIn' ],
