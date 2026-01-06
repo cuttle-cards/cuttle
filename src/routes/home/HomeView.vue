@@ -127,8 +127,9 @@
                 </span>
               </v-btn>
               <v-btn
-                variant="outlined"
-                color="primary"
+                variant="flat"
+                color="surface-2"
+                class="px-8"
                 data-cy="create-ai-game"
                 @click="createAIGame"
               >
