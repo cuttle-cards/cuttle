@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { orderBy } from 'lodash';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
+import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import MoveType from '../../../../utils/MoveType';
 
 let getMoveBodiesForMoveType;
 
 describe('getMoveBodiesForMoveType()', () => {
+  beforeEach(async () => {
+    await sails.helpers.wipeDatabase();
+    ({ getMoveBodiesForMoveType } = sails.helpers.gameStates.ai);
+  });
+
   describe('Main Phase move bodies', () => {
-
-    beforeEach(async () => {
-      await sails.helpers.wipeDatabase();
-      ({ getMoveBodiesForMoveType } = sails.helpers.gameStates.ai);
-    });
-
 
 
     it('Creates valid move bodies for PASS', () => {
@@ -49,7 +49,14 @@ describe('getMoveBodiesForMoveType()', () => {
       const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.ONE_OFF);
       expect(moveBodies).to.deep.eq(mainPhase.oneOffMoveBodies);
     });
-  }); // End main phase getMoveBodiesForMoveType
+  }); // End main phase getMoveBodiesForMoveType()
+
+  describe('resolvingSeven move bodies', () => {
+    it('Creates valid move bodies for SEVEN_POINTS', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_POINTS);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenPointsMoveBodies);
+    });
+  });
 });
 
 describe('getLegalMoves()', () => {
