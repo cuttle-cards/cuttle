@@ -1,22 +1,27 @@
 const GameStatus = require('../../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
-  const player = await User.findOne(req.session.usr);
+  const playerId = req.session.usr;
+  const player = await User.findOne(playerId);
   const pNum = req.body.pNum ?? 0;
+  const botPNum = (pNum + 1) % 2;
 
   if (!player) {
     return res.forbidden('You must be logged in to play vs AI');
   }
 
-  const newGame = await Game.create({
+  const gameData = {
     name: `${player.username} vs AI`,
     isVsAi: true,
-    p0: player.id,
     status: GameStatus.STARTED,
     isRanked: false,
     p0Ready: true,
     p1Ready: true,
-  }).fetch();
+  };
+  gameData[`p${pNum}`] = playerId;
+  gameData[`p${botPNum}Rematch`] = true;
+
+  const newGame = await Game.create(gameData).fetch();
 
   const gameId = newGame.id;
 
