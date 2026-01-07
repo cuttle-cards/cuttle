@@ -109,6 +109,11 @@ const sevenScuttleMoveBodies = [
 
 const sevenFaceCardMoveBodies = [];
 
+const sevenJackMoveBodies = [
+  { moveType: MoveType.SEVEN_JACK, playedBy: 0, cardId: 'JD', targetId: 'TH', isValid: true },
+  { moveType: MoveType.SEVEN_JACK, playedBy: 0, cardId: 'JD', targetId: 'AC', isValid: true },
+];
+
 const validMoveBodies = [
   ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(pointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
@@ -120,6 +125,7 @@ const validMoveBodies = [
   ...(sevenPointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(sevenScuttleMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(sevenFaceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(sevenJackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
 ];
 
 export const resolvingSevenPhase1 = {
@@ -134,5 +140,6 @@ export const resolvingSevenPhase1 = {
   sevenPointsMoveBodies: sevenPointsMoveBodies.map((move) => omit(move, 'isValid')),
   sevenScuttleMoveBodies: sevenScuttleMoveBodies.map((move) => omit(move, 'isValid')),
   sevenFaceCardMoveBodies: sevenFaceCardMoveBodies.map((move) => omit(move, 'isValid')),
+  sevenJackMoveBodies: sevenJackMoveBodies.map((move) => omit(move, 'isValid')),
   validMoveBodies,
 };

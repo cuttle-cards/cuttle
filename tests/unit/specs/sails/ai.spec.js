@@ -66,6 +66,11 @@ describe('getMoveBodiesForMoveType()', () => {
       const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_FACE_CARD);
       expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenFaceCardMoveBodies);
     });
+
+    it('Creates valid move bodies for SEVEN_JACK', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_JACK);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenJackMoveBodies);
+    });
   });
 });
 
