@@ -115,6 +115,17 @@ module.exports = {
           .filter((card) => card.rank <= 10)
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+
+      case MoveType.SEVEN_SCUTTLE: {
+        const numberCardsInTopTwo = deck.slice(0, 2).filter((card) => card.rank <= 10);
+        for (let scuttlingCard of numberCardsInTopTwo) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: scuttlingCard.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
+
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }

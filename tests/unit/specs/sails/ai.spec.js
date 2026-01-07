@@ -56,6 +56,11 @@ describe('getMoveBodiesForMoveType()', () => {
       const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_POINTS);
       expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenPointsMoveBodies);
     });
+
+    it('Creates valid move bodies for SEVEN_SCUTTLE', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_SCUTTLE);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenScuttleMoveBodies);
+    });
   });
 });
 
