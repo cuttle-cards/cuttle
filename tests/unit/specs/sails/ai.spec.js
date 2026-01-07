@@ -61,6 +61,11 @@ describe('getMoveBodiesForMoveType()', () => {
       const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_SCUTTLE);
       expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenScuttleMoveBodies);
     });
+
+    it('Skips SEVEN_FACE_CARD move bodies when there are no face cards in top two cards', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_FACE_CARD);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenFaceCardMoveBodies);
+    });
   });
 });
 

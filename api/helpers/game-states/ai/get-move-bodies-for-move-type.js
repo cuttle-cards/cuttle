@@ -126,6 +126,12 @@ module.exports = {
         break;
       }
 
+      case MoveType.SEVEN_FACE_CARD:
+        res = deck.slice(0, 2)
+          .filter((card) => [ 8, 12, 13 ].includes(card.rank))
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
     }
