@@ -1,6 +1,7 @@
 import { Card } from '../../Card';
 import GamePhase from '../../../../../utils/GamePhase.json';
 import MoveType from '../../../../../utils/MoveType.json';
+import TargetType from '../../../../../utils/TargetType.json';
 import { omit } from 'lodash';
 
 const gameState = {
@@ -15,17 +16,17 @@ const gameState = {
     ],
     points: [
       Card.TEN_OF_SPADES,
-      {
-        ...Card.EIGHT_OF_DIAMONDS,
-        attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
-      },
+      Card.EIGHT_OF_DIAMONDS,
     ],
     faceCards: [ Card.KING_OF_SPADES ],
   },
   p1: {
     hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
-    points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS ],
-    faceCards: [],
+    points: [       {
+      ...Card.TEN_OF_HEARTS,
+      attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
+    }, Card.ACE_OF_CLUBS ],
+    faceCards: [ Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS ],
   },
   deck: [ Card.TWO_OF_CLUBS, Card.JACK_OF_DIAMONDS,
     Card.SEVEN_OF_CLUBS,
@@ -36,7 +37,6 @@ const gameState = {
     Card.KING_OF_DIAMONDS, 
     Card.TWO_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, 
     Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, 
-    Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, 
     Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.FIVE_OF_SPADES, 
     Card.SIX_OF_SPADES,  Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, 
     Card.QUEEN_OF_SPADES
@@ -118,6 +118,12 @@ const sevenDiscardMoveBodies = [
   { moveType: MoveType.SEVEN_DISCARD, playedBy: 0, cardId: 'JD', isValid: true },
 ];
 
+const sevenOneOffMoveBodies = [
+  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'QH', targetType: TargetType.faceCard, isValid: true },
+  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'KH', targetType: TargetType.faceCard, isValid: false },
+  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'JC', targetType: TargetType.jack, isValid: true },
+];
+
 const validMoveBodies = [
   ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(pointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
@@ -131,6 +137,7 @@ const validMoveBodies = [
   ...(sevenFaceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(sevenJackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
   ...(sevenDiscardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
+  ...(sevenOneOffMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
 ];
 
 export const resolvingSevenPhase1 = {
@@ -147,5 +154,6 @@ export const resolvingSevenPhase1 = {
   sevenFaceCardMoveBodies: sevenFaceCardMoveBodies.map((move) => omit(move, 'isValid')),
   sevenJackMoveBodies: sevenJackMoveBodies.map((move) => omit(move, 'isValid')),
   sevenDiscardMoveBodies: sevenDiscardMoveBodies.map((move) => omit(move, 'isValid')),
+  sevenOneOffMoveBodies: sevenOneOffMoveBodies.map((move) => omit(move, 'isValid')),
   validMoveBodies,
 };

@@ -1,4 +1,5 @@
 const MoveType = require('../../../../utils/MoveType');
+const TargetType = require('../../../../utils/TargetType');
 
 module.exports = {
   friendlyName: 'Get move bodies for move type',
@@ -27,9 +28,9 @@ module.exports = {
     const player = currentState[`p${playedBy}`];
     const opponent = currentState[`p${(playedBy + 1) % 2}`];
     const playerHand = player.hand;
-    const playerPoints = player.points;
-    const playerFaceCards = player.faceCards;
-    const opponentHand = opponent.hand;
+    const _playerPoints = player.points;
+    const _playerFaceCards = player.faceCards;
+    const _opponentHand = opponent.hand;
     const opponentPoints = opponent.points;
     const opponentFaceCards = opponent.faceCards;
     const { deck, scrap } = currentState;
@@ -150,6 +151,43 @@ module.exports = {
           .filter((card) => card.rank === 11)
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+
+      case MoveType.SEVEN_ONE_OFF: {
+        const topTwo = deck.slice(0, 2);
+        const untargetedOneOffs = topTwo.filter((card) => [ 1, 3, 4, 5, 6, 7 ].includes(card.rank));
+        const targetedOneOffs = topTwo.filter((card) => [ 2, 9 ].includes(card.rank));
+
+        for (let untargetedOneOff of untargetedOneOffs) {
+          res.push({ moveType, playedBy, cardId: untargetedOneOff.id });
+        }
+
+        for (let targetedOneOff of targetedOneOffs) {
+          for (let opponentFaceCard of opponentFaceCards) {
+            res.push({
+              moveType,
+              playedBy,
+              cardId: targetedOneOff.id,
+              targetId: opponentFaceCard.id,
+              targetType: TargetType.faceCard,
+            });
+          }
+
+          for (let opponentPoint of opponentPoints) {
+            if (opponentPoint.attachments.length) {
+              console.log('seven one-off targeting jack', opponentPoint);
+              res.push({
+                moveType,
+                playedBy,
+                cardId: targetedOneOff.id,
+                targetId: opponentPoint.attachments.at(-1).id,
+                targetType: TargetType.jack
+              });
+            }
+          }
+        }
+
+        break;
+      }
 
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
