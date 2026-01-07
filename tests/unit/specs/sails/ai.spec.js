@@ -71,6 +71,11 @@ describe('getMoveBodiesForMoveType()', () => {
       const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_JACK);
       expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenJackMoveBodies);
     });
+
+    it('Creates valid move bodies for SEVEN_DISCARD', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase1.gameState, 0, MoveType.SEVEN_DISCARD);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase1.sevenDiscardMoveBodies);
+    });
   });
 });
 

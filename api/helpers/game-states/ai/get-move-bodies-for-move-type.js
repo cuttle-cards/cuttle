@@ -47,11 +47,13 @@ module.exports = {
           .filter((card) => card.rank <= 10)
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+
       case MoveType.FACE_CARD:
         res = playerHand
           .filter((card) => [ 8, 12, 13 ].includes(card.rank))
           .map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
+
       case MoveType.SCUTTLE: {
         const numberCardsInHand = playerHand.filter((card) => card.rank <= 10);
         for (let scuttlingCard of numberCardsInHand) {
@@ -92,6 +94,7 @@ module.exports = {
         }
         break;
       }
+
       case MoveType.COUNTER:
         res = playerHand
           .filter((card) => card.rank === 2)
@@ -141,6 +144,12 @@ module.exports = {
         }
         break;
       }
+
+      case MoveType.SEVEN_DISCARD:
+        res = deck.slice(0, 2)
+          .filter((card) => card.rank === 11)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
 
       default:
         return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
