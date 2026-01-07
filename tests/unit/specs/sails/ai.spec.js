@@ -95,12 +95,25 @@ describe('getLegalMoves()', () => {
     const legalMoves = orderBy(
       getLegalMoves(mainPhase.gameState, 0, [ mainPhase.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
     );
+
     const expectedLegalMoves = orderBy(mainPhase.validMoveBodies.map((moveBody) => {
       const { execute } = sails.helpers.gameStates.moves[moveBody.moveType];
       return execute(mainPhase.gameState, moveBody, 0, [ mainPhase.gameState ]);
     }), [ 'moveType', 'cardId', 'targetId' ]);
-    console.log(legalMoves.map((state) => state.moveType));
-    console.log('expected', expectedLegalMoves.map((move) => move.moveType));
+
+    expect(legalMoves).to.deep.eq(expectedLegalMoves);
+  });
+
+  it('Gets legal moves for RESOLVING_SEVEN phase with two and jack on top', () => {
+    const legalMoves = orderBy(
+      getLegalMoves(resolvingSevenPhase1.gameState, 0, [ resolvingSevenPhase1.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
+    );
+
+    const expectedLegalMoves = orderBy(resolvingSevenPhase1.validMoveBodies.map((moveBody) => {
+      const { execute } = sails.helpers.gameStates.moves[moveBody.moveType];
+      return execute(resolvingSevenPhase1.gameState, moveBody, 0, [ resolvingSevenPhase1.gameState ]);
+    }), [ 'moveType', 'cardId', 'targetId' ]);
+
     expect(legalMoves).to.deep.eq(expectedLegalMoves);
   });
 });

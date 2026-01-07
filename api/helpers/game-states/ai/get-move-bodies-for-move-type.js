@@ -174,7 +174,6 @@ module.exports = {
 
           for (let opponentPoint of opponentPoints) {
             if (opponentPoint.attachments.length) {
-              console.log('seven one-off targeting jack', opponentPoint);
               res.push({
                 moveType,
                 playedBy,

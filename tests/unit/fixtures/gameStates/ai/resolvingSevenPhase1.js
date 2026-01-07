@@ -26,7 +26,7 @@ const gameState = {
       ...Card.TEN_OF_HEARTS,
       attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
     }, Card.ACE_OF_CLUBS ],
-    faceCards: [ Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS ],
+    faceCards: [ Card.KING_OF_HEARTS ],
   },
   deck: [ Card.TWO_OF_CLUBS, Card.JACK_OF_DIAMONDS,
     Card.SEVEN_OF_CLUBS,
@@ -37,6 +37,7 @@ const gameState = {
     Card.KING_OF_DIAMONDS, 
     Card.TWO_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, 
     Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, 
+    Card.QUEEN_OF_HEARTS,
     Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.FIVE_OF_SPADES, 
     Card.SIX_OF_SPADES,  Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, 
     Card.QUEEN_OF_SPADES
@@ -115,12 +116,11 @@ const sevenJackMoveBodies = [
 ];
 
 const sevenDiscardMoveBodies = [
-  { moveType: MoveType.SEVEN_DISCARD, playedBy: 0, cardId: 'JD', isValid: true },
+  { moveType: MoveType.SEVEN_DISCARD, playedBy: 0, cardId: 'JD', isValid: false },
 ];
 
 const sevenOneOffMoveBodies = [
-  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'QH', targetType: TargetType.faceCard, isValid: true },
-  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'KH', targetType: TargetType.faceCard, isValid: false },
+  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'KH', targetType: TargetType.faceCard, isValid: true },
   { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'JC', targetType: TargetType.jack, isValid: true },
 ];
 
