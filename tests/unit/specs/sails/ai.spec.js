@@ -3,6 +3,7 @@ import { orderBy } from 'lodash';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
+import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
 import MoveType from '../../../../utils/MoveType';
 
 let getMoveBodiesForMoveType;
@@ -86,6 +87,11 @@ describe('getMoveBodiesForMoveType()', () => {
     it('Creates valid move bodies for untargeted SEVEN_ONE_OFF', () => {
       const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase2.gameState, 0, MoveType.SEVEN_ONE_OFF);
       expect(moveBodies).to.deep.eq(resolvingSevenPhase2.sevenOneOffMoveBodies);
+    });
+
+    it('Creates valid move bodies for SEVEN_DISCARD', () => {
+      const moveBodies = getMoveBodiesForMoveType(resolvingSevenPhase3.gameState, 0, MoveType.SEVEN_DISCARD);
+      expect(moveBodies).to.deep.eq(resolvingSevenPhase3.sevenDiscardMoveBodies);
     });
   });
 });
