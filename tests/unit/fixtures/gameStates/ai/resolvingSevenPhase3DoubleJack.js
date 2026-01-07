@@ -1,7 +1,6 @@
 import { Card } from '../../Card';
 import GamePhase from '../../../../../utils/GamePhase.json';
 import MoveType from '../../../../../utils/MoveType.json';
-import TargetType from '../../../../../utils/TargetType.json';
 import { omit } from 'lodash';
 
 const gameState = {
@@ -17,7 +16,7 @@ const gameState = {
       Card.TEN_OF_SPADES,
       Card.EIGHT_OF_DIAMONDS,
     ],
-    faceCards: [ Card.KING_OF_SPADES, Card.QUEEN_OF_CLUBS, ],
+    faceCards: [ Card.KING_OF_SPADES ],
   },
   p1: {
     hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
@@ -25,7 +24,7 @@ const gameState = {
       ...Card.TEN_OF_HEARTS,
       attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
     }, Card.ACE_OF_CLUBS ],
-    faceCards: [ Card.KING_OF_HEARTS ],
+    faceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS, ],
   },
   deck: [ Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS,
     Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS,
@@ -97,10 +96,7 @@ const oneOffMoveBodies = [
 /////////////////////////////////////////////
 const sevenPointsMoveBodies = [];
 
-const sevenScuttleMoveBodies = [
-  { moveType: MoveType.SEVEN_SCUTTLE, playedBy: 0, cardId: '2C', targetId: 'TH', isValid: false },
-  { moveType: MoveType.SEVEN_SCUTTLE, playedBy: 0, cardId: '2C', targetId: 'AC', isValid: true },
-];
+const sevenScuttleMoveBodies = [];
 
 const sevenFaceCardMoveBodies = [];
 
@@ -116,10 +112,7 @@ const sevenDiscardMoveBodies = [
   { moveType: MoveType.SEVEN_DISCARD, playedBy: 0, cardId: 'JD', isValid: true },
 ];
 
-const sevenOneOffMoveBodies = [
-  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'KH', targetType: TargetType.faceCard, isValid: true },
-  { moveType: MoveType.SEVEN_ONE_OFF, playedBy: 0, cardId: '2C', targetId: 'JC', targetType: TargetType.jack, isValid: true },
-];
+const sevenOneOffMoveBodies = [];
 
 const validMoveBodies = [
   ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),

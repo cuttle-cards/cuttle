@@ -128,4 +128,17 @@ describe('getLegalMoves()', () => {
 
     expect(legalMoves).to.deep.eq(expectedLegalMoves);
   });
+
+  it('Gets legal moves for RESOLVING_SEVEN phase with seven double jack discard special case', () => {
+    const legalMoves = orderBy(
+      getLegalMoves(resolvingSevenPhase3.gameState, 0, [ resolvingSevenPhase3.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
+    );
+
+    const expectedLegalMoves = orderBy(resolvingSevenPhase3.validMoveBodies.map((moveBody) => {
+      const { execute } = sails.helpers.gameStates.moves[moveBody.moveType];
+      return execute(resolvingSevenPhase3.gameState, moveBody, 0, [ resolvingSevenPhase3.gameState ]);
+    }), [ 'moveType', 'cardId', 'targetId' ]);
+
+    expect(legalMoves).to.deep.eq(expectedLegalMoves);
+  });
 });
