@@ -130,13 +130,11 @@
               <v-btn
                 class="w-100 mb-8 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
-                color="newSecondary"
+                color="black"
                 type="button"
                 @click="oAuth('google')"
               >
-                <template #prepend>
-                  <v-icon class="mr-2" icon="mdi-google" size="48" />
-                </template>
+                <img class="google" src="/img/loginView/logo-google.svg">
                 <span class="oauthButton"> {{ t('login.loginGoogle') }} </span>
               </v-btn>
             </v-form>
@@ -424,6 +422,11 @@ export default {
 
 .discord {
   max-height: 48px;
+  margin-right: 18px;
+}
+
+.google {
+  max-height: 40px;
   margin-right: 18px;
 }
 
