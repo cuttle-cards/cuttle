@@ -15,42 +15,12 @@ describe('getMoveBodiesForMoveType()', () => {
   });
 
   describe('Main Phase move bodies', () => {
-
-
-    it('Creates valid move bodies for PASS', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.PASS);
-      expect(moveBodies).to.deep.eq(mainPhase.passMoveBodies);
-    });
-
-    it('Creates valid move bodies for DRAW', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.DRAW);
-      expect(moveBodies).to.deep.eq(mainPhase.drawMoveBodies);
-    });
-
-    it('Creates valid move bodies for POINTS', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.POINTS);
-      expect(moveBodies).to.deep.eq(mainPhase.pointsMoveBodies);
-    });
-
-    it('Creates valid move bodies for FACE_CARD', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.FACE_CARD);
-      expect(moveBodies).to.deep.eq(mainPhase.faceCardMoveBodies);
-    });
-
-    it('Creates valid move bodies for SCUTTLE', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.SCUTTLE);
-      expect(moveBodies).to.deep.eq(mainPhase.scuttleMoveBodies);
-    });
-
-    it('Creates valid move bodies for JACK', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.JACK);
-      expect(moveBodies).to.deep.eq(mainPhase.jackMoveBodies);
-    });
-
-    it('Creates valid move bodies for ONE_OFF', () => {
-      const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, MoveType.ONE_OFF);
-      expect(moveBodies).to.deep.eq(mainPhase.oneOffMoveBodies);
-    });
+    for (let testCase of mainPhase.moveBodiesByType) {
+      it(`Creates move bodies for ${testCase.moveType}`, () => {
+        const moveBodies = getMoveBodiesForMoveType(mainPhase.gameState, 0, testCase.moveType);
+        expect(moveBodies).to.deep.eq(testCase.moves);
+      });
+    }
   }); // End main phase getMoveBodiesForMoveType()
 
   describe('resolvingSeven move bodies', () => {

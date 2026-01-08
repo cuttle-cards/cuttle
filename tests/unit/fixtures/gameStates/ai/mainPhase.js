@@ -101,8 +101,22 @@ const validMoveBodies = [
   ...(passMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
 ];
 
+function omitIsValid(moveList) {
+  return moveList.map((validMove) => omit(validMove, 'isValid'));
+}
+
 export const mainPhase = {
+  name: 'mainPhase',
   gameState,
+  moveBodiesByType: [
+    { moveType: MoveType.DRAW, moves: omitIsValid(drawMoveBodies) },
+    { moveType: MoveType.POINTS, moves: omitIsValid(pointsMoveBodies) },
+    { moveType: MoveType.FACE_CARD, moves: omitIsValid(faceCardMoveBodies) },
+    { moveType: MoveType.SCUTTLE, moves: omitIsValid(scuttleMoveBodies) },
+    { moveType: MoveType.JACK, moves: omitIsValid(jackMoveBodies) },
+    { moveType: MoveType.ONE_OFF, moves: omitIsValid(oneOffMoveBodies) },
+    { moveType: MoveType.PASS, moves: omitIsValid(passMoveBodies) }
+  ],
   drawMoveBodies: drawMoveBodies.map((move) => omit(move, 'isValid')),
   pointsMoveBodies:   pointsMoveBodies.map((move) => omit(move, 'isValid')),
   faceCardMoveBodies: faceCardMoveBodies.map((move) => omit(move, 'isValid')),
