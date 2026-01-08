@@ -1,7 +1,7 @@
 module.exports = {
-  friendlyName: 'Create and verify Discord callback Params ',
+  friendlyName: 'Create and verify Google callback Params ',
 
-  description: 'Generates and verifies callback params for Discord OAuth',
+  description: 'Generates and verifies callback params for Google OAuth',
 
   inputs:{
     code: {
