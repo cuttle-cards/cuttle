@@ -117,12 +117,5 @@ export const mainPhase = {
     { moveType: MoveType.ONE_OFF, moves: omitIsValid(oneOffMoveBodies) },
     { moveType: MoveType.PASS, moves: omitIsValid(passMoveBodies) }
   ],
-  drawMoveBodies: drawMoveBodies.map((move) => omit(move, 'isValid')),
-  pointsMoveBodies:   pointsMoveBodies.map((move) => omit(move, 'isValid')),
-  faceCardMoveBodies: faceCardMoveBodies.map((move) => omit(move, 'isValid')),
-  scuttleMoveBodies: scuttleMoveBodies.map((move) => omit(move, 'isValid')),
-  jackMoveBodies: jackMoveBodies.map((move) => omit(move, 'isValid')),
-  oneOffMoveBodies: oneOffMoveBodies.map((move) => omit(move, 'isValid')),
-  passMoveBodies: passMoveBodies.map((move) => omit(move, 'isValid')),
   validMoveBodies,
 };
