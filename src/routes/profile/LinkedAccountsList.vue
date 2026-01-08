@@ -16,35 +16,28 @@
       style="background-color: rgba(var(--v-theme-surface-2)); color: rgba(var(--v-theme-surface-1))"
     >
       <v-list bg-color="transparent">
-        <v-list-item>
-          <v-list-item-title class="font-weight-medium mb-2">
-            Discord
-          </v-list-item-title>
-          <v-list-item-subtitle v-if="hasDiscord">
-            <span data-cy="discord-username">
-              {{ t('profile.connectedAs') }}: {{ discordUsername }}
-            </span>
-          </v-list-item-subtitle>
-          <template v-else>
-            <OauthLink provider="discord" />
-          </template>
-        </v-list-item>
-
-        <v-divider class="my-2" />
-
-        <v-list-item>
-          <v-list-item-title class="font-weight-medium mb-2">
-            Google
-          </v-list-item-title>
-          <v-list-item-subtitle v-if="hasGoogle">
-            <span data-cy="google-username">
-              {{ t('profile.connectedAs') }}: {{ googleUsername }}
-            </span>
-          </v-list-item-subtitle>
-          <template v-else>
-            <OauthLink provider="google" />
-          </template>
-        </v-list-item>
+        <template
+          v-for="(provider, index) in providers"
+          :key="provider.name"
+        >
+          <v-divider
+            v-if="index > 0"
+            class="my-2"
+          />
+          <v-list-item>
+            <v-list-item-title class="font-weight-medium mb-2">
+              {{ provider.displayName }}
+            </v-list-item-title>
+            <v-list-item-subtitle v-if="provider.isConnected">
+              <span :data-cy="`${provider.name}-username`">
+                {{ t('profile.connectedAs') }}: {{ provider.username }}
+              </span>
+            </v-list-item-subtitle>
+            <template v-else>
+              <OauthLink :provider="provider.name" />
+            </template>
+          </v-list-item>
+        </template>
       </v-list>
     </v-card>
   </v-menu>
@@ -60,22 +53,25 @@ const { t } = useI18n();
 
 const authStore = useAuthStore();
 
+function getProviderInfo(providerName) {
+  const identity = authStore.identities?.find(({ provider }) => provider === providerName);
+  return {
+    isConnected: !!identity,
+    username: identity?.username || '',
+  };
+}
 
-const hasDiscord = computed(() =>
-  authStore.identities?.some(({ provider }) => provider === 'discord')
-);
-const discordUsername = computed(() => {
-  const discordIdentity = authStore.identities?.find(({ provider }) => provider === 'discord');
-  return discordIdentity?.username || '';
-});
-
-
-const hasGoogle = computed(() =>
-  authStore.identities?.some(({ provider }) => provider === 'google')
-);
-const googleUsername = computed(() => {
-  const googleIdentity = authStore.identities?.find(({ provider }) => provider === 'google');
-  return googleIdentity?.username || '';
-});
+const providers = computed(() => [
+  {
+    name: 'discord',
+    displayName: 'Discord',
+    ...getProviderInfo('discord'),
+  },
+  {
+    name: 'google',
+    displayName: 'Google',
+    ...getProviderInfo('google'),
+  },
+]);
 
 </script>
