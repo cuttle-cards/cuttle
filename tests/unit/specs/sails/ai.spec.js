@@ -4,6 +4,7 @@ import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
+import { resolvingFourPhase1CanDiscardTwoCards } from '../../fixtures/gameStates/ai/resolvingFour1CanDiscardTwoCards';
 
 
 const fixtures = [
@@ -11,6 +12,7 @@ const fixtures = [
   resolvingSevenPhase1,
   resolvingSevenPhase2,
   resolvingSevenPhase3,
+  resolvingFourPhase1CanDiscardTwoCards,
 ];
 
 let getMoveBodiesForMoveType;
@@ -30,7 +32,7 @@ describe('AI Move Validation', () => {
       describe(`getMoveBodiesForMoveType() for ${fixture.name}`, () => {
         for (let testCase of fixture.moveBodiesByType) {
           it(`Creates move bodies for ${testCase.moveType}`, () => {
-            const moveBodies = getMoveBodiesForMoveType(fixture.gameState, 0, testCase.moveType);
+            const moveBodies = getMoveBodiesForMoveType(fixture.gameState, fixture.playedBy, testCase.moveType);
             expect(moveBodies).to.deep.eq(testCase.moves);
           });
         }
@@ -39,12 +41,12 @@ describe('AI Move Validation', () => {
       describe(`getLegalMoves() for ${fixture.name}`, () => {
         it(`getLegalMoves() for ${fixture.name}`, () => {
           const legalMoves = orderBy(
-            getLegalMoves(fixture.gameState, 0, [ fixture.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
+            getLegalMoves(fixture.gameState, fixture.playedBy, [ fixture.gameState ]), [ 'moveType', 'cardId', 'targetId' ]
           );
 
           const expectedLegalMoves = orderBy(fixture.validMoveBodies.map((moveBody) => {
             const { execute } = sails.helpers.gameStates.moves[moveBody.moveType];
-            return execute(fixture.gameState, moveBody, 0, [ fixture.gameState ]);
+            return execute(fixture.gameState, moveBody, fixture.playedBy, [ fixture.gameState ]);
           }), [ 'moveType', 'cardId', 'targetId' ]);
 
           expect(legalMoves).to.deep.eq(expectedLegalMoves);

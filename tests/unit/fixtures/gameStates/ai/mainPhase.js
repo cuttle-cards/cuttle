@@ -108,6 +108,7 @@ function omitIsValid(moveList) {
 export const mainPhase = {
   name: 'mainPhase',
   gameState,
+  playedBy: 0,
   moveBodiesByType: [
     { moveType: MoveType.DRAW, moves: omitIsValid(drawMoveBodies) },
     { moveType: MoveType.POINTS, moves: omitIsValid(pointsMoveBodies) },

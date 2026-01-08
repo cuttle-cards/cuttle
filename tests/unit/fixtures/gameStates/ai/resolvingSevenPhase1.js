@@ -147,6 +147,7 @@ function omitIsValid(moveList) {
 export const resolvingSevenPhase1 = {
   name: 'resolvingSevenPhase 1',
   gameState,
+  playedBy: 0,
   moveBodiesByType: [
     { moveType: MoveType.DRAW, moves: omitIsValid(drawMoveBodies) },
     { moveType: MoveType.POINTS, moves: omitIsValid(pointsMoveBodies) },

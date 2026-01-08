@@ -106,6 +106,20 @@ module.exports = {
         res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
 
+      case MoveType.RESOLVE_FOUR: {
+        for (let i = 0; i < playerHand.length; i++) {
+          for (let j = i + 1; j < playerHand.length; j++) {
+            res.push({
+              moveType,
+              playedBy,
+              cardId1: playerHand[i].id,
+              cardId2: playerHand[j].id
+            });
+          }
+        }
+        break;
+      }
+
       case MoveType.RESOLVE_FIVE:
         if (!playerHand.length) {
           res = [ { moveType, playedBy } ];
