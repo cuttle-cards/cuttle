@@ -43,6 +43,7 @@ module.exports = {
       case MoveType.STALEMATE_REJECT:
         res = [ { moveType, playedBy } ];
         break;
+
       case MoveType.POINTS:
         res = playerHand
           .filter((card) => card.rank <= 10)
