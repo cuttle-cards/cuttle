@@ -107,6 +107,17 @@ module.exports = {
         break;
 
       case MoveType.RESOLVE_FOUR: {
+
+        if (playerHand.length === 1) {
+          res = [
+            {
+              moveType,
+              playedBy,
+              cardId1: playerHand[0].id,
+            },
+          ];
+        }
+
         for (let i = 0; i < playerHand.length; i++) {
           for (let j = i + 1; j < playerHand.length; j++) {
             res.push({

@@ -6,7 +6,7 @@ import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSeve
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
 import { resolvingFourPhase1CanDiscardTwoCards } from '../../fixtures/gameStates/ai/resolvingFour1CanDiscardTwoCards';
 import { resolvingFourPhase2HasOnlyTwoCards } from '../../fixtures/gameStates/ai/resolvingFour2HasOnlyTwoCards';
-
+import { resolvingFourPhase3HasOnlyOneCard } from '../../fixtures/gameStates/ai/resolvingFourPhase3HasOnlyOneCard';
 
 const fixtures = [
   mainPhase,
@@ -15,6 +15,7 @@ const fixtures = [
   resolvingSevenPhase3,
   resolvingFourPhase1CanDiscardTwoCards,
   resolvingFourPhase2HasOnlyTwoCards,
+  resolvingFourPhase3HasOnlyOneCard,
 ];
 
 let getMoveBodiesForMoveType;
