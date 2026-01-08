@@ -57,7 +57,7 @@ function getProviderInfo(providerName) {
   const identity = authStore.identities?.find(({ provider }) => provider === providerName);
   return {
     isConnected: !!identity,
-    username: identity?.username || '',
+    username: identity?.providerUsername || '',
   };
 }
 
