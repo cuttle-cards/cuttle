@@ -42,7 +42,7 @@ describe('Profile Page', () => {
               identities: [
                 {
                   provider: provider.toLowerCase(),
-                  username: `Test${provider}User#1234`
+                  providerUsername: `Test${provider}User#1234`
                 }
               ]
             });
