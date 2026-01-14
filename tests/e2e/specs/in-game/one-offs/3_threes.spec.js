@@ -32,7 +32,7 @@ describe('Playing THREEs', () => {
       assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
     });
 
-    it.only('Prevents choosing a three as your three target', () => {
+    it('Prevents choosing a three as your three target', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_SPADES ],
