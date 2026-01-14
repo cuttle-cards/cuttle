@@ -14,22 +14,81 @@ describe('Playing THREEs', () => {
     cy.setupGameAsP0();
   });
 
-  it('Plays 3s with no cards in scrap', () => {
-    // Set Up
-    cy.loadGameFixture(0, {
-      p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
-      p0Points: [ Card.TEN_OF_SPADES ],
-      p0FaceCards: [],
-      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
-      p1Points: [ Card.TEN_OF_HEARTS ],
-      p1FaceCards: [ Card.KING_OF_HEARTS ],
+  describe('Illegal Threes', () => {
+    it('Prevents playing 3s with no cards in scrap', () => {
+      // Set Up
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+      });
+  
+      // Player plays three
+      cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
+      cy.get('[data-move-choice=oneOff]').click();
+      assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
     });
 
-    // Player plays three
-    cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
-    cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
-  });
+    it('Prevents choosing a three as your three target', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.THREE_OF_DIAMONDS, Card.FOUR_OF_HEARTS ],
+      });
+
+      // Player plays three
+      cy.get('[data-player-hand-card=3-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.resolveOpponent();
+
+      cy.get('#three-dialog').should('be.visible');
+      // Three of diamonds should not appear as an option
+      cy.get('[data-three-dialog-card=3-1]').should('not.exist');
+
+      // Backend rejects request to select three
+      cy.window()
+        .its('cuttle.gameStore')
+        .then(async (store) => {
+          try {
+            await store.requestResolveThree(Card.THREE_OF_DIAMONDS.id);
+            cy.then(() => {
+              // Fail test if backend allows request
+              assert.fail('Expected 400 error when requesting to target 3 when resolving three, but came back 200');
+            });
+          } catch (err) {
+            expect(err).to.eq('game.snackbar.oneOffs.three.cannotTargetThree');
+          }
+        });
+    });
+
+    it('Prevents playing a three if the only cards in the scrap are threes', () => {
+      // Set Up
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_HEARTS ],
+      });
+
+      // Player plays three
+      cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
+      cy.get('[data-move-choice=oneOff]').click();
+      assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+    });
+  }); // End describe('Illegal Threes')
+
 
   it('Plays 3s successfully', () => {
     const scrap = [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ];
