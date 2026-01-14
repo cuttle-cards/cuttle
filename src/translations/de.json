@@ -436,7 +436,7 @@
       "twoE1Description": "Effekt 1: Kontere einen Einmal-Effekt. Konter können während des Zuges deines Gegners gespielt werden.",
       "twoE2Description": "Effekt 2: Entferne eine Royal-Karte oder eine Brillen-Acht.",
       "three": "Drei",
-      "threeDescription": "Wähle eine Karte aus dem Ablagestapel und nimm sie auf die Hand.",
+      "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
       "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
       "five": "Fünf",
