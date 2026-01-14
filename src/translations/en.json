@@ -213,7 +213,7 @@
       "effects": {
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
-        "3": "Choose 1 card in the Scrap and put it to your hand",
+        "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
         "4": "Your opponent discards two cards of their choice from their hand",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",

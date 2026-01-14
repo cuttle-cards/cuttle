@@ -213,7 +213,7 @@
       "effects": {
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
-        "3": "Elige una carta del mazo de descarte y ponla en tu mano",
+        "3": "Elige una carta que no sea un 3 del mazo de descarte y ponla en tu mano",
         "4": "Tu rival descarta dos cartas de su mano a su elección",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
