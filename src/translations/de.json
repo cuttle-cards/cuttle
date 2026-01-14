@@ -571,11 +571,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Clubs 2025 Saisonmeisterschaft HEUTE!",
-    "title": "Clubs 2025 Meisterschaft",
-    "heading": "Meisterschaft heute!",
-    "paragraph": "Die Clubs 2025 Cuttle Saisonmeisterschaft findet HEUTE, am 26. April um 12:30 Uhr EST statt! Sieh dir an, wie die Top 8 Spieler der letzten Ranglistensaison in einem Double-Elimination-Turnier um den Titel des Clubs 2025 Cuttle Saisonmeisters kämpfen! Schau live zu auf ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Regelupdate: Man kann keine Drei für eine Drei tauschen!",
+    "title": "Drei-Update",
+    "heading": "Man kann keine Drei für eine Drei tauschen",
+    "paragraph": "Um zu verhindern, dass Spieler das Spiel unbegrenzt verzögern, indem sie den 'Nicht-Zug' machen, eine Drei zu spielen, um eine andere Drei aus dem Ablagestapel zu ziehen, sind Dreien nicht mehr als ausgewählte Karte erlaubt, wenn man vom Ablagestapel zieht. Du kannst immer noch eine Drei für alles andere tauschen, nur nicht für eine andere Drei! Dies sollte minimale Auswirkungen auf die meisten Spiele haben, da das Tauschen einer Drei gegen eine Drei selten ein lohnender Zug ist, aber da es kürzlich vorgekommen ist, sollte diese Änderung unfaire Spielmuster in Situationen verhindern, in denen Spieler darauf abzielen, das Spiel zu verzögern."
   },
   "profile": {
     "myGames": "Meine Spiele",

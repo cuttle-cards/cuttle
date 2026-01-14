@@ -571,11 +571,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat de la saison 2025 des Clubs AUJOURD'HUI !",
-    "title": "Championnat des Clubs 2025",
-    "heading": "Championnat aujourd'hui !",
-    "paragraph": "Le Championnat de saison de Cuttle des Clubs 2025 a lieu AUJOURD'HUI, samedi 26 avril à 12h30 EST ! Regardez les 8 meilleurs joueurs de la saison classée précédente s'affronter dans un tournoi à double élimination pour le titre de Champion de la saison 2025 de Cuttle des Clubs ! Regardez-le en direct sur ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Mise à jour des Règles : On ne peut pas échanger un trois contre un trois !",
+    "title": "Mise à Jour du Trois",
+    "heading": "On ne peut pas échanger un trois contre un trois",
+    "paragraph": "Afin d'empêcher les joueurs de retarder indéfiniment le jeu en faisant le 'non-coup' de jouer un trois pour piocher un trois différent de la défausse, les trois ne sont plus autorisés comme carte sélectionnée lorsqu'on pioche dans la défausse. Vous pouvez toujours utiliser un trois pour piocher n'importe quelle autre carte, mais pas un autre trois ! Cela devrait avoir un impact minimal sur la plupart des parties, car échanger un trois contre un trois est rarement un coup intéressant, mais comme cela s'est produit récemment, ce changement devrait prévenir des schémas de jeu peu amusants dans les situations où les joueurs ont l'intention de retarder la partie."
   },
   "profile": {
     "myGames": "Mes jeux",

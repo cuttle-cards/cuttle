@@ -571,11 +571,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato de Temporada de Clubs 2025 HOY!",
-    "title": "Campeonato de Clubs 2025",
-    "heading": "¡El Campeonato es Hoy!",
-    "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es HOY, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Actualización de Reglas: ¡No se puede un tres por un tres!",
+    "title": "Actualización del Tres",
+    "heading": "No se puede un tres por un tres",
+    "paragraph": "Para evitar que los jugadores retrasen el juego indefinidamente haciendo la 'no-jugada' de jugar un tres para tomar un tres diferente del descarte, ya no se permite que los tres sean la carta seleccionada al tomar del descarte. ¡Todavía puedes usar un tres para tomar cualquier otra carta, solo no otro tres! Esto debería tener un impacto mínimo en la mayoría de las partidas, ya que tomar un tres con otro tres rara vez es una jugada que valga la pena, pero como ha surgido recientemente, este cambio debería prevenir patrones de juego poco divertidos en situaciones donde los jugadores tienen la intención de retrasar la partida."
   },
   "profile": {
     "myGames": "Mis juegos",
