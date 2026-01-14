@@ -312,7 +312,8 @@
         "three": {
           "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
-          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen"
+          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
+          "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
         },
         "four": {
           "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",

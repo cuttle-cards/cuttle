@@ -312,7 +312,8 @@
         "three": {
           "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide.",
           "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
-          "mustPickFromScrap": "Vous devez choisir une carte de la défausse"
+          "mustPickFromScrap": "Vous devez choisir une carte de la défausse",
+          "cannotTargetThree": "Vous ne pouvez pas cibler un 3 avec un 3"
         },
         "four": {
           "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",

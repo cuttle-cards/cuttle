@@ -312,7 +312,8 @@
         "three": {
           "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
-          "mustPickFromScrap": "Debes elegir una carta del mazo de descartes"
+          "mustPickFromScrap": "Debes elegir una carta del mazo de descartes",
+          "cannotTargetThree": "No puedes apuntar a un 3 con un 3"
         },
         "four": {
           "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",

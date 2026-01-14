@@ -313,7 +313,8 @@
         "three": {
           "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
-          "mustPickFromScrap": "You must pick a card from the scrap"
+          "mustPickFromScrap": "You must pick a card from the scrap",
+          "cannotTargetThree": "You cannot target a three with a three"
         },
         "four": {
           "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
