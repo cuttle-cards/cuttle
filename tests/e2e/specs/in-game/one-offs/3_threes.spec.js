@@ -68,6 +68,25 @@ describe('Playing THREEs', () => {
           }
         });
     });
+
+    it('Prevents playing a three if the only cards in the scrap are threes', () => {
+      // Set Up
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_HEARTS ],
+      });
+
+      // Player plays three
+      cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
+      cy.get('[data-move-choice=oneOff]').click();
+      assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+    });
   }); // End describe('Illegal Threes')
 
 

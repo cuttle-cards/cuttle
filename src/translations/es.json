@@ -310,7 +310,7 @@
         "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
         "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
         "three": {
-          "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
+          "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte que no sean tres",
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes",
           "cannotTargetThree": "No puedes apuntar a un 3 con un 3"

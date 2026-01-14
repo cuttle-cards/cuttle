@@ -311,7 +311,7 @@
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "emptyDeck": "You can't play that one-off unless there are cards in the deck",
         "three": {
-          "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
+          "scrapIsEmpty": "You can only play a 3 as a one-off if there are non-three cards in the scrap pile",
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
           "mustPickFromScrap": "You must pick a card from the scrap",
           "cannotTargetThree": "You cannot target a three with a three"

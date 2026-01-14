@@ -310,7 +310,7 @@
         "onlyTwoOrNine": "Du kannst nur eine 2 oder eine 9 als Ziel-One-Off spielen.",
         "emptyDeck": "Du kannst dieses One-Off nicht spielen, es sei denn, es gibt Karten im Deck",
         "three": {
-          "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
+          "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt, die keine 3 sind",
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
           "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
           "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"

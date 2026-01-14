@@ -310,7 +310,7 @@
         "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
         "emptyDeck": "Vous ne pouvez pas jouer cette carte à moins qu'il n'y ait des cartes dans la pioche",
         "three": {
-          "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide.",
+          "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide et contient des cartes autres que des trois.",
           "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
           "mustPickFromScrap": "Vous devez choisir une carte de la défausse",
           "cannotTargetThree": "Vous ne pouvez pas cibler un 3 avec un 3"
