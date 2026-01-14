@@ -134,7 +134,7 @@ module.exports = {
 
       case MoveType.RESOLVE_FIVE:
         if (!playerHand.length) {
-          res = [ { moveType, playedBy } ];
+          res = [ { moveType, playedBy, cardId: null } ];
         } else {
           res = playerHand.map((card) => ({ moveType, playedBy, cardId: card.id }));
         }

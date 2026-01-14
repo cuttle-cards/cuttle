@@ -9,6 +9,7 @@ import { resolvingFourPhase2HasOnlyTwoCards } from '../../fixtures/gameStates/ai
 import { resolvingFourPhase3HasOnlyOneCard } from '../../fixtures/gameStates/ai/resolvingFourPhase3HasOnlyOneCard';
 import { resolvingFivePhase1HasMultipleCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase1HasMultipleCardsInHand';
 import { resolvingFivePhase2HasOneCardInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase2HasOneCardInHand';
+import { resolvingFivePhase3HasNoCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase3HasNoCardsInHand';
 
 const fixtures = [
   mainPhase,
@@ -20,6 +21,7 @@ const fixtures = [
   resolvingFourPhase3HasOnlyOneCard,
   resolvingFivePhase1HasMultipleCardsInHand,
   resolvingFivePhase2HasOneCardInHand,
+  resolvingFivePhase3HasNoCardsInHand,
 ];
 
 let getMoveBodiesForMoveType;
