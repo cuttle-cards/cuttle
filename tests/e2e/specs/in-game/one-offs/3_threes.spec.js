@@ -52,6 +52,21 @@ describe('Playing THREEs', () => {
       cy.get('#three-dialog').should('be.visible');
       // Three of diamonds should not appear as an option
       cy.get('[data-three-dialog-card=3-1]').should('not.exist');
+
+      // Backend rejects request to select three
+      cy.window()
+        .its('cuttle.gameStore')
+        .then(async (store) => {
+          try {
+            await store.requestResolveThree(Card.THREE_OF_DIAMONDS.id);
+            cy.then(() => {
+              // Fail test if backend allows request
+              assert.fail('Expected 400 error when requesting to target 3 when resolving three, but came back 200');
+            });
+          } catch (err) {
+            expect(err).to.eq('game.snackbar.oneOffs.three.cannotTargetThree');
+          }
+        });
     });
   }); // End describe('Illegal Threes')
 

@@ -36,7 +36,7 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const cardExists = currentState.scrap.find(card => card.id === requestedMove.cardId);
+      const target = currentState.scrap.find(card => card.id === requestedMove.cardId);
 
       if (currentState.turn % 2 !== playedBy) {
         throw new BadRequestError('game.snackbar.global.notYourTurn');
@@ -46,8 +46,12 @@ module.exports = {
         throw new BadRequestError('game.snackbar.oneOffs.three.notResolvingThreePhase');
       }
 
-      if (!cardExists) {
+      if (!target) {
         throw new BadRequestError('game.snackbar.oneOffs.three.mustPickFromScrap');
+      }
+
+      if (target.rank === 3) {
+        throw new BadRequestError('game.snackbar.oneOffs.three.cannotTargetThree');
       }
 
       return exits.success();
