@@ -634,6 +634,33 @@ describe('Playing SEVENS', () => {
       });
     });
 
+    it('Cannot play a THREE from a seven when scrap contains only other threes', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.SEVEN_OF_SPADES, Card.TEN_OF_SPADES ],
+        p1FaceCards: [],
+        topCard: Card.THREE_OF_HEARTS,
+        secondCard: Card.ACE_OF_DIAMONDS,
+        scrap: [ Card.THREE_OF_CLUBS, Card.THREE_OF_DIAMONDS, Card.THREE_OF_SPADES ],
+      });
+
+      // Play seven of clubs
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+
+      // Play Four of hearts
+      cy.get('[data-top-card=3-2]').should('exist')
+        .and('be.visible')
+        .click();
+      cy.get('[data-move-choice=oneOff]').click();
+
+      // Should not allow playing 3 as one-off
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+      assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
+    });
+
     it('Cannot play 4 from seven when opponent has no cards in hand', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],

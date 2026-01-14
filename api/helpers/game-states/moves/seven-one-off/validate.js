@@ -98,9 +98,9 @@ module.exports = {
           }
         }
 
-        // Three requires card(s) in scrap
+        // Three requires non-three card(s) in scrap
         case 3:
-          if (!currentState.scrap.length) {
+          if (currentState.scrap.every((card) => card.rank === 3)) {
             throw new BadRequestError('game.snackbar.oneOffs.three.scrapIsEmpty');
           }
           return exits.success();

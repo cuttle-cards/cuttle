@@ -99,6 +99,7 @@ export const useGameStore = defineStore('game', () => {
 
   // Threes
   const lastEventPlayerChoosing = ref(false);
+  const lastEventThreeTarget = ref(null);
 
   // Last Event
   const lastEventChange = ref(null);
@@ -245,6 +246,7 @@ export const useGameStore = defineStore('game', () => {
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
+    lastEventThreeTarget.value = null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
     turn.value = newGame.turn ?? turn.value;
@@ -303,6 +305,7 @@ export const useGameStore = defineStore('game', () => {
     lastEventOneOffRank.value = null;
     lastEventTargetType.value = null;
     lastEventPlayedBy.value = null;
+    lastEventThreeTarget.value = null;
     gameIsOver.value = false;
     winnerPNum.value = null;
     conceded.value = false;
@@ -370,10 +373,7 @@ export const useGameStore = defineStore('game', () => {
     await sleep(1000);
 
     // Put selected card on top of scrap
-    scrap.value = [
-      ...scrap.value.filter(card => card.id !== chosenCard.id),
-      chosenCard,
-    ];
+    lastEventThreeTarget.value = chosenCard;
     await sleep(1200);
     // Finish update (moving card from scrap to hand)
     updateGame(game);
@@ -715,6 +715,7 @@ export const useGameStore = defineStore('game', () => {
     oneOffTarget,
     isRanked,
     lastEventPlayerChoosing,
+    lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
     lastEventTargetType,

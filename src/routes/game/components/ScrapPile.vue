@@ -14,7 +14,7 @@
         @touchstart="isLongPressing = false"
       >
         <div id="scrap" ref="scrap" class="d-flex flex-column align-center">
-          <TransitionGroup :name="threesTransition">
+          <TransitionGroup :name="disableEnterTransition ? 'no-transition' : 'scrap'">
             <GameCard
               v-for="(card, index) in scrapDisplay"
               :key="`scrap-card-${card.id}`"
@@ -33,23 +33,32 @@
                   scrim="surface-1"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
-                  :class="xs ? 'rounded-sm' : 'rounded-lg'"
+                  :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
                   <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!xs" variant="outlined" color="surface-2">
+                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
               </template>
             </GameCard>
           </TransitionGroup>
+          <Transition :name="threesTransition">
+            <GameCard
+              v-if="threeTarget"
+              :rank="threeTarget.rank"
+              :suit="threeTarget.suit"
+              class="position-absolute"
+              :data-three-target="`${threeTarget.rank}-${threeTarget.suit}`"
+            />
+          </Transition>
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
               <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!xs" variant="outlined" color="surface-2">
+              <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -104,6 +113,7 @@ import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { onLongPress } from '@vueuse/core';
 import { useGameStore } from '_/src/stores/game';
+import MoveType from '_/utils/MoveType';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -116,7 +126,7 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
-const { xs } = useDisplay();
+const { xs, smAndDown } = useDisplay();
 const gameStore = useGameStore();
 
 // Dialog
@@ -125,6 +135,13 @@ const showDialog = ref(false);
 // Displayed Pile
 const scrapDisplay = computed(() => props.scrap.slice(-10));
 const threesTransition = computed(() => gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`);
+
+// Threes transition
+const threeTarget = computed(() => gameStore.lastEventThreeTarget);
+const disableEnterTransition = computed(() => {
+  // Disable scrap-enter transition when three reorders the top 10 cards
+  return gameStore.lastEventChange === MoveType.RESOLVE_THREE && !threeTarget.value;
+});
 
 // Tidying + messing up pile
 const scrapWrapper = useTemplateRef('scrap');
@@ -171,6 +188,7 @@ function openDialog(e) {
     align-items: center;
     transition: all 0.3 ease-in-out; // for tidying/messing up pile
     cursor: pointer;
+    user-select: none;
     
     & #scrap-header {
       font-family: 'Luckiest Guy';
@@ -215,33 +233,43 @@ function openDialog(e) {
 ///////////////////////////////
 // Entering Scrap Transition //
 ///////////////////////////////
-#scrap .scrap-card.threes-player-enter-active,
-#scrap .scrap-card.threes-opponent-enter-active {
+#scrap .scrap-card.scrap-enter-active {
   transition: all .8s ease-out;
 }
 
-#scrap .scrap-card.threes-player-enter-from,
-#scrap .scrap-card.threes-opponent-enter-from {
+#scrap .scrap-card.scrap-enter-from {
   opacity: 0;
   transform: rotate(0deg) translateX(100px);
 }
 
-//////////////////////////////
-// Leaving Scrap Transition //
-//////////////////////////////
-#scrap .scrap-card.threes-player-leave-active,
-#scrap .scrap-card.threes-opponent-leave-active {
+//////////////////////
+// Three Transition //
+//////////////////////
+#scrap .threes-player-enter-active,
+#scrap .threes-opponent-enter-active {
+  transition: all .5s ease-in;
+}
+
+#scrap .threes-player-enter-from,
+#scrap .threes-opponent-enter-from {
+  opacity: 0;
+  transform: rotate(15deg) translateX(80px);
+  rotate: y -90deg;
+}
+
+#scrap .threes-player-leave-active,
+#scrap .threes-opponent-leave-active {
   transition: all 1.2s ease-out;
 }
 
 // Leaving towards player hand
-#scrap .scrap-card.threes-player-leave-to {
+#scrap .threes-player-leave-to {
   opacity: 0;
   transform: translate(200px, 50px);
 }
 
 // Leaving towards opponent hand
-#scrap .scrap-card.threes-opponent-leave-to {
+#scrap .threes-opponent-leave-to {
   opacity: 0;
   transform: translate(200px, -200px);
 }
@@ -255,6 +283,14 @@ function openDialog(e) {
 
 #scrap .scrap-empty-leave-to {
   opacity: 0;
+  rotate: y -90deg;
+}
+
+@media (max-width: 960px) and (orientation: landscape) {
+   #scrap #scrap-header {
+      font-size: 18px;
+      line-height: 18px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -263,13 +299,18 @@ function openDialog(e) {
     width: calc(13vh / 1.3);
   }
 
-  #scrap .scrap-card.threes-player-leave-to {
+  #scrap .threes-player-leave-to {
     opacity: 0;
     transform: translateY(200px);
   }
   
-  #scrap .scrap-card.threes-opponent-leave-to {
-    transform: translate(-200px);
+  #scrap .threes-opponent-leave-to {
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+
+  #scrap .scrap-card.scrap-enter-from {
+    transform: translateY(-200px);
     opacity: 0;
   }
 }

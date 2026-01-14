@@ -213,7 +213,7 @@
       "effects": {
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
-        "3": "Choose 1 card in the Scrap and put it to your hand",
+        "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
         "4": "Your opponent discards two cards of their choice from their hand",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
@@ -311,9 +311,10 @@
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "emptyDeck": "You can't play that one-off unless there are cards in the deck",
         "three": {
-          "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
+          "scrapIsEmpty": "You can only play a 3 as a one-off if there are non-three cards in the scrap pile",
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
-          "mustPickFromScrap": "You must pick a card from the scrap"
+          "mustPickFromScrap": "You must pick a card from the scrap",
+          "cannotTargetThree": "You cannot target a three with a three"
         },
         "four": {
           "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
@@ -436,7 +437,7 @@
       "twoE1Description": "Effect 1: Counter target One-Off Effect. Counters may be played during your opponent's turn.",
       "twoE2Description": "Effect 2: Scrap target Royal or Glasses Eight.",
       "three": "Three",
-      "threeDescription": "Choose a card from the scrap pile and put it in your hand.",
+      "threeDescription": "Choose a (non-three) card from the scrap pile and put it in your hand.",
       "four": "Four",
       "fourDescription": "Your opponent discards two cards of their choice.",
       "five": "Five",
@@ -571,11 +572,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Clubs 2025 Season Championship TODAY!",
-    "title": "Clubs 2025 Championship",
-    "heading": "Championship Today!",
-    "paragraph": "The Clubs 2025 Cuttle Season Championship is Today, April 26th at 12:30pm EST! Watch the top 8 players from the past season of ranked play compete in a double elimination showdown for the title of Clubs 2025 Cuttle Season Champion! Watch it live at ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Rule Update: Can't three for a three!",
+    "title": "Three Update",
+    "heading": "Can't three for a three",
+    "paragraph": "In order to prevent players from indefinitely stalling the game by making the 'non-move' of playing a three to pull a different three from the scrap, threes are no longer allowed as the selected card when picking from the scrap. You can still three for anything else, just not another three! This should have minimal impact on most games, as threeing-for-a-three is rarely a worthwhile move, but as it's come up recently, this change should prevent unfun play patterns in situations wher players are intent on stalling the game."
   },
   "profile": {
     "myGames": "My Games",
