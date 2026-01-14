@@ -572,11 +572,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Clubs 2025 Season Championship TODAY!",
-    "title": "Clubs 2025 Championship",
-    "heading": "Championship Today!",
-    "paragraph": "The Clubs 2025 Cuttle Season Championship is Today, April 26th at 12:30pm EST! Watch the top 8 players from the past season of ranked play compete in a double elimination showdown for the title of Clubs 2025 Cuttle Season Champion! Watch it live at ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Rule Update: Can't three for a three!",
+    "title": "Three Update",
+    "heading": "Can't three for a three",
+    "paragraph": "In order to prevent players from indefinitely stalling the game by making the 'non-move' of playing a three to pull a different three from the scrap, threes are no longer allowed as the selected card when picking from the scrap. You can still three for anything else, just not another three! This should have minimal impact on most games, as threeing-for-a-three is rarely a worthwhile move, but as it's come up recently, this change should prevent unfun play patterns in situations wher players are intent on stalling the game."
   },
   "profile": {
     "myGames": "My Games",
