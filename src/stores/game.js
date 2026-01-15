@@ -95,11 +95,10 @@ export const useGameStore = defineStore('game', () => {
   const oneOff = ref(null);
   const oneOffTarget = ref(null);
   const isRanked = ref(false);
-  const showIsRankedChangedAlert = ref(false);
 
   // Threes
-  const lastEventCardChosen = ref(null);
   const lastEventPlayerChoosing = ref(false);
+  const lastEventThreeTarget = ref(null);
 
   // Last Event
   const lastEventChange = ref(null);
@@ -241,10 +240,10 @@ export const useGameStore = defineStore('game', () => {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
     lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
-    lastEventCardChosen.value = newGame.lastEvent?.chosenCard ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
+    lastEventThreeTarget.value = null;
     lastEventPlayedBy.value = newGame.lastEvent?.pNum ?? null;
     id.value = newGame.id ?? id.value;
     turn.value = newGame.turn ?? turn.value;
@@ -298,13 +297,12 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = null;
     oneOffTarget.value = null;
     isRanked.value = false;
-    showIsRankedChangedAlert.value = false;
-    lastEventCardChosen.value = null;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
     lastEventTargetType.value = null;
     lastEventPlayedBy.value = null;
+    lastEventThreeTarget.value = null;
     gameIsOver.value = false;
     winnerPNum.value = null;
     conceded.value = false;
@@ -366,8 +364,15 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
-    lastEventCardChosen.value = chosenCard;
+    const three = game.resolved;
+    // Add three to scrap
+    scrap.value.push(three);
     await sleep(1000);
+
+    // Put selected card on top of scrap
+    lastEventThreeTarget.value = chosenCard;
+    await sleep(1200);
+    // Finish update (moving card from scrap to hand)
     updateGame(game);
   }
   async function processFours(discardedCards, game) {
@@ -393,15 +398,15 @@ export const useGameStore = defineStore('game', () => {
     }
     updateGame(game);
   }
-  function handleGameResponse(jwres, resolve, reject) {
+  function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
     switch (jwres.statusCode) {
       case 200:
         return resolve(jwres);
       case 401:
         authStore.mustReauthenticate = true;
-        return reject(jwres.body.message);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
       default:
-        return reject(jwres.body.message);
+        return reject(returnFullResponse ? jwres : jwres.body.message);
     }
   }
   function transformGameUrl(slug) {
@@ -436,7 +441,7 @@ export const useGameStore = defineStore('game', () => {
         return `/api/game/${slug}`;
     }
   }
-  function makeSocketRequest(slug, data, method = 'POST') {
+  function makeSocketRequest(slug, data, method = 'POST', returnFullResponse = false) {
     const url = transformGameUrl(slug);
     return new Promise((resolve, reject) => {
       io.socket.request(
@@ -446,7 +451,7 @@ export const useGameStore = defineStore('game', () => {
           data,
         },
         (_res, jwres) => {
-          return handleGameResponse(jwres, resolve, reject);
+          return handleGameResponse(jwres, resolve, reject, returnFullResponse);
         },
       );
     });
@@ -464,13 +469,15 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null) {
+  function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
     return new Promise((resolve, reject) => {
       io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
         switch (jwres.statusCode) {
           case 200:
-            resetState();
-            updateGame(res.game);
+            if (resetStateBeforeUpdate) {
+              resetState();
+              updateGame(res.game);
+            }
             return handleInGameEvents(res, route).then(() => {
               return resolve(res);
             });
@@ -487,7 +494,7 @@ export const useGameStore = defineStore('game', () => {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
     try {
       resetState();
-      const res = await makeSocketRequest(slug, {});
+      const res = await makeSocketRequest(slug, {}, 'POST', true);
       updateGame(res.body.game);
       return handleInGameEvents(res.body, route);
     } catch (err) {
@@ -495,7 +502,11 @@ export const useGameStore = defineStore('game', () => {
         id.value = gameId;
         return;
       }
-      const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
+      // Failed to join as spectator becuase currently playing
+      if (err?.statusCode === 409) {
+        throw err;
+      }
+      const message = err?.message ?? err?.body?.message ?? err ?? `Unable to spectate game ${gameId}`;
       throw new Error(message);
     }
   }
@@ -530,7 +541,7 @@ export const useGameStore = defineStore('game', () => {
         if (jwres.statusCode === 409) {
           return reject({ message: res.message, gameId: id.value, code: res.code });
         }
-        return reject(new Error('Error readying for game'));
+        return reject(new Error(res.message ?? 'Error readying for game'));
       });
     });
   }
@@ -693,9 +704,8 @@ export const useGameStore = defineStore('game', () => {
     oneOff,
     oneOffTarget,
     isRanked,
-    showIsRankedChangedAlert,
-    lastEventCardChosen,
     lastEventPlayerChoosing,
+    lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
     lastEventTargetType,

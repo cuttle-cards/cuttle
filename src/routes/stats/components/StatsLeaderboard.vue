@@ -18,6 +18,7 @@
       :headers="tableColumns"
       :items="tableRows"
       :row-props="tableRowClass"
+      items-per-page="50"
     >
       <template #item.username="{ item, value }">
         <div class="d-flex justify-space-between">

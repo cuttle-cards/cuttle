@@ -75,13 +75,6 @@
       </div>
     </template>
   </BaseDialog>
-  <BaseSnackbar
-    v-model="showSnackbar"
-    :message="snackBarMessage"
-    :color="snackColor"
-    data-cy="game-over-snackbar"
-    @clear="clearSnackBar"
-  />
 </template>
 
 <script>
@@ -89,10 +82,10 @@ import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { WhichPlayer, usePlayerData } from './composables/playerData';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MatchScoreCounter from './components/MatchScoreCounter.vue';
 import MatchStatusBanner from './components/MatchStatusBanner.vue';
 import MatchWonOrLostIndicator from './components/MatchWonOrLostIndicator.vue';
@@ -102,11 +95,10 @@ export default {
   name: 'GameOverDialog',
   components: {
     BaseDialog,
-    BaseSnackbar,
     MatchScoreCounter,
     MatchStatusBanner,
     MatchWonOrLostIndicator,
-    PlayerReadyIndicator
+    PlayerReadyIndicator,
   },
   props: {
     modelValue: {
@@ -127,7 +119,9 @@ export default {
     const gameHistoryStore = useGameHistoryStore();
 
     const leftPlayer = gameHistoryStore.isSpectating ? WhichPlayer.ORIGINAL_P0 : WhichPlayer.CURRENT_PLAYER;
-    const rightPlayer = gameHistoryStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
+    const rightPlayer = gameHistoryStore.isSpectating
+      ? WhichPlayer.ORIGINAL_P1
+      : WhichPlayer.CURRENT_OPPONENT;
 
     const {
       username: leftPlayerUsername,
@@ -159,9 +153,6 @@ export default {
   data() {
     return {
       leavingGame: false,
-      showSnackbar: false,
-      snackBarMessage: '',
-      snackColor: 'error',
     };
   },
   computed: {
@@ -173,18 +164,24 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore, useSnackbarStore),
     heading() {
       if (this.gameHistoryStore.isSpectating) {
         return this.spectatorHeading;
       }
       if (this.matchIsOver) {
         // You win the match / you lose the match
-        const messageName = this.leftPlayerWonMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch';
+        const messageName = this.leftPlayerWonMatch
+          ? 'game.dialogs.gameOverDialog.youWinTheMatch'
+          : 'game.dialogs.gameOverDialog.youLoseTheMatch';
         return this.t(messageName);
       }
       // Draw / You Won / You Lose
-      const messageName = this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose';
+      const messageName = this.stalemate
+        ? 'game.dialogs.gameOverDialog.draw'
+        : this.playerWinsGame
+          ? 'game.dialogs.gameOverDialog.youWin'
+          : 'game.dialogs.gameOverDialog.youLose';
       return this.t(messageName);
     },
     spectatorHeading() {
@@ -193,8 +190,10 @@ export default {
         return this.t(`${prefix}.draw`);
       }
       const winner = this.gameStore.players[this.gameStore.winnerPNum];
-      const res = winner.id === this.gameStore.currentMatch?.games[0].p0 ?
-        this.t(`${prefix}.p1Wins`) : this.t(`${prefix}.p2Wins`);
+      const res =
+        winner.id === this.gameStore.currentMatch?.games[0].p0
+          ? this.t(`${prefix}.p1Wins`)
+          : this.t(`${prefix}.p2Wins`);
       const matchTranslation = this.t(`${prefix}.match`);
       return this.matchIsOver ? `${res} ${matchTranslation}` : res;
     },
@@ -230,8 +229,9 @@ export default {
       return this.gameStore.currentMatch;
     },
     stalemates() {
-      return this.gameStore.currentMatch?.games
-        .filter((game) => game.status === GameStatus.FINISHED && game.winner === null).length;
+      return this.gameStore.currentMatch?.games.filter(
+        (game) => game.status === GameStatus.FINISHED && game.winner === null,
+      ).length;
     },
     isRanked() {
       return this.gameStore.isRanked;
@@ -246,7 +246,7 @@ export default {
       if (this.rematchButtonDisabled) {
         return undefined;
       }
-      return this.isRanked ? 'newPrimary' : 'newSecondary';
+      return this.isRanked ? 'primary' : 'newSecondary';
     },
     rematchButtonText() {
       if (this.gameHistoryStore.isSpectating) {
@@ -272,7 +272,7 @@ export default {
       });
 
       if (!this.gameHistoryStore.isSpectating) {
-        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
+        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: false });
       }
 
       await this.gameStore.requestUnsubscribeFromGame();
@@ -284,8 +284,7 @@ export default {
         }
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
       } catch (e) {
-        this.showSnackbar = true;
-        this.snackBarMessage = 'Error requesting rematch';
+        this.snackbarStore.alert('Error requesting rematch');
         this.$router.push('/');
       }
     },
@@ -309,23 +308,19 @@ export default {
             query: {
               gameStateIndex,
               pNum: this.gameStore.myPNum,
-            }
+            },
           });
         } catch (err) {
           this.$router.push({
             name: 'Home',
             query: {
               gameId: rematchGameId,
-              error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`
+              error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`,
             },
           });
         }
       }
       return;
-    },
-    clearSnackBar() {
-      this.showSnackbar = false;
-      this.snackBarMessage = '';
     },
     iconFromGameStatus(gameStatus) {
       switch (gameStatus) {
@@ -358,5 +353,4 @@ export default {
   padding-top: 24px;
   width: 100%;
 }
-
 </style>

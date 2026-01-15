@@ -5,11 +5,12 @@
     v-model="show"
     :title="t('game.dialogs.threeDialog.title')"
     scrollable
+    minimizable
   >
     <template #body>
       <div class="d-flex flex-wrap justify-center align-center my-8">
         <CardListSortable
-          :cards="scrap"
+          :cards="scrapWithoutThrees"
           data-selector-prefix="three-dialog"
           :selected-ids="selectedIds"
           @select-card="selectCard"
@@ -76,6 +77,9 @@ export default {
       set() {
         // do nothing - parent controls whether dialog is open
       },
+    },
+    scrapWithoutThrees() {
+      return this.scrap.filter((card) => card.rank !== 3);
     },
     selectedIds() {
       const res = [];

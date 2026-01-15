@@ -1,6 +1,8 @@
 import { useGameListStore } from '@/stores/gameList';
 import { useGameStore } from '@/stores/game';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { cloneDeep } from 'lodash';
+import i18n from '../i18n';
 
 export function handleGameCreated(evData) {
   const gameListStore = useGameListStore();
@@ -45,7 +47,10 @@ export function handleLeftGame(evData) {
 export function handleIsRanked(evData) {
   const gameListStore = useGameListStore();
   const gameStore = useGameStore();
+  const snackbarStore = useSnackbarStore();
   gameStore.isRanked = evData.isRanked;
-  gameStore.showIsRankedChangedAlert = true;
+  if (gameStore.id === evData.gameId) {
+    snackbarStore.alert(i18n.global.t(`${gameStore.isRanked ? 'lobby.rankedChangedAlert.ranked' : 'lobby.rankedChangedAlert.casual'}`), 'surface-2', 2000);
+  }
   gameListStore.setIsRanked({ gameId: evData.gameId,isRanked: evData.isRanked });
 }

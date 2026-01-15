@@ -9,7 +9,7 @@
     <template #activator>
       <v-btn
         class="px-16 w-100"
-        color="newPrimary"
+        color="primary"
         size="x-large"
         text-color="white"
         data-cy="create-game-btn"
@@ -31,13 +31,13 @@
           {{ t('home.playAiContent2') }}
         </h4>
         <div class="d-flex align-center">
-          <StatsScoringDialog activator-color="surface-2" :show-button-text="false" />
+          <StatsScoringDialog :show-button-text="false" />
           <v-switch
             v-model="isRanked"
             class="d-flex align-center"
             :label="isRanked ? t('global.ranked') : t('global.casual')"
             data-cy="create-game-ranked-switch"
-            color="surface-2"
+            color="primary"
           />
         </div>
         <v-text-field

@@ -5,6 +5,7 @@
       <RouterView />
     </v-main>
     <TheFooter v-if="showFooter" />
+    <TheSnackbar />
   </v-app>
 </template>
 
@@ -12,6 +13,7 @@
 import { mapStores } from 'pinia';
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
+import TheSnackbar from '@/components/TheSnackbar.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { useGameListStore } from '@/stores/gameList';
@@ -21,6 +23,7 @@ export default {
   components: {
     TheHeader,
     TheFooter,
+    TheSnackbar,
   },
   data() {
     return {
@@ -37,7 +40,7 @@ export default {
     },
     showFooter() {
       return this.showNav && this.isSmallDevice && this.isAuthenticated;
-    }
+    },
   },
   watch: {
     '$route.meta'({ hideNavigation }) {
@@ -57,8 +60,7 @@ export default {
 </script>
 
 <style lang="scss">
-
-@import '@/sass/typography';
+@use '@/sass/typography';
 
 .gradient-text {
   background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
@@ -77,11 +79,10 @@ export default {
   }
 }
 
-.sticky{
+.sticky {
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 500;
 }
-
 </style>

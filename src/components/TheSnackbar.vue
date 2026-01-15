@@ -5,14 +5,15 @@
     see https://vuejs.org/guide/components/props.html#one-way-data-flow
   -->
   <v-snackbar
-    :model-value="modelValue"
+    :model-value="showSnackbar"
     :color="color"
+    :timeout="timeout"
     class="base-snackbar"
     position="fixed"
     location="bottom"
     z-index="2412"
-    :data-cy="dataCy"
-    @update:model-value="$emit('update:modelValue', $event)"
+    data-cy="global-snackbar"
+    @update:model-value="clear"
   >
     {{ message }}
     <template #actions>
@@ -30,30 +31,31 @@
 </template>
 
 <script>
+import { useSnackbarStore } from '../stores/snackbar';
+import { mapStores } from 'pinia';
+
 export default {
-  name: 'BaseSnackbar',
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true
+  name: 'TheSnackbar',
+  computed: {
+    ...mapStores(useSnackbarStore),
+
+    showSnackbar() {
+      return this.snackbarStore.getShowSnackbar;
     },
-    message: {
-      type: String,
-      required: true
+    color() {
+      return this.snackbarStore.getSnackColor;
     },
-    color: {
-      type: String,
-      default: 'error'
+    message() {
+      return this.snackbarStore.getSnackMessage;
     },
-    dataCy: {
-      type: String,
-      required: true
-    }
+    timeout() {
+      return this.snackbarStore.getSnackTimeout;
+    },
   },
-  emits: [ 'clear', 'update:modelValue' ],
+
   methods: {
     clear() {
-      this.$emit('clear');
+      this.snackbarStore.clear();
     },
   }
 };

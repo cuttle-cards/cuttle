@@ -1,3 +1,5 @@
+const GameStatus = require('../../../utils/GameStatus.json');
+
 module.exports = async function (req, res) {
   try {
     const { gameId } = req.params;
@@ -5,6 +7,10 @@ module.exports = async function (req, res) {
     const promisePlayer = userService.findUser({ userId: req.session.usr });
     const [ game, player ] = await Promise.all([ promiseGame, promisePlayer ]);
   
+    if (game.status !== GameStatus.CREATED) {
+      return res.badRequest({ message: 'Can\'t quit game once it\'s started' });
+    }
+
     const gameUpdates = {};
     switch (req.session.usr) {
       case game.p0:

@@ -20,18 +20,17 @@
         {{ points }}
       </v-chip>
     </template>
-    <template #body>
-      <h3>{{ t('stats.wins') }}</h3>
-      <v-list :data-players-beaten="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
-        {{ playersBeatenText }}
-      </v-list>
-      <h3>{{ t('stats.losses') }}</h3>
-      <v-list :data-players-lost-to="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
-        {{ playersLostToText }}
-      </v-list>
-      <h3>{{ t('stats.winRate') }}</h3>
-      <v-list :data-win-rate="`${username}-week-${week}`" bg-color="surface-2" class="text-surface-1">
-        {{ winRateText }}
+    <template #body="{ listProps }">
+      <v-list v-bind="listProps" class="text-surface-1">
+        <v-list-item :title="t('stats.wins')" :data-players-beaten="`${username}-week-${week}`" v-bind="listProps">
+          {{ playersBeatenText }}
+        </v-list-item>
+        <v-list-item :title="t('stats.losses')" :data-players-lost-to="`${username}-week-${week}`" v-bind="listProps">
+          {{ playersLostToText }}
+        </v-list-item>
+        <v-list-item :title="t('stats.winRate')" :data-win-rate="`${username}-week-${week}`" v-bind="listProps">
+          {{ winRateText }}
+        </v-list-item>
       </v-list>
     </template>
   </BaseMenu>

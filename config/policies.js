@@ -50,7 +50,6 @@ module.exports.policies = {
   'game/ready': [ 'isLoggedIn', 'hasGameId' ],
   'game/set-is-ranked': [ 'isLoggedIn', 'hasGameId' ],
   'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
-  'game/game-over': [ 'isLoggedIn' ],
 
   // GameStateApi
   'game/move': [ 'isLoggedIn', 'hasValidMoveBody', 'hasGameId' ],

@@ -100,7 +100,7 @@ export default {
     },
     activatorColor:{
       type: String,
-      default: 'primary',
+      default: 'surface-2',
     }
   },
   data() {

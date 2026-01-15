@@ -18,7 +18,7 @@
             return-object
             variant="underlined"
             :label="t('stats.season.select')"
-            :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1', color: 'newPrimary' }"
+            :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1', color: 'primary' }"
             data-cy="season-select"
           >
             <template #selection="{ item }">
@@ -85,7 +85,7 @@
           <template v-if="weeklyRanking">
             <h2 class="text-h2 mb-4">
               {{ t('stats.weeklyRankings') }}
-              <StatsScoringDialog activator-color="surface-2" />
+              <StatsScoringDialog />
             </h2>
             <StatsLeaderboard :loading="loadingData" :season="selectedSeason" />
           </template>

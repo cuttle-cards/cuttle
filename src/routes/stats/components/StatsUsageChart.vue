@@ -42,7 +42,7 @@ export default {
         {
           label: 'Games played',
           data: this.gameCounts,
-          borderColor: this.theme.newPrimary,
+          borderColor: this.theme.primary,
         },
         {
           label: 'Unique players',

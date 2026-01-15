@@ -117,7 +117,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
         gameStore.updateGame(evData.newGame);
       }
 
-      router.push(route);
+      router.replace(route);
 
       gameStore.iWantToContinueSpectating = false;
       gameStore.p0Rematch = null;
@@ -140,7 +140,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
   const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
   const shouldNavigate = targetRoute.name === ROUTE_NAME_LOBBY;
   if (!newRoute && shouldNavigate) {
-    router.push({
+    router.replace({
       name: targetRouteName,
       params: {
         gameId: gameStore.id,

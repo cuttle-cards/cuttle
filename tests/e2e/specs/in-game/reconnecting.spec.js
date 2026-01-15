@@ -757,7 +757,7 @@ describe('Unavailable games', () => {
     cy.signupPlayer(myUser);
     cy.signupOpponent(opponentOne);
   });
-  
+
   it('Shows GameOverDialog when you have left and revisit same game', () => {
     cy.setupGameAsP0(true);
     cy.concedeOpponent();
@@ -768,17 +768,16 @@ describe('Unavailable games', () => {
     // go back to game URL
     cy.get('@gameId').then((gameId) => cy.visit(`/game/${gameId}`));
     cy.get('#game-over-dialog').should('be.visible');
-    cy.get('[data-cy=my-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]');
+    cy.get('[data-cy=my-rematch-indicator]').find('[data-cy="player-declined-rematch"]');
     cy.get('[data-cy=gameover-go-home]').click();
 
     cy.location('pathname').should('equal', '/');
   });
-  
-  it('Navigates home with error message for game id not found', ()=> {
+
+  it('Navigates home with error message for game id not found', () => {
     // go to random url
     cy.visit('/game/12345');
-    assertSnackbar('Could not load game 12345', 'error', 'newgame');
+    assertSnackbar('Could not load game 12345', 'error');
     cy.url().should('not.include', '/game/12345');
   });
 });

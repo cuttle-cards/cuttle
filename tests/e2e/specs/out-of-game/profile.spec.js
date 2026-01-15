@@ -81,19 +81,30 @@ describe('Profile Page', () => {
       cy.loginPlayer(myUser);
       cy.vueRoute('/my-profile');
 
-      cy.get('[data-cy="game-list-item"]').should('have.length.below', 21);
+      cy.get('[data-cy="game-list-item"]')
+        .should('have.length', 8);
 
       cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
-      cy.contains('[data-cy="game-list-item"]', 'Game 20', { timeout: 5000 })
-        .should('be.visible');
-      cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
-      cy.contains('[data-cy="game-list-item"]', 'Game 30', { timeout: 5000 })
-        .should('be.visible');
-
       cy.window().its('cuttle.myGamesStore')
-        .then(myGamesStore => {
+        .should(myGamesStore => {
+          expect(myGamesStore.games.length).to.eq(20);
+        });
+      cy.get('[data-cy="game-list-item"]')
+        .contains('Game 20', { timeout: 5000 })
+        .should('be.visible')
+        .scrollIntoView();
+
+      cy.wait(1000);
+
+      cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
+      cy.window().its('cuttle.myGamesStore')
+        .should(myGamesStore => {
           expect(myGamesStore.games.length).to.eq(30);
         });
+
+      cy.get('[data-cy="game-list-item"]')
+        .contains('Game 30', { timeout: 5000 })
+        .should('be.visible');
     });
 
     it('Does not load more games when hasMore is false', function() {

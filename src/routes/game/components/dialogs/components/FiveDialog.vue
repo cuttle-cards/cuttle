@@ -3,6 +3,7 @@
     id="five-discard-dialog"
     :model-value="true"
     :title="title"
+    minimizable
   >
     <template #body>
       <p class="mb-4">

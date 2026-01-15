@@ -8,6 +8,7 @@ module.exports = async function (req, res) {
   const { gameId } = req.params;
   let game;
   try {
+    
     game =  await sails.helpers.lockGame(gameId);
     game.players = [ game.p0, game.p1 ];
 
@@ -35,7 +36,7 @@ module.exports = async function (req, res) {
         }
         break;
       default:
-        throw new ForbiddenError('You are not a player in this game!');
+        throw new ForbiddenError('lobby.error.forbidden');
     }
 
     // Start game if both players are ready

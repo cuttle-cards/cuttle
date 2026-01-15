@@ -26,7 +26,7 @@
         <v-btn
           v-if="hasVideo"
           class="mt-6"
-          color="newPrimary"
+          color="primary"
           :data-cy-open-rule-preview="title"
           @click="toggleDialog"
         >

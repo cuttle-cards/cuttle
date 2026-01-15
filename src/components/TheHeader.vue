@@ -77,10 +77,10 @@ const tabColor = (page) => {
 
   // highlight tab when spectate list tab 
   if (route.name === 'SpectateList') {
-    return page === 'Home' ? 'text-newPrimary' : 'text-surface-1';
+    return page === 'Home' ? 'text-primary' : 'text-surface-1';
   }
 
-  return route.name === page ? 'text-newPrimary' : 'text-surface-1';
+  return route.name === page ? 'text-primary' : 'text-surface-1';
 };
 
 const signupButtonText = computed(() => {

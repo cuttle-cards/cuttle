@@ -35,7 +35,7 @@
           <div class="mx-auto my-4 my-xl-2 homeContent">
             <v-btn
               class="px-16 w-100"
-              color="newPrimary"
+              color="primary"
               size="x-large"
               text-color="white"
               data-cy="ready-button"
@@ -57,7 +57,7 @@
                   class="mx-md-4 pl-2 flex-shrink-0"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
-                  color="newPrimary"
+                  color="primary"
                   hide-details
                   @update:model-value="setIsRanked"
                   @keydown.enter.stop="(e) => e.target.click()"
@@ -86,15 +86,6 @@
         <v-spacer />
       </v-row>
     </v-container>
-    <BaseSnackbar
-      v-model="gameStore.showIsRankedChangedAlert"
-      :timeout="2000"
-      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')
-      }`"
-      color="surface-1"
-      data-cy="edit-snackbar"
-      @clear="gameStore.showIsRankedChangedAlert = false"
-    />
   </div>
 </template>
 
@@ -104,9 +95,9 @@ import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 import { ROUTE_NAME_GAME } from '_/src/router';
 
@@ -121,6 +112,7 @@ const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
 // Stores
 const authStore = useAuthStore();
 const gameStore = useGameStore();
+const snackbarStore = useSnackbarStore();
 
 // Refs
 const readying = ref(false);
@@ -135,9 +127,10 @@ const iAmReady = computed(() => {
 
 const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
 
-const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
+const rankedIcon = computed(() => (gameStore.isRanked ? 'sword-cross' : 'coffee'));
 
 const opponentUsername = computed(() => gameStore.opponentUsername);
+
 
 // Methods
 async function ready() {
@@ -153,6 +146,9 @@ async function ready() {
           gameId: err.gameId,
         },
       });
+    } else {
+      const key = err?.message;
+      snackbarStore.alert(t(key));
     }
   }
   readying.value = false;
@@ -166,6 +162,7 @@ async function setIsRanked() {
 
 async function leave() {
   await gameStore.requestLeaveLobby();
+  snackbarStore.clear();
   router.push('/');
 }
 
@@ -177,6 +174,8 @@ watch(opponentUsername, (newVal) => {
     playAudio(leaveAudio);
   }
 });
+
+
 
 // Lifecycle
 onMounted(() => {

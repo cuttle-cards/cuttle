@@ -30,10 +30,26 @@ describe('Spectating Games', () => {
 
   it('Prevents spectating your own game while it\'s ongoing', () => {
     cy.setupGameAsP0();
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+    });
+
+    assertGameState(0, {
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+    });
     cy.get('@gameId').then((gameId) => {
       cy.visit(`/spectate/${gameId}`);
-      cy.url().should('not.include', `/spectate/${gameId}`);
-      assertSnackbar(`Cannot spectate game because you are playing`, 'error', 'newgame');
+      cy.url().should('include', `/game/${gameId}`);
     });
   });
 
@@ -172,7 +188,7 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
 
-    cy.get('.v-overlay').should('not.exist');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', function() {

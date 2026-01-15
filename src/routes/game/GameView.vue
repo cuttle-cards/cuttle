@@ -7,7 +7,11 @@
 
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="menuWrapperStyle">
+      <div
+        id="game-menu-wrapper"
+        class="d-flex flex-column flex-sm-row align-center"
+        :style="menuWrapperStyle"
+      >
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" @handle-error="handleError" />
         <v-icon
@@ -177,28 +181,7 @@
               </div>
             </template>
           </v-card>
-          <ScrapDialog :scrap="scrap">
-            <template #activator>
-              <div id="scrap" class="d-flex flex-column align-center">
-                <Transition :name="threesTransition">
-                  <GameCard
-                    v-if="showScrapChoice"
-                    :suit="gameStore.lastEventCardChosen.suit"
-                    :rank="gameStore.lastEventCardChosen.rank"
-                    class="gameCard"
-                    data-cy="scrap-chosen-card"
-                  />
-                  <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('game.scrap') }}</h3>
-                    <span>({{ scrap.length }})</span>
-                    <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('game.view') }}
-                    </v-btn>
-                  </div>
-                </Transition>
-              </div>
-            </template>
-          </ScrapDialog>
+          <ScrapPile :scrap="scrap" />
         </div>
       </div>
 
@@ -399,13 +382,6 @@
         </div>
       </div>
 
-      <BaseSnackbar
-        v-model="showSnackbar"
-        :message="snackBarMessage"
-        :color="snackBarColor"
-        data-cy="game-snackbar"
-        @clear="clearSnackBar"
-      />
       <GameOverlays
         :targeting="targeting"
         :selected-card="selectedCard"
@@ -428,7 +404,7 @@ import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
-import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import { useSnackbarStore } from '@/stores/snackbar';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import GameDialogs from '@/routes/game/components/dialogs/GameDialogs.vue';
@@ -437,7 +413,7 @@ import GameOverlays from '@/routes/game/components/GameOverlays.vue';
 import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
 import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vue';
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
-import ScrapDialog from '@/routes/game/components/dialogs/components/ScrapDialog.vue';
+import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
 
@@ -451,9 +427,8 @@ export default {
     ScoreGoalToolTip,
     GameUnavailableView,
     TargetSelectionOverlay,
-    ScrapDialog,
+    ScrapPile,
     UsernameToolTip,
-    BaseSnackbar,
     SpectatorListMenu,
     PlaybackControls,
   },
@@ -463,9 +438,6 @@ export default {
   },
   data() {
     return {
-      showSnackbar: false,
-      snackBarMessage: '',
-      snackBarColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -479,13 +451,13 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore, useSnackbarStore),
     isSpectating() {
       return this.gameHistoryStore.isSpectating;
     },
     menuWrapperStyle() {
       return {
-        zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
+        zIndex: this.isSpectating ? 2411 : 3, // Allows spectators to access game menu wrapper in any moment
       };
     },
 
@@ -544,15 +516,6 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
-    showScrapChoice() {
-      return (
-        this.gameStore.lastEventCardChosen &&
-        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
-      );
-    },
-    threesTransition() {
-      return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
-    },
     playerPointsTransition() {
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
@@ -751,9 +714,9 @@ export default {
       if (this.gameStore.id && oldTopCard && !newTopCard) {
         this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
       }
-    }
+    },
   },
-  created(){
+  created() {
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
@@ -768,20 +731,12 @@ export default {
     this.scrollToLastLog();
   },
   methods: {
-    clearSnackBar() {
-      this.snackBarMessage = '';
-      this.showSnackbar = false;
-    },
     handleError(messageKey) {
-      this.snackBarMessage = this.t(messageKey);
-      this.showSnackbar = true;
-      this.snackBarColor = 'error';
+      this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
-      this.snackBarMessage = this.t(messageKey);
-      this.showSnackbar = true;
-      this.snackBarColor = 'surface-1';
+      this.snackbarStore.alert(this.t(messageKey), 'surface-1');
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -904,16 +859,14 @@ export default {
         const { resolvingSeven } = this.gameStore;
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         if (!resolvingSeven) {
-          await this.gameStore
-            .requestPlayFaceCard(this.selectedCard.id);
+          await this.gameStore.requestPlayFaceCard(this.selectedCard.id);
         } else {
-          await this.gameStore
-            .requestPlayFaceCardSeven({
-              cardId: this.cardSelectedFromDeck.id,
-              index: deckIndex,
-            });
+          await this.gameStore.requestPlayFaceCardSeven({
+            cardId: this.cardSelectedFromDeck.id,
+            index: deckIndex,
+          });
         }
-      } catch (messageKey){
+      } catch (messageKey) {
         this.handleError(messageKey);
       } finally {
         this.clearSelection();
@@ -1159,35 +1112,6 @@ export default {
   transition: all 1s ease-out;
 }
 
-.scrapPile {
-  transition: all 1s ease;
-}
-
-.threes-player-enter-from.scrapPile,
-.threes-opponent-enter-from.scrapPile {
-  opacity: 0;
-}
-.threes-player-leave-to.gameCard {
-  opacity: 0;
-  transform: translate(200px, 50px);
-}
-
-.threes-opponent-leave-to.gameCard {
-  transform: translate(200px, -200px);
-  opacity: 0;
-}
-
-@media (max-width: 600px) {
-  .threes-player-leave-to {
-    opacity: 0;
-    transform: translateY(200px);
-  }
-
-  .threes-opponent-leave-to {
-    transform: translate(-200px);
-    opacity: 0;
-  }
-}
 ////////////
 // Styles //
 ////////////
@@ -1284,8 +1208,6 @@ export default {
     position: relative;
     background-color: rgba(255, 255, 255, 0);
     &.reveal-top-two {
-      height: auto;
-      align-self: start;
       color: white;
       background-image: none;
       & .resolving-seven-card {
@@ -1310,8 +1232,7 @@ export default {
       color: white;
     }
   }
-  & #deck,
-  & #scrap {
+  & #deck {
     background-size: cover;
     position: relative;
     margin: 10px;
@@ -1322,6 +1243,7 @@ export default {
     justify-content: center;
     align-items: center;
     transition: all 0.3 ease-in-out;
+    background-image: url('/img/game/bg-deck.png');
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);
@@ -1329,12 +1251,7 @@ export default {
       z-index: 1;
     }
   }
-  & #deck {
-    background-image: url('/img/game/bg-deck.png');
-  }
-  & #scrap {
-    background-image: url('/img/game/bg-scrap.png');
-  }
+
 }
 #field-center {
   width: 100%;
@@ -1572,8 +1489,7 @@ export default {
 
   #field-left {
     flex-direction: row;
-    & #deck,
-    & #scrap {
+    & #deck {
       height: 13vh;
       width: calc(13vh / 1.3);
     }

@@ -187,8 +187,8 @@ function pointsToWin(kingCount) {
   }
 }
 
-export function assertSnackbar(message, color = 'error', snackName = 'game') {
-  cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
+export function assertSnackbar(message, color = 'error') {
+  cy.get(`[data-cy=global-snackbar] .v-snackbar__wrapper`)
     .should('be.visible')
     .should('have.class', `bg-${color}`)
     .find(`.v-snackbar__content`)
@@ -366,9 +366,9 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
-      const deckShouldBeEmpty  = fixture.deck?.length === 0;
+      const deckShouldBeEmpty = fixture.deck?.length === 0;
       const playerShouldHaveGlasses = fixture[`p${pNum}FaceCards`].some((card) => card.rank === 8);
-      for (let i=0; i <= 1; i++) {
+      for (let i = 0; i <= 1; i++) {
         const gamePlayer = game.players[i];
 
         const fixturePlayer = {
@@ -380,10 +380,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
         // Check Hand
         const checkingCurrentPlayer = i === pNum;
         const handShouldBeRevealed =
-          checkingCurrentPlayer ||
-          playerShouldHaveGlasses ||
-          deckShouldBeEmpty ||
-          isSpectating;
+          checkingCurrentPlayer || playerShouldHaveGlasses || deckShouldBeEmpty || isSpectating;
         if (handShouldBeRevealed) {
           expect(cardListsMatch(gamePlayer.hand, fixturePlayer.hand)).to.eq(
             true,
@@ -392,14 +389,21 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
             )} did not match fixture: ${printCardList(fixturePlayer.hand)}`,
           );
         } else {
-          expect(gamePlayer.hand.length).to.eq(fixturePlayer.hand.length, 
+          expect(gamePlayer.hand.length).to.eq(
+            fixturePlayer.hand.length,
             `P${i} hand should have length ${fixturePlayer.hand.length}, 
               but actually had length: ${gamePlayer.hand.length}
-          `);
+          `,
+          );
 
-          const allHidden = gamePlayer.hand.every((card) => card.isHidden && !card.id && !card.rank && !card.suit);
-          expect(allHidden).to.eq(true, `All cards in P${i} Hand should be hidden, 
-            but actual hand included known cards: ${printCardList(gamePlayer.hand)}`);
+          const allHidden = gamePlayer.hand.every(
+            (card) => card.isHidden && !card.id && !card.rank && !card.suit,
+          );
+          expect(allHidden).to.eq(
+            true,
+            `All cards in P${i} Hand should be hidden, 
+            but actual hand included known cards: ${printCardList(gamePlayer.hand)}`,
+          );
         }
 
         // Points
@@ -421,7 +425,9 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
 
       // Scrap (if specified)
       if (fixture.scrap) {
-        expect(fixture.scrap.every(card => game.scrap.some(scrapCard => cardsMatch(card, scrapCard)))).to.eq(
+        expect(
+          fixture.scrap.every((card) => game.scrap.some((scrapCard) => cardsMatch(card, scrapCard))),
+        ).to.eq(
           true,
           `Scrap should match fixture, but actual ${printCardList(
             game.scrap,
@@ -600,7 +606,14 @@ export function setupGameBetweenTwoUnseenPlayers(gameName, isRanked = false) {
   });
 }
 
-export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked, rematchWasDeclined }) {
+export function assertGameOverAsSpectator({
+  p1Wins,
+  p2Wins,
+  stalemates,
+  winner,
+  isRanked,
+  rematchWasDeclined,
+}) {
   let headingDataCy;
   let headingText;
   let selectedScore;
@@ -646,7 +659,11 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
   const rankedIconVisibility = rematchWasDeclined ? 'not.exist' : 'be.visible';
-  const bannerMessage = rematchWasDeclined ? 'Player left - click to go home.' : matchIsOver ? 'Good Match!'  : 'Continue Spectating?';
+  const bannerMessage = rematchWasDeclined
+    ? 'Player left - click to go home.'
+    : matchIsOver
+      ? 'Good Match!'
+      : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', bannerMessage)
