@@ -1,12 +1,15 @@
 const { defineConfig } = require('cypress');
 
+const isRunMode = !!process.env.CYPRESS_RUN_BINARY;
+
 const cypressConfig = {
   projectId: 'i8bxr8',
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: [ 'tests/e2e/specs/**/*.spec.js' ],
-    excludeSpecPattern: [ 'test/e2e/specs/playground.spec.js' ],
+    // Exclude playground specs from headless mode
+    excludeSpecPattern: isRunMode ? [] : [ 'test/e2e/specs/playground/**/*.js' ],
     supportFile: 'tests/e2e/support/index.js',
   },
   // Retry tests 2 times headlessly, no retries in UI
