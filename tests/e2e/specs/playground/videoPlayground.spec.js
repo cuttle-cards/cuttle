@@ -16,6 +16,162 @@ describe('Video Playground', () => {
     cy.setupGameAsP0();
   });
 
+  function playerMoveWithDelay(playedCard, moveType, firstClickDelay = 1500, secondClickDelay = 800) {
+    cy.wait(firstClickDelay);
+    cy.get(`[data-player-hand-card=${playedCard.rank}-${playedCard.suit}]`).click();
+    cy.wait(secondClickDelay);
+    cy.get(`[data-move-choice=${moveType}]`).click();
+  }
+  function playerPointsWithDelay(card, firstClickDelay = 4000, secondClickDelay = 1500) {
+    playerMoveWithDelay(card, 'points', firstClickDelay, secondClickDelay);
+  }
+
+  function playerScuttleWithDelay(
+    playedCard,
+    targetCard,
+    firstClickDelay = 1500,
+    secondClickDelay = 800,
+    thirdClickDelay = 1500
+  ) {
+    playerMoveWithDelay(playedCard, 'scuttle', firstClickDelay, secondClickDelay);
+    cy.wait(thirdClickDelay);
+    cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
+  }
+
+  function playerJackWithDelay(
+    playedCard,
+    targetCard,
+    firstClickDelay = 1500,
+    secondClickDelay = 800,
+    thirdClickDelay = 1500
+  ) {
+    playerMoveWithDelay(playedCard, 'jack', firstClickDelay, secondClickDelay);
+    cy.wait(thirdClickDelay);
+    cy.get(`[data-opponent-point-card=${targetCard.rank}-${targetCard.suit}]`).click();
+  }
+
+  function opponentPointsWithDelay(playedCard, delay = 2000) {
+    cy.wait(delay);
+    cy.playPointsOpponent(playedCard);
+  }
+
+  function opponentScuttleWithDelay(playedCard, targetCard, delay = 2000) {
+    cy.wait(delay);
+    cy.scuttleOpponent(playedCard, targetCard);
+  }
+
+  function opponentDrawWithDelay(delay = 1000) {
+    cy.wait(delay);
+    cy.drawCardOpponent();
+  }
+
+  describe('Initiative Tutorial', () => {
+    const initialState = {
+      p0Hand: [ Card.EIGHT_OF_HEARTS, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.THREE_OF_HEARTS,
+        Card.EIGHT_OF_SPADES,
+        Card.NINE_OF_DIAMONDS,
+        Card.TEN_OF_HEARTS,
+      ],
+      p1Points: [ Card.SEVEN_OF_SPADES ],
+      p1FaceCards: [],
+      topCard: Card.NINE_OF_SPADES,
+      secondCard: Card.SIX_OF_CLUBS,
+    };
+
+    it('Shows poor use of initiative', () => {
+      cy.loadGameFixture(0, initialState);
+      cy.wait(3000);
+  
+      // P0 plays points (mistake)
+      playerPointsWithDelay(Card.EIGHT_OF_HEARTS);
+  
+      // P1 plays points (check)
+      opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
+
+      // P0 scuttles
+      playerScuttleWithDelay(Card.NINE_OF_CLUBS, Card.SEVEN_OF_SPADES);
+
+      // P1 plays points again (check)
+      opponentPointsWithDelay(Card.EIGHT_OF_SPADES);
+
+      // P0 scuttles again
+      playerScuttleWithDelay(Card.TEN_OF_SPADES, Card.NINE_OF_DIAMONDS);
+
+      // P1 points (check)
+      opponentPointsWithDelay(Card.TEN_OF_HEARTS);
+
+      // P0 Draws
+      cy.wait(2000);
+      cy.get('#deck').click();
+
+      // P1 Points ftw
+      opponentPointsWithDelay(Card.THREE_OF_HEARTS);
+    });
+
+    it('Shows good use of initiative', () => {
+      cy.loadGameFixture(0, initialState);
+      cy.wait(4000);
+
+      // P0 Draws
+      cy.get('#deck').click();
+
+      // P1 plays points
+      opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
+
+      // P0 Scuttles
+      playerScuttleWithDelay(Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_SPADES);
+
+      // P1 plays points
+      opponentPointsWithDelay(Card.EIGHT_OF_SPADES);
+
+      // P0 scuttles
+      playerScuttleWithDelay(Card.NINE_OF_CLUBS, Card.EIGHT_OF_SPADES);
+
+      // P1 plays points
+      opponentPointsWithDelay(Card.TEN_OF_HEARTS);
+
+      // P0 Scuttles
+      playerScuttleWithDelay(Card.NINE_OF_SPADES, Card.NINE_OF_DIAMONDS);
+    });
+
+    it('Shows turning initiative around with a jack', () => {
+      const p0Hand = [ ...initialState.p0Hand, Card.JACK_OF_DIAMONDS ];
+      cy.loadGameFixture(0, {
+        ...initialState,
+        p0Hand, // Add Jack of Diamonds to p0 hand
+      });
+      cy.wait(4000);
+
+      playerPointsWithDelay(Card.EIGHT_OF_HEARTS);
+  
+      // P1 plays points (check)
+      opponentPointsWithDelay(Card.NINE_OF_DIAMONDS);
+
+      playerJackWithDelay(Card.JACK_OF_DIAMONDS, Card.NINE_OF_DIAMONDS);
+
+      opponentScuttleWithDelay(Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS);
+
+      playerPointsWithDelay(Card.NINE_OF_CLUBS, 2000);
+
+      opponentScuttleWithDelay(Card.TEN_OF_HEARTS, Card.NINE_OF_DIAMONDS);
+
+      cy.wait(1000);
+      cy.get('#deck').click();
+
+      opponentDrawWithDelay();
+
+      playerPointsWithDelay(Card.TEN_OF_SPADES, 2000);
+
+      opponentDrawWithDelay();
+
+      playerPointsWithDelay(Card.NINE_OF_SPADES, 1500);
+    });
+  });
+
   it('Plays Points', () => {
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
