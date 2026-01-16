@@ -92,14 +92,16 @@ const oneOffMoveBodies = [
 ];
 
 const validMoveBodies = [
-  ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(pointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(faceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(scuttleMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(jackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(oneOffMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(passMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-];
+  ...drawMoveBodies,
+  ...pointsMoveBodies,
+  ...faceCardMoveBodies,
+  ...scuttleMoveBodies,
+  ...jackMoveBodies,
+  ...oneOffMoveBodies,
+  ...passMoveBodies,
+]
+  .filter((move) => move.isValid)
+  .map((move) => omit(move, 'isValid'));
 
 function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));
