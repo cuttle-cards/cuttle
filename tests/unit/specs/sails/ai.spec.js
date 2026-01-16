@@ -11,6 +11,7 @@ import { resolvingFivePhase1HasMultipleCardsInHand } from '../../fixtures/gameSt
 import { resolvingFivePhase2HasOneCardInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase2HasOneCardInHand';
 import { resolvingFivePhase3HasNoCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase3HasNoCardsInHand';
 import { counteringPhase1AbleToCounter } from '../../fixtures/gameStates/ai/counteringPhase1AbleToCounter';
+import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/counteringPhase2CannotCounter';
 
 const fixtures = [
   mainPhase,
@@ -24,6 +25,7 @@ const fixtures = [
   resolvingFivePhase2HasOneCardInHand,
   resolvingFivePhase3HasNoCardsInHand,
   counteringPhase1AbleToCounter,
+  counteringPhase2CannotCounter,
 ];
 
 let getMoveBodiesForMoveType;
