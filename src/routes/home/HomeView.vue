@@ -126,7 +126,15 @@
                   {{ t('login.joinDiscord') }}
                 </span>
               </v-btn>
-              <HowItWorksDialog />
+              <v-btn
+                variant="flat"
+                color="surface-2"
+                class="px-8"
+                data-cy="create-ai-game"
+                @click="createAIGame"
+              >
+                Play VS AI
+              </v-btn>
             </div>
           </div>
         </v-col>
@@ -229,6 +237,10 @@ export default {
       this.creatingGame = false;
       this.snackbarStore.alert(message);
       this.showCreateGameDialog = false;
+    },
+    async createAIGame() {
+      const gameId = await this.gameListStore.requestCreateAIGame();
+      this.$router.push(`/ai/${gameId}`);
     },
     logout() {
       this.gameListStore

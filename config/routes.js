@@ -29,6 +29,7 @@ module.exports.routes = {
 
   // Games
   'POST /api/game': 'game/create',
+  'POST /api/game/ai': 'game/ai/create-vs-ai',
   'GET /api/game': 'game/get-list',
   'GET /api/game/:gameId': 'game/get-game',
   'POST /api/game/:gameId/join': 'game/join',
@@ -38,6 +39,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   'POST /api/game/:gameId/move': 'game/move',
+  'POST /api/game/:gameId/move/ai': 'game/ai/ai-move',
   'POST /api/game/:gameId/rematch': 'game/rematch',
   'GET /api/game/history': 'game/get-history',
 

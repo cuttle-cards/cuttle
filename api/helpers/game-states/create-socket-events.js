@@ -22,10 +22,14 @@ module.exports = {
   fn: async function ({ game, gameState }, exits) {
     try {
       // Combine game and gamestate users and delete passwords
+      const botPlayer = game.isVsAi ? { username: 'CuttleBot' } : {};
+      game.p0 = { ...botPlayer, ...game.p0 };
+      game.p1 = { ...botPlayer, ...game.p1 };
       const p0 = { ...game.p0, ...gameState.p0, pNum: 0 };
       delete p0.encryptedPassword;
       const p1 = { ...game.p1, ...gameState.p1, pNum: 1 };
       delete p1.encryptedPassword;
+
       const players = [ p0, p1 ];
 
       const countPasses = (function () {
@@ -88,7 +92,7 @@ module.exports = {
       const hideOpponentHand = (playerIndex, originalPlayers) => {
         const hasGlassesEight = originalPlayers[playerIndex]?.faceCards?.some(card => card.rank === 8);
         const deckIsEmpty = gameState.deck.length === 0;
-        
+
         return originalPlayers.map((player, index) => {
           const isPlayer = index === playerIndex;
           if (isPlayer || hasGlassesEight || deckIsEmpty) {
@@ -129,8 +133,6 @@ module.exports = {
         p1Ready: game.p1Ready,
         p0Rematch: game.p0Rematch,
         p1Rematch: game.p1Rematch,
-        turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
-        turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
         lock: game.lock,
         lockedAt: game.lockedAt,
         rematchGame: game.rematchGame,
