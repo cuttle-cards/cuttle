@@ -75,8 +75,8 @@ const resolveFourMoveBodies = [
 ];
 
 const validMoveBodies = [
-  ...(resolveFourMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-];
+  ...resolveFourMoveBodies,
+].filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'));
 
 function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));

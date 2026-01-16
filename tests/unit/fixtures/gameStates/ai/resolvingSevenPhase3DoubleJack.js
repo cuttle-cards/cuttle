@@ -115,20 +115,20 @@ const sevenDiscardMoveBodies = [
 const sevenOneOffMoveBodies = [];
 
 const validMoveBodies = [
-  ...(drawMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(pointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(faceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(scuttleMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(jackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(oneOffMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(passMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenPointsMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenScuttleMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenFaceCardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenJackMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenDiscardMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-  ...(sevenOneOffMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-];
+  ...drawMoveBodies,
+  ...pointsMoveBodies,
+  ...faceCardMoveBodies,
+  ...scuttleMoveBodies,
+  ...jackMoveBodies,
+  ...oneOffMoveBodies,
+  ...passMoveBodies,
+  ...sevenPointsMoveBodies,
+  ...sevenScuttleMoveBodies,
+  ...sevenFaceCardMoveBodies,
+  ...sevenJackMoveBodies,
+  ...sevenDiscardMoveBodies,
+  ...sevenOneOffMoveBodies,
+].filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'));
 
 function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));

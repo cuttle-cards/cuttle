@@ -62,8 +62,8 @@ const resolveFiveMoveBodies = [
 ];
 
 const validMoveBodies = [
-  ...(resolveFiveMoveBodies.filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'))),
-];
+  ...resolveFiveMoveBodies,
+].filter((move) => move.isValid).map((validMove) => omit(validMove, 'isValid'));
 
 function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));
