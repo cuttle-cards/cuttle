@@ -1,5 +1,3 @@
-const MoveType = require('../../../../utils/MoveType');
-
 module.exports = {
   friendlyName: 'Choose an AI move',
 
