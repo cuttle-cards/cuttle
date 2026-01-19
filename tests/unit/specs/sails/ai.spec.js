@@ -30,14 +30,25 @@ const fixtures = [
 
 let getMoveBodiesForMoveType;
 let getLegalMoves;
+let scoreGameState;
 describe('AI Move Validation', () => {
   beforeAll(() => {
     ({ getMoveBodiesForMoveType } = sails.helpers.gameStates.ai);
     ({ getLegalMoves } = sails.helpers.gameStates.ai);
+    ({ scoreGameState } = sails.helpers.gameStates.ai.minimax);
   });
 
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
+  });
+
+  describe('Minimax', () => {
+    describe('scoreGameState()', ()=> {
+      it('Evaluates score for main phase state for p0', () => {
+        const score = scoreGameState(mainPhase.gameState, 0);
+        expect(score).to.eq(mainPhase.minimaxScore);
+      });
+    });
   });
 
   describe.each(fixtures)('AI moves in $name', (fixture) => {

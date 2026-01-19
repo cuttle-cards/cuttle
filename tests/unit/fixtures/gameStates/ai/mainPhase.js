@@ -107,6 +107,8 @@ function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));
 }
 
+const minimaxScore = 6.5;
+
 export const mainPhase = {
   name: 'mainPhase',
   gameState,
@@ -121,4 +123,5 @@ export const mainPhase = {
     { moveType: MoveType.PASS, moves: omitIsValid(passMoveBodies) }
   ],
   validMoveBodies,
+  minimaxScore,
 };
