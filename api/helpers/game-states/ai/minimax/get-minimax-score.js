@@ -28,6 +28,7 @@ module.exports = {
   sync: true,
   fn: ({ currentState, pNum, depth, priorStates }, exits) => {
     try {
+      const { getActivePlayerPNum } = sails.helpers.gameStates;
       const { getLegalMoves } = sails.helpers.gameStates.ai;
       const { scoreGameState, getMinimaxScore } = sails.helpers.gameStates.ai.minimax;
 
@@ -36,7 +37,8 @@ module.exports = {
         return exits.success(res);
       }
 
-      const possibleNextStates = getLegalMoves(currentState, pNum, priorStates);
+      const activePlayerPNum = getActivePlayerPNum(currentState);
+      const possibleNextStates = getLegalMoves(currentState, activePlayerPNum, priorStates);
 
       const priorStatesPlusCurrentState = [ ...priorStates, currentState ];
       const lowestScoreForNextState = possibleNextStates.reduce((total, state) => {
