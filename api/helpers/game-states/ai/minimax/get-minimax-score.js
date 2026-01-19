@@ -28,14 +28,26 @@ module.exports = {
   sync: true,
   fn: ({ currentState, pNum, depth, priorStates }, exits) => {
     try {
+      const { getLegalMoves } = sails.helpers.gameStates.ai;
+      const { scoreGameState, getMinimaxScore } = sails.helpers.gameStates.ai.minimax;
+
       if (depth <= 0) {
-        const res = sails.helpers.gameStates.ai.minimax.scoreGameState(currentState, pNum);
+        const res = scoreGameState(currentState, pNum);
         return exits.success(res);
       }
 
-      const possibleNextStates = sails.helpers.gameStates.ai.getLegalMoves(currentState, pNum, priorStates);
+      const possibleNextStates = getLegalMoves(currentState, pNum, priorStates);
 
-      const lowestScoreForNextState = possibleNextStates.reduce((total, state) => Math.min(total, sails.helpers.gameStates.ai.minimax.getMinimaxScore(state, (pNum + 1) % 2, depth - 1, [ ...priorStates, currentState ])), 0);
+      const priorStatesPlusCurrentState = [ ...priorStates, currentState ];
+      const lowestScoreForNextState = possibleNextStates.reduce((total, state) => {
+
+        const stateScore = getMinimaxScore(state, pNum, depth - 1, priorStatesPlusCurrentState);
+        Math.min(total, stateScore);
+
+        const { playedBy, moveType, playedCard, targetCard } = state;
+
+        console.log({ playedBy, moveType, playedCard: playedCard?.id, targetCard: targetCard?.id, stateScore, });
+      }, 0);
 
       return exits.success(lowestScoreForNextState);
     } catch (err) {
