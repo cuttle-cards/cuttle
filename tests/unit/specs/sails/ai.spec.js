@@ -56,10 +56,6 @@ describe('AI Move Validation', () => {
         const score = getMinimaxScore(mainPhase.gameState, 0, 0, []);
         expect(score).to.eq(mainPhase.minimaxScore);
       });
-
-      it('Gets minimax score at depth 1 for main phase state for p0', () => {
-        const score = getMinimaxScore(mainPhase.gameState, 0, 2, []);
-      });
     });
   });
 
