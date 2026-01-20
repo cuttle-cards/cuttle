@@ -30,7 +30,7 @@ module.exports = {
   sync: true,
   fn: ({ currentState, pNum, depth, priorStates }, exits) => {
     try {
-      const { getActivePlayerPNum, checkGameStateForWin } = sails.helpers.gameStates;
+      const { getActivePlayerPNum, checkGameStateForWinSync } = sails.helpers.gameStates;
       const { getLegalMoves } = sails.helpers.gameStates.ai;
       const { scoreGameState, getMinimaxScore } = sails.helpers.gameStates.ai.minimax;
 
@@ -51,7 +51,7 @@ module.exports = {
         numPasses++;
       }
 
-      const { gameOver, winner } = checkGameStateForWin({}, currentState, numPasses, false);
+      const { gameOver, winner } = checkGameStateForWinSync(currentState, numPasses);
 
       if (gameOver) {
         switch (winner) {
