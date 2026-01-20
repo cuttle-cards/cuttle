@@ -450,7 +450,7 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
-  it.only('Creates a vs AI game', () => {
+  it('Creates a vs AI game', () => {
     cy.get('[data-cy=create-ai-game]').click();
     cy.get('#deck').click();
   });
