@@ -22,9 +22,14 @@ module.exports = {
       description: 'Passes Count',
       required: true,
     },
+    cleanupIfGameIsOver: {
+      type: 'boolean',
+      description: 'Whether to execute db side effects (adding game to match, updating game status) if game is over',
+      defaultsTo: true
+    },
   },
 
-  fn: async function ({ game, gameState, numPasses }, exits) {
+  fn: async function ({ game, gameState, numPasses, cleanupIfGameIsOver }, exits) {
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
       const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
@@ -70,7 +75,7 @@ module.exports = {
       }
 
       // Update game and add it to its match if this hasn't yet been done
-      if (game.status === GameStatus.STARTED) {
+      if (game.status === GameStatus.STARTED && cleanupIfGameIsOver) {
         await Game.updateOne({ id: game.id }).set(gameUpdates);
       }
 
@@ -79,7 +84,9 @@ module.exports = {
         ...gameUpdates,
       };
 
-      res.currentMatch = await sails.helpers.addGameToMatch(game);
+      if (cleanupIfGameIsOver) {
+        res.currentMatch = await sails.helpers.addGameToMatch(game);
+      }
     }
     return exits.success(res);
   },
