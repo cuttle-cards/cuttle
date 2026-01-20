@@ -149,7 +149,6 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import GameListItem from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
-import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
@@ -164,7 +163,6 @@ export default {
   components: {
     GameListItem,
     CreateGameDialog,
-    HowItWorksDialog,
     AnnouncementDialog,
     OauthSignupDialog,
   },
