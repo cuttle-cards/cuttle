@@ -1,7 +1,7 @@
 module.exports = {
   friendlyName: 'Choose an AI move',
 
-  description: 'Returns new GameState with AI\'s chosen move',
+  description: 'Returns new GameState with AI\'s chosen move. Returns undefined if no legal moves exist',
 
   inputs: {
     currentState: {
@@ -41,7 +41,7 @@ module.exports = {
 
       const topScoringMoves = legalMoves.filter((futureState) => futureState.score === topScore);
 
-      const res = _.sample(topScoringMoves, 1).move;
+      const res = _.sample(topScoringMoves, 1)?.move;
 
       return exits.success(res);
     } catch (err) {
