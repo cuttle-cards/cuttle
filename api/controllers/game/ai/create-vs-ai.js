@@ -3,6 +3,7 @@ const GameStatus = require('../../../../utils/GameStatus');
 module.exports = async function (req, res) {
   const playerId = req.session.usr;
   const player = await User.findOne(playerId);
+  const botPlayer = await sails.helpers.gameStates.ai.findOrCreateBotUser();
   const pNum = req.body.pNum ?? 0;
   const botPNum = (pNum + 1) % 2;
 
@@ -18,7 +19,9 @@ module.exports = async function (req, res) {
     p0Ready: true,
     p1Ready: true,
   };
+
   gameData[`p${pNum}`] = playerId;
+  gameData[`p${botPNum}`] = botPlayer.id;
   gameData[`p${botPNum}Rematch`] = true;
 
   const newGame = await Game.create(gameData).fetch();
