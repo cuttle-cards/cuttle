@@ -83,6 +83,7 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useSnackbarStore } from '@/stores/snackbar';
+import { useGameListStore } from '@/stores/gameList';
 import { WhichPlayer, usePlayerData } from './composables/playerData';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
@@ -164,7 +165,7 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
-    ...mapStores(useGameStore, useSnackbarStore),
+    ...mapStores(useGameStore, useSnackbarStore, useGameListStore),
     heading() {
       if (this.gameHistoryStore.isSpectating) {
         return this.spectatorHeading;
@@ -281,6 +282,11 @@ export default {
       try {
         if (this.gameHistoryStore.isSpectating) {
           return this.continueSpectating();
+        }
+        if (this.gameStore.isVsAi) {
+          const gameId = await this.gameListStore.requestCreateAIGame((this.gameStore.myPNum + 1) % 2);
+          this.$router.replace(`/ai/${gameId}`);
+          return this.gameStore.requestGameState(gameId);
         }
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
       } catch (e) {

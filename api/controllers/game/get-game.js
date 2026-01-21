@@ -20,9 +20,9 @@ module.exports = async function(req, res) {
     // Check if user is p0, p1, or a spectator
     const gameIsFinished = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status);
 
-    if (!gameIsFinished && req.session.usr === game.p0.id) {
+    if (!gameIsFinished && req.session.usr === game.p0?.id) {
       userRelationship = 'p0';
-    } else if (!gameIsFinished && req.session.usr === game.p1.id) {
+    } else if (!gameIsFinished && req.session.usr === game.p1?.id) {
       userRelationship = 'p1';
     } else {
       // Check if user is already spectating this game
