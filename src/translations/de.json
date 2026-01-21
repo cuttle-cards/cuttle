@@ -217,7 +217,7 @@
       "effects": {
         "1": "Alle Punktkarten abwerfen",
         "2": "Ziel-König oder Gläser Acht abwerfen",
-        "3": "Wähle 1 Karte aus dem Abwurfstapel und lege sie auf deine Hand",
+        "3": "Wähle 1 Karte, die keine 3 ist, aus dem Abwurfstapel und nimm sie auf die Hand",
         "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
         "6": "Alle Könige und Gläser Acht abwerfen",
@@ -314,9 +314,10 @@
         "onlyTwoOrNine": "Du kannst nur eine 2 oder eine 9 als Ziel-One-Off spielen.",
         "emptyDeck": "Du kannst dieses One-Off nicht spielen, es sei denn, es gibt Karten im Deck",
         "three": {
-          "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
+          "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt, die keine 3 sind",
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
-          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen"
+          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
+          "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
         },
         "four": {
           "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
@@ -439,7 +440,7 @@
       "twoE1Description": "Effekt 1: Kontere einen Einmal-Effekt. Konter können während des Zuges deines Gegners gespielt werden.",
       "twoE2Description": "Effekt 2: Entferne eine Royal-Karte oder eine Brillen-Acht.",
       "three": "Drei",
-      "threeDescription": "Wähle eine Karte aus dem Ablagestapel und nimm sie auf die Hand.",
+      "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
       "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
       "five": "Fünf",
@@ -574,11 +575,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Clubs 2025 Saisonmeisterschaft HEUTE!",
-    "title": "Clubs 2025 Meisterschaft",
-    "heading": "Meisterschaft heute!",
-    "paragraph": "Die Clubs 2025 Cuttle Saisonmeisterschaft findet HEUTE, am 26. April um 12:30 Uhr EST statt! Sieh dir an, wie die Top 8 Spieler der letzten Ranglistensaison in einem Double-Elimination-Turnier um den Titel des Clubs 2025 Cuttle Saisonmeisters kämpfen! Schau live zu auf ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Regelupdate: Man kann keine Drei für eine Drei tauschen!",
+    "title": "Drei-Update",
+    "heading": "Man kann keine Drei für eine Drei tauschen",
+    "paragraph": "Um zu verhindern, dass Spieler das Spiel unbegrenzt verzögern, indem sie den 'Nicht-Zug' machen, eine Drei zu spielen, um eine andere Drei aus dem Ablagestapel zu ziehen, sind Dreien nicht mehr als ausgewählte Karte erlaubt, wenn man vom Ablagestapel zieht. Du kannst immer noch eine Drei für alles andere tauschen, nur nicht für eine andere Drei! Dies sollte minimale Auswirkungen auf die meisten Spiele haben, da das Tauschen einer Drei gegen eine Drei selten ein lohnender Zug ist, aber da es kürzlich vorgekommen ist, sollte diese Änderung unfaire Spielmuster in Situationen verhindern, in denen Spieler darauf abzielen, das Spiel zu verzögern."
   },
   "profile": {
     "myGames": "Meine Spiele",
