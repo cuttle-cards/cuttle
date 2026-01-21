@@ -7,7 +7,7 @@ module.exports = {
   fn: async (_inputs, exits) => {
     const botUserData = { username: 'CuttleBot', isBot: true };
 
-    let botUser = await User.find(botUserData);
+    let botUser = await User.findOne(botUserData);
 
     if (!botUser) {
       botUser = await User.create(botUserData).fetch();
