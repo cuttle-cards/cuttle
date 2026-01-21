@@ -47,6 +47,10 @@ module.exports = {
           .populate('p1')
           .populate('gameStates', { sort: 'createdAt ASC' });
 
+        const botPlayer = updatedGame.isVsAi ? { username: 'CuttleBot', id: -1 } : {};
+        updatedGame.p0 = { ...botPlayer, ...updatedGame.p0 };
+        updatedGame.p1 = { ...botPlayer, ...updatedGame.p1 };
+
         if (!updatedGame) {
           return exits.success(null);
         }
