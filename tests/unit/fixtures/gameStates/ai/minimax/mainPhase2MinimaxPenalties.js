@@ -1,7 +1,7 @@
-import { Card } from '../../../Card';
-import GamePhase from '../../../../../utils/GamePhase.json';
-import MoveType from '../../../../../utils/MoveType.json';
 import { omit } from 'lodash';
+import { Card } from '../../../Card';
+import GamePhase from '../../../../../../utils/GamePhase.json';
+import MoveType from '../../../../../../utils/MoveType.json';
 
 const gameState = {
   p0: {
