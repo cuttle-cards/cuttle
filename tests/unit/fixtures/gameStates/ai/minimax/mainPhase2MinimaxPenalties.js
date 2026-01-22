@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import { Card } from '../../../Card';
 import GamePhase from '../../../../../../utils/GamePhase.json';
 import MoveType from '../../../../../../utils/MoveType.json';
@@ -54,56 +53,32 @@ const gameState = {
   targetCard: null,
 };
 
-const moveWithRedundantPointsPenalty = { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true };
-const pointsMoveBodies = [
-  moveWithRedundantPointsPenalty,
-  { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D', isValid: true },
-];
+const moveWithRedundantPointsPenalty = {
+  move: { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true },
+  score: 1.5,
+  description: 'Penalized for redundant point card (3H + 4C)',
+};
 
-const moveWithRedundantQueenPenalty = { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true };
-const faceCardMoveBodies = [
+const moveWithRedundantQueenPenalty = {
+  move: { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true },
+  score: 1.5,
+  description: 'Penalized for redundant (3rd) queen',
+};
+
+const movesAndScores = [
+  moveWithRedundantPointsPenalty,
   moveWithRedundantQueenPenalty,
 ];
 
-const scuttleMoveBodies = [
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'TH', isValid: false },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '3H', targetId: 'AC', isValid: true },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'TH', isValid: false },
-  { moveType: MoveType.SCUTTLE, playedBy: 0, cardId: '7D', targetId: 'AC', isValid: true },
-];
 
-const oneOffMoveBodies = [
-  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '3H', isValid: true },
-  { moveType: MoveType.ONE_OFF, playedBy: 0, cardId: '7D', isValid: true },
-];
-
-const validMoveBodies = [
-  ...pointsMoveBodies,
-  ...faceCardMoveBodies,
-  ...scuttleMoveBodies,
-  ...oneOffMoveBodies,
-]
-  .filter((move) => move.isValid)
-  .map((move) => omit(move, 'isValid'));
-
-function omitIsValid(moveList) {
-  return moveList.map((validMove) => omit(validMove, 'isValid'));
-}
-
-const minimaxScore = 3.5;
+const baseScore = 3.5;
 
 export const mainPhase2MinimaxPenalties = {
-  name: 'mainPhase2: Minimax Penalties',
+  name: 'mainPhase2: Minimax Penalties for points with no kings and redundant queen',
   gameState,
   playedBy: 0,
-  moveBodiesByType: [
-    { moveType: MoveType.POINTS, moves: omitIsValid(pointsMoveBodies) },
-    { moveType: MoveType.FACE_CARD, moves: omitIsValid(faceCardMoveBodies) },
-    { moveType: MoveType.SCUTTLE, moves: omitIsValid(scuttleMoveBodies) },
-    { moveType: MoveType.ONE_OFF, moves: omitIsValid(oneOffMoveBodies) },
-  ],
-  validMoveBodies,
-  minimaxScore,
+  baseScore,
+  movesAndScores,
   moveWithRedundantPointsPenalty,
   moveWithRedundantQueenPenalty,
 };

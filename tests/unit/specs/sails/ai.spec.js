@@ -14,7 +14,7 @@ import { resolvingFivePhase3HasNoCardsInHand } from '../../fixtures/gameStates/a
 import { counteringPhase1AbleToCounter } from '../../fixtures/gameStates/ai/counteringPhase1AbleToCounter';
 import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/counteringPhase2CannotCounter';
 
-const fixtures = [
+const fixturesForLegalMoves = [
   mainPhase,
   resolvingSevenPhase1,
   resolvingSevenPhase2,
@@ -27,6 +27,10 @@ const fixtures = [
   resolvingFivePhase3HasNoCardsInHand,
   counteringPhase1AbleToCounter,
   counteringPhase2CannotCounter,
+];
+
+const fixturesForMinimax = [
+  mainPhase2MinimaxPenalties,
 ];
 
 let getMoveBodiesForMoveType;
@@ -54,31 +58,16 @@ describe('AI Move Validation', () => {
 
       it('Evaluates score for main phase 2 for p0', () => {
         const score = scoreGameState(mainPhase2MinimaxPenalties.gameState, 0);
-        expect(score).to.eq(mainPhase2MinimaxPenalties.minimaxScore);
+        expect(score).to.eq(mainPhase2MinimaxPenalties.baseScore);
       });
 
-      it('Penalizes two redundant point cards summing to <= 10', () => {
-        const { execute } = sails.helpers.gameStates.moves.points;
-        const redundantPointState = execute(
-          mainPhase2MinimaxPenalties.gameState,
-          mainPhase2MinimaxPenalties.moveWithRedundantPointsPenalty,
-          0,
-          [ mainPhase2MinimaxPenalties.gameState ]
-        );
-        const score = scoreGameState(redundantPointState, 0);
-        expect(score).to.eq(1.5);
-      });
-
-      it('Penalizes redundant third queen', () => {
-        const { execute } = sails.helpers.gameStates.moves.faceCard;
-        const redundantQueenState = execute(
-          mainPhase2MinimaxPenalties.gameState,
-          mainPhase2MinimaxPenalties.moveWithRedundantQueenPenalty,
-          0,
-          [ mainPhase2MinimaxPenalties.gameState ]
-        );
-        const score = scoreGameState(redundantQueenState, 0);
-        expect(score).to.eq(1.5);
+      describe.each(fixturesForMinimax)('Scoring GameStates for $name', (fixture) => {
+        it.each(fixture.movesAndScores)('$description', ({ move, score }) => {
+          const { execute } = sails.helpers.gameStates.moves[move.moveType];
+          const resultingState = execute(fixture.gameState, move, fixture.playedBy, [ fixture.gameState ]);
+          const resultingScore = scoreGameState(resultingState, fixture.playedBy);
+          expect(resultingScore).to.eq(score);
+        });
       });
     });
 
@@ -91,7 +80,7 @@ describe('AI Move Validation', () => {
     });
   });
 
-  describe.each(fixtures)('AI moves in $name', (fixture) => {
+  describe.each(fixturesForLegalMoves)('AI moves in $name', (fixture) => {
     describe(`getMoveBodiesForMoveType() for ${fixture.name}`, () => {
       it.each(fixture.moveBodiesByType)('creates move bodies for $moveType', (testCase) => {
         const moveBodies = getMoveBodiesForMoveType(fixture.gameState, fixture.playedBy, testCase.moveType);
