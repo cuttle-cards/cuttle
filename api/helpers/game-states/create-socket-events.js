@@ -175,6 +175,7 @@ module.exports = {
         ...(gameState.resolved && { oneOff: gameState.resolved }),
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),
+        activePlayerPNum: sails.helpers.gameStates.getActivePlayerPNum(gameState),
       };
 
       // Create spectator state (full visibility)
@@ -187,7 +188,7 @@ module.exports = {
           ...baseSocketGame,
           players: hideOpponentHand(0, players),
           deck: hideDeck(),
-        }
+        },
       };
 
       // Create p1 state (asymmetric visibility)
@@ -197,7 +198,7 @@ module.exports = {
           ...baseSocketGame,
           players: hideOpponentHand(1, players),
           deck: hideDeck(),
-        }
+        },
       };
 
       if (victory.gameOver) {
