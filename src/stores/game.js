@@ -657,16 +657,6 @@ export const useGameStore = defineStore('game', () => {
   async function rejectStalemate() {
     await makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
   }
-  async function requestUnsubscribeFromGame() {
-    return new Promise((resolve, reject) => {
-      io.socket.get('/api/game/over', (res, jwres) => {
-        if (jwres.statusCode === 200) {
-          resetState();
-        }
-        return handleGameResponse(jwres, resolve, reject);
-      });
-    });
-  }
   async function requestRematch({ gameId: gameIdArg, rematch = true }) {
     await makeSocketRequest('rematch', { gameId: gameIdArg, rematch });
   }
@@ -794,7 +784,6 @@ export const useGameStore = defineStore('game', () => {
     requestStalemate,
     acceptStalemate,
     rejectStalemate,
-    requestUnsubscribeFromGame,
     requestRematch,
     addSpectator,
   };
