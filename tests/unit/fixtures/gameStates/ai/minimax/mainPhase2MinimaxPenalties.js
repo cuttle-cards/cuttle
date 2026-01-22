@@ -45,7 +45,7 @@ const gameState = {
   oneOffTarget: null,
   oneOffTargetType: null,
   resolved: null,
-  playedCard: Card.TEN_OF_SPADES,
+  playedCard: null,
   gameId: 1,
   playedBy: 1,
   moveType: MoveType.DRAW,
@@ -54,15 +54,15 @@ const gameState = {
   targetCard: null,
 };
 
-const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0, isValid: true } ];
-
+const moveWithRedundantPointsPenalty = { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true };
 const pointsMoveBodies = [
-  { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true },
+  moveWithRedundantPointsPenalty,
   { moveType: MoveType.POINTS, playedBy: 0, cardId: '7D', isValid: true },
 ];
 
+const moveWithRedundantQueenPenalty = { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true };
 const faceCardMoveBodies = [
-  { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true },
+  moveWithRedundantQueenPenalty,
 ];
 
 const scuttleMoveBodies = [
@@ -78,7 +78,6 @@ const oneOffMoveBodies = [
 ];
 
 const validMoveBodies = [
-  ...drawMoveBodies,
   ...pointsMoveBodies,
   ...faceCardMoveBodies,
   ...scuttleMoveBodies,
@@ -98,7 +97,6 @@ export const mainPhase2MinimaxPenalties = {
   gameState,
   playedBy: 0,
   moveBodiesByType: [
-    { moveType: MoveType.DRAW, moves: omitIsValid(drawMoveBodies) },
     { moveType: MoveType.POINTS, moves: omitIsValid(pointsMoveBodies) },
     { moveType: MoveType.FACE_CARD, moves: omitIsValid(faceCardMoveBodies) },
     { moveType: MoveType.SCUTTLE, moves: omitIsValid(scuttleMoveBodies) },
@@ -106,5 +104,6 @@ export const mainPhase2MinimaxPenalties = {
   ],
   validMoveBodies,
   minimaxScore,
-  moveWithRedundantPointsPenalty: validMoveBodies[1],
+  moveWithRedundantPointsPenalty,
+  moveWithRedundantQueenPenalty,
 };

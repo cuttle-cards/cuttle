@@ -16,7 +16,6 @@ import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/coun
 
 const fixtures = [
   mainPhase,
-  mainPhase2MinimaxPenalties,
   resolvingSevenPhase1,
   resolvingSevenPhase2,
   resolvingSevenPhase3,
@@ -67,6 +66,18 @@ describe('AI Move Validation', () => {
           [ mainPhase2MinimaxPenalties.gameState ]
         );
         const score = scoreGameState(redundantPointState, 0);
+        expect(score).to.eq(1.5);
+      });
+
+      it('Penalizes redundant third queen', () => {
+        const { execute } = sails.helpers.gameStates.moves.faceCard;
+        const redundantQueenState = execute(
+          mainPhase2MinimaxPenalties.gameState,
+          mainPhase2MinimaxPenalties.moveWithRedundantQueenPenalty,
+          0,
+          [ mainPhase2MinimaxPenalties.gameState ]
+        );
+        const score = scoreGameState(redundantQueenState, 0);
         expect(score).to.eq(1.5);
       });
     });
