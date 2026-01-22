@@ -52,6 +52,10 @@ describe('AI Move Validation', () => {
         const score = scoreGameState(mainPhase.gameState, 0);
         expect(score).to.eq(mainPhase.minimaxScore);
       });
+      it('Evaluates scsore for main 2 for p0', () => {
+        const score = scoreGameState(mainPhase2MinimaxPenalties.gameState, 0);
+        expect(score).to.eq(mainPhase2MinimaxPenalties.minimaxScore);
+      });
     });
     describe('getMinimaxScore()', () => {
       it('Gets minimax score at depth 0 for main phase state for p0', () => {
