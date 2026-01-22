@@ -34,7 +34,7 @@ module.exports = {
           res -= Math.max(0, (player.points.length - 1)) * 2;
         }
         else if (playerPointTotal <= 21) {
-          res -= Math.max(0, (2 - player.points.length)) * 2;
+          res -= Math.max(0, (player.points.length - 2)) * 2;
         }
 
         return res;
