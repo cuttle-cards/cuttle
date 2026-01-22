@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { orderBy } from 'lodash';
-import { MoveType } from '../../../../utils/MoveType';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
-import { mainPhase2MinimaxPenalties } from '../../fixtures/gameStates/ai/mainPhase2MinimaxPenalties';
+import { mainPhase2MinimaxPenalties } from '../../fixtures/gameStates/ai/minimax/mainPhase2MinimaxPenalties';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
@@ -59,7 +58,7 @@ describe('AI Move Validation', () => {
         expect(score).to.eq(mainPhase2MinimaxPenalties.minimaxScore);
       });
 
-      it('Penalizes redundant point cards', () => {
+      it('Penalizes two redundant point cards summing to <= 10', () => {
         const { execute } = sails.helpers.gameStates.moves.points;
         const redundantPointState = execute(
           mainPhase2MinimaxPenalties.gameState,
