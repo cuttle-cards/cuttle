@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { orderBy } from 'lodash';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
+import { mainPhase2MinimaxPenalties } from '../../fixtures/gameStates/ai/mainPhase2MinimaxPenalties';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
@@ -15,6 +16,7 @@ import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/coun
 
 const fixtures = [
   mainPhase,
+  mainPhase2MinimaxPenalties,
   resolvingSevenPhase1,
   resolvingSevenPhase2,
   resolvingSevenPhase3,
