@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { orderBy } from 'lodash';
+import { MoveType } from '../../../../utils/MoveType';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import { mainPhase2MinimaxPenalties } from '../../fixtures/gameStates/ai/mainPhase2MinimaxPenalties';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
@@ -52,16 +53,31 @@ describe('AI Move Validation', () => {
         const score = scoreGameState(mainPhase.gameState, 0);
         expect(score).to.eq(mainPhase.minimaxScore);
       });
-      it('Evaluates scsore for main 2 for p0', () => {
+
+      it('Evaluates score for main phase 2 for p0', () => {
         const score = scoreGameState(mainPhase2MinimaxPenalties.gameState, 0);
         expect(score).to.eq(mainPhase2MinimaxPenalties.minimaxScore);
       });
+
+      it('Penalizes redundant point cards', () => {
+        const { execute } = sails.helpers.gameStates.moves.points;
+        const redundantPointState = execute(
+          mainPhase2MinimaxPenalties.gameState,
+          mainPhase2MinimaxPenalties.moveWithRedundantPointsPenalty,
+          0,
+          [ mainPhase2MinimaxPenalties.gameState ]
+        );
+        const score = scoreGameState(redundantPointState, 0);
+        expect(score).to.eq(1.5);
+      });
     });
+
     describe('getMinimaxScore()', () => {
       it('Gets minimax score at depth 0 for main phase state for p0', () => {
         const score = getMinimaxScore(mainPhase.gameState, 0, 0, []);
         expect(score).to.eq(mainPhase.minimaxScore);
       });
+
     });
   });
 

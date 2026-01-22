@@ -54,8 +54,6 @@ const gameState = {
   targetCard: null,
 };
 
-const passMoveBodies = [ { moveType: MoveType.PASS, playedBy: 0, isValid: false } ];
-
 const drawMoveBodies = [ { moveType: MoveType.DRAW, playedBy: 0, isValid: true } ];
 
 const pointsMoveBodies = [
@@ -85,7 +83,6 @@ const validMoveBodies = [
   ...faceCardMoveBodies,
   ...scuttleMoveBodies,
   ...oneOffMoveBodies,
-  ...passMoveBodies,
 ]
   .filter((move) => move.isValid)
   .map((move) => omit(move, 'isValid'));
@@ -106,8 +103,8 @@ export const mainPhase2MinimaxPenalties = {
     { moveType: MoveType.FACE_CARD, moves: omitIsValid(faceCardMoveBodies) },
     { moveType: MoveType.SCUTTLE, moves: omitIsValid(scuttleMoveBodies) },
     { moveType: MoveType.ONE_OFF, moves: omitIsValid(oneOffMoveBodies) },
-    { moveType: MoveType.PASS, moves: omitIsValid(passMoveBodies) }
   ],
   validMoveBodies,
   minimaxScore,
+  moveWithRedundantPointsPenalty: validMoveBodies[1],
 };

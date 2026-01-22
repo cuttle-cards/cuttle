@@ -23,12 +23,15 @@ module.exports = {
         res += player.hand.length; // hand score
         res += player.points.length * 2; // point score
         res += player.faceCards.length * 2; // royal score
-        // Penalties
+        // Penalties //
+        // Ignore redundant queens
         res -= (Math.max(0, player.faceCards.filter((card) => card.rank === 12).length - 2) * 2);
+        // Ignore redundant glasses
         res -= (Math.max(0, player.faceCards.filter((card) => card.rank === 8).length - 1) * 2);
+        // Ignore redundant points
         const playerPointTotal = player.points.reduce((total, currentCard) => total + currentCard.rank, 0);
         if (playerPointTotal <= 10) {
-          res -= Math.max(0, (1 - player.points.length)) * 2;
+          res -= Math.max(0, (player.points.length - 1)) * 2;
         }
         else if (playerPointTotal <= 21) {
           res -= Math.max(0, (2 - player.points.length)) * 2;
