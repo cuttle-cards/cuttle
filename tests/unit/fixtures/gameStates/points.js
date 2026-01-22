@@ -92,6 +92,7 @@ export const points = {
     playedBy: 0,
     playedCard: Card.TEN_OF_SPADES,
     pNum: 0,
+    activePlayerPNum: 1,
     game: {
       players: [
         {

@@ -85,6 +85,7 @@ export const resolveNine = {
     pNum: 0,
     playedBy: 0,
     targetCard: Card.JACK_OF_CLUBS,
+    activePlayerPNum: 1,
     game: {
       chat: [],
       deck: [

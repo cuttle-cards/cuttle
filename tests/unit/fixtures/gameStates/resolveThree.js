@@ -92,6 +92,7 @@ export const resolveThree = {
     playedBy: 0,
     targetCard: Card.TEN_OF_HEARTS,
     pNum: 0,
+    activePlayerPNum: 1,
     game: {
       players: [
         {
