@@ -65,6 +65,7 @@ module.exports = {
       }
 
       const activePlayerPNum = getActivePlayerPNum(currentState);
+      const isMyMove = activePlayerPNum === pNum;
       const possibleNextStates = getLegalMoves(currentState, activePlayerPNum, priorStates);
 
       if (possibleNextStates.length === 0) {
@@ -72,16 +73,17 @@ module.exports = {
         return exits.success(res);
       }
 
+      const baseLineScore = isMyMove ? -Infinity : Infinity;
+
       const priorStatesPlusCurrentState = [ ...priorStates, currentState ];
-      const lowestScoreForNextState = possibleNextStates.reduce((total, state) => {
+      const bestScore = possibleNextStates.reduce((currentScore, state) => {
 
         const stateScore = getMinimaxScore(state, pNum, depth - 1, priorStatesPlusCurrentState);
-        Math.min(total, stateScore);
+        return isMyMove ? Math.max(currentScore, stateScore) : Math.min(currentScore, stateScore);
 
-        return stateScore;
-      }, 0);
+      }, baseLineScore);
 
-      return exits.success(lowestScoreForNextState);
+      return exits.success(bestScore);
     } catch (err) {
       return exits.error(err);
     }
