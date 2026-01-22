@@ -110,9 +110,9 @@ export const useGameListStore = defineStore('gameList', {
         );
       });
     },
-    requestCreateAIGame(pNum = 0) {
+    requestCreateAIGame(previousGameId = null) {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/ai', { pNum }, function (res, jwres) {
+        io.socket.post('/api/game/ai', { previousGameId }, function (res, jwres) {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }

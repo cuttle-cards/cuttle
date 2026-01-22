@@ -284,7 +284,7 @@ export default {
           return this.continueSpectating();
         }
         if (this.gameStore.isVsAi) {
-          const gameId = await this.gameListStore.requestCreateAIGame((this.gameStore.myPNum + 1) % 2);
+          const gameId = await this.gameListStore.requestCreateAIGame(this.gameStore.id);
           this.$router.replace(`/ai/${gameId}`);
           return this.gameStore.requestGameState(gameId);
         }
