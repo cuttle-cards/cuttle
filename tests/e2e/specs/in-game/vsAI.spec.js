@@ -17,6 +17,9 @@ describe('Playing VS AI', () => {
 
   it('Plays an AI game', () => {
     cy.get('[data-player-hand-card]').should('have.length', 5);
+
+    cy.get('[data-cy=opponent-username]').should('contain', 'CuttleBot');
+
     cy.loadGameFixture(0, {
       p0Hand: [ Card.TEN_OF_SPADES, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_CLUBS, Card.NINE_OF_SPADES ],
       p0Points: [],
