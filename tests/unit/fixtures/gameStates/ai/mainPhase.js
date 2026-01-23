@@ -15,10 +15,6 @@ const gameState = {
     ],
     points: [
       Card.TEN_OF_SPADES,
-      {
-        ...Card.EIGHT_OF_DIAMONDS,
-        attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
-      },
     ],
     faceCards: [ Card.KING_OF_SPADES ],
   },
@@ -38,7 +34,8 @@ const gameState = {
     Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, 
     Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.FIVE_OF_SPADES, 
     Card.SIX_OF_SPADES,  Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, 
-    Card.QUEEN_OF_SPADES
+    Card.QUEEN_OF_SPADES, Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS,
+    Card.EIGHT_OF_DIAMONDS,
   ],
   scrap: [ Card.SIX_OF_CLUBS ],
   twos: [],
@@ -107,7 +104,7 @@ function omitIsValid(moveList) {
   return moveList.map((validMove) => omit(validMove, 'isValid'));
 }
 
-const minimaxScore = 6.5;
+const minimaxScore = 4.5;
 
 export const mainPhase = {
   name: 'mainPhase',

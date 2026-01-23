@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { orderBy } from 'lodash';
 import { mainPhase } from '../../fixtures/gameStates/ai/mainPhase';
 import { mainPhase2MinimaxPenalties } from '../../fixtures/gameStates/ai/minimax/mainPhase2MinimaxPenalties';
+import { mainPhase3AdditionalPenalties } from '../../fixtures/gameStates/ai/minimax/mainPhase3AdditionalPenalties';
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
@@ -31,6 +32,7 @@ const fixturesForLegalMoves = [
 
 const fixturesForMinimax = [
   mainPhase2MinimaxPenalties,
+  mainPhase3AdditionalPenalties,
 ];
 
 let getMoveBodiesForMoveType;

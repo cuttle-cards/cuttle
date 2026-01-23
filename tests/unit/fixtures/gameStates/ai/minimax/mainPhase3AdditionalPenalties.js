@@ -6,11 +6,10 @@ const gameState = {
   p0: {
     hand: [
       Card.THREE_OF_HEARTS,
-      Card.SEVEN_OF_DIAMONDS,
-      Card.QUEEN_OF_DIAMONDS,
+      Card.EIGHT_OF_DIAMONDS,
     ],
-    points: [ Card.FOUR_OF_CLUBS ],
-    faceCards: [ Card.QUEEN_OF_CLUBS, Card.QUEEN_OF_HEARTS ],
+    points: [],
+    faceCards: [ Card.EIGHT_OF_HEARTS, Card.KING_OF_DIAMONDS ],
   },
   p1: {
     hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
@@ -22,20 +21,24 @@ const gameState = {
     Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
     Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, 
     Card.SIX_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, 
-    Card.JACK_OF_DIAMONDS, Card.KING_OF_DIAMONDS, 
+    Card.JACK_OF_DIAMONDS, 
     Card.TWO_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, 
-    Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, 
+    Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS, 
     Card.KING_OF_HEARTS, 
     Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.FIVE_OF_SPADES, 
-    Card.SIX_OF_SPADES,  Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, 
+    Card.SIX_OF_SPADES, Card.NINE_OF_SPADES, 
     Card.QUEEN_OF_SPADES,
     Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS,
+    Card.EIGHT_OF_SPADES,
     Card.TEN_OF_SPADES,
-    Card.EIGHT_OF_DIAMONDS,
     Card.KING_OF_SPADES,
     Card.KING_OF_CLUBS,
     Card.JACK_OF_HEARTS,
     Card.ACE_OF_SPADES,
+    Card.QUEEN_OF_CLUBS, Card.QUEEN_OF_HEARTS,
+    Card.FOUR_OF_CLUBS,
+    Card.SEVEN_OF_DIAMONDS,
+    Card.QUEEN_OF_DIAMONDS,
   ],
   scrap: [ Card.SIX_OF_CLUBS ],
   twos: [],
@@ -53,28 +56,34 @@ const gameState = {
   targetCard: null,
 };
 
+const pointsMoveWithoutPenalty = {
+  move: { moveType: MoveType.POINTS, playedBy: 0, cardId: '8D' },
+  score: .5,
+};
+
 const moveWithRedundantPointsPenalty = {
-  move: { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H', isValid: true },
-  score: 1.5,
+  move: { moveType: MoveType.POINTS, playedBy: 0, cardId: '3H' },
+  score: -1.5,
   description: 'Penalized for redundant point card (3H + 4C)',
 };
 
 const moveWithRedundantQueenPenalty = {
-  move: { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD', isValid: true },
-  score: 1.5,
+  move: { moveType: MoveType.FACE_CARD, playedBy: 0, cardId: 'QD' },
+  score: -1.5,
   description: 'Penalized for redundant (3rd) queen',
 };
 
 const movesAndScores = [
+  pointsMoveWithoutPenalty,
   moveWithRedundantPointsPenalty,
   moveWithRedundantQueenPenalty,
 ];
 
 
-const baseScore = 3.5;
+const baseScore = .5;
 
-export const mainPhase2MinimaxPenalties = {
-  name: 'mainPhase2: Minimax Penalties for points with no kings and redundant queen',
+export const mainPhase3AdditionalPenalties = {
+  name: 'mainPhase3: Minimax Penalties for redundant points with 1 king and for redundant glasses',
   gameState,
   playedBy: 0,
   baseScore,
