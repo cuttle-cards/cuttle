@@ -253,5 +253,43 @@ describe('Playing VS AI', () => {
         scrap: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
     });
+
+    it('Wins with points if possible', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.THREE_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TEN_OF_SPADES,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS ],
+        p1FaceCards: [],
+        topCard: Card.JACK_OF_CLUBS,
+      });
+
+      // Player draws card
+      cy.get('#deck').click();
+
+      // AI should win with TS
+      assertGameState(0, {
+        p0Hand: [ Card.THREE_OF_CLUBS, Card.JACK_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS, Card.TEN_OF_SPADES ],
+        p1FaceCards: [],
+      });
+
+      assertLoss({ wins: 0, losses: 1, stalemates: 0 });
+    });
   });
 });
