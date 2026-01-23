@@ -111,4 +111,52 @@ describe('Playing VS AI', () => {
     cy.get('[data-cy=opponent-username]').should('contain', 'CuttleBot');
     concede({ wins: 0, losses: 2, stalemates: 0 });
   });
+
+  describe('AI Decision making', () => {
+    it('Goes for 2-for-1 ace when available', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [  Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.EIGHT_OF_DIAMONDS,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.get('[data-player-hand-card=10-1]').click();
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .should('contain', 'A♣️')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.EIGHT_OF_DIAMONDS,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [
+          Card.TEN_OF_DIAMONDS,
+          Card.TEN_OF_SPADES,
+          Card.ACE_OF_CLUBS,
+        ]
+      });
+    });
+  });
 });
