@@ -24,7 +24,8 @@ module.exports = {
   fn: ({ currentState, playedBy, priorStates }, exits) => {
     try {
 
-      const legalMoves = sails.helpers.gameStates.ai.getLegalMoves(currentState, playedBy, priorStates)
+      const legalMoves = sails.helpers.gameStates.ai.getLegalMoves(currentState, playedBy, priorStates);
+      const legalMovesWithScores = legalMoves
         .map((move) => {
           return {
             move,
@@ -33,13 +34,13 @@ module.exports = {
         });
 
       let topScore = -100;
-      for (let futureState of legalMoves) {
+      for (let futureState of legalMovesWithScores) {
         if (futureState.score > topScore) {
           topScore = futureState.score;
         }
       }
 
-      const topScoringMoves = legalMoves.filter((futureState) => futureState.score === topScore);
+      const topScoringMoves = legalMovesWithScores.filter((futureState) => futureState.score === topScore);
 
       const res = _.sample(topScoringMoves, 1)?.move;
 

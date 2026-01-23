@@ -202,5 +202,40 @@ describe('Playing VS AI', () => {
         ]
       });
     });
+
+    it('Scuttles when in check', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [  Card.TEN_OF_DIAMONDS, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TEN_OF_HEARTS,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.get('[data-player-hand-card=10-1]').click();
+      cy.get('[data-move-choice=points]').click();
+
+      assertGameState(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_CLUBS,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+      });
+    });
   });
 });
