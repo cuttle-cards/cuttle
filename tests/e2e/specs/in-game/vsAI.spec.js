@@ -158,5 +158,49 @@ describe('Playing VS AI', () => {
         ]
       });
     });
+
+    it('Goes for 2-for-1 six when available', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.QUEEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [ Card.KING_OF_DIAMONDS ],
+        p1Hand: [
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_DIAMONDS,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.get('[data-player-hand-card=12-0]').click();
+      cy.get('[data-move-choice=faceCard]').click();
+
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .should('contain', '6♣️')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.EIGHT_OF_DIAMONDS,
+          Card.EIGHT_OF_HEARTS,
+          Card.EIGHT_OF_SPADES,
+          Card.QUEEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [
+          Card.KING_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+          Card.SIX_OF_CLUBS,
+        ]
+      });
+    });
   });
 });
