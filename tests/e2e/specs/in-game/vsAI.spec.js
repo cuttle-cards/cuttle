@@ -109,6 +109,22 @@ describe('Playing VS AI', () => {
     cy.get('[data-cy=gameover-rematch]').click();
     cy.get('[data-player-hand-card]').should('have.length', 6);
     cy.get('[data-cy=opponent-username]').should('contain', 'CuttleBot');
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.TEN_OF_SPADES, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_CLUBS, Card.NINE_OF_SPADES ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.EIGHT_OF_CLUBS,
+        Card.EIGHT_OF_DIAMONDS,
+        Card.EIGHT_OF_HEARTS,
+        Card.EIGHT_OF_SPADES,
+        Card.QUEEN_OF_CLUBS,
+        Card.QUEEN_OF_DIAMONDS,
+      ],
+      p1Points: [],
+      p1FaceCards: [],
+      deck: [],
+    });
     concede({ wins: 0, losses: 2, stalemates: 0 });
   });
 
