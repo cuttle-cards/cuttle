@@ -199,7 +199,7 @@ export default {
           this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
           this.$router.replace('/');
         }
-        if ([ 'discord' ].includes(this.$route.query?.oauthsignup)) {
+        if ([ 'discord', 'google' ].includes(this.$route.query?.oauthsignup)) {
           this.oAuthSignup = true;
           this.$router.replace('/');
         }
