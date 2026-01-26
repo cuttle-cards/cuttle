@@ -275,8 +275,6 @@ export default {
       if (!this.gameHistoryStore.isSpectating) {
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: false });
       }
-
-      await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {
       try {
