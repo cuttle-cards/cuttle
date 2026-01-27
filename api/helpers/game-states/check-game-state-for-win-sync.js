@@ -53,8 +53,6 @@ module.exports = {
 
     if (p0Wins || p1Wins || stalemate) {
       res.gameOver = true;
-      const gameUpdates = {};
-      gameUpdates.status = GameStatus.FINISHED;
 
       if (p0Wins) {
         res.winner = 0;
