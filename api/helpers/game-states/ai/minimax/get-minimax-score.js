@@ -42,9 +42,9 @@ module.exports = {
 
       let numPasses = 0;
       const currentIndex = priorStates.findIndex(gs => gs.id === currentState.id);
-      const threeUpToCurrent = priorStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
+      const threeMostRecentGameStates = priorStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
 
-      for (const gameState of threeUpToCurrent) {
+      for (const gameState of threeMostRecentGameStates) {
         if (gameState.moveType !== MoveType.PASS) {
           break;
         }
