@@ -70,7 +70,6 @@ const movesAndScores = [
   moveWithRedundantQueenPenalty,
 ];
 
-
 const baseScore = 3.5;
 
 export const mainPhase2MinimaxPenalties = {
