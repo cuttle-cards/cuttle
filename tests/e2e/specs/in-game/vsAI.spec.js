@@ -15,7 +15,6 @@ function setup() {
 }
 
 function concede(score = null) {
-  // Re-open concede menu and confirm concession
   cy.get('#game-menu-activator').click();
   cy.get('#game-menu').should('be.visible')
     .get('[data-cy=concede-initiate]')
