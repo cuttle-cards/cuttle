@@ -4,7 +4,7 @@ const TargetType = require('../../../../utils/TargetType');
 module.exports = {
   friendlyName: 'Get move bodies for move type',
 
-  description: 'Returns list of move body objects for specified moveType',
+  description: 'Returns list of move body objects for specified moveType. Moves may not all be legal',
 
   inputs: {
     currentState: {
