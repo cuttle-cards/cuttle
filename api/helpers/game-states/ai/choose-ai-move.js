@@ -33,7 +33,7 @@ module.exports = {
           };
         });
 
-      let topScore = -100;
+      let topScore = -Infinity;
       for (let futureState of legalMovesWithScores) {
         if (futureState.score > topScore) {
           topScore = futureState.score;

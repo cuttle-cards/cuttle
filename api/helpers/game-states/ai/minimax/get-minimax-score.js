@@ -56,9 +56,9 @@ module.exports = {
       if (gameOver) {
         switch (winner) {
           case pNum: // Max reward if this player wins
-            return exits.success(100);
+            return exits.success(Infinity);
           case (pNum + 1) % 2: // Min reward if this player loses
-            return exits.success(-100);
+            return exits.success(-Infinity);
           default: // 0 reward if stalemate
             return exits.success(0);
         }
