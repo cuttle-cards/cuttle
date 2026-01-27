@@ -59,6 +59,7 @@ const gameState = {
 const pointsMoveWithoutPenalty = {
   move: { moveType: MoveType.POINTS, playedBy: 0, cardId: '8D' },
   score: .5,
+  description: 'Can play two point cards summing >= 10 without penalty'
 };
 
 const moveWithRedundantPointsPenalty = {
