@@ -24,7 +24,7 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, playedBy, priorStates }, exits) => {
-    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST', 'STALEMATE_ACCEPT', 'FIZZLE' ];
+    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST', 'STALEMATE_ACCEPT', 'FIZZLE', 'LOADFIXTURE' ];
     const moveTypes = Object.values(_.omit(MoveType, disallowedMoveTypes));
     const res = [];
     for (let moveType of moveTypes) {
@@ -37,7 +37,7 @@ module.exports = {
           const legalMove = execute(currentState, possibleMove, playedBy, priorStates);
           res.push(legalMove);
         } catch {
-          continue; // Skip illegal moves
+          continue;
         }
       }
     }
