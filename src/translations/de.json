@@ -373,7 +373,8 @@
     "playAiLink": "gegen die KI zu spielen",
     "playAiContent2": "um die Grundlagen zu lernen und dein Können zu testen.",
     "gameName": "Spielname",
-    "join": "Beitreten"
+      "join": "Beitreten",
+      "playVsAi": "Gegen die KI spielen"
   },
   "rules": {
     "introduction": "Einleitung",

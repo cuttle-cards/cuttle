@@ -373,7 +373,8 @@
     "playAiLink": "jouer contre l'IA",
     "playAiContent2": "pour apprendre les bases et tester votre courage.",
     "gameName": "Nom de la partie",
-    "join": "Rejoindre"
+      "join": "Rejoindre",
+      "playVsAi": "Jouer contre l'IA"
   },
   "rules": {
     "introduction": "Introduction",

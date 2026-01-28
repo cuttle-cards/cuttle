@@ -374,7 +374,8 @@
     "playAiLink": "playing vs AI",
     "playAiContent2": "to learn the ropes and test your mettle.",
     "gameName": "Game Name",
-    "join": "Join"
+      "join": "Join",
+      "playVsAi": "Play VS AI"
   },
   "rules": {
     "introduction": "Introduction",

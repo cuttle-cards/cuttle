@@ -133,7 +133,7 @@
                 data-cy="create-ai-game"
                 @click="createAIGame"
               >
-                Play VS AI
+                {{ t('home.playVsAi') }}
               </v-btn>
             </div>
           </div>
