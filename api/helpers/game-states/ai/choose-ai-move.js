@@ -29,7 +29,7 @@ module.exports = {
         .map((move) => {
           return {
             move,
-            score: sails.helpers.gameStates.ai.minimax.getMinimaxScore(move, playedBy, 2, priorStates),
+            score: sails.helpers.gameStates.ai.minimax.getMinimaxScore(move, playedBy, 2, [ ...priorStates, move ]),
           };
         });
 
