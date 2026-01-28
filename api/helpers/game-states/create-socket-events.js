@@ -32,9 +32,9 @@ module.exports = {
       const countPasses = (function () {
         let numPasses = 0;
         const currentIndex = game.gameStates.findIndex(gs => gs.id === gameState.id);
-        const threeUpToCurrent = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
+        const threeMostRecentGameStates = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
 
-        for (const gameState of threeUpToCurrent) {
+        for (const gameState of threeMostRecentGameStates) {
           if (gameState.moveType !== MoveType.PASS) {
             return numPasses;
           }
