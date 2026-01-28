@@ -338,22 +338,6 @@
     }
   },
   "home": {
-    "howItWorks": {
-      "button": "Comment ça fonctionne.",
-      "title": "Vous cherchez à jouer?",
-      "content": "Nos séances de jeu hebdomadaires sont ouvertes à tous:",
-      "wednesday": "Le mercredi soir à 20h30 HNE",
-      "thursday": "Le jeudi à 12h00 HNE",
-      "findMatch": "Vous ne trouvez pas de parties? Rejoignez-nous sur ",
-      "content2": "Pour discuter avec d'autres joueurs et voir qui est disponible pour jouer.",
-      "playSolo": "Envie de jouer en solo? Essayez de ",
-      "playAI": "jouer contre l'IA",
-      "mettle": " pour apprendre les bases et tester votre courage.",
-      "learnMore": "Vous voulez en savoir plus? Consultez notre ",
-      "about": "à propos de la page",
-      "about2": "pour apprendre les règles et en savoir plus sur le projet cuttle.cards.",
-      "okayButton": "d'accord"
-    },
     "snackbar": {
       "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est déjà complet",
       "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",

@@ -339,22 +339,6 @@
     }
   },
   "home": {
-    "howItWorks": {
-      "button": "How it works",
-      "title": "Looking To Play?",
-      "content": "Our weekly play sessions are open to everyone:",
-      "wednesday": "Wednesday nights at 8:30pm EST",
-      "thursday": "Thursdays at 12pm EST",
-      "findMatch": "Can't find a match? Join us on",
-      "content2": "to chat with other players and to see who is available to play at any time.",
-      "playSolo": "Want to play solo? Try",
-      "playAI": "playing vs AI",
-      "mettle": "to learn the ropes and test your mettle.",
-      "learnMore": "Want to learn more? Check out our",
-      "about": "about page",
-      "about2": "to learn the rules and read about the cuttle.cards project.",
-      "okayButton": "okay"
-    },
     "snackbar": {
       "cannotJoin": "Cannot join that game because it's already full",
       "spectateTwoPlayers": "You can only spectate an ongoing game with two players",
