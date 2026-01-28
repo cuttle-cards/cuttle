@@ -281,6 +281,9 @@
         "handLimit": "Votre limite de carte en main est atteinte !",
         "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
       },
+      "pass": {
+        "nonEmptyDeck": "Vous ne pouvez pas passer si il y a des cartes dans la pioche"
+      },
       "faceCards": {
         "withoutTarget": "Seuls les Rois, Dames et Huits peuvent être joués sans cibler une carte."
       },

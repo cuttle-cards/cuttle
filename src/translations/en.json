@@ -282,6 +282,9 @@
         "handLimit": "You are at the hand limit; you cannot draw.",
         "exhaustedDeck": "Deck exhausted; revealing player hands"
       },
+      "pass": {
+        "nonEmptyDeck": "Can't pass while there are cards in deck"
+      },
       "faceCards": {
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },

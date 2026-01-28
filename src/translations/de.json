@@ -281,6 +281,9 @@
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
         "exhaustedDeck": "Deck erschöpft; Kartenhände der Spieler werden angezeigt"
       },
+      "pass": {
+        "nonEmptyDeck": "Kann nicht passen, während es Karten im Deck gibt"
+      },
       "faceCards": {
         "withoutTarget": "Nur Könige, Damen und Achten können als Gesichtskarten ohne Ziel gespielt werden"
       },

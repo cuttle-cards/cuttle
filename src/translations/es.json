@@ -281,6 +281,9 @@
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
         "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
+      "pass": {
+        "nonEmptyDeck": "No puedes pasar mientras haya cartas en el mazo"
+      },
       "faceCards": {
         "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
       },
