@@ -26,14 +26,15 @@ module.exports = {
       delete p0.encryptedPassword;
       const p1 = { ...game.p1, ...gameState.p1, pNum: 1 };
       delete p1.encryptedPassword;
+
       const players = [ p0, p1 ];
 
       const countPasses = (function () {
         let numPasses = 0;
         const currentIndex = game.gameStates.findIndex(gs => gs.id === gameState.id);
-        const threeUpToCurrent = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
+        const threeMostRecentGameStates = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
 
-        for (const gameState of threeUpToCurrent) {
+        for (const gameState of threeMostRecentGameStates) {
           if (gameState.moveType !== MoveType.PASS) {
             return numPasses;
           }
@@ -88,7 +89,7 @@ module.exports = {
       const hideOpponentHand = (playerIndex, originalPlayers) => {
         const hasGlassesEight = originalPlayers[playerIndex]?.faceCards?.some(card => card.rank === 8);
         const deckIsEmpty = gameState.deck.length === 0;
-        
+
         return originalPlayers.map((player, index) => {
           const isPlayer = index === playerIndex;
           if (isPlayer || hasGlassesEight || deckIsEmpty) {
@@ -129,8 +130,6 @@ module.exports = {
         p1Ready: game.p1Ready,
         p0Rematch: game.p0Rematch,
         p1Rematch: game.p1Rematch,
-        turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
-        turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
         lock: game.lock,
         lockedAt: game.lockedAt,
         rematchGame: game.rematchGame,
@@ -176,6 +175,7 @@ module.exports = {
         ...(gameState.resolved && { oneOff: gameState.resolved }),
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),
+        activePlayerPNum: sails.helpers.gameStates.getActivePlayerPNum(gameState),
       };
 
       // Create spectator state (full visibility)
@@ -188,7 +188,7 @@ module.exports = {
           ...baseSocketGame,
           players: hideOpponentHand(0, players),
           deck: hideDeck(),
-        }
+        },
       };
 
       // Create p1 state (asymmetric visibility)
@@ -198,7 +198,7 @@ module.exports = {
           ...baseSocketGame,
           players: hideOpponentHand(1, players),
           deck: hideDeck(),
-        }
+        },
       };
 
       if (victory.gameOver) {

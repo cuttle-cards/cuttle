@@ -1,0 +1,222 @@
+const MoveType = require('../../../../utils/MoveType');
+const TargetType = require('../../../../utils/TargetType');
+
+module.exports = {
+  friendlyName: 'Get move bodies for move type',
+
+  description: 'Returns list of move body objects for specified moveType. Moves may not all be legal',
+
+  inputs: {
+    currentState: {
+      type: 'ref',
+      descriptions: 'Object containing the current game state',
+      required: true,
+    },
+    playedBy: {
+      type: 'number',
+      description: 'Player number of player about to make move',
+      required: true,
+    },
+    moveType: {
+      type: 'string',
+      description: 'Type of move made (should be value of MoveType enum)',
+      required: true,
+    },
+  },
+  sync: true,
+  fn: ({ currentState, playedBy, moveType }, exits) => {
+    const player = currentState[`p${playedBy}`];
+    const opponent = currentState[`p${(playedBy + 1) % 2}`];
+    const playerHand = player.hand;
+    const _playerPoints = player.points;
+    const _playerFaceCards = player.faceCards;
+    const _opponentHand = opponent.hand;
+    const opponentPoints = opponent.points;
+    const opponentFaceCards = opponent.faceCards;
+    const { deck, scrap } = currentState;
+
+    let res = [];
+    switch (moveType) {
+      case MoveType.DRAW:
+      case MoveType.RESOLVE:
+      case MoveType.PASS:
+      case MoveType.STALEMATE_REJECT:
+        res = [ { moveType, playedBy } ];
+        break;
+
+      case MoveType.POINTS:
+        res = playerHand
+          .filter((card) => card.rank <= 10)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.FACE_CARD:
+        res = playerHand
+          .filter((card) => [ 8, 12, 13 ].includes(card.rank))
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.SCUTTLE: {
+        const numberCardsInHand = playerHand.filter((card) => card.rank <= 10);
+        for (let scuttlingCard of numberCardsInHand) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: scuttlingCard.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
+
+      case MoveType.JACK: {
+        const jacksInHand = playerHand.filter((card) => card.rank === 11);
+        for (let jack of jacksInHand) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: jack.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
+
+      case MoveType.ONE_OFF: {
+        const untargetedOneOffsInHand = playerHand.filter((card) => [ 1, 3, 4, 5, 6, 7 ].includes(card.rank));
+        for (let oneOff of untargetedOneOffsInHand) {
+          res.push({ moveType, playedBy, cardId: oneOff.id });
+        }
+
+        const twosAndNines = playerHand.filter((card) => [ 2, 9 ].includes(card.rank));
+        for (let twoOrNine of twosAndNines) {
+          for (let potentialTarget of opponentFaceCards) {
+            res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: potentialTarget.id, targetType: 'faceCard' });
+          }
+
+          for (let pointCard of opponentPoints) {
+            if (pointCard.attachments.length) {
+              res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: pointCard.attachments.at(-1).id });
+            }
+          }
+        }
+        break;
+      }
+
+      case MoveType.COUNTER:
+        res = playerHand
+          .filter((card) => card.rank === 2)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.RESOLVE_THREE:
+        res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.RESOLVE_FOUR: {
+
+        if (playerHand.length === 1) {
+          res = [
+            {
+              moveType,
+              playedBy,
+              cardId1: playerHand[0].id,
+            },
+          ];
+        }
+
+        for (let i = 0; i < playerHand.length; i++) {
+          for (let j = i + 1; j < playerHand.length; j++) {
+            res.push({
+              moveType,
+              playedBy,
+              cardId1: playerHand[i].id,
+              cardId2: playerHand[j].id
+            });
+          }
+        }
+        break;
+      }
+
+      case MoveType.RESOLVE_FIVE:
+        if (!playerHand.length) {
+          res = [ { moveType, playedBy, cardId: null } ];
+        } else {
+          res = playerHand.map((card) => ({ moveType, playedBy, cardId: card.id }));
+        }
+        break;
+
+      case MoveType.SEVEN_POINTS:
+        res = deck.slice(0, 2)
+          .filter((card) => card.rank <= 10)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.SEVEN_SCUTTLE: {
+        const numberCardsInTopTwo = deck.slice(0, 2).filter((card) => card.rank <= 10);
+        for (let scuttlingCard of numberCardsInTopTwo) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: scuttlingCard.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
+
+      case MoveType.SEVEN_FACE_CARD:
+        res = deck.slice(0, 2)
+          .filter((card) => [ 8, 12, 13 ].includes(card.rank))
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.SEVEN_JACK: {
+        const jacksInTopTwo = deck.slice(0, 2).filter((card) => card.rank === 11);
+        for (let jack of jacksInTopTwo) {
+          for (let targetCard of opponentPoints) {
+            res.push({ moveType, playedBy, cardId: jack.id, targetId: targetCard.id });
+          }
+        }
+        break;
+      }
+
+      case MoveType.SEVEN_DISCARD:
+        res = deck.slice(0, 2)
+          .filter((card) => card.rank === 11)
+          .map((card) => ({ moveType, playedBy, cardId: card.id }));
+        break;
+
+      case MoveType.SEVEN_ONE_OFF: {
+        const topTwo = deck.slice(0, 2);
+        const untargetedOneOffs = topTwo.filter((card) => [ 1, 3, 4, 5, 6, 7 ].includes(card.rank));
+        const targetedOneOffs = topTwo.filter((card) => [ 2, 9 ].includes(card.rank));
+
+        for (let untargetedOneOff of untargetedOneOffs) {
+          res.push({ moveType, playedBy, cardId: untargetedOneOff.id });
+        }
+
+        for (let targetedOneOff of targetedOneOffs) {
+          for (let opponentFaceCard of opponentFaceCards) {
+            res.push({
+              moveType,
+              playedBy,
+              cardId: targetedOneOff.id,
+              targetId: opponentFaceCard.id,
+              targetType: TargetType.faceCard,
+            });
+          }
+
+          for (let opponentPoint of opponentPoints) {
+            if (opponentPoint.attachments.length) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId: targetedOneOff.id,
+                targetId: opponentPoint.attachments.at(-1).id,
+                targetType: TargetType.jack
+              });
+            }
+          }
+        }
+
+        break;
+      }
+
+      default:
+        return exits.error(new Error(`Can't create move bodies for unknown moveType: ${moveType}`));
+    }
+    return exits.success(res);
+  },
+};

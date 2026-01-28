@@ -281,6 +281,9 @@
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
         "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
+      "pass": {
+        "nonEmptyDeck": "No puedes pasar mientras haya cartas en el mazo"
+      },
       "faceCards": {
         "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
       },
@@ -338,22 +341,6 @@
     }
   },
   "home": {
-    "howItWorks": {
-      "button": "Cómo funciona",
-      "title": "¿Buscando partida?",
-      "content": "Nuestras sesiones de juego semanales están abiertas a todo el mundo:",
-      "wednesday": "Miércoles por la noche a las 8:30 p.m. EST (1:30 a.m. GMT)",
-      "thursday": "Jueves a las 12 p.m. EST (5 p.m. GMT)",
-      "findMatch": "¿No encuentras partida? Únete a nuestro",
-      "content2": "para chatear con otros jugadores y ver quién está disponible para jugar en cualquier momento.",
-      "playSolo": "¿Quieres jugar solo? Prueba",
-      "playAI": "jugar contra la IA",
-      "mettle": "para aprender y poner a prueba tus habilidades.",
-      "learnMore": "¿Quieres aprender más? Echa un vistazo a nuestra página",
-      "about": "acerca del juego",
-      "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
-      "okayButton": "ok"
-    },
     "snackbar": {
       "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
       "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
@@ -373,7 +360,8 @@
     "playAiLink": "jugar contra la IA",
     "playAiContent2": "para aprender y poner a prueba tus habilidades.",
     "gameName": "Nombre de la partida",
-    "join": "Unirse"
+      "join": "Unirse",
+      "playVsAi": "Jugar contra la IA"
   },
   "rules": {
     "introduction": "Introducción",

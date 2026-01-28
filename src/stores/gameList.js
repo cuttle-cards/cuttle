@@ -110,5 +110,15 @@ export const useGameListStore = defineStore('gameList', {
         );
       });
     },
+    requestCreateAIGame(previousGameId = null) {
+      return new Promise((resolve, reject) => {
+        io.socket.post('/api/game/ai', { previousGameId }, function (res, jwres) {
+          if (jwres.statusCode === 200) {
+            return resolve(res);
+          }
+          return reject(new Error('Could not create new vs AI game'));
+        });
+      });
+    }
   },
 });

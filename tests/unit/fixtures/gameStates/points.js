@@ -92,6 +92,7 @@ export const points = {
     playedBy: 0,
     playedCard: Card.TEN_OF_SPADES,
     pNum: 0,
+    activePlayerPNum: 1,
     game: {
       players: [
         {
@@ -135,8 +136,6 @@ export const points = {
       p0Rematch: null,
       p1Rematch: null,
       phase: GamePhase.MAIN,
-      turnStalemateWasRequestedByP0: -1,
-      turnStalemateWasRequestedByP1: -1,
       lock: null,
       lockedAt: null,
       rematchGame: null,
@@ -162,8 +161,6 @@ export const points = {
             rematchGame: null,
             spectatingUsers: [],
             status: 3,
-            turnStalemateWasRequestedByP0: -1,
-            turnStalemateWasRequestedByP1: -1,
             winner: 17,
           },
         ],
@@ -235,8 +232,6 @@ export const points = {
             rematchGame: null,
             spectatingUsers: [],
             status: 3,
-            turnStalemateWasRequestedByP0: -1,
-            turnStalemateWasRequestedByP1: -1,
             winner: 17,
           },
         ],

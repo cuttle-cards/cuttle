@@ -147,5 +147,14 @@ export async function handleInGameEvents(evData, newRoute = null) {
       },
     });
   }
+
+  if (gameStore.isVsAi && evData.activePlayerPNum !== gameStore.myPNum && !evData.victory?.gameOver) {
+    await sleep(1200);
+    try {
+      await gameStore.requestMakeAiMove();
+    } catch (err) {
+      // TODO: Handle ai errors
+    }
+  }
   return;
 }
