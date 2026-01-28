@@ -1,4 +1,3 @@
-const GameStatus = require('../../../utils/GameStatus.json');
 const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
