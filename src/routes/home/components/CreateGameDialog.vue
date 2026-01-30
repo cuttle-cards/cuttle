@@ -18,18 +18,17 @@
       </v-btn>
     </template>
     <template #body>
+      <h4>
+        {{ t('home.playAiContent') }}
+        <button
+          class="text-cyan-lighten-2"
+          @click="submitAiGame"
+        >
+          {{ t('home.playAiLink') }}
+        </button>
+        {{ t('home.playAiContent2') }}
+      </h4>
       <v-form id="create-game-form" @submit.prevent="submitNewGame">
-        <h4>
-          {{ t('home.playAiContent') }}
-          <a
-            class="text-cyan-lighten-2 text-decoration-none"
-            href="https://human-ai-interaction.github.io/cuttle-bot/"
-            target="_blank"
-          >
-            {{ t('home.playAiLink') }}
-          </a>
-          {{ t('home.playAiContent2') }}
-        </h4>
         <div class="d-flex align-center">
           <StatsScoringDialog :show-button-text="false" />
           <v-switch
@@ -124,6 +123,14 @@ export default {
           this.$router.push(`/lobby/${gameId}`);
         })
         .catch(this.handleError);
+    },
+    async submitAiGame() {
+      try {
+        const gameId = await this.gameListStore.requestCreateAIGame();
+        this.$router.push(`/ai/${gameId}`);
+      } catch (err) {
+        this.handleError(err);
+      }
     },
     cancelCreateGame() {
       this.gameName = '';

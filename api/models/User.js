@@ -43,6 +43,10 @@ module.exports = {
     identities: {
       collection: 'identity',
       via: 'user'
-    }
+    },
+    isBot: {
+      type: 'boolean',
+      defaultsTo: false,
+    },
   }, // end attributes
 }; // end exports

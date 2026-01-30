@@ -46,6 +46,10 @@ module.exports = {
         throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
+      if (currentState.deck.length) {
+        throw new BadRequestError('game.snackbar.pass.nonEmptyDeck');
+      }
+
       return exits.success();
     } catch (err) {
       return exits.error(err);

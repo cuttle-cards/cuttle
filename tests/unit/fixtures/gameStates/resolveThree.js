@@ -92,6 +92,7 @@ export const resolveThree = {
     playedBy: 0,
     targetCard: Card.TEN_OF_HEARTS,
     pNum: 0,
+    activePlayerPNum: 1,
     game: {
       players: [
         {
@@ -156,8 +157,6 @@ export const resolveThree = {
       oneOffTargetType: null,
       turn: 1,
       log: [ 'myUsername took the 10♥️ from the Scrap pile to their hand.' ],
-      turnStalemateWasRequestedByP0: -1,
-      turnStalemateWasRequestedByP1: -1,
       chat: [],
       isRanked: false,
       lastEvent: {
