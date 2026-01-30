@@ -18,17 +18,17 @@
       </v-btn>
     </template>
     <template #body>
+      <h4>
+        {{ t('home.playAiContent') }}
+        <button
+          class="text-cyan-lighten-2"
+          @click="submitAiGame"
+        >
+          {{ t('home.playAiLink') }}
+        </button>
+        {{ t('home.playAiContent2') }}
+      </h4>
       <v-form id="create-game-form" @submit.prevent="submitNewGame">
-        <h4>
-          {{ t('home.playAiContent') }}
-          <button
-            class="text-cyan-lighten-2"
-            @click.prevent="submitAiGame"
-          >
-            {{ t('home.playAiLink') }}
-          </button>
-          {{ t('home.playAiContent2') }}
-        </h4>
         <div class="d-flex align-center">
           <StatsScoringDialog :show-button-text="false" />
           <v-switch
