@@ -38,8 +38,12 @@
     "readRules": "Read the Rules",
     "joinDiscord": "Join our discord community",
     "loginDiscord": "Login with Discord",
-    "linkDiscord": "Link Discord",
+    "linkdiscord": "Link Discord",
     "discordLinked": "Discord Linked",
+    "joinGoogle": "Join our Google community",
+    "loginGoogle": "Login with Google",
+    "linkgoogle": "Link Google",
+    "googleLinked": "Google Linked",
     "socials": "Check out our socials for more Cuttle content!",
     "linkAccount": "Link your account",
     "createUsername": "Create a username for your new account",
@@ -573,7 +577,8 @@
     "stalemate": "Stalemate",
     "opponent": "Opponent",
     "connectedAs": "Connected",
-    "notConnected": "Not connected",
-    "replay": "Replay"
+    "notConnected": "not connected",
+    "replay": "Replay",
+    "linkedAccounts": "Linked Accounts"
   }
 }

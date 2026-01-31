@@ -38,8 +38,12 @@
     "readRules": "Lire les règles",
     "joinDiscord": "Rejoignez notre communauté sur Discord.",
     "loginDiscord": "Se connecter avec Discord",
-    "linkDiscord": "Lier Discord",
+    "linkdiscord": "Lier Discord",
     "discordLinked": "Discord lié",
+    "joinGoogle": "Rejoignez notre communauté Google",
+    "loginGoogle": "Se connecter avec Google",
+    "linkgoogle": "Lier Google",
+    "googleLinked": "Google lié",
     "socials": "Découvrez nos réseaux sociaux pour plus de contenu Cuttle !",
     "linkAccount": "Liez votre compte",
     "createUsername": "Créez un nom d’utilisateur pour votre nouveau compte",
@@ -573,6 +577,7 @@
     "opponent": "Adversaire",
     "connectedAs": "Connecté en tant que",
     "notConnected": "Non connecté",
-    "replay": "Rejouer"
+    "replay": "Rejouer",
+    "linkedAccounts": "Comptes liés"
   }
 }
