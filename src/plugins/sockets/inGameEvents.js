@@ -1,6 +1,7 @@
 import GameStatus from '../../../utils/GameStatus.json';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
+import { useSnackbarStore } from '_/src/stores/snackbar';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
@@ -10,6 +11,7 @@ import { sleep } from '@/util/sleep';
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
   const gameHistoryStore = useGameHistoryStore();
+  const snackbarStore = useSnackbarStore();
   const targetRoute = newRoute ?? router.currentRoute.value;
 
   const { gameId: urlGameId } = targetRoute.params;
@@ -146,6 +148,15 @@ export async function handleInGameEvents(evData, newRoute = null) {
         gameId: gameStore.id,
       },
     });
+  }
+
+  if (gameStore.isVsAi && evData.activePlayerPNum !== gameStore.myPNum && !evData.victory?.gameOver) {
+    await sleep(1200);
+    try {
+      await gameStore.requestMakeAiMove();
+    } catch (err) {
+      snackbarStore.alert('Error Requesting AI move; try refreshing the page', 'error');
+    }
   }
   return;
 }

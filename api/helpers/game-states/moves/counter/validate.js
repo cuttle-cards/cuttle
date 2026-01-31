@@ -58,6 +58,12 @@ module.exports = {
         throw new BadRequestError('Waiting for opponent to counter');
       }
 
+      const opponent = playedBy ? currentState.p0 : currentState.p1;
+      const queenCount = opponent.faceCards.filter(({ rank }) => rank === 12).length;
+      if (queenCount) {
+        throw new BadRequestError('game.snackbar.global.blockedByQueen');
+      }
+
       return exits.success();
     } catch (err) {
       return exits.error(err);

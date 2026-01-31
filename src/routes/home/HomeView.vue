@@ -126,7 +126,15 @@
                   {{ t('login.joinDiscord') }}
                 </span>
               </v-btn>
-              <HowItWorksDialog />
+              <v-btn
+                variant="flat"
+                color="surface-2"
+                class="px-8"
+                data-cy="create-ai-game"
+                @click="createAIGame"
+              >
+                {{ t('home.playVsAi') }}
+              </v-btn>
             </div>
           </div>
         </v-col>
@@ -141,7 +149,6 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import GameListItem from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
-import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
@@ -156,7 +163,6 @@ export default {
   components: {
     GameListItem,
     CreateGameDialog,
-    HowItWorksDialog,
     AnnouncementDialog,
     OauthSignupDialog,
   },
@@ -229,6 +235,14 @@ export default {
       this.creatingGame = false;
       this.snackbarStore.alert(message);
       this.showCreateGameDialog = false;
+    },
+    async createAIGame() {
+      try {
+        const gameId = await this.gameListStore.requestCreateAIGame();
+        this.$router.push(`/ai/${gameId}`);
+      } catch (err) {
+        this.handleError(err);
+      }
     },
     logout() {
       this.gameListStore

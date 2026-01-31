@@ -10,6 +10,7 @@ import GameStatus from '../../utils/GameStatus.json';
 import GamePhase from '../../utils/GamePhase.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
+import { ROUTE_NAME_VS_AI } from '@/router';
 
 /**
  * @returns number of queens a given player has
@@ -119,6 +120,8 @@ export const useGameStore = defineStore('game', () => {
   const route = useRoute();
 
   // Computed (getters)
+  const isVsAi = computed(() => route.name === ROUTE_NAME_VS_AI);
+
   const myPNum = computed(() => {
     const userPNum = players.value.findIndex(({ username }) => username === authStore.username);
 
@@ -437,6 +440,8 @@ export const useGameStore = defineStore('game', () => {
         return `/api/game/${id.value}/move`;
       case 'rematch':
         return `/api/game/${id.value}/rematch`;
+      case 'move/ai':
+        return `/api/game/${id.value}/move/ai`;
       default:
         return `/api/game/${slug}`;
     }
@@ -562,6 +567,11 @@ export const useGameStore = defineStore('game', () => {
       );
     });
   }
+
+  async function requestMakeAiMove() {
+    await makeSocketRequest('move/ai', {});
+  }
+
   async function requestDrawCard() {
     const moveType = MoveType.DRAW;
     await makeSocketRequest('draw', { moveType });
@@ -657,16 +667,6 @@ export const useGameStore = defineStore('game', () => {
   async function rejectStalemate() {
     await makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
   }
-  async function requestUnsubscribeFromGame() {
-    return new Promise((resolve, reject) => {
-      io.socket.get('/api/game/over', (res, jwres) => {
-        if (jwres.statusCode === 200) {
-          resetState();
-        }
-        return handleGameResponse(jwres, resolve, reject);
-      });
-    });
-  }
   async function requestRematch({ gameId: gameIdArg, rematch = true }) {
     await makeSocketRequest('rematch', { gameId: gameIdArg, rematch });
   }
@@ -717,6 +717,7 @@ export const useGameStore = defineStore('game', () => {
     iWantToContinueSpectating,
     status,
     // Getters
+    isVsAi,
     myPNum,
     player,
     playerPointTotal,
@@ -770,6 +771,7 @@ export const useGameStore = defineStore('game', () => {
     requestLeaveLobby,
     requestReady,
     requestSetIsRanked,
+    requestMakeAiMove,
     requestDrawCard,
     requestPlayPoints,
     requestPlayFaceCard,
@@ -794,7 +796,6 @@ export const useGameStore = defineStore('game', () => {
     requestStalemate,
     acceptStalemate,
     rejectStalemate,
-    requestUnsubscribeFromGame,
     requestRematch,
     addSpectator,
   };

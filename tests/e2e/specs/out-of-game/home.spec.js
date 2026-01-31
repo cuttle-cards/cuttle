@@ -31,19 +31,6 @@ describe('Home - Page Content', () => {
     cy.get('#logo');
   });
 
-  it('How It Works Dialog And Links Work', () => {
-    cy.get('[data-cy=how-it-works-button]').click();
-    cy.get('[data-cy=ai-link]').should(
-      'have.attr',
-      'href',
-      'https://human-ai-interaction.github.io/cuttle-bot/',
-    );
-    cy.get('[data-cy=how-it-works-okay]').click();
-    cy.get('[data-cy=how-it-works-button]').click();
-    cy.get('[data-cy=rules-link]').click();
-    cy.location('pathname').should('eq', '/rules');
-  });
-
   it('Logs user out', () => {
     cy.get('[data-cy="user-menu"]').click();
     cy.get('[data-nav=\'Log Out\']').click();

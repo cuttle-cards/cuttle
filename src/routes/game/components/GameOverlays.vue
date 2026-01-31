@@ -204,17 +204,13 @@ export default {
     },
     async goHome() {
       this.leavingGame = true;
-      try {
-        await this.gameStore.requestUnsubscribeFromGame();
-      } finally {
-        this.leavingGame = false;
-        this.$router.push('/');
-        this.gameStore.setGameOver({
-          gameOver: false,
-          conceded: false,
-          winner: null,
-        });
-      }
+      this.leavingGame = false;
+      this.$router.push('/');
+      this.gameStore.setGameOver({
+        gameOver: false,
+        conceded: false,
+        winner: null,
+      });
     },
   },
 };
