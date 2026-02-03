@@ -1,0 +1,42 @@
+module.exports = {
+  friendlyName: 'Create and verify Google callback Params ',
+
+  description: 'Generates and verifies callback params for Google OAuth',
+
+  inputs:{
+    code: {
+      type: 'string',
+      description: 'param code for discord oauth',
+      required: true
+    },
+  },
+  fn: async  function ({ code }, exits) {
+    try {
+      const params = {
+        client_id: String(process.env.VITE_GOOGLE_CLIENT_ID),
+        client_secret: String(process.env.VITE_GOOGLE_CLIENT_SECRET),
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: `${process.env.VITE_API_URL}/api/user/google/callback`,
+      };
+
+      const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(params),
+      });
+
+      const tokenData = await tokenRes.json();
+
+      if (!tokenData) {
+        throw new Error();
+      }
+
+      exits.success(tokenData);
+    } catch (e) {
+      exits.error(e);
+    }
+  }
+};

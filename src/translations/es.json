@@ -38,8 +38,12 @@
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord",
     "loginDiscord": "Iniciar sesión con Discord",
-    "linkDiscord": "Vincular Discord",
+    "linkdiscord": "Vincular Discord",
     "discordLinked": "Discord vinculado",
+    "joinGoogle": "Únete a nuestra comunidad de Google",
+    "loginGoogle": "Iniciar sesión con Google",
+    "linkgoogle": "Vincular Google",
+    "googleLinked": "Google vinculado",
     "socials": "¡Mira nuestras redes sociales para más contenido de Cuttle!",
     "linkAccount": "Vincula tu cuenta",
     "createUsername": "Crea un nombre de usuario para tu nueva cuenta",
@@ -573,6 +577,7 @@
     "opponent": "Oponente",
     "connectedAs": "Conectado como",
     "notConnected": "No conectado",
-    "replay": "Repetir"
+    "replay": "Repetir",
+    "linkedAccounts": "Cuentas vinculadas"
   }
 }
