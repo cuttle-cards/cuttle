@@ -118,7 +118,7 @@
                 </v-btn>
               </div>
               <v-btn
-                class="w-100 mt-10 mb-2 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
+                class="w-100 mt-10 mb-4 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
                 type="button"
