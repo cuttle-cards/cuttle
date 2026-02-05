@@ -1,7 +1,3 @@
-.transition-all {
-  transition: opacity var(--transition-duration), transform var(--transition-duration);
-}
-
 .slide-down-enter-active,
 .slide-up-enter-active,
 .slide-down-left-enter-active,
@@ -10,7 +6,7 @@
 .slide-up-leave-active,
 .slide-down-left-leave-active,
 .slide-up-down-leave-active {
-  transition: opacity var(--transition-duration), transform var(--transition-duration);
+  transition: opacity var(--duration-slow), transform var(--duration-slow);
 }
 
 .slide-down-leave-active,
@@ -53,7 +49,7 @@
 }
 
 .card-flip-enter-active {
-  transition: transform var(--transition-duration);
+  transition: transform var(--duration-slow);
 }
 
 .card-flip-enter-from {

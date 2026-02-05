@@ -71,15 +71,9 @@ export default {
   --font-sans: 'Roboto', system-ui, sans-serif;
 
   // Animation duration buckets (all respect prefers-reduced-motion)
-  --duration-instant: 0.1s;
   --duration-fast: 0.3s;
   --duration-normal: 0.5s;
   --duration-slow: 1s;
-  --duration-slower: 1.5s;
-
-  // Legacy aliases (for existing code)
-  --transition-duration: var(--duration-slow);
-  --transition-duration-fast: var(--duration-fast);
 
   // CSS containment for isolated components
   --contain-isolated: layout style;
@@ -87,11 +81,9 @@ export default {
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --duration-instant: 0s;
     --duration-fast: 0s;
     --duration-normal: 0s;
     --duration-slow: 0s;
-    --duration-slower: 0s;
   }
 }
 

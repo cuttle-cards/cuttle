@@ -186,7 +186,7 @@ function openDialog(e) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: transform var(--transition-duration-fast) ease-in-out;
+    transition: transform var(--duration-fast) ease-in-out;
     cursor: pointer;
     user-select: none;
     contain: var(--contain-isolated);
@@ -263,7 +263,7 @@ function openDialog(e) {
 
 #scrap .threes-player-leave-active,
 #scrap .threes-opponent-leave-active {
-  transition: opacity var(--duration-slower) ease-out, transform var(--duration-slower) ease-out;
+  transition: opacity var(--duration-slow) ease-out, transform var(--duration-slow) ease-out;
 }
 
 // Leaving towards player hand

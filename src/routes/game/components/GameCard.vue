@@ -213,6 +213,8 @@ export default {
   flex-grow: 1;
   overflow: visible;
   contain: var(--contain-isolated);
+  // Transition timing for TransitionGroup animations (opacity and transform only for GPU compositing)
+  transition: opacity var(--duration-slow), transform var(--duration-slow);
 
   & img {
     width: 100%;
@@ -228,7 +230,7 @@ export default {
   & .scuttled-by-card {
     height: 95%;
     left: 16px;
-    transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
+    transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease;
     position: absolute;
     z-index: 1;
     &.scuttled-by-opponent {
@@ -288,7 +290,7 @@ export default {
     right: 0;
     background: rgba(var(--v-theme-frozen), 0.25);
     opacity: 1;
-    transition: opacity var(--transition-duration-fast) linear;
+    transition: opacity var(--duration-fast) linear;
   }
 
   &:hover:after {

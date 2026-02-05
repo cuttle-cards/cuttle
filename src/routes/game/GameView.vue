@@ -74,7 +74,7 @@
                     v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
-                    class="opponent-hand-wrapper transition-all"
+                    class="opponent-hand-wrapper"
                     tag="div"
                     :name="Transitions.SLIDE_UP"
                   >
@@ -90,7 +90,7 @@
                           :suit="card.suit"
                           :rank="card.rank"
                           :data-opponent-hand-card="`${card.rank}-${card.suit}`"
-                          class="transition-all opponent-hand-card-revealed"
+                          class="opponent-hand-card-revealed"
                         />
                       </v-slide-group-item>
                     </v-slide-group>
@@ -101,7 +101,7 @@
                       :suit="card.suit"
                       :rank="card.rank"
                       :data-opponent-hand-card="`${card.rank}-${card.suit}`"
-                      class="transition-all opponent-hand-card-revealed"
+                      class="opponent-hand-card-revealed"
                     />
                   </TransitionGroup>
                   <TransitionGroup
@@ -109,7 +109,7 @@
                     key="opponent-hand"
                     tag="div"
                     :name="Transitions.SLIDE_UP"
-                    class="opponent-hand-wrapper transition-all"
+                    class="opponent-hand-wrapper"
                   >
                     <GameCard
                       v-for="(card, index) in gameStore.opponent.hand"
@@ -117,7 +117,7 @@
                       :suit="card.suit ?? undefined"
                       :rank="card.rank ?? undefined"
                       :data-opponent-hand-card="card.suit && card.rank ? `${card.rank}-${card.suit}` : ''"
-                      class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
+                      class="opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
                   </TransitionGroup>
                 </Transition>
@@ -194,7 +194,7 @@
                 <div
                   v-for="(card, index) in gameStore.opponent.points"
                   :key="card.id"
-                  class="field-point-container transition-all"
+                  class="field-point-container"
                 >
                   <GameCard
                     :suit="card.suit"
@@ -228,7 +228,6 @@
                   :is-glasses="card.rank === 8"
                   :is-valid-target="validMoves.includes(card.id)"
                   :data-opponent-face-card="`${card.rank}-${card.suit}`"
-                  class="transition-all"
                   @click="targetOpponentFaceCard(index)"
                 />
               </TransitionGroup>
@@ -239,7 +238,7 @@
                 <div
                   v-for="card in gameStore.player.points"
                   :key="card.id"
-                  class="field-point-container transition-all"
+                  class="field-point-container"
                 >
                   <GameCard
                     :suit="card.suit"
@@ -269,7 +268,6 @@
                   :rank="card.rank"
                   :is-glasses="card.rank === 8"
                   :data-player-face-card="`${card.rank}-${card.suit}`"
-                  class="transition-all"
                 />
               </TransitionGroup>
             </div>
@@ -346,7 +344,7 @@
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
                       :is-frozen="card.isFrozen"
-                      class="mt-2 transition-all"
+                      class="mt-2"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
                       @click="selectCard(index)"
@@ -362,7 +360,7 @@
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
                   :is-frozen="card.isFrozen"
-                  class="mt-2 transition-all"
+                  class="mt-2"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
                   @click="selectCard(index)"
@@ -1196,7 +1194,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: width var(--transition-duration-fast) ease-in-out;
+    transition: width var(--duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
     will-change: width;
     contain: var(--contain-isolated);
@@ -1353,9 +1351,9 @@ export default {
     overflow-y: hidden;
     border-radius: 4px;
     transition:
-      border-color var(--transition-duration),
-      box-shadow var(--transition-duration),
-      background var(--transition-duration);
+      border-color var(--duration-slow),
+      box-shadow var(--duration-slow),
+      background var(--duration-slow);
     &.my-turn {
       border: 4px solid rgba(var(--v-theme-accent));
       box-shadow:
