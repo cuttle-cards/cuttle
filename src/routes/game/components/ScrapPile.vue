@@ -219,7 +219,7 @@ function openDialog(e) {
       transition: transform var(--duration-fast) ease-in;
     }
 
-    // Psuedo-random rotation+translation of cards in the pile
+    // Pseudo-random rotation+translation of cards in the pile
     @for $i from 0 through 10 {
       & .scrap-card-#{$i} {
         $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
