@@ -224,7 +224,7 @@ onBeforeRouteLeave((to, from, next) => {
 h1 {
   font-size: 5rem;
   color: rgba(var(--v-theme-game-card));
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
   margin: auto auto 16px auto;
@@ -242,7 +242,7 @@ h1 {
 h5 {
   font-size: 3rem;
   color: rgba(var(--v-theme-game-card));
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
   margin: auto auto 16px auto;

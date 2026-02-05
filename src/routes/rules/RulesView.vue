@@ -460,7 +460,7 @@ export default {
 }
 
 .section-title {
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   background-color: rgba(var(--v-theme-primary));
   width: 100%;
   padding-top: 16px;

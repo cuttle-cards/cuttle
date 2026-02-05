@@ -256,17 +256,17 @@ export default {
 }
 
 .text-h1 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
 }
 
 .text-h2 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
   font-size: 64px;
   line-height: 64px;
 }
 
 .text-h3 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
   font-size: 48px;
   line-height: 52px;
 }

@@ -379,7 +379,7 @@ export default {
 }
 
 .welcomeContainer h1 {
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 5rem;
   letter-spacing: 0.2rem;
   max-width: 800px;

@@ -365,7 +365,7 @@ p {
 #home-card-title {
   font-size: 5rem;
   color: rgba(var(--v-theme-game-card));
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
   margin: 32px auto 16px auto;
