@@ -96,6 +96,7 @@ export default {
   border: 2px solid rgba(var(--v-theme-game-card));;
   transition: background-color var(--duration-normal) ease, color var(--duration-normal) ease;
   opacity: .95;
+  contain: var(--contain-isolated);
 }
 .move-choice-card:hover {
   background-color: rgba(var(--v-theme-game-card)) !important;

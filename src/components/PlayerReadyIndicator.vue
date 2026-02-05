@@ -104,6 +104,7 @@ export default {
   transform-style: preserve-3d;
   perspective: 1200px;
   position: relative;
+  contain: var(--contain-isolated);
   &.small {
     height: 20vh;
     width: calc(20vh / 1.45);
