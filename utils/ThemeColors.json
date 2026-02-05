@@ -1,0 +1,9 @@
+{
+  "GAME_BOARD": "game-board",
+  "GAME_CARD": "game-card",
+  "PRIMARY": "primary",
+  "SECONDARY": "secondary",
+  "ACCENT": "accent",
+  "CASUAL": "casual",
+  "ERROR": "error"
+}

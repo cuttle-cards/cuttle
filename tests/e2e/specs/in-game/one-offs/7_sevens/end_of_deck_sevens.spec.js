@@ -1,5 +1,6 @@
 import { assertGameState, assertSnackbar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
+import ThemeColors from '../../../../../../utils/ThemeColors.json';
 
 describe('Playing sevens at the end of the deck', () => {
   it('Plays the last card for points from a seven', () => {
@@ -25,7 +26,7 @@ describe('Playing sevens at the end of the deck', () => {
 
     cy.get('#deck').find('#empty-deck-text')
       .should('contain', 'PASS');
-    assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
+    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.GAME_BOARD);
   });
 
   it('Plays the top card of the deck when there are two cards left', () => {
