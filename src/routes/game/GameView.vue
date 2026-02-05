@@ -449,6 +449,7 @@ export default {
       topCardIsSelected: false,
       secondCardIsSelected: false,
       showHistoryDrawer: false,
+      resizeHandler: null,
     };
   },
   computed: {
@@ -724,12 +725,17 @@ export default {
   },
   async mounted() {
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
-    window.addEventListener('resize', () => {
-      // We execute the same script as before
-      let vh = window.innerHeight * 0.01;
+    this.resizeHandler = () => {
+      const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
-    });
+    };
+    window.addEventListener('resize', this.resizeHandler);
     this.scrollToLastLog();
+  },
+  beforeUnmount() {
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
   },
   methods: {
     handleError(messageKey) {
