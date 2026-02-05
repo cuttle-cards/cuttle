@@ -2,6 +2,17 @@
   transition: opacity var(--transition-duration), transform var(--transition-duration);
 }
 
+.slide-down-enter-active,
+.slide-up-enter-active,
+.slide-down-left-enter-active,
+.slide-up-down-enter-active,
+.slide-down-leave-active,
+.slide-up-leave-active,
+.slide-down-left-leave-active,
+.slide-up-down-leave-active {
+  transition: opacity var(--transition-duration), transform var(--transition-duration);
+}
+
 .slide-down-leave-active,
 .slide-up-leave-active,
 .slide-down-left-leave-active,
