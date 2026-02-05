@@ -82,7 +82,7 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
   justify-content: space-between;
   align-items: center;
   bottom: 0;
-  background-color: rgba(var(--v-theme-surface-1)) !important;
+  background-color: rgba(var(--v-theme-game-board)) !important;
   width: 100%;
   z-index: 2411; /* 1 greater than v-dialog's z-index */
 }

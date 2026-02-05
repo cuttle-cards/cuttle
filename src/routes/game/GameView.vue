@@ -736,7 +736,7 @@ export default {
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
-      this.snackbarStore.alert(this.t(messageKey), 'surface-1');
+      this.snackbarStore.alert(this.t(messageKey), 'game-board');
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -1098,15 +1098,6 @@ export default {
   opacity: 0;
   transform: translateY(32px);
 }
-// in-below-out-above (enter from below, exit above)
-.in-below-out-above-enter-from {
-  opacity: 0;
-  transform: translateY(32px);
-}
-.in-below-out-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
 ////////////
 // Styles //
 ////////////
@@ -1272,7 +1263,7 @@ export default {
   }
   #history {
     background-color: rgba(241, 200, 160, 0.65);
-    color: #111111;
+    color: #111;
     & #history-logs {
       overflow: auto;
       overflow-wrap: anywhere;

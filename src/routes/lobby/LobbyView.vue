@@ -73,7 +73,7 @@
                 :disabled="readying"
                 variant="text"
                 class="w-50 px-16 py-2"
-                color="surface-2"
+                color="game-card"
                 data-cy="exit-button"
                 size="x-large"
                 @click="leave"
@@ -208,7 +208,7 @@ onBeforeRouteLeave((to, from, next) => {
 .rank-switch {
   border: 1px solid;
   display: flex;
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-game-card));
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -223,7 +223,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 h1 {
   font-size: 5rem;
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-game-card));
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;
@@ -231,17 +231,17 @@ h1 {
 }
 
 #lobby-wrapper {
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-game-card));
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  background: rgba(var(--v-theme-surface-1));
-  box-shadow: inset 0 0 700px -1px #000000;
+  background: rgba(var(--v-theme-game-board));
+  box-shadow: inset 0 0 700px -1px #000;
 }
 
 h5 {
   font-size: 3rem;
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-game-card));
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;

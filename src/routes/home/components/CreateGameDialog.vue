@@ -56,7 +56,7 @@
         data-cy="cancel-create-game"
         :disabled="loading"
         variant="text"
-        color="surface-1"
+        color="game-board"
         @click="cancelCreateGame"
       >
         {{ t('global.cancel') }}
@@ -65,7 +65,7 @@
         type="submit"
         data-cy="submit-create-game"
         :loading="loading"
-        color="surface-1"
+        color="game-board"
         variant="flat"
         form="create-game-form"
       >

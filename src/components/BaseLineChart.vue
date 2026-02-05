@@ -54,20 +54,20 @@ export default {
         scales: {
           x: {
             grid: {
-              color: this.theme['surface-2'],           // color of the grid lines
-              borderColor: this.theme['surface-2'],     // color of the outer axis line
+              color: this.theme['game-card'],           // color of the grid lines
+              borderColor: this.theme['game-card'],     // color of the outer axis line
             },
             ticks: {
-              color: this.theme['surface-2'],           // color of tick labels on the x-axis
+              color: this.theme['game-card'],           // color of tick labels on the x-axis
             },
           },
           y: {
             grid: {
-              color: this.theme['surface-2'],
-              borderColor: this.theme['surface-2'],
+              color: this.theme['game-card'],
+              borderColor: this.theme['game-card'],
             },
             ticks: {
-              color: this.theme['surface-2'],
+              color: this.theme['game-card'],
             },
           },
         },
@@ -75,10 +75,10 @@ export default {
           title: {
             text: this.title,
             display: !!this.title,
-            color: this.theme['surface-2'],
+            color: this.theme['game-card'],
           },
         },
-        color: this.theme['surface-2'],
+        color: this.theme['game-card'],
         backgroundColor: 'rgba(48, 32, 27, .7)',
       };
     },

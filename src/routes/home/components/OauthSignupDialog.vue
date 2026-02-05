@@ -31,7 +31,7 @@
     </template>
     <template #actions>
       <div class=" d-flex justify-space-between">
-        <v-btn variant="text" color="surface-1" @click="switchModes">
+        <v-btn variant="text" color="game-board" @click="switchModes">
           {{ buttonText }}
         </v-btn>
         <v-btn

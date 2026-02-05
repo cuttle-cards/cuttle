@@ -7,36 +7,34 @@ import 'vuetify/styles';
 const cuttleTheme = {
   dark: false,
   colors: {
-    secondary: '#FD6222',
+    // Standard UI colors
     primary: '#E1306C',
-    newSecondary: '#5865F2',
-    disabled: '#ACACAC',
+    secondary: '#FD6222',
     accent: '#219653',
-    anchor: '#4dd0e1',
-    'accent-darken1': '#007b3b',
-    'accent-darken2': '#006224',
-    'accent-darken3': '#00490d',
-    'accent-darken4': '#003100',
     'accent-lighten1': '#43b16c',
-    'accent-lighten2': '#61cd85',
-    'accent-lighten3': '#7eeaa0',
-    'accent-lighten4': '#9affbb',
-    'accent-lighten5': '#b7ffd7',
+    disabled: '#ACACAC',
+    anchor: '#4dd0e1',
+
+    // Muted UI colors
+    neutral: '#A3ADB5',
+    'neutral-lighten2': '#E6E9EB',
+    'neutral-darken2': '#607280',
+
+    // Game mode colors
+    casual: '#5865F2',
+
+    // Game surface colors
+    'game-board': '#4A2416',
+    'game-card': '#FFF4D7',
+
+    // Game state colors
+    frozen: '#00a5ff',
+    forfeit: '#FAAB34',
+
+    // Ranking colors
     firstPlace: '#AF9500',
     secondPlace: '#636361',
     thirdPlace: '#6A3805',
-    neutral: '#A3ADB5',
-    'neutral-darken1': '#7D8C97',
-    'neutral-darken2': '#607280',
-    'neutral-darken3': '#3D505E',
-    'neutral-darken4': '#2A3740',
-    'neutral-lighten1': '#CDD1D4',
-    'neutral-lighten2': '#E6E9EB',
-    'neutral-lighten3': '#F2F4F5',
-    'neutral-lighten4': '#FAFAFA',
-    'neutral-lighten5': '#FAFBFC',
-    'surface-1': '#4A2416',
-    'surface-2': '#FFF4D7',
   },
 };
 

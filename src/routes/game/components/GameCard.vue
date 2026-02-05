@@ -12,7 +12,7 @@
     <v-icon
       v-if="isFrozen"
       class="player-card-icon mr-1 mt-1"
-      color="#00a5ff"
+      color="frozen"
       icon="mdi-snowflake"
       aria-label="snowflake icon (card is frozen)"
       aria-hidden="false"
@@ -279,7 +279,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(#00a5ff, 0.25);
+    background: rgba(var(--v-theme-frozen), 0.25);
     opacity: 1;
     transition: opacity var(--transition-duration-fast) linear;
   }

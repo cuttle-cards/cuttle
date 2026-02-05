@@ -5,7 +5,7 @@
     :max-width="maxWidth"
     :scrollable="scrollable"
     elevation
-    scrim="surface-1"
+    scrim="game-board"
   >
     <template #activator="{ props }">
       <span v-bind="props">
@@ -43,7 +43,7 @@
           <v-btn
             v-if="minimizable"
             icon="mdi-window-minimize"
-            color="surface-2"
+            color="game-card"
             variant="text"
             data-cy="minimize-dialog-button"
             aria-label="Minimize dialog"
@@ -124,10 +124,10 @@ export default {
       return this.variant === 'light';
     },
     backgroundColor() {
-      return this.isLight ? 'surface-2': 'surface-1';
+      return this.isLight ? 'game-card': 'game-board';
     },
     textColor() {
-      return this.isLight ? 'surface-1' : 'surface-2';
+      return this.isLight ? 'game-board' : 'game-card';
     },
   },
 };
@@ -136,16 +136,16 @@ export default {
 <style scoped lang="scss">
 .dialog-card {
   border-radius: 12px !important;
-  border: 4px solid rgba(var(--v-theme-surface-2));
+  border: 4px solid rgba(var(--v-theme-game-card));
   
   &.dark {
     /* Stuck using important because vuetify applies it to these styles for cards */
-    color: rgba(var(--v-theme-surface-2)) !important;
+    color: rgba(var(--v-theme-game-card)) !important;
   }
 
   &.light {
     /* Stuck using important because vuetify applies it to these styles for cards */
-    color: rgba(var(--v-theme-surface-1)) !important;
+    color: rgba(var(--v-theme-game-board)) !important;
   }
 }
 
@@ -159,7 +159,7 @@ export default {
   border: none;
 
   .dark & {
-    background-color: rgba(var(--v-theme-surface-2));
+    background-color: rgba(var(--v-theme-game-card));
   }
 
 }

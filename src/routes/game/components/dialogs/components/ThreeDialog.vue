@@ -21,7 +21,7 @@
     <template #actions>
       <v-btn
         data-cy="three-resolve"
-        color="surface-2"
+        color="game-card"
         :disabled="selectedCard === null"
         variant="flat"
         @click="moveToHand"

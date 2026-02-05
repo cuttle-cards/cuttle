@@ -35,7 +35,7 @@
       <v-btn
         data-cy="seven-double-jacks-resolve"
         :disabled="selectedJack === null"
-        color="surface-2"
+        color="game-card"
         variant="flat"
         @click="moveToScrap"
       >

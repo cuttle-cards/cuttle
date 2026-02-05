@@ -56,7 +56,7 @@
       </v-btn>
       <v-btn
         data-cy="decline-counter-resolve"
-        color="surface-1"
+        color="game-board"
         variant="flat"
         class="ml-4"
         @click="resolve"

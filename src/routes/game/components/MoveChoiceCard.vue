@@ -91,15 +91,15 @@ export default {
   cursor: pointer;
 }
 .move-choice-card {
-  background-color: rgba(var(--v-theme-surface-1));
-  color: rgba(var(--v-theme-surface-2)) !important;
-  border: 2px solid rgba(var(--v-theme-surface-2));;
-  transition: background-color .5s ease, color .5s ease;
+  background-color: rgba(var(--v-theme-game-board));
+  color: rgba(var(--v-theme-game-card)) !important;
+  border: 2px solid rgba(var(--v-theme-game-card));;
+  transition: background-color var(--duration-normal) ease, color var(--duration-normal) ease;
   opacity: .95;
 }
 .move-choice-card:hover {
-  background-color: rgba(var(--v-theme-surface-2)) !important;
-  color: rgba(var(--v-theme-surface-1)) !important;
+  background-color: rgba(var(--v-theme-game-card)) !important;
+  color: rgba(var(--v-theme-game-board)) !important;
 }
 p {
   text-align: center;

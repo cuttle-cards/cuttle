@@ -28,7 +28,7 @@
             {{ gameResultText }} — {{ name }}
           </span>
         </div>
-        <p class="text-surface-1">
+        <p class="text-game-board">
           <v-icon
             class="mr-4"
             size="medium"
@@ -40,14 +40,14 @@
       </v-col>
       <v-col cols="6" class="text-right">
         <router-link :to="`/spectate/${gameId}`" data-cy="replay-link">
-          <v-btn variant="outlined" color="surface-1">
+          <v-btn variant="outlined" color="game-board">
             <v-icon icon="mdi-play-circle-outline" class="mr-2" />
             {{ t('profile.replay') }}
           </v-btn>
         </router-link>
       </v-col>
     </v-row>
-    <v-divider color="surface-1" class="my-2" />
+    <v-divider color="game-board" class="my-2" />
   </div>
 </template>
 

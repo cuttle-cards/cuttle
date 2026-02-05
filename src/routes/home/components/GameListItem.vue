@@ -2,10 +2,10 @@
   <div>
     <v-row class="list-item" data-cy="game-list-item">
       <v-col lg="6" class="list-item__inner-text">
-        <p class="game-name text-surface-1" data-cy="game-list-item-name">
+        <p class="game-name text-game-board" data-cy="game-list-item-name">
           {{ name }}
         </p>
-        <p v-if="!isSpectatable" class="text-surface-1">
+        <p v-if="!isSpectatable" class="text-game-board">
           {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
@@ -42,7 +42,7 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-divider color="surface-1" class="mb-4 mx-2 border-opacity-100 px-5" />
+    <v-divider color="game-board" class="mb-4 mx-2 border-opacity-100 px-5" />
   </div>
 </template>
 
@@ -117,7 +117,7 @@ export default {
     },
     buttonAttrs() {
       return {
-        color: 'surface-1',
+        color: 'game-board',
         variant: 'outlined',
         minWidth: '200',
         loading: this.joiningGame,

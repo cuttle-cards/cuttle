@@ -25,7 +25,7 @@
     <template #actions>
       <v-btn
         variant="outlined"
-        color="surface-1"
+        color="game-board"
         class="mr-4"
         :diabled="loadingAccept"
         :loading="loadingReject"

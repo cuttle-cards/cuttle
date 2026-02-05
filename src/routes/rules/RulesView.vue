@@ -1,5 +1,5 @@
 <template>
-  <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
+  <div :class="[ isInModal ? 'bg-game-board text-game-card' : 'pa-4 bg-game-board text-game-card' ]">
     <v-container>
       <BackToTop :parent-modal-id="isInModal ? parentModalId : ''" />
 
@@ -27,7 +27,7 @@
               v-intersect="intersectConfig"
               class="flex-column align-start mt-8"
             >
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.introduction') }}
               </h1>
               <!-- What is Cuttle? -->
@@ -65,7 +65,7 @@
               v-intersect="intersectConfig"
               class="flex-column align-start section"
             >
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
               <h2 class="text-label-lg">
@@ -90,7 +90,7 @@
           <!-- Actions -->
           <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
@@ -105,7 +105,7 @@
           <section id="royals" v-intersect="intersectConfig" class="section">
             <div>
               <v-row class="flex-column">
-                <h1 class="text-h2 text-surface-2 section-title">
+                <h1 class="text-h2 text-game-card section-title">
                   {{ t('rules.royals.title') }}
                 </h1>
               </v-row>
@@ -132,7 +132,7 @@
           <section id="oneoffs" v-intersect="intersectConfig" class="section">
             <!-- One-Offs -->
             <v-row>
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.oneoffs.title') }}
               </h1>
             </v-row>
@@ -157,8 +157,8 @@
 
           <!-- Ready to Play? -->
           <section v-if="!isInModal" class="section">
-            <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
-              <h2 class="text-surface-1 pa-8">
+            <v-row class="bg-game-card pa-8 rounded-xl d-flex flex-column align-center">
+              <h2 class="text-game-board pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
               <v-btn to="/" color="primary" data-cy="ready-to-play-button">
@@ -170,7 +170,7 @@
           <!-- Rules for 3-4 Players -->
           <section id="multiplayer" v-intersect="intersectConfig" class="section">
             <v-row>
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.multiplayerTitle') }}
               </h1>
               <p class="d-block text-lg">
@@ -198,7 +198,7 @@
               v-intersect="intersectConfig"
               class="d-flex flex-column mb-4"
             >
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.faq.title') }}
               </h1>
               <FAQEntry v-for="question in faq" :key="`faq-entry-${question}`" :msg-key="question" />
@@ -212,7 +212,7 @@
               v-intersect="intersectConfig"
               class="flex-column"
             >
-              <h1 class="text-h2 text-surface-2 section-title">
+              <h1 class="text-h2 text-game-card section-title">
                 {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
@@ -245,7 +245,7 @@
               <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle2') }}
               </p>
-              <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-1" base-color="surface-2">
+              <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="game-board" base-color="game-card">
                 <v-list-item>
                   <v-chip
                     variant="flat"
@@ -272,7 +272,7 @@
                   <v-chip
                     variant="flat"
                     class="mr-2 mb-1"
-                    color="surface-2"
+                    color="game-card"
                     rounded="sm"
                   >
                     {{ t('rules.tournaments.scoring.numPoints', 3) }}
@@ -283,7 +283,7 @@
                   <v-chip
                     variant="outlined"
                     class="mr-2 mb-1"
-                    color="surface-2"
+                    color="game-card"
                     rounded="sm"
                   >
                     {{ t('rules.tournaments.scoring.numPoints', 2) }}
@@ -294,7 +294,7 @@
                   <v-chip
                     variant="outlined"
                     class="mr-2 mb-1"
-                    color="surface-2"
+                    color="game-card"
                     rounded="sm"
                   >
                     {{ t('rules.tournaments.scoring.numPoints') }}

@@ -42,8 +42,8 @@ const _props = defineProps({
 }
 .overlay-header {
   font-weight: bold;
-  background-color: rgba(var(--v-theme-surface-2));
-  color: rgba(var(--v-theme-surface-1));
+  background-color: rgba(var(--v-theme-game-card));
+  color: rgba(var(--v-theme-game-board));
   padding: 24px;
   text-align: center;
   width: 100vw;

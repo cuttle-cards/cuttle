@@ -116,7 +116,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  transition: rotate 0.4s ease-in-out;
+  transition: rotate var(--duration-fast) ease-in-out;
   backface-visibility: hidden;
 }
 .card-back {
@@ -161,8 +161,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px dashed rgba(var(--v-theme-surface-2));
-  background-color: rgba(var(--v-theme-surface-1));
+  border: 4px dashed rgba(var(--v-theme-game-card));
+  background-color: rgba(var(--v-theme-game-board));
   z-index: 1;
 }
 

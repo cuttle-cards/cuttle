@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" color="surface-2">
+    <v-toolbar data-cy="nav-drawer" color="game-card">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between">
           <TheUserMenu v-if="authStore.authenticated" />
@@ -8,7 +8,7 @@
             v-else
             :to="signupButtonLink"
             variant="text"
-            color="surface-1"
+            color="game-board"
             prepend-icon="mdi-login"
             data-cy="login-link"
           >
@@ -77,10 +77,10 @@ const tabColor = (page) => {
 
   // highlight tab when spectate list tab 
   if (route.name === 'SpectateList') {
-    return page === 'Home' ? 'text-primary' : 'text-surface-1';
+    return page === 'Home' ? 'text-primary' : 'text-game-board';
   }
 
-  return route.name === page ? 'text-primary' : 'text-surface-1';
+  return route.name === page ? 'text-primary' : 'text-game-board';
 };
 
 const signupButtonText = computed(() => {
