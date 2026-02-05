@@ -221,7 +221,7 @@ export default {
   & .scuttled-by-card {
     height: 95%;
     left: 16px;
-    transition: all 1s ease;
+    transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
     position: absolute;
     z-index: 1;
     &.scuttled-by-opponent {
@@ -281,7 +281,7 @@ export default {
     right: 0;
     background: rgba(#00a5ff, 0.25);
     opacity: 1;
-    transition: all 0.3s linear;
+    transition: opacity var(--transition-duration-fast) linear;
   }
 
   &:hover:after {
@@ -307,8 +307,8 @@ export default {
   transform: translateY(-32px);
 }
 
-.card-flip-enter-active{
-  transition: all 1s;
+.card-flip-enter-active {
+  transition: transform var(--transition-duration);
 }
 .card-flip-enter-from{
   transform: rotateY(-90deg);

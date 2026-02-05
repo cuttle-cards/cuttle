@@ -62,6 +62,18 @@ export default {
 <style lang="scss">
 @use '@/sass/typography';
 
+:root {
+  --transition-duration: 1s;
+  --transition-duration-fast: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-duration: 0s;
+    --transition-duration-fast: 0s;
+  }
+}
+
 .gradient-text {
   background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
   background-clip: text;

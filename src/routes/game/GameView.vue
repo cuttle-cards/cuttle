@@ -1060,7 +1060,7 @@ export default {
 // Transitions //
 /////////////////
 .transition-all {
-  transition: all 1s;
+  transition: opacity var(--transition-duration), transform var(--transition-duration);
 }
 // All list transitions leave with position absolute
 .slide-below-leave-active,
@@ -1107,11 +1107,6 @@ export default {
   opacity: 0;
   transform: translateY(-32px);
 }
-.gameCard {
-  position: absolute;
-  transition: all 1s ease-out;
-}
-
 ////////////
 // Styles //
 ////////////
@@ -1242,7 +1237,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3 ease-in-out;
+    transition: width var(--transition-duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
 
     &.reveal-top-two {
@@ -1406,7 +1401,10 @@ export default {
     background: rgba(0, 0, 0, 0.46);
     overflow-y: hidden;
     border-radius: 4px;
-    transition: all 1s;
+    transition:
+      border-color var(--transition-duration),
+      box-shadow var(--transition-duration),
+      background var(--transition-duration);
     &.my-turn {
       border: 4px solid rgba(var(--v-theme-accent));
       box-shadow:

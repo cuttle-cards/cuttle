@@ -186,7 +186,7 @@ function openDialog(e) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3 ease-in-out; // for tidying/messing up pile
+    transition: transform var(--transition-duration-fast) ease-in-out;
     cursor: pointer;
     user-select: none;
     
@@ -234,7 +234,7 @@ function openDialog(e) {
 // Entering Scrap Transition //
 ///////////////////////////////
 #scrap .scrap-card.scrap-enter-active {
-  transition: all .8s ease-out;
+  transition: opacity .8s ease-out, transform .8s ease-out;
 }
 
 #scrap .scrap-card.scrap-enter-from {
@@ -247,7 +247,7 @@ function openDialog(e) {
 //////////////////////
 #scrap .threes-player-enter-active,
 #scrap .threes-opponent-enter-active {
-  transition: all .5s ease-in;
+  transition: opacity .5s ease-in, transform .5s ease-in, rotate .5s ease-in;
 }
 
 #scrap .threes-player-enter-from,
@@ -259,7 +259,7 @@ function openDialog(e) {
 
 #scrap .threes-player-leave-active,
 #scrap .threes-opponent-leave-active {
-  transition: all 1.2s ease-out;
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
 }
 
 // Leaving towards player hand
@@ -278,7 +278,7 @@ function openDialog(e) {
 ////////////////////////////////////////
 #scrap .scrap-empty-enter-active,
 #scrap .scrap-empty-leave-active {
-  transition: all .5s ease-in;
+  transition: opacity .5s ease-in, rotate .5s ease-in;
 }
 
 #scrap .scrap-empty-leave-to {

@@ -116,7 +116,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  transition: all 0.4s ease-in-out;
+  transition: rotate 0.4s ease-in-out;
   backface-visibility: hidden;
 }
 .card-back {
