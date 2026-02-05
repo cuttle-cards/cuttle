@@ -189,7 +189,7 @@ function openDialog(e) {
     transition: transform var(--transition-duration-fast) ease-in-out;
     cursor: pointer;
     user-select: none;
-    contain: layout style;
+    contain: var(--contain-isolated);
     
     & #scrap-header {
       font-family: var(--font-heading);

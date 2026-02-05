@@ -1196,7 +1196,7 @@ export default {
     transition: width var(--transition-duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
     will-change: width;
-    contain: layout style;
+    contain: var(--contain-isolated);
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);

@@ -315,6 +315,8 @@ export default {
 
 <style scoped lang="scss">
 #move-choice-overlay {
+  contain: var(--contain-isolated);
+
   & #close-wrapper {
     width: 85%;
   }

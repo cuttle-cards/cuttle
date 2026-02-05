@@ -211,6 +211,7 @@ export default {
   background: transparent;
   flex-grow: 1;
   overflow: visible;
+  contain: var(--contain-isolated);
 
   & img {
     width: 100%;

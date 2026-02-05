@@ -39,6 +39,7 @@ const _props = defineProps({
   justify-content: center;
   align-items: center;
   text-align: center;
+  contain: var(--contain-isolated);
 }
 .overlay-header {
   font-weight: bold;

@@ -63,6 +63,7 @@ export default {
 <style scoped lang="scss">
 #player-hand-targeting {
   padding: 12px;
+  contain: var(--contain-isolated);
 }
 #target-selection-header-wrapper {
   width: 100%;

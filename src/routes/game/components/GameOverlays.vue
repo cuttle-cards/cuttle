@@ -218,7 +218,7 @@ export default {
 
 <style scoped lang="scss">
 .game-overlays {
-  contain: layout style;
+  contain: var(--contain-isolated);
 }
 
 #counter-scrim-cards {

@@ -80,6 +80,9 @@ export default {
   // Legacy aliases (for existing code)
   --transition-duration: var(--duration-slow);
   --transition-duration-fast: var(--duration-fast);
+
+  // CSS containment for isolated components
+  --contain-isolated: layout style;
 }
 
 @media (prefers-reduced-motion: reduce) {
