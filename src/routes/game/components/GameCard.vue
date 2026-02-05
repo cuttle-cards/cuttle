@@ -33,7 +33,7 @@
         >
       </template>
     </Transition>
-    <Transition name="card-flip">
+    <Transition :name="Transitions.CARD_FLIP">
       <img
         v-if="isGlasses"
         :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import Transitions from '_/utils/Transitions';
+
 export default {
   name: 'GameCard',
   props: {
@@ -108,6 +110,9 @@ export default {
       type: Number,
       default: null,
     },
+  },
+  setup() {
+    return { Transitions };
   },
   computed: {
     suitName() {
@@ -177,9 +182,9 @@ export default {
     scuttledByTransition() {
       switch (this.controlledBy) {
         case 'player':
-          return 'slide-above';
+          return Transitions.SLIDE_UP;
         case 'opponent':
-          return 'slide-below';
+          return Transitions.SLIDE_DOWN;
         default:
           return '';
       }
@@ -287,34 +292,6 @@ export default {
   &:hover:after {
     opacity: 0;
   }
-}
-
-.slide-below-leave-active,
-.slide-above-leave-active,
-.in-below-out-left-leave-active {
-  position: absolute;
-}
-// slide-below (enter and leave below)
-.slide-below-enter-from,
-.slide-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
-// slide-above (enter and leave above)
-.slide-above-enter-from,
-.slide-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-
-.card-flip-enter-active {
-  transition: transform var(--transition-duration);
-}
-.card-flip-enter-from{
-  transform: rotateY(-90deg);
-}
-.card-flip-enter-to{
-  transform: rotateY(0deg);
 }
 
 @media (max-width: 600px) {

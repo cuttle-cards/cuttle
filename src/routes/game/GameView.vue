@@ -69,14 +69,14 @@
             <UsernameToolTip id="opponent-username-container" :username="gameStore.opponentUsername" />
             <div class="opponent-cards-container">
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
-                <Transition name="slide-below" mode="out-in">
+                <Transition :name="Transitions.SLIDE_DOWN" mode="out-in">
                   <TransitionGroup
                     v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
                     tag="div"
-                    name="slide-above"
+                    :name="Transitions.SLIDE_UP"
                   >
                     <v-slide-group
                       v-if="$vuetify.display.xs"
@@ -108,7 +108,7 @@
                     v-else
                     key="opponent-hand"
                     tag="div"
-                    name="slide-above"
+                    :name="Transitions.SLIDE_UP"
                     class="opponent-hand-wrapper transition-all"
                   >
                     <GameCard
@@ -334,7 +334,7 @@
             <div class="player-cards-container">
               <TransitionGroup
                 tag="div"
-                name="slide-above"
+                :name="Transitions.SLIDE_UP"
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
                 :class="{ 'my-turn': gameStore.isPlayersTurn }"
               >
@@ -402,6 +402,7 @@
 import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
+import Transitions from '_/utils/Transitions';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -434,7 +435,7 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    return { t, Transitions };
   },
   data() {
     return {
@@ -524,27 +525,27 @@ export default {
             // Twos and Sixes swap control of points between players
             case 2:
             case 6:
-              return 'slide-above';
+              return Transitions.SLIDE_UP;
             // For nines, transition direction depends on target type
             case 9:
               switch (this.gameStore.lastEventTargetType) {
                 // Nine on jack causes points to swap control
                 case 'jack':
-                  return 'slide-above';
+                  return Transitions.SLIDE_UP;
                 // Everything else expect cards to move back to hand
                 case 'point':
                 case 'faceCard':
                 default:
-                  return 'slide-below';
+                  return Transitions.SLIDE_DOWN;
               }
             default:
-              return 'in-below-out-left';
+              return Transitions.SLIDE_DOWN_LEFT;
           }
         case 'jack':
         case 'sevenJack':
-          return 'slide-above';
+          return Transitions.SLIDE_UP;
         default:
-          return 'in-below-out-left';
+          return Transitions.SLIDE_DOWN_LEFT;
       }
     },
     playerFaceCardsTransition() {
@@ -554,40 +555,40 @@ export default {
         this.gameStore.lastEventOneOffRank === 9 &&
         this.gameStore.lastEventTargetType === 'faceCard'
       ) {
-        return 'slide-below';
+        return Transitions.SLIDE_DOWN;
       }
       // Defaults in below (from hand) out left (to scrap)
-      return 'in-below-out-left';
+      return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
       switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
         case 'sevenJack':
-          return 'slide-below';
+          return Transitions.SLIDE_DOWN;
         case 'resolve':
           // Different one-offs cause different direction transitions
           switch (this.gameStore.lastEventOneOffRank) {
             // Twos and sixes caus point cards to switch control (from/towards player)
             case 2:
             case 6:
-              return 'slide-below';
+              return Transitions.SLIDE_DOWN;
             // Nine transitions depend on the target type
             case 9:
               switch (this.gameStore.lastEventTargetType) {
                 // Nine on a jack switches point card control
                 case 'jack':
-                  return 'slide-below';
+                  return Transitions.SLIDE_DOWN;
                 // Everything else returns cards to hand
                 default:
-                  return 'slide-above';
+                  return Transitions.SLIDE_UP;
               }
             default:
-              return 'in-above-out-below';
+              return Transitions.SLIDE_UP_DOWN;
           }
         // Defaults to in above (opponent's hand) out below (to scrap)
         default:
-          return 'in-above-out-below';
+          return Transitions.SLIDE_UP_DOWN;
       }
     },
     opponentFaceCardsTransition() {
@@ -597,10 +598,10 @@ export default {
         this.gameStore.lastEventOneOffRank === 9 &&
         this.gameStore.lastEventTargetType === 'faceCard'
       ) {
-        return 'slide-above';
+        return Transitions.SLIDE_UP;
       }
       // Otherwise in from opponent hand, out towards scrap
-      return 'in-above-out-below';
+      return Transitions.SLIDE_UP_DOWN;
     },
     //////////////////
     // Interactions //
@@ -1056,53 +1057,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/////////////////
-// Transitions //
-/////////////////
-.transition-all {
-  transition: opacity var(--transition-duration), transform var(--transition-duration);
-}
-// All list transitions leave with position absolute
-.slide-below-leave-active,
-.slide-above-leave-active,
-.in-below-out-left-leave-active {
-  position: absolute;
-}
-// slide-below (enter and leave below)
-.slide-below-enter-from,
-.slide-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
-// slide-above (enter and leave above)
-.slide-above-enter-from,
-.slide-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-// in-below-out-left (enter from below, exit to left)
-.in-below-out-left-enter-from {
-  opacity: 0;
-  transform: translateY(32px);
-}
-.in-below-out-left-leave-to {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-// in-above-out-below (enter from above, exit below)
-.in-above-out-below-enter-from {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-.in-above-out-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
 ////////////
 // Styles //
 ////////////
 #game-view-wrapper {
-  color: #fff;
+  color: rgb(var(--v-theme-text-light));
   width: 100vw;
   height: 100%;
   background-image: url('/img/game/board-background.webp');
@@ -1230,6 +1189,8 @@ export default {
     align-items: center;
     transition: width var(--transition-duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
+    will-change: width;
+    contain: layout style;
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);
@@ -1262,20 +1223,15 @@ export default {
     border-radius: 20px;
   }
   #history {
-    background-color: rgba(241, 200, 160, 0.65);
-    color: #111;
+    background-color: rgba(var(--v-theme-history-panel), 0.65);
+    color: rgb(var(--v-theme-text-dark));
     & #history-logs {
       overflow: auto;
       overflow-wrap: anywhere;
       height: 85%;
       font-size: 0.75em;
       letter-spacing: 0.25px;
-      font-family:
-        'Libre Baskerville',
-        Century Gothic,
-        CenturyGothic,
-        AppleGothic,
-        sans-serif;
+      font-family: var(--font-body-serif);
     }
   }
 }
@@ -1283,12 +1239,7 @@ export default {
 .history-title {
   font-size: 1.25em;
   font-weight: 700;
-  font-family:
-    'Cormorant Infant',
-    Century Gothic,
-    CenturyGothic,
-    AppleGothic,
-    sans-serif;
+  font-family: var(--font-heading-serif);
 }
 
 @media screen and (min-width: 1024px) {

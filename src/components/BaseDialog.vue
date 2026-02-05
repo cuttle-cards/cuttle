@@ -137,6 +137,8 @@ export default {
 .dialog-card {
   border-radius: 12px !important;
   border: 4px solid rgba(var(--v-theme-game-card));
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
   
   &.dark {
     /* Stuck using important because vuetify applies it to these styles for cards */

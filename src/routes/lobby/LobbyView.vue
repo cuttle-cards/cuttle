@@ -236,7 +236,7 @@ h1 {
   min-height: 100vh;
   text-align: center;
   background: rgba(var(--v-theme-game-board));
-  box-shadow: inset 0 0 700px -1px #000;
+  box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }
 
 h5 {

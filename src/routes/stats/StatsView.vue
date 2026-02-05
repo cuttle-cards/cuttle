@@ -278,7 +278,7 @@ export default {
 }
 
 .link {
-  color: #006064;
+  color: rgb(var(--v-theme-stats-link));
 }
 
 #tournament-video {

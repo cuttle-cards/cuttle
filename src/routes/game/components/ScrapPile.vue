@@ -189,9 +189,10 @@ function openDialog(e) {
     transition: transform var(--transition-duration-fast) ease-in-out;
     cursor: pointer;
     user-select: none;
+    contain: layout style;
     
     & #scrap-header {
-      font-family: 'Luckiest Guy';
+      font-family: var(--font-heading);
       color: rgba(var(--v-theme-game-card));
       text-align: center;
       font-size: 40px;
@@ -199,7 +200,7 @@ function openDialog(e) {
     }
 
     & #scrap-length {
-      font-family: 'Luckiest Guy';
+      font-family: var(--font-heading);
     }
 
     & #empty-scrap-activator {

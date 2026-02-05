@@ -1,0 +1,54 @@
+.transition-all {
+  transition: opacity var(--transition-duration), transform var(--transition-duration);
+}
+
+.slide-down-leave-active,
+.slide-up-leave-active,
+.slide-down-left-leave-active,
+.slide-up-down-leave-active {
+  position: absolute;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-32px);
+}
+
+.slide-down-left-enter-from {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.slide-down-left-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
+.slide-up-down-enter-from {
+  opacity: 0;
+  transform: translateY(-32px);
+}
+
+.slide-up-down-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.card-flip-enter-active {
+  transition: transform var(--transition-duration);
+}
+
+.card-flip-enter-from {
+  transform: rotateY(-90deg);
+}
+
+.card-flip-enter-to {
+  transform: rotateY(0deg);
+}

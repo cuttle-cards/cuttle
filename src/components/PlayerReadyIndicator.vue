@@ -193,17 +193,17 @@ export default {
 }
 
 @keyframes waving {
-  0%{ right: 3000px; top: -120px; opacity: 1; }
-  50%{ opacity: 1; }
-  80%{ opacity: 1; }
-  100%{ right: 0; top: 500px; opacity: 0; }
+  0% { transform: translate(-3000px, -120px); opacity: 1; }
+  50% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(0, 500px); opacity: 0; }
 }
 
 @keyframes waving-reverse {
-  0%{ right: 0; top: 500px; opacity: 0; }
-  30%{ opacity: 1; }
-  80%{ opacity: 1; }
-  100%{ right: 3000px; top: -240px; opacity: 1; }
+  0% { transform: translate(0, 500px); opacity: 0; }
+  30% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(-3000px, -240px); opacity: 1; }
 }
 
 .cards-leave-active {

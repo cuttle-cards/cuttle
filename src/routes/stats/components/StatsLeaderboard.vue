@@ -426,9 +426,9 @@ export default {
 
 
 :deep(#leaderboard table tbody tr) {
-  background-color: rgba(48, 32, 27, .7);
+  background-color: rgba(var(--v-theme-table-row), 0.7);
   &.active-user-stats {
-    background-color: rgba(144,29,68, .7);
+    background-color: rgba(var(--v-theme-table-row-active), 0.7);
   }
 }
 

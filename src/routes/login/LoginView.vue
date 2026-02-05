@@ -370,7 +370,7 @@ export default {
   text-align: center;
   color: rgb(var(--v-theme-game-card));
   background: center / cover no-repeat url('/img/game/board-background.webp');
-  box-shadow: inset 0 0 700px -1px #000;
+  box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }
 
 .cardLogo {
@@ -402,8 +402,8 @@ export default {
 }
 
 .quote {
-  background-color: #425ce6;
-  color: #fcfdfc;
+  background-color: rgb(var(--v-theme-quote-bg));
+  color: rgb(var(--v-theme-quote-text));
   width: 100%;
   margin-top: 10px;
   padding: 40px 0px;

@@ -217,6 +217,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.game-overlays {
+  contain: layout style;
+}
+
 #counter-scrim-cards {
   position: absolute;
   display: flex;

@@ -61,8 +61,15 @@ export default {
 
 <style lang="scss">
 @use '@/sass/typography';
+@use '@/sass/transitions';
 
 :root {
+  --font-heading: 'Luckiest Guy', cursive;
+  --font-body: 'Changa', sans-serif;
+  --font-body-serif: 'Libre Baskerville', Georgia, serif;
+  --font-heading-serif: 'Cormorant Infant', 'PT Serif', serif;
+  --font-sans: 'Roboto', system-ui, sans-serif;
+
   // Animation duration buckets (all respect prefers-reduced-motion)
   --duration-instant: 0.1s;
   --duration-fast: 0.3s;

@@ -42,6 +42,13 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
+    tableRowBackground() {
+      const hex = this.theme['table-row'];
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, 0.7)`;
+    },
     chartData() {
       return {
         labels: this.labels,
@@ -79,7 +86,7 @@ export default {
           },
         },
         color: this.theme['game-card'],
-        backgroundColor: 'rgba(48, 32, 27, .7)',
+        backgroundColor: this.tableRowBackground,
       };
     },
   },
@@ -88,6 +95,6 @@ export default {
 
 <style scoped>
 .chart-container {
-  background-color: rgba(48, 32, 27, .7);
+  background-color: rgba(var(--v-theme-table-row), 0.7);
 }
 </style>

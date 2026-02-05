@@ -35,6 +35,23 @@ const cuttleTheme = {
     firstPlace: '#AF9500',
     secondPlace: '#636361',
     thirdPlace: '#6A3805',
+
+    // Text colors
+    'text-light': '#FFFFFF',
+    'text-dark': '#111111',
+
+    // UI element colors
+    shadow: '#000000',
+    'history-panel': '#F1C8A0',
+    'quote-bg': '#425CE6',
+    'quote-text': '#FCFDFC',
+
+    // Table colors (use with opacity)
+    'table-row': '#30201B',
+    'table-row-active': '#901D44',
+
+    // Link colors
+    'stats-link': '#006064',
   },
 };
 
