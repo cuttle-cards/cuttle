@@ -155,9 +155,6 @@ export default {
         ? 'game.menus.gameMenu.concedeDialog'
         : 'game.menus.gameMenu.stalemateDialog');
     },
-    buttonSize() {
-      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
-    },
     showRulesDialog: {
       get() {
         return this.shownDialog === 'rules';
