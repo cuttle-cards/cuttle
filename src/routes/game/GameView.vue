@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="gameStore.myPNum === null || !gameStore.player || !gameStore.opponent">
+    <template v-if="isGameUnavailable">
       <GameUnavailableView />
     </template>
 
@@ -454,6 +454,9 @@ export default {
   },
   computed: {
     ...mapStores(useAuthStore, useGameStore, useGameHistoryStore, useSnackbarStore),
+    isGameUnavailable() {
+      return this.gameStore.myPNum === null || !this.gameStore.player || !this.gameStore.opponent;
+    },
     isSpectating() {
       return this.gameHistoryStore.isSpectating;
     },
