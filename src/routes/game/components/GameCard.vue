@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-bind="$attrs"
     class="mx-1 player-card"
     :class="{
       selected: isSelected,
