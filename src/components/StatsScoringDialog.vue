@@ -37,7 +37,7 @@
       <p>
         {{ $t('stats.statsScoring.seasonDescription2') }}
       </p>
-      <v-list class="mt-4" bg-color="game-board" base-color="game-card">
+      <v-list class="mt-4" bg-color="surface-dark" base-color="surface-light">
         <v-list-item>
           <v-chip variant="flat" class="mr-2 mb-1" :color="theme.firstPlace">
             {{ $t('stats.statsScoring.displayName', 5) }}
@@ -51,19 +51,19 @@
           {{ $t('stats.statsScoring.points.4') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="flat" class="mr-2 mb-1" color="game-card">
+          <v-chip variant="flat" class="mr-2 mb-1" color="surface-light">
             {{ $t('stats.statsScoring.displayName', 3) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.3') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" color="game-card">
+          <v-chip variant="outlined" class="mr-2 mb-1" color="surface-light">
             {{ $t('stats.statsScoring.displayName', 2) }}
           </v-chip>
           {{ $t('stats.statsScoring.points.2') }}
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" color="game-card">
+          <v-chip variant="outlined" class="mr-2 mb-1" color="surface-light">
             {{ $t('stats.statsScoring.displayName') }}
           </v-chip>
           {{ $t('stats.statsScoring.points.1') }}
@@ -76,7 +76,7 @@
       <!-- Actions -->
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="game-board" @click="show = false">
+      <v-btn variant="outlined" color="surface-dark" @click="show = false">
         {{ $t('stats.statsScoring.gotIt') }}
       </v-btn>
     </template>
@@ -100,7 +100,7 @@ export default {
     },
     activatorColor:{
       type: String,
-      default: 'game-card',
+      default: 'surface-light',
     }
   },
   data() {

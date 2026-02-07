@@ -42,7 +42,7 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
-    tableRowBackground() {
+    backgroundColor() {
       const hex = this.theme['table-row'];
       const r = parseInt(hex.slice(1, 3), 16);
       const g = parseInt(hex.slice(3, 5), 16);
@@ -61,20 +61,20 @@ export default {
         scales: {
           x: {
             grid: {
-              color: this.theme['game-card'],           // color of the grid lines
-              borderColor: this.theme['game-card'],     // color of the outer axis line
+              color: this.theme['surface-light'],           // color of the grid lines
+              borderColor: this.theme['surface-light'],     // color of the outer axis line
             },
             ticks: {
-              color: this.theme['game-card'],           // color of tick labels on the x-axis
+              color: this.theme['surface-light'],           // color of tick labels on the x-axis
             },
           },
           y: {
             grid: {
-              color: this.theme['game-card'],
-              borderColor: this.theme['game-card'],
+              color: this.theme['surface-light'],
+              borderColor: this.theme['surface-light'],
             },
             ticks: {
-              color: this.theme['game-card'],
+              color: this.theme['surface-light'],
             },
           },
         },
@@ -82,11 +82,11 @@ export default {
           title: {
             text: this.title,
             display: !!this.title,
-            color: this.theme['game-card'],
+            color: this.theme['surface-light'],
           },
         },
-        color: this.theme['game-card'],
-        backgroundColor: this.tableRowBackground,
+        color: this.theme['surface-light'],
+        backgroundColor: this.backgroundColor,
       };
     },
   },

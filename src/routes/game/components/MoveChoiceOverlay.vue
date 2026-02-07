@@ -10,7 +10,7 @@
       <v-btn
         icon
         variant="text"
-        color="game-card"
+        color="surface-light"
         size="x-large"
         data-cy="cancel-move"
         aria-lable="Cancel Move"

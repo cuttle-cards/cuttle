@@ -492,7 +492,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
-    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.GAME_BOARD);
+    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.SURFACE_DARK);
 
     assertGameState(1, {
       p0Hand: [ Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS ],
@@ -523,7 +523,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.drawCardOpponent();
     cy.get('#deck').click();
     cy.drawCardOpponent();
-    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.GAME_BOARD);
+    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.SURFACE_DARK);
 
     assertGameState(1, {
       p0Hand: [ Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.TWO_OF_DIAMONDS ],

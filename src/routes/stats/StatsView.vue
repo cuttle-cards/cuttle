@@ -1,5 +1,5 @@
 <template>
-  <div id="stats-page-wrapper" class="text-game-card">
+  <div id="stats-page-wrapper" class="text-surface-light">
     <template v-if="loadingData">
       <v-skeleton-loader class="px-4 pa-2 mb-6 mx-auto border mb-2 mt-4" type="heading" />
       <v-skeleton-loader
@@ -18,7 +18,7 @@
             return-object
             variant="underlined"
             :label="t('stats.season.select')"
-            :list-props="{ bgColor: 'game-card', baseColor: 'game-board', color: 'primary' }"
+            :list-props="{ bgColor: 'surface-light', baseColor: 'surface-dark', color: 'primary' }"
             data-cy="season-select"
           >
             <template #selection="{ item }">

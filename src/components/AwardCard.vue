@@ -1,13 +1,13 @@
 <template>
   <v-card
     class="d-flex align-center pa-5"
-    :color=" variant === 'dark' ? 'game-board' : 'game-card'"
+    :color=" variant === 'dark' ? 'surface-dark' : 'surface-light'"
     :data-tournament="`${place}${suffix}`"
     min-width="224"
     variant="elevated"
   >
     <img :src="`/img/statsView/medal-${placeWithSuffix}-place.svg`" :alt="`Medal for ${placeWithSuffix} place`">
-    <h3 class="mx-4" :class="variant === 'dark' ? 'text-game-card' : 'text-game-board'">
+    <h3 class="mx-4" :class="variant === 'dark' ? 'text-surface-light' : 'text-surface-dark'">
       {{ username }}
     </h3>
   </v-card>

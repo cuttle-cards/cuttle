@@ -55,7 +55,7 @@
       </v-btn>
       <v-btn
         data-cy="cannot-counter-resolve"
-        color="game-board"
+        color="surface-dark"
         class="ml-4"
         variant="flat"
         @click="$emit('resolve')"

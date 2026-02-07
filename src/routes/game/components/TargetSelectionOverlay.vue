@@ -27,7 +27,7 @@
       <v-icon
         icon="mdi-close"
         size="x-large"
-        color="game-board"
+        color="surface-dark"
         aria-hidden="true"
       />
     </v-btn>

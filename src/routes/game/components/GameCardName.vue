@@ -20,8 +20,8 @@ export default {
 <style lang="scss" scoped>
 
 .card-name {
-  color: rgba(var(--v-theme-game-board));
-  background-color: rgba(var(--v-theme-game-card));
+  color: rgba(var(--v-theme-surface-dark));
+  background-color: rgba(var(--v-theme-surface-light));
   padding-right: 8px;
   padding-left: 8px;
   padding-top: 16px;

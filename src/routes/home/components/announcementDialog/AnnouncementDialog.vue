@@ -31,7 +31,7 @@
           :high-elevation="true"
         />
       </div>
-      <div v-if="announcementData.imgSrc" class="d-flex justify-center mb-4 bg-game-card rounded">
+      <div v-if="announcementData.imgSrc" class="d-flex justify-center mb-4 bg-surface-light rounded">
         <img class="w-75 mb-4" :src="announcementData.imgSrc">
       </div>
       <div v-for="(text, i) in announcementData.announcementText" :key="i" class="mb-4">
@@ -41,7 +41,7 @@
     <template #actions>
       <v-btn
         data-cy="announcement-dialog-close"
-        color="game-board"
+        color="surface-dark"
         variant="flat"
         @click="close"
       >

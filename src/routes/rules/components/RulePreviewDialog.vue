@@ -8,7 +8,7 @@
       <v-btn
         icon
         variant="text"
-        color="game-card"
+        color="surface-light"
         size="x-large"
         aria-lable="close"
         data-cy="close-preview-gif"
@@ -23,7 +23,7 @@
     </div>
     <v-skeleton-loader
       v-if="!imageLoaded"
-      color="game-board"
+      color="surface-dark"
       class="pa-6"
       type="card"
     />

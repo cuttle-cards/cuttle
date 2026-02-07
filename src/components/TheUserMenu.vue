@@ -5,7 +5,7 @@
   >
     <template #activator="{ props }">
       <v-btn
-        :color="variant === 'light' ? 'game-board' : 'game-card'"
+        :color="variant === 'light' ? 'surface-dark' : 'surface-light'"
         data-cy="user-menu"
         class="d-flex text-body-1 mr-md-16"
         v-bind="props"
@@ -26,7 +26,7 @@
         />
       </v-btn>
     </template>
-    <v-list density="compact" class="bg-game-card text-game-board">
+    <v-list density="compact" class="bg-surface-light text-surface-dark">
       <TheLanguageSelector has-chevron />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"

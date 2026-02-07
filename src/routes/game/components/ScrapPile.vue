@@ -30,15 +30,15 @@
                   :model-value="true"
                   contained
                   persistent
-                  scrim="game-board"
+                  scrim="surface-dark"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
                   :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-                  <p id="scrap-length" class="text-game-card text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!smAndDown" variant="outlined" color="game-card">
+                  <p id="scrap-length" class="text-surface-light text-center mb-4 mt-1 ">({{ scrap.length }})</p>
+                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-light">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
@@ -57,8 +57,8 @@
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-              <p class="text-game-card text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!smAndDown" variant="outlined" color="game-card">
+              <p class="text-surface-light text-center mb-4 mt-1">({{ scrap.length }})</p>
+              <v-btn v-if="!smAndDown" variant="outlined" color="surface-light">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -71,7 +71,7 @@
         <h1>{{ t('game.dialogs.scrapDialog.scrapPile') }}</h1>
         <v-btn 
           icon
-          color="game-card"
+          color="surface-light"
           variant="text"
           data-cy="close-scrap-dialog-x"
           aria-label="Close scrap dialog" 
@@ -97,7 +97,7 @@
     <template #actions>
       <v-btn
         data-cy="close-scrap-dialog-button"
-        color="game-board"
+        color="surface-dark"
         variant="flat"
         @click="showDialog = false"
       >
@@ -193,7 +193,7 @@ function openDialog(e) {
     
     & #scrap-header {
       font-family: var(--font-heading);
-      color: rgba(var(--v-theme-game-card));
+      color: rgba(var(--v-theme-surface-light));
       text-align: center;
       font-size: 40px;
       line-height: 40px;
@@ -206,7 +206,7 @@ function openDialog(e) {
     & #empty-scrap-activator {
       height: 100%;
       width: 100%;
-      background-color: rgba(var(--v-theme-game-board), .46);
+      background-color: rgba(var(--v-theme-surface-dark), .46);
       padding: 16px;
       border-radius: 20px;
       display: flex;
@@ -258,7 +258,7 @@ function openDialog(e) {
 #scrap .threes-opponent-enter-from {
   opacity: 0;
   transform: rotate(15deg) translateX(80px);
-  rotate: y -90deg;
+  rotate: 0 1 0 -90deg;
 }
 
 #scrap .threes-player-leave-active,
@@ -287,7 +287,7 @@ function openDialog(e) {
 
 #scrap .scrap-empty-leave-to {
   opacity: 0;
-  rotate: y -90deg;
+  rotate: 0 1 0 -90deg;
 }
 
 @media (max-width: 960px) and (orientation: landscape) {

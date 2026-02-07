@@ -744,7 +744,7 @@ export default {
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
-      this.snackbarStore.alert(this.t(messageKey), 'game-board');
+      this.snackbarStore.alert(this.t(messageKey), 'surface-dark');
     },
     clearOverlays() {
       this.nineTargetIndex = null;

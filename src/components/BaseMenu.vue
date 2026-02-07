@@ -7,7 +7,7 @@
     </template>
 
     <v-card
-      color="game-card"
+      color="surface-light"
       class="menu-card"
       :class="variant"
       :data-cy="dataCy"
@@ -43,11 +43,11 @@ const props = defineProps({
   },
   listBgColor: {
     type: String,
-    default: 'game-card'
+    default: 'surface-light'
   },
   listColor: {
     type: String, 
-    default: 'game-board'
+    default: 'surface-dark'
   },
 });
 
@@ -72,7 +72,7 @@ const listProps = computed(() => {
 
 <style scoped lang="scss">
 .menu-card {
-  color: rgba(var(--v-theme-game-board)) !important;
+  color: rgba(var(--v-theme-surface-dark)) !important;
  }
 </style>
 

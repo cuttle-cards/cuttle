@@ -197,7 +197,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    assertSnackbar('Game Mode changed to Casual', ThemeColors.GAME_CARD);
+    assertSnackbar('Game Mode changed to Casual', ThemeColors.SURFACE_LIGHT);
 
     // stub for error
     cy.window()
@@ -212,7 +212,7 @@ describe('Lobby - Page Content (Ranked)', () => {
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
-    assertSnackbar('Game Mode changed to Ranked', ThemeColors.GAME_CARD);
+    assertSnackbar('Game Mode changed to Ranked', ThemeColors.SURFACE_LIGHT);
   });
 });
 

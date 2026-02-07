@@ -1,6 +1,6 @@
 {
-  "GAME_BOARD": "game-board",
-  "GAME_CARD": "game-card",
+  "SURFACE_DARK": "surface-dark",
+  "SURFACE_LIGHT": "surface-light",
   "PRIMARY": "primary",
   "SECONDARY": "secondary",
   "ACCENT": "accent",
