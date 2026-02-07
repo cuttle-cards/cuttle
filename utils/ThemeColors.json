@@ -4,6 +4,5 @@
   "PRIMARY": "primary",
   "SECONDARY": "secondary",
   "ACCENT": "accent",
-  "CASUAL": "casual",
-  "ERROR": "error"
+  "CASUAL": "casual"
 }

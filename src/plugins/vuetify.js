@@ -1,3 +1,4 @@
+// Component imports are handled by autoImport: true in vite.config.mjs
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 
