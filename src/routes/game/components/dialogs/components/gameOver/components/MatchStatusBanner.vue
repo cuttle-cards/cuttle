@@ -6,7 +6,7 @@
         :icon="matchStatusIcon"
         :aria-label="iconLabel"
         :aria-hidden="false"
-        color="surface-light"
+        color="base-light"
         :data-cy="matchStatusIconDataCy"
       />
       <h2 class="banner-h2" :class="headerClass">
@@ -15,7 +15,7 @@
       <v-icon
         v-if="!gameStore.someoneDeclinedRematch"
         :icon="matchStatusIcon"
-        color="surface-light"
+        color="base-light"
         :data-cy="matchStatusIconDataCy"
       />
     </div>
@@ -104,7 +104,7 @@ const wrapperClass = computed(() => {
   }
   &.opponent-left {
     background-color: rgb(var(--v-theme-forfeit));
-    color: rgba(var(--v-theme-surface-dark));
+    color: rgba(var(--v-theme-base-dark));
     & .banner-content {
       justify-content: center;
     }

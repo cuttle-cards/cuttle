@@ -97,7 +97,7 @@ watch(() => props.activeTitle,
 
 @media (max-width: 960px) {
   .sidebar-container {
-    background: rgba(var(--v-theme-surface-dark));
+    background: rgba(var(--v-theme-base-dark));
     position: sticky;
     top: 64px;
     z-index: 999;

@@ -50,7 +50,7 @@ export function handleIsRanked(evData) {
   const snackbarStore = useSnackbarStore();
   gameStore.isRanked = evData.isRanked;
   if (gameStore.id === evData.gameId) {
-    snackbarStore.alert(i18n.global.t(`${gameStore.isRanked ? 'lobby.rankedChangedAlert.ranked' : 'lobby.rankedChangedAlert.casual'}`), 'surface-light', 2000);
+    snackbarStore.alert(i18n.global.t(`${gameStore.isRanked ? 'lobby.rankedChangedAlert.ranked' : 'lobby.rankedChangedAlert.casual'}`), 'base-light', 2000);
   }
   gameListStore.setIsRanked({ gameId: evData.gameId,isRanked: evData.isRanked });
 }

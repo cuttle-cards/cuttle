@@ -1,7 +1,7 @@
 <template>
   <AnnouncementDialog />
   <OauthSignupDialog v-model="oAuthSignup" />
-  <div class="h-100 bg-surface-dark">
+  <div class="h-100 bg-base-dark">
     <v-container id="home-container" class="container">
       <h1 id="home-card-title">
         {{ t('home.gameFinder') }}
@@ -9,11 +9,11 @@
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
           <div id="game-list" class="mx-auto homeContent">
-            <div class="py-3 d-flex mx-auto text-surface-dark">
+            <div class="py-3 d-flex mx-auto text-base-dark">
               <v-btn-toggle
                 v-model="tab"
                 rounded="0"
-                color="surface-dark"
+                color="base-dark"
                 variant="text"
                 mandatory
               >
@@ -26,7 +26,7 @@
                 </v-btn>
               </v-btn-toggle>
             </div>
-            <v-divider v-if="$vuetify.display.mdAndDown" color="surface-dark" class="border-opacity-100" />
+            <v-divider v-if="$vuetify.display.mdAndDown" color="base-dark" class="border-opacity-100" />
             <div v-if="loadingData" class="mx-3">
               <v-row v-for="i in 2" :key="`gamelistSkeleton${i}`" class="list-item py-2 ma-0 align-center">
                 <v-col lg="6" cols="12" class="list-item__inner-text pb-0 ma-0 mb-2 mb-lg-3">
@@ -34,26 +34,26 @@
                     class="pa-0"
                     type="text"
                     :max-width="160"
-                    color="surface-light"
+                    color="base-light"
                     height="30"
                   />
                   <v-skeleton-loader
                     class="pa-0"
                     type="text"
                     :max-width="130"
-                    color="surface-light"
+                    color="base-light"
                     height="30"
                   />
                 </v-col>
                 <v-col lg="6" cols="12" class="list-item__button mx-auto pa-0">
-                  <v-skeleton-loader class="py-0 pl-0 pr-2 mx-auto" type="heading" color="surface-light" />
+                  <v-skeleton-loader class="py-0 pl-0 pr-2 mx-auto" type="heading" color="base-light" />
                 </v-col>
-                <v-divider color="surface-dark" class="border-opacity-25" />
+                <v-divider color="base-dark" class="border-opacity-25" />
               </v-row>
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
-                <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-dark">
+                <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
                   {{ t('home.noGameslist') }}
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
@@ -73,7 +73,7 @@
                 <p
                   v-if="spectateGameList.length === 0"
                   data-cy="no-spectate-game-text"
-                  class="text-surface-dark"
+                  class="text-base-dark"
                 >
                   {{ t('home.noSpectatelist') }}
                 </p>
@@ -104,7 +104,7 @@
               <v-btn
                 v-if="!$vuetify.display.smAndUp"
                 variant="text"
-                color="surface-light"
+                color="base-light"
                 class="px-2"
                 href="https://discord.gg/9vrAZ8xGyh"
                 target="_blank"
@@ -116,7 +116,7 @@
                 v-else
                 variant="outlined"
                 class="text-subtitle-1 px-xl-16"
-                color="surface-light"
+                color="base-light"
                 href="https://discord.gg/9vrAZ8xGyh"
                 target="_blank"
                 size="x-large"
@@ -128,7 +128,7 @@
               </v-btn>
               <v-btn
                 variant="flat"
-                color="surface-light"
+                color="base-light"
                 class="px-8"
                 data-cy="create-ai-game"
                 @click="createAIGame"
@@ -268,13 +268,13 @@ export default {
 
 // Track
 ::-webkit-scrollbar-track {
-  background: rgba(var(--v-theme-surface-light));
+  background: rgba(var(--v-theme-base-light));
   border-radius: 16px;
 }
 
 // Handle
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--v-theme-surface-dark));
+  background: rgb(var(--v-theme-base-dark));
   border-radius: 16px;
 }
 
@@ -336,7 +336,7 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  background: rgba(var(--v-theme-surface-light));
+  background: rgba(var(--v-theme-base-light));
   border-radius: 8px;
   min-height: 50vh;
   max-height: 50vh;
@@ -364,7 +364,7 @@ p {
 
 #home-card-title {
   font-size: 5rem;
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
   font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;

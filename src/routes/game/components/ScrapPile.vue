@@ -30,15 +30,15 @@
                   :model-value="true"
                   contained
                   persistent
-                  scrim="surface-dark"
+                  scrim="base-dark"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
                   :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-                  <p id="scrap-length" class="text-surface-light text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-light">
+                  <p id="scrap-length" class="text-base-light text-center mb-4 mt-1 ">({{ scrap.length }})</p>
+                  <v-btn v-if="!smAndDown" variant="outlined" color="base-light">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
@@ -57,8 +57,8 @@
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-              <p class="text-surface-light text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!smAndDown" variant="outlined" color="surface-light">
+              <p class="text-base-light text-center mb-4 mt-1">({{ scrap.length }})</p>
+              <v-btn v-if="!smAndDown" variant="outlined" color="base-light">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -69,9 +69,9 @@
     <template #title>
       <div class="d-flex justify-space-between align-center w-100">
         <h1>{{ t('game.dialogs.scrapDialog.scrapPile') }}</h1>
-        <v-btn 
+        <v-btn
           icon
-          color="surface-light"
+          color="base-light"
           variant="text"
           data-cy="close-scrap-dialog-x"
           aria-label="Close scrap dialog" 
@@ -97,7 +97,7 @@
     <template #actions>
       <v-btn
         data-cy="close-scrap-dialog-button"
-        color="surface-dark"
+        color="base-dark"
         variant="flat"
         @click="showDialog = false"
       >
@@ -193,7 +193,7 @@ function openDialog(e) {
     
     & #scrap-header {
       font-family: var(--font-heading);
-      color: rgba(var(--v-theme-surface-light));
+      color: rgba(var(--v-theme-base-light));
       text-align: center;
       font-size: 40px;
       line-height: 40px;
@@ -206,7 +206,7 @@ function openDialog(e) {
     & #empty-scrap-activator {
       height: 100%;
       width: 100%;
-      background-color: rgba(var(--v-theme-surface-dark), .46);
+      background-color: rgba(var(--v-theme-base-dark), .46);
       padding: 16px;
       border-radius: 20px;
       display: flex;

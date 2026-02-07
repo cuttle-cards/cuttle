@@ -61,20 +61,20 @@ export default {
         scales: {
           x: {
             grid: {
-              color: this.theme['surface-light'],           // color of the grid lines
-              borderColor: this.theme['surface-light'],     // color of the outer axis line
+              color: this.theme['base-light'],           // color of the grid lines
+              borderColor: this.theme['base-light'],     // color of the outer axis line
             },
             ticks: {
-              color: this.theme['surface-light'],           // color of tick labels on the x-axis
+              color: this.theme['base-light'],           // color of tick labels on the x-axis
             },
           },
           y: {
             grid: {
-              color: this.theme['surface-light'],
-              borderColor: this.theme['surface-light'],
+              color: this.theme['base-light'],
+              borderColor: this.theme['base-light'],
             },
             ticks: {
-              color: this.theme['surface-light'],
+              color: this.theme['base-light'],
             },
           },
         },
@@ -82,10 +82,10 @@ export default {
           title: {
             text: this.title,
             display: !!this.title,
-            color: this.theme['surface-light'],
+            color: this.theme['base-light'],
           },
         },
-        color: this.theme['surface-light'],
+        color: this.theme['base-light'],
         backgroundColor: this.backgroundColor,
       };
     },

@@ -361,14 +361,14 @@ export default {
 
 <style scoped lang="scss">
 .loginViewContainer {
-  background-color: rgb(var(--v-theme-surface-light));
+  background-color: rgb(var(--v-theme-base-light));
 }
 
 .welcomeContainer {
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  color: rgb(var(--v-theme-surface-light));
+  color: rgb(var(--v-theme-base-light));
   background: center / cover no-repeat url('/img/game/board-background.webp');
   box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }

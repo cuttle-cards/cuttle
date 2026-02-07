@@ -25,8 +25,8 @@ const cuttleTheme = {
     casual: '#5865F2',
 
     // Surface colors
-    'surface-dark': '#4A2416',
-    'surface-light': '#FFF4D7',
+    'base-dark': '#4A2416',
+    'base-light': '#FFF4D7',
 
     // Game state colors
     frozen: '#00a5ff',

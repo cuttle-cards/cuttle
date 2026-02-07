@@ -76,7 +76,7 @@
           data-cy="request-gameover-cancel"
           :disabled="loading"
           variant="outlined"
-          color="surface-dark"
+          color="base-dark"
           class="mr-4"
           @click="closeDialog"
         >

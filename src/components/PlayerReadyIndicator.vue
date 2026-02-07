@@ -162,8 +162,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px dashed rgba(var(--v-theme-surface-light));
-  background-color: rgba(var(--v-theme-surface-dark));
+  border: 4px dashed rgba(var(--v-theme-base-light));
+  background-color: rgba(var(--v-theme-base-dark));
   z-index: 1;
 }
 

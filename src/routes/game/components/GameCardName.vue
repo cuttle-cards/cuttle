@@ -20,8 +20,8 @@ export default {
 <style lang="scss" scoped>
 
 .card-name {
-  color: rgba(var(--v-theme-surface-dark));
-  background-color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-dark));
+  background-color: rgba(var(--v-theme-base-light));
   padding-right: 8px;
   padding-left: 8px;
   padding-top: 16px;

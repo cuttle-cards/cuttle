@@ -25,7 +25,7 @@
     <template #actions>
       <v-btn
         variant="outlined"
-        color="surface-dark"
+        color="base-dark"
         class="mr-4"
         :diabled="loadingAccept"
         :loading="loadingReject"

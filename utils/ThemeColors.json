@@ -1,6 +1,6 @@
 {
-  "SURFACE_DARK": "surface-dark",
-  "SURFACE_LIGHT": "surface-light",
+  "BASE_DARK": "base-dark",
+  "BASE_LIGHT": "base-light",
   "PRIMARY": "primary",
   "SECONDARY": "secondary",
   "ACCENT": "accent",

@@ -23,7 +23,7 @@
       id="waiting-for-opponent-counter-scrim"
       v-model="gameStore.waitingForOpponentToCounter"
       persistent
-      scrim="surface-dark"
+      scrim="base-dark"
     >
       <template #header>
         {{ showWaitingForOpponentToCounterMessage }}

@@ -10,7 +10,7 @@
         data-cy="week-select"
         multiple
         variant="underlined"
-        :list-props="{ bgColor: 'surface-light', baseColor: 'surface-dark' }"
+        :list-props="{ bgColor: 'base-light', baseColor: 'base-dark' }"
       />
     </div>
     <v-data-table
@@ -403,7 +403,7 @@ export default {
 <style scoped lang="scss">
 #leaderboard {
   background: none;
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
 }
 
 :deep(#leaderboard table) {
@@ -412,8 +412,8 @@ export default {
 
 /* Header Row */
 :deep(#leaderboard table thead > tr) {
-  background-color: rgba(var(--v-theme-surface-light));
-  color: rgba(var(--v-theme-surface-dark));
+  background-color: rgba(var(--v-theme-base-light));
+  color: rgba(var(--v-theme-base-dark));
 
   &:first-child th:first-child {
     border-radius: 8px 0 0 0;

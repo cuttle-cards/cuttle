@@ -91,16 +91,16 @@ export default {
   cursor: pointer;
 }
 .move-choice-card {
-  background-color: rgba(var(--v-theme-surface-dark));
-  color: rgba(var(--v-theme-surface-light)) !important;
-  border: 2px solid rgba(var(--v-theme-surface-light));
+  background-color: rgba(var(--v-theme-base-dark));
+  color: rgba(var(--v-theme-base-light)) !important;
+  border: 2px solid rgba(var(--v-theme-base-light));
   transition: background-color var(--duration-normal) ease, color var(--duration-normal) ease;
   opacity: .95;
   contain: var(--contain-isolated);
 }
 .move-choice-card:hover {
-  background-color: rgba(var(--v-theme-surface-light)) !important;
-  color: rgba(var(--v-theme-surface-dark)) !important;
+  background-color: rgba(var(--v-theme-base-light)) !important;
+  color: rgba(var(--v-theme-base-dark)) !important;
 }
 p {
   text-align: center;

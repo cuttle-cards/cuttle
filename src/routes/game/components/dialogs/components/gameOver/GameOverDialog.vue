@@ -54,7 +54,7 @@
       <div class="d-flex gap-2">
         <v-btn
           class="mr-4"
-          color="surface-dark"
+          color="base-dark"
           variant="outlined"
           data-cy="gameover-go-home"
           :loading="leavingGame"
@@ -344,7 +344,7 @@ export default {
 
 <style scoped lang="scss">
 #game-over-dialog {
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
 }
 .heading {
   text-align: center;

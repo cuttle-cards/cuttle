@@ -73,7 +73,7 @@
                 :disabled="readying"
                 variant="text"
                 class="w-50 px-16 py-2"
-                color="surface-light"
+                color="base-light"
                 data-cy="exit-button"
                 size="x-large"
                 @click="leave"
@@ -215,7 +215,7 @@ onBeforeRouteLeave((to, from, next) => {
 .rank-switch {
   border: 1px solid;
   display: flex;
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -230,7 +230,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 h1 {
   font-size: 5rem;
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
   font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
@@ -238,17 +238,17 @@ h1 {
 }
 
 #lobby-wrapper {
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  background: rgba(var(--v-theme-surface-dark));
+  background: rgba(var(--v-theme-base-dark));
   box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }
 
 h5 {
   font-size: 3rem;
-  color: rgba(var(--v-theme-surface-light));
+  color: rgba(var(--v-theme-base-light));
   font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" color="surface-light">
+    <v-toolbar data-cy="nav-drawer" color="base-light">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between">
           <TheUserMenu v-if="authStore.authenticated" />
@@ -8,7 +8,7 @@
             v-else
             :to="signupButtonLink"
             variant="text"
-            color="surface-dark"
+            color="base-dark"
             prepend-icon="mdi-login"
             data-cy="login-link"
           >
@@ -77,10 +77,10 @@ const tabColor = (page) => {
 
   // highlight tab when spectate list tab 
   if (route.name === 'SpectateList') {
-    return page === 'Home' ? 'text-primary' : 'text-surface-dark';
+    return page === 'Home' ? 'text-primary' : 'text-base-dark';
   }
 
-  return route.name === page ? 'text-primary' : 'text-surface-dark';
+  return route.name === page ? 'text-primary' : 'text-base-dark';
 };
 
 const signupButtonText = computed(() => {

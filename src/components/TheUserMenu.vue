@@ -5,7 +5,7 @@
   >
     <template #activator="{ props }">
       <v-btn
-        :color="variant === 'light' ? 'surface-dark' : 'surface-light'"
+        :color="variant === 'light' ? 'base-dark' : 'base-light'"
         data-cy="user-menu"
         class="d-flex text-body-1 mr-md-16"
         v-bind="props"
@@ -26,7 +26,7 @@
         />
       </v-btn>
     </template>
-    <v-list density="compact" class="bg-surface-light text-surface-dark">
+    <v-list density="compact" class="bg-base-light text-base-dark">
       <TheLanguageSelector has-chevron />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"

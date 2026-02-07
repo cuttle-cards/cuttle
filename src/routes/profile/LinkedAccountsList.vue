@@ -13,7 +13,7 @@
     <v-card
       rounded="lg"
       class="pa-4 mt-4"
-      style="background-color: rgba(var(--v-theme-surface-light)); color: rgba(var(--v-theme-surface-dark))"
+      style="background-color: rgba(var(--v-theme-base-light)); color: rgba(var(--v-theme-base-dark))"
     >
       <v-list bg-color="transparent">
         <template

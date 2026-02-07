@@ -26,7 +26,7 @@ describe('Playing sevens at the end of the deck', () => {
 
     cy.get('#deck').find('#empty-deck-text')
       .should('contain', 'PASS');
-    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.SURFACE_DARK);
+    assertSnackbar('Deck exhausted; revealing player hands', ThemeColors.BASE_DARK);
   });
 
   it('Plays the top card of the deck when there are two cards left', () => {

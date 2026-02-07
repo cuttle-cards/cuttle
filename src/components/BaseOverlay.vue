@@ -43,8 +43,8 @@ const _props = defineProps({
 }
 .overlay-header {
   font-weight: bold;
-  background-color: rgba(var(--v-theme-surface-light));
-  color: rgba(var(--v-theme-surface-dark));
+  background-color: rgba(var(--v-theme-base-light));
+  color: rgba(var(--v-theme-base-dark));
   padding: 24px;
   text-align: center;
   width: 100vw;

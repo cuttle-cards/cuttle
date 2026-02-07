@@ -14,11 +14,11 @@
       <h2 class="text-label-lg">
         {{ t(title) }}
       </h2>
-      <div class="text-surface-light">
+      <div class="text-base-light">
         <p class="text-md">
           {{ t(description) }}
         </p>
-        <p v-if="description2" class="mt-4 text-surface-light text-md">
+        <p v-if="description2" class="mt-4 text-base-light text-md">
           {{ t(description2) }}
         </p>
       </div>

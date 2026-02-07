@@ -76,8 +76,8 @@ const lossesLabel = computed(() => props.isSpectating ? 'P2' : 'L');
   border-radius: 8px;
   font-size: 18px;
   font-weight: 800;
-  background-color: rgba(var(--v-theme-surface-light));
-  color: rgba(var(--v-theme-surface-dark));
+  background-color: rgba(var(--v-theme-base-light));
+  color: rgba(var(--v-theme-base-dark));
 }
 
 .individual-score {
@@ -87,12 +87,12 @@ const lossesLabel = computed(() => props.isSpectating ? 'P2' : 'L');
 
   .ranked &.selected {
     background-color: rgba(var(--v-theme-primary));
-    color: rgba(var(--v-theme-surface-light));
+    color: rgba(var(--v-theme-base-light));
   }
 
   .casual &.selected {
     background-color: rgba(var(--v-theme-casual));
-    color: rgba(var(--v-theme-surface-light));
+    color: rgba(var(--v-theme-base-light));
   }
 }
 </style>
