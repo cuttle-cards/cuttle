@@ -1196,7 +1196,6 @@ export default {
     align-items: center;
     transition: width var(--duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
-    will-change: width;
     contain: var(--contain-isolated);
 
     &.reveal-top-two {

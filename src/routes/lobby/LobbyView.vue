@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, computed, watch } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
@@ -180,6 +180,13 @@ watch(opponentUsername, (newVal) => {
 // Lifecycle
 onMounted(() => {
   playAudio(joinAudio);
+});
+
+onBeforeUnmount(() => {
+  joinAudio.pause();
+  joinAudio.src = '';
+  leaveAudio.pause();
+  leaveAudio.src = '';
 });
 
 // Router

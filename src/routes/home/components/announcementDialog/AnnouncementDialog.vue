@@ -91,7 +91,6 @@ if (getLocalStorage('announcement') !== announcementData.id) {
 }
 
 :deep(.player-card) {
-    will-change: transform;
     max-height: inherit;
   }
 </style>
