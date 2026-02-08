@@ -16,6 +16,13 @@
   position: absolute;
 }
 
+.slide-down-move,
+.slide-up-move,
+.slide-down-left-move,
+.slide-up-down-move {
+  transition: transform var(--duration-slow);
+}
+
 .slide-down-enter-from,
 .slide-down-leave-to {
   opacity: 0;
