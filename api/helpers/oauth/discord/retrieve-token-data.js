@@ -31,7 +31,7 @@ module.exports = {
       const tokenData = await tokenRes.json();
 
       if (!tokenData) {
-        throw new Error();
+        throw new Error('Discord OAuth token exchange returned empty response');
       }
 
       exits.success(tokenData);
