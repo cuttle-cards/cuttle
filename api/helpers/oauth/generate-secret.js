@@ -19,7 +19,7 @@ module.exports = {
 
       return exits.success(secret);
     } catch (e) {
-      console.error('Error generating secret:', e);
+      sails.log.error('Error generating secret:', e);
       return exits.error(e);
     }
   }

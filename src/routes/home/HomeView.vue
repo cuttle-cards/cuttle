@@ -216,7 +216,8 @@ export default {
     try {
       await this.gameListStore.requestGameList();
     } catch (err) {
-      console.log(err);
+      // Error is also handled by Rollbar's global handler
+      console.warn('Failed to load game list:', err);
     } finally {
       this.loadingData = false;
       this.tab = this.$route.path;
@@ -251,10 +252,8 @@ export default {
           this.$router.push('/login');
         })
         .catch((err) => {
-          if (err) {
-            console.error(err);
-          }
-          console.log('Error logging out');
+          // Error is also handled by Rollbar's global handler
+          console.warn('Error logging out:', err);
         });
     },
   },

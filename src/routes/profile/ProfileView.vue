@@ -86,8 +86,9 @@ async function fetchGames() {
       sortDirection: 'desc',
       reset: true
     });
-  } catch (error) {
-    console.error('Failed to fetch games:', error);
+  } catch (err) {
+    // Error is also handled by Rollbar's global handler
+    console.warn('Failed to fetch games:', err);
   }
 }
 
@@ -108,8 +109,9 @@ async function loadMoreGames() {
       sortBy: 'createdAt',
       sortDirection: 'desc'
     });
-  } catch (error) {
-    console.error('Failed to load more games:', error);
+  } catch (err) {
+    // Error is also handled by Rollbar's global handler
+    console.warn('Failed to load more games:', err);
   }
 }
 
