@@ -47,7 +47,7 @@ export default {
         {
           label: 'Unique players',
           data: this.uniquePlayers,
-          borderColor: this.theme['surface-2'],
+          borderColor: this.theme['base-light'],
         },
       ];
     },

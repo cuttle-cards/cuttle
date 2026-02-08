@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="gameStore.myPNum === null || !gameStore.player || !gameStore.opponent">
+    <template v-if="isGameUnavailable">
       <GameUnavailableView />
     </template>
 
@@ -69,14 +69,14 @@
             <UsernameToolTip id="opponent-username-container" :username="gameStore.opponentUsername" />
             <div class="opponent-cards-container">
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
-                <Transition name="slide-below" mode="out-in">
+                <Transition :name="Transitions.SLIDE_DOWN" mode="out-in">
                   <TransitionGroup
                     v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
-                    class="opponent-hand-wrapper transition-all"
+                    class="opponent-hand-wrapper"
                     tag="div"
-                    name="slide-above"
+                    :name="Transitions.SLIDE_UP"
                   >
                     <v-slide-group
                       v-if="$vuetify.display.xs"
@@ -90,7 +90,7 @@
                           :suit="card.suit"
                           :rank="card.rank"
                           :data-opponent-hand-card="`${card.rank}-${card.suit}`"
-                          class="transition-all opponent-hand-card-revealed"
+                          class="opponent-hand-card-revealed"
                         />
                       </v-slide-group-item>
                     </v-slide-group>
@@ -101,15 +101,15 @@
                       :suit="card.suit"
                       :rank="card.rank"
                       :data-opponent-hand-card="`${card.rank}-${card.suit}`"
-                      class="transition-all opponent-hand-card-revealed"
+                      class="opponent-hand-card-revealed"
                     />
                   </TransitionGroup>
                   <TransitionGroup
                     v-else
                     key="opponent-hand"
                     tag="div"
-                    name="slide-above"
-                    class="opponent-hand-wrapper transition-all"
+                    :name="Transitions.SLIDE_UP"
+                    class="opponent-hand-wrapper"
                   >
                     <GameCard
                       v-for="(card, index) in gameStore.opponent.hand"
@@ -117,7 +117,7 @@
                       :suit="card.suit ?? undefined"
                       :rank="card.rank ?? undefined"
                       :data-opponent-hand-card="card.suit && card.rank ? `${card.rank}-${card.suit}` : ''"
-                      class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
+                      class="opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
                   </TransitionGroup>
                 </Transition>
@@ -194,7 +194,7 @@
                 <div
                   v-for="(card, index) in gameStore.opponent.points"
                   :key="card.id"
-                  class="field-point-container transition-all"
+                  class="field-point-container"
                 >
                   <GameCard
                     :suit="card.suit"
@@ -228,7 +228,6 @@
                   :is-glasses="card.rank === 8"
                   :is-valid-target="validMoves.includes(card.id)"
                   :data-opponent-face-card="`${card.rank}-${card.suit}`"
-                  class="transition-all"
                   @click="targetOpponentFaceCard(index)"
                 />
               </TransitionGroup>
@@ -239,7 +238,7 @@
                 <div
                   v-for="card in gameStore.player.points"
                   :key="card.id"
-                  class="field-point-container transition-all"
+                  class="field-point-container"
                 >
                   <GameCard
                     :suit="card.suit"
@@ -269,7 +268,6 @@
                   :rank="card.rank"
                   :is-glasses="card.rank === 8"
                   :data-player-face-card="`${card.rank}-${card.suit}`"
-                  class="transition-all"
                 />
               </TransitionGroup>
             </div>
@@ -334,7 +332,7 @@
             <div class="player-cards-container">
               <TransitionGroup
                 tag="div"
-                name="slide-above"
+                :name="Transitions.SLIDE_UP"
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
                 :class="{ 'my-turn': gameStore.isPlayersTurn }"
               >
@@ -346,7 +344,7 @@
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
                       :is-frozen="card.isFrozen"
-                      class="mt-2 transition-all"
+                      class="mt-2"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
                       @click="selectCard(index)"
@@ -362,7 +360,7 @@
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
                   :is-frozen="card.isFrozen"
-                  class="mt-2 transition-all"
+                  class="mt-2"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
                   @click="selectCard(index)"
@@ -402,6 +400,7 @@
 import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
+import Transitions from '_/utils/Transitions';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -434,7 +433,7 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    return { t, Transitions };
   },
   data() {
     return {
@@ -448,10 +447,14 @@ export default {
       topCardIsSelected: false,
       secondCardIsSelected: false,
       showHistoryDrawer: false,
+      resizeHandler: null,
     };
   },
   computed: {
     ...mapStores(useAuthStore, useGameStore, useGameHistoryStore, useSnackbarStore),
+    isGameUnavailable() {
+      return this.gameStore.myPNum === null || !this.gameStore.player || !this.gameStore.opponent;
+    },
     isSpectating() {
       return this.gameHistoryStore.isSpectating;
     },
@@ -524,27 +527,27 @@ export default {
             // Twos and Sixes swap control of points between players
             case 2:
             case 6:
-              return 'slide-above';
+              return Transitions.SLIDE_UP;
             // For nines, transition direction depends on target type
             case 9:
               switch (this.gameStore.lastEventTargetType) {
                 // Nine on jack causes points to swap control
                 case 'jack':
-                  return 'slide-above';
+                  return Transitions.SLIDE_UP;
                 // Everything else expect cards to move back to hand
                 case 'point':
                 case 'faceCard':
                 default:
-                  return 'slide-below';
+                  return Transitions.SLIDE_DOWN;
               }
             default:
-              return 'in-below-out-left';
+              return Transitions.SLIDE_DOWN_LEFT;
           }
         case 'jack':
         case 'sevenJack':
-          return 'slide-above';
+          return Transitions.SLIDE_UP;
         default:
-          return 'in-below-out-left';
+          return Transitions.SLIDE_DOWN_LEFT;
       }
     },
     playerFaceCardsTransition() {
@@ -554,40 +557,40 @@ export default {
         this.gameStore.lastEventOneOffRank === 9 &&
         this.gameStore.lastEventTargetType === 'faceCard'
       ) {
-        return 'slide-below';
+        return Transitions.SLIDE_DOWN;
       }
       // Defaults in below (from hand) out left (to scrap)
-      return 'in-below-out-left';
+      return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
       switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
         case 'sevenJack':
-          return 'slide-below';
+          return Transitions.SLIDE_DOWN;
         case 'resolve':
           // Different one-offs cause different direction transitions
           switch (this.gameStore.lastEventOneOffRank) {
             // Twos and sixes caus point cards to switch control (from/towards player)
             case 2:
             case 6:
-              return 'slide-below';
+              return Transitions.SLIDE_DOWN;
             // Nine transitions depend on the target type
             case 9:
               switch (this.gameStore.lastEventTargetType) {
                 // Nine on a jack switches point card control
                 case 'jack':
-                  return 'slide-below';
+                  return Transitions.SLIDE_DOWN;
                 // Everything else returns cards to hand
                 default:
-                  return 'slide-above';
+                  return Transitions.SLIDE_UP;
               }
             default:
-              return 'in-above-out-below';
+              return Transitions.SLIDE_UP_DOWN;
           }
         // Defaults to in above (opponent's hand) out below (to scrap)
         default:
-          return 'in-above-out-below';
+          return Transitions.SLIDE_UP_DOWN;
       }
     },
     opponentFaceCardsTransition() {
@@ -597,10 +600,10 @@ export default {
         this.gameStore.lastEventOneOffRank === 9 &&
         this.gameStore.lastEventTargetType === 'faceCard'
       ) {
-        return 'slide-above';
+        return Transitions.SLIDE_UP;
       }
       // Otherwise in from opponent hand, out towards scrap
-      return 'in-above-out-below';
+      return Transitions.SLIDE_UP_DOWN;
     },
     //////////////////
     // Interactions //
@@ -723,12 +726,17 @@ export default {
   },
   async mounted() {
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
-    window.addEventListener('resize', () => {
-      // We execute the same script as before
-      let vh = window.innerHeight * 0.01;
+    this.resizeHandler = () => {
+      const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
-    });
+    };
+    window.addEventListener('resize', this.resizeHandler);
     this.scrollToLastLog();
+  },
+  beforeUnmount() {
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
   },
   methods: {
     handleError(messageKey) {
@@ -736,7 +744,7 @@ export default {
       this.clearSelection();
     },
     showCustomSnackbarMessage(messageKey) {
-      this.snackbarStore.alert(this.t(messageKey), 'surface-1');
+      this.snackbarStore.alert(this.t(messageKey), 'base-dark');
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -1056,67 +1064,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/////////////////
-// Transitions //
-/////////////////
-.transition-all {
-  transition: all 1s;
-}
-// All list transitions leave with position absolute
-.slide-below-leave-active,
-.slide-above-leave-active,
-.in-below-out-left-leave-active {
-  position: absolute;
-}
-// slide-below (enter and leave below)
-.slide-below-enter-from,
-.slide-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
-// slide-above (enter and leave above)
-.slide-above-enter-from,
-.slide-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-// in-below-out-left (enter from below, exit to left)
-.in-below-out-left-enter-from {
-  opacity: 0;
-  transform: translateY(32px);
-}
-.in-below-out-left-leave-to {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-// in-above-out-below (enter from above, exit below)
-.in-above-out-below-enter-from {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-.in-above-out-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
-// in-below-out-above (enter from below, exit above)
-.in-below-out-above-enter-from {
-  opacity: 0;
-  transform: translateY(32px);
-}
-.in-below-out-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-.gameCard {
-  position: absolute;
-  transition: all 1s ease-out;
-}
-
 ////////////
 // Styles //
 ////////////
 #game-view-wrapper {
-  color: #fff;
+  color: rgb(var(--v-theme-text-light));
   width: 100vw;
   height: 100%;
   background-image: url('/img/game/board-background.webp');
@@ -1242,8 +1194,9 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3 ease-in-out;
+    transition: width var(--duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
+    contain: var(--contain-isolated);
 
     &.reveal-top-two {
       width: calc(29vh * 1.5);
@@ -1276,20 +1229,15 @@ export default {
     border-radius: 20px;
   }
   #history {
-    background-color: rgba(241, 200, 160, 0.65);
-    color: #111111;
+    background-color: rgba(var(--v-theme-history-panel), 0.65);
+    color: rgb(var(--v-theme-text-dark));
     & #history-logs {
       overflow: auto;
       overflow-wrap: anywhere;
       height: 85%;
       font-size: 0.75em;
       letter-spacing: 0.25px;
-      font-family:
-        'Libre Baskerville',
-        Century Gothic,
-        CenturyGothic,
-        AppleGothic,
-        sans-serif;
+      font-family: var(--font-body-serif);
     }
   }
 }
@@ -1297,12 +1245,7 @@ export default {
 .history-title {
   font-size: 1.25em;
   font-weight: 700;
-  font-family:
-    'Cormorant Infant',
-    Century Gothic,
-    CenturyGothic,
-    AppleGothic,
-    sans-serif;
+  font-family: var(--font-heading-serif);
 }
 
 @media screen and (min-width: 1024px) {
@@ -1406,7 +1349,10 @@ export default {
     background: rgba(0, 0, 0, 0.46);
     overflow-y: hidden;
     border-radius: 4px;
-    transition: all 1s;
+    transition:
+      border-color var(--duration-slow),
+      box-shadow var(--duration-slow),
+      background var(--duration-slow);
     &.my-turn {
       border: 4px solid rgba(var(--v-theme-accent));
       box-shadow:

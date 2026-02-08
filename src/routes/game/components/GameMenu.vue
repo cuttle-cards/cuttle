@@ -76,7 +76,7 @@
           data-cy="request-gameover-cancel"
           :disabled="loading"
           variant="outlined"
-          color="surface-1"
+          color="base-dark"
           class="mr-4"
           @click="closeDialog"
         >
@@ -154,9 +154,6 @@ export default {
       return this.t(this.showConcedeDialog
         ? 'game.menus.gameMenu.concedeDialog'
         : 'game.menus.gameMenu.stalemateDialog');
-    },
-    buttonSize() {
-      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
     showRulesDialog: {
       get() {

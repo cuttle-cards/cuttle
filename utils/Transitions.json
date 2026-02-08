@@ -1,0 +1,7 @@
+{
+  "SLIDE_DOWN": "slide-down",
+  "SLIDE_UP": "slide-up",
+  "SLIDE_DOWN_LEFT": "slide-down-left",
+  "SLIDE_UP_DOWN": "slide-up-down",
+  "CARD_FLIP": "card-flip"
+}

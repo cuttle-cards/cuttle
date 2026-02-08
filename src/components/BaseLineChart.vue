@@ -42,6 +42,13 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
+    backgroundColor() {
+      const hex = this.theme['table-row'];
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, 0.7)`;
+    },
     chartData() {
       return {
         labels: this.labels,
@@ -54,20 +61,20 @@ export default {
         scales: {
           x: {
             grid: {
-              color: this.theme['surface-2'],           // color of the grid lines
-              borderColor: this.theme['surface-2'],     // color of the outer axis line
+              color: this.theme['base-light'],           // color of the grid lines
+              borderColor: this.theme['base-light'],     // color of the outer axis line
             },
             ticks: {
-              color: this.theme['surface-2'],           // color of tick labels on the x-axis
+              color: this.theme['base-light'],           // color of tick labels on the x-axis
             },
           },
           y: {
             grid: {
-              color: this.theme['surface-2'],
-              borderColor: this.theme['surface-2'],
+              color: this.theme['base-light'],
+              borderColor: this.theme['base-light'],
             },
             ticks: {
-              color: this.theme['surface-2'],
+              color: this.theme['base-light'],
             },
           },
         },
@@ -75,11 +82,11 @@ export default {
           title: {
             text: this.title,
             display: !!this.title,
-            color: this.theme['surface-2'],
+            color: this.theme['base-light'],
           },
         },
-        color: this.theme['surface-2'],
-        backgroundColor: 'rgba(48, 32, 27, .7)',
+        color: this.theme['base-light'],
+        backgroundColor: this.backgroundColor,
       };
     },
   },
@@ -88,6 +95,6 @@ export default {
 
 <style scoped>
 .chart-container {
-  background-color: rgba(48, 32, 27, .7);
+  background-color: rgba(var(--v-theme-table-row), 0.7);
 }
 </style>

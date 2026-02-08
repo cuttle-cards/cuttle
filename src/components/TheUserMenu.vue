@@ -5,7 +5,7 @@
   >
     <template #activator="{ props }">
       <v-btn
-        :color="variant === 'light' ? 'surface-1' : 'surface-2'"
+        :color="variant === 'light' ? 'base-dark' : 'base-light'"
         data-cy="user-menu"
         class="d-flex text-body-1 mr-md-16"
         v-bind="props"
@@ -26,7 +26,7 @@
         />
       </v-btn>
     </template>
-    <v-list density="compact" class="bg-surface-2 text-surface-1">
+    <v-list density="compact" class="bg-base-light text-base-dark">
       <TheLanguageSelector has-chevron />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
@@ -83,7 +83,7 @@ const menuItems = computed(() => {
 </script>
 <style scoped>
 .chevron-icon {
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--duration-fast) ease-in-out;
 }
 
 .rotate {

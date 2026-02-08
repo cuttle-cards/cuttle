@@ -54,7 +54,7 @@
       <div class="d-flex gap-2">
         <v-btn
           class="mr-4"
-          color="surface-1"
+          color="base-dark"
           variant="outlined"
           data-cy="gameover-go-home"
           :loading="leavingGame"
@@ -247,7 +247,7 @@ export default {
       if (this.rematchButtonDisabled) {
         return undefined;
       }
-      return this.isRanked ? 'primary' : 'newSecondary';
+      return this.isRanked ? 'primary' : 'casual';
     },
     rematchButtonText() {
       if (this.gameHistoryStore.isSpectating) {
@@ -344,7 +344,7 @@ export default {
 
 <style scoped lang="scss">
 #game-over-dialog {
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-base-light));
 }
 .heading {
   text-align: center;

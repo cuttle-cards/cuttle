@@ -25,12 +25,12 @@
     <template #actions>
       <v-btn
         variant="outlined"
-        color="surface-1"
+        color="base-dark"
         class="mr-4"
-        :diabled="loadingAccept"
+        :disabled="loadingAccept"
         :loading="loadingReject"
         data-cy="reject-stalemate"
-        aria-lable="Reject Request"
+        aria-label="Reject Request"
         @click="rejectStalemate"
       >
         {{ t('game.dialogs.opponentRequestedStalemateDialog.reject') }}
@@ -41,7 +41,7 @@
         data-cy="accept-stalemate"
         :loading="loadingAccept"
         :disabled="loadingReject"
-        aria-lable="Accept Stalemate"
+        aria-label="Accept Stalemate"
         @click="acceptStalemate"
       >
         {{ t('game.dialogs.opponentRequestedStalemateDialog.accept') }}

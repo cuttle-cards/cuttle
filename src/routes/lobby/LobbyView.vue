@@ -73,7 +73,7 @@
                 :disabled="readying"
                 variant="text"
                 class="w-50 px-16 py-2"
-                color="surface-2"
+                color="base-light"
                 data-cy="exit-button"
                 size="x-large"
                 @click="leave"
@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, computed, watch } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
@@ -182,6 +182,13 @@ onMounted(() => {
   playAudio(joinAudio);
 });
 
+onBeforeUnmount(() => {
+  joinAudio.pause();
+  joinAudio.src = '';
+  leaveAudio.pause();
+  leaveAudio.src = '';
+});
+
 // Router
 onBeforeRouteLeave((to, from, next) => {
   if (to.name === 'Game') {
@@ -208,7 +215,7 @@ onBeforeRouteLeave((to, from, next) => {
 .rank-switch {
   border: 1px solid;
   display: flex;
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-base-light));
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -223,26 +230,26 @@ onBeforeRouteLeave((to, from, next) => {
 
 h1 {
   font-size: 5rem;
-  color: rgba(var(--v-theme-surface-2));
-  font-family: 'Luckiest Guy', serif !important;
+  color: rgba(var(--v-theme-base-light));
+  font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
   margin: auto auto 16px auto;
 }
 
 #lobby-wrapper {
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-base-light));
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  background: rgba(var(--v-theme-surface-1));
-  box-shadow: inset 0 0 700px -1px #000000;
+  background: rgba(var(--v-theme-base-dark));
+  box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }
 
 h5 {
   font-size: 3rem;
-  color: rgba(var(--v-theme-surface-2));
-  font-family: 'Luckiest Guy', serif !important;
+  color: rgba(var(--v-theme-base-light));
+  font-family: var(--font-heading) !important;
   font-weight: 400;
   line-height: 5rem;
   margin: auto auto 16px auto;
