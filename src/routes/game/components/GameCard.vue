@@ -38,7 +38,7 @@
       <img
         v-if="isGlasses"
         :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
-        :alt="`Glasses - $${cardName}`"
+        :alt="`Glasses - ${cardName}`"
       >
       <img
         v-else-if="isBack"

@@ -10,7 +10,7 @@
         variant="text"
         color="base-light"
         size="x-large"
-        aria-lable="close"
+        aria-label="close"
         data-cy="close-preview-gif"
         @click="$emit('close')"
       >
