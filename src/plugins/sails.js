@@ -19,12 +19,16 @@ export const reconnectSockets = () => {
       if (io.socket.isConnecting() || io.socket.isConnected()) {
         io.socket.disconnect();
       }
-    } catch (_) {/* empty */}
+    } catch (err) {
+      console.warn('Failed to disconnect socket before reconnect:', err);
+    }
     try {
       if (!io.socket.isConnected()) {
         io.socket.reconnect();
       }
-    } catch (_) {/* empty */}
+    } catch (err) {
+      console.warn('Failed to reconnect socket:', err);
+    }
     const MAX_TRIES = 10; // 10 seconds
     const INTERVAL = 500; // 10 * 500 = 5000 (5 seconds)
     let tries = 1;
