@@ -87,7 +87,6 @@ async function fetchGames() {
       reset: true
     });
   } catch (err) {
-    // Error is also handled by Rollbar's global handler
     console.warn('Failed to fetch games:', err);
   }
 }
@@ -110,7 +109,6 @@ async function loadMoreGames() {
       sortDirection: 'desc'
     });
   } catch (err) {
-    // Error is also handled by Rollbar's global handler
     console.warn('Failed to load more games:', err);
   }
 }

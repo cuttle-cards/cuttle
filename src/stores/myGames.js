@@ -43,7 +43,6 @@ export const useMyGamesStore = defineStore('myGames', () => {
       hasMore.value = moreAvailable;
       totalCount.value = total;
     } catch (err) {
-      // Error is also handled by Rollbar's global handler
       console.warn('Error loading games:', err);
     } finally {
       loading.value = false;
