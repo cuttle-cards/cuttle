@@ -1,3 +1,18 @@
+:root {
+  // Animation duration buckets (all respect prefers-reduced-motion)
+  --duration-fast: 0.3s;
+  --duration-normal: 0.5s;
+  --duration-slow: 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0s;
+    --duration-normal: 0s;
+    --duration-slow: 0s;
+  }
+}
+
 .slide-down-enter-active,
 .slide-up-enter-active,
 .slide-down-left-enter-active,

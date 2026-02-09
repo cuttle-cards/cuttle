@@ -64,21 +64,8 @@ export default {
 @use '@/sass/transitions';
 
 :root {
-  // Animation duration buckets (all respect prefers-reduced-motion)
-  --duration-fast: 0.3s;
-  --duration-normal: 0.5s;
-  --duration-slow: 1s;
-
   // CSS containment for isolated components
   --contain-isolated: layout style;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --duration-fast: 0s;
-    --duration-normal: 0s;
-    --duration-slow: 0s;
-  }
 }
 
 .gradient-text {
