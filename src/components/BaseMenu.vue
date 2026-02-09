@@ -39,15 +39,15 @@ const props = defineProps({
   },
   dataCy: {
     type: String,
-    default: ''
+    default: '',
   },
   listBgColor: {
     type: String,
-    default: 'base-light'
+    default: 'base-light',
   },
   listColor: {
-    type: String, 
-    default: 'base-dark'
+    type: String,
+    default: 'base-dark',
   },
 });
 
