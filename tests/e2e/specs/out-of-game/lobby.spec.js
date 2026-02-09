@@ -127,7 +127,7 @@ describe('Lobby - Page Content', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    const expected = 'An unknown error has occured.';
+    const expected = 'An unknown error has occurred.';
 
     assertSnackbar(expected);
   });
@@ -208,7 +208,7 @@ describe('Lobby - Page Content (Ranked)', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    assertSnackbar('An unknown error has occured.');
+    assertSnackbar('An unknown error has occurred.');
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
