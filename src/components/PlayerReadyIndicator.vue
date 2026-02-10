@@ -104,6 +104,7 @@ export default {
   transform-style: preserve-3d;
   perspective: 1200px;
   position: relative;
+  contain: var(--contain-isolated);
   &.small {
     height: 20vh;
     width: calc(20vh / 1.45);
@@ -116,7 +117,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  transition: all 0.4s ease-in-out;
+  transition: rotate var(--duration-fast) ease-in-out;
   backface-visibility: hidden;
 }
 .card-back {
@@ -161,8 +162,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px dashed rgba(var(--v-theme-surface-2));
-  background-color: rgba(var(--v-theme-surface-1));
+  border: 4px dashed rgba(var(--v-theme-base-light));
+  background-color: rgba(var(--v-theme-base-dark));
   z-index: 1;
 }
 
@@ -193,17 +194,17 @@ export default {
 }
 
 @keyframes waving {
-  0%{ right: 3000px; top: -120px; opacity: 1; }
-  50%{ opacity: 1; }
-  80%{ opacity: 1; }
-  100%{ right: 0; top: 500px; opacity: 0; }
+  0% { transform: translate(-3000px, -120px); opacity: 1; }
+  50% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(0, 500px); opacity: 0; }
 }
 
 @keyframes waving-reverse {
-  0%{ right: 0; top: 500px; opacity: 0; }
-  30%{ opacity: 1; }
-  80%{ opacity: 1; }
-  100%{ right: 3000px; top: -240px; opacity: 1; }
+  0% { transform: translate(0, 500px); opacity: 0; }
+  30% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(-3000px, -240px); opacity: 1; }
 }
 
 .cards-leave-active {

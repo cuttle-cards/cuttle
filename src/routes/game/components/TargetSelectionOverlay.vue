@@ -27,7 +27,7 @@
       <v-icon
         icon="mdi-close"
         size="x-large"
-        color="surface-1"
+        color="base-dark"
         aria-hidden="true"
       />
     </v-btn>
@@ -63,6 +63,7 @@ export default {
 <style scoped lang="scss">
 #player-hand-targeting {
   padding: 12px;
+  contain: var(--contain-isolated);
 }
 #target-selection-header-wrapper {
   width: 100%;

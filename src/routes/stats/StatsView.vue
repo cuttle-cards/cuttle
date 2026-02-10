@@ -1,5 +1,5 @@
 <template>
-  <div id="stats-page-wrapper" class="text-surface-2">
+  <div id="stats-page-wrapper" class="text-base-light">
     <template v-if="loadingData">
       <v-skeleton-loader class="px-4 pa-2 mb-6 mx-auto border mb-2 mt-4" type="heading" />
       <v-skeleton-loader
@@ -18,7 +18,7 @@
             return-object
             variant="underlined"
             :label="t('stats.season.select')"
-            :list-props="{ bgColor: 'surface-2', baseColor: 'surface-1', color: 'primary' }"
+            :list-props="{ bgColor: 'base-light', baseColor: 'base-dark', color: 'primary' }"
             data-cy="season-select"
           >
             <template #selection="{ item }">
@@ -256,17 +256,17 @@ export default {
 }
 
 .text-h1 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
 }
 
 .text-h2 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
   font-size: 64px;
   line-height: 64px;
 }
 
 .text-h3 {
-  font-family: 'Luckiest Guy', serif;
+  font-family: var(--font-heading);
   font-size: 48px;
   line-height: 52px;
 }
@@ -278,7 +278,7 @@ export default {
 }
 
 .link {
-  color: #006064;
+  color: rgb(var(--v-theme-stats-link));
 }
 
 #tournament-video {

@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "16.0.0",
+  "version": "16.0.2",
   "dependencies": {
     "@unhead/vue": "^1.11.14",
     "@vueuse/core": "^14.1.0",

@@ -12,7 +12,7 @@
     <v-icon
       v-if="isFrozen"
       class="player-card-icon mr-1 mt-1"
-      color="#00a5ff"
+      color="frozen"
       icon="mdi-snowflake"
       aria-label="snowflake icon (card is frozen)"
       aria-hidden="false"
@@ -33,11 +33,11 @@
         >
       </template>
     </Transition>
-    <Transition name="card-flip">
+    <Transition :name="Transitions.CARD_FLIP">
       <img
         v-if="isGlasses"
         :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
-        :alt="`Glasses - $${cardName}`"
+        :alt="`Glasses - ${cardName}`"
       >
       <img
         v-else-if="isBack"
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import Transitions from '_/utils/Transitions';
+
 export default {
   name: 'GameCard',
   props: {
@@ -108,6 +110,9 @@ export default {
       type: Number,
       default: null,
     },
+  },
+  setup() {
+    return { Transitions };
   },
   computed: {
     suitName() {
@@ -177,9 +182,9 @@ export default {
     scuttledByTransition() {
       switch (this.controlledBy) {
         case 'player':
-          return 'slide-above';
+          return Transitions.SLIDE_UP;
         case 'opponent':
-          return 'slide-below';
+          return Transitions.SLIDE_DOWN;
         default:
           return '';
       }
@@ -206,6 +211,9 @@ export default {
   background: transparent;
   flex-grow: 1;
   overflow: visible;
+  contain: var(--contain-isolated);
+  // Transition timing for TransitionGroup animations (opacity and transform only for GPU compositing)
+  transition: opacity var(--duration-slow), transform var(--duration-slow);
 
   & img {
     width: 100%;
@@ -221,7 +229,7 @@ export default {
   & .scuttled-by-card {
     height: 95%;
     left: 16px;
-    transition: all 1s ease;
+    transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease;
     position: absolute;
     z-index: 1;
     &.scuttled-by-opponent {
@@ -279,42 +287,14 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(#00a5ff, 0.25);
+    background: rgba(var(--v-theme-frozen), 0.25);
     opacity: 1;
-    transition: all 0.3s linear;
+    transition: opacity var(--duration-fast) linear;
   }
 
   &:hover:after {
     opacity: 0;
   }
-}
-
-.slide-below-leave-active,
-.slide-above-leave-active,
-.in-below-out-left-leave-active {
-  position: absolute;
-}
-// slide-below (enter and leave below)
-.slide-below-enter-from,
-.slide-below-leave-to {
-  opacity: 0;
-  transform: translateY(32px);
-}
-// slide-above (enter and leave above)
-.slide-above-enter-from,
-.slide-above-leave-to {
-  opacity: 0;
-  transform: translateY(-32px);
-}
-
-.card-flip-enter-active{
-  transition: all 1s;
-}
-.card-flip-enter-from{
-  transform: rotateY(-90deg);
-}
-.card-flip-enter-to{
-  transform: rotateY(0deg);
 }
 
 @media (max-width: 600px) {

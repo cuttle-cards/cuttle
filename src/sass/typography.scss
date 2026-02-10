@@ -179,3 +179,11 @@
   line-height: 22px;
   text-align: left;
 }
+
+:root {
+  --font-heading: 'Luckiest Guy', cursive;
+  --font-body: 'Changa', sans-serif;
+  --font-body-serif: 'Libre Baskerville', Georgia, serif;
+  --font-heading-serif: 'Cormorant Infant', 'PT Serif', serif;
+  --font-sans: 'Roboto', system-ui, sans-serif;
+}
