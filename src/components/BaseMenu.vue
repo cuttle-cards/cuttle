@@ -7,7 +7,7 @@
     </template>
 
     <v-card
-      color="surface-2"
+      color="base-light"
       class="menu-card"
       :class="variant"
       :data-cy="dataCy"
@@ -39,15 +39,15 @@ const props = defineProps({
   },
   dataCy: {
     type: String,
-    default: ''
+    default: '',
   },
   listBgColor: {
     type: String,
-    default: 'surface-2'
+    default: 'base-light',
   },
   listColor: {
-    type: String, 
-    default: 'surface-1'
+    type: String,
+    default: 'base-dark',
   },
 });
 
@@ -72,7 +72,7 @@ const listProps = computed(() => {
 
 <style scoped lang="scss">
 .menu-card {
-  color: rgba(var(--v-theme-surface-1)) !important;
+  color: rgba(var(--v-theme-base-dark)) !important;
  }
 </style>
 

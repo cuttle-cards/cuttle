@@ -2,6 +2,7 @@ import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
+import ThemeColors from '../../../../utils/ThemeColors.json';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
@@ -126,7 +127,7 @@ describe('Lobby - Page Content', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    const expected = 'An unknown error has occured.';
+    const expected = 'An unknown error has occurred.';
 
     assertSnackbar(expected);
   });
@@ -196,7 +197,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
 
     // toggle for surface
-    assertSnackbar('Game Mode changed to Casual', 'surface-2');
+    assertSnackbar('Game Mode changed to Casual', ThemeColors.BASE_LIGHT);
 
     // stub for error
     cy.window()
@@ -207,11 +208,11 @@ describe('Lobby - Page Content (Ranked)', () => {
 
     cy.get('[data-cy=ready-button]').click();
 
-    assertSnackbar('An unknown error has occured.');
+    assertSnackbar('An unknown error has occurred.');
 
     // toggle again for surface color
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', false);
-    assertSnackbar('Game Mode changed to Ranked', 'surface-2');
+    assertSnackbar('Game Mode changed to Ranked', ThemeColors.BASE_LIGHT);
   });
 });
 

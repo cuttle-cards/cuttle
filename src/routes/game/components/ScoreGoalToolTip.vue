@@ -83,6 +83,6 @@ export default {
 <style lang="scss" scoped>
 .score-goal-explanation .current-goal {
   background-color: rgba(var(--v-theme-accent));
-  color: rgba(var(--v-theme-surface-2));
+  color: rgba(var(--v-theme-base-light));
 }
 </style>

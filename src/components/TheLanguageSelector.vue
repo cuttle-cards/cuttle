@@ -11,7 +11,7 @@
       />
     </template>
 
-    <v-list data-cy="lang-list" density="compact" class="bg-surface-2 text-surface-1">
+    <v-list data-cy="lang-list" density="compact" class="bg-base-light text-base-dark">
       <v-list-item
         v-for="(lang, i) in sortedLocales"
         :key="`${i}-${lang}`"
@@ -56,7 +56,7 @@ const sortedLocales = computed(() => {
 });
 
 
-const activatorClass = computed(() => props.variant === 'dark' ? `bg-surface-2 text-surface-1` : '');
+const activatorClass = computed(() => props.variant === 'dark' ? `bg-base-light text-base-dark` : '');
 
 const icons = computed(() => props.hasChevron ? { prepend: 'mdi-web', append: 'mdi-chevron-right' } : { prepend: 'mdi-web mr-2', append: '' });
 
