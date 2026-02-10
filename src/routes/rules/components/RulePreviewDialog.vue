@@ -8,9 +8,9 @@
       <v-btn
         icon
         variant="text"
-        color="surface-2"
+        color="base-light"
         size="x-large"
-        aria-lable="close"
+        aria-label="close"
         data-cy="close-preview-gif"
         @click="$emit('close')"
       >
@@ -23,7 +23,7 @@
     </div>
     <v-skeleton-loader
       v-if="!imageLoaded"
-      color="surface-1"
+      color="base-dark"
       class="pa-6"
       type="card"
     />

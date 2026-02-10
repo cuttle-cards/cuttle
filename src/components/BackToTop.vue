@@ -3,7 +3,7 @@
     <v-btn
       v-if="show"
       position="fixed"
-      color="surface-2"
+      color="base-light"
       class="fab"
       elevation="8"
       icon="mdi-chevron-up"

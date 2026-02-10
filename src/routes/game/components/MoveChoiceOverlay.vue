@@ -10,10 +10,10 @@
       <v-btn
         icon
         variant="text"
-        color="surface-2"
+        color="base-light"
         size="x-large"
         data-cy="cancel-move"
-        aria-lable="Cancel Move"
+        aria-label="Cancel Move"
         @click="$emit('cancel')"
       >
         <v-icon
@@ -315,6 +315,8 @@ export default {
 
 <style scoped lang="scss">
 #move-choice-overlay {
+  contain: var(--contain-isolated);
+
   & #close-wrapper {
     width: 85%;
   }

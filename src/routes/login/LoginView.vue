@@ -120,7 +120,7 @@
               <v-btn
                 class="w-100 mt-10 mb-4 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
-                color="newSecondary"
+                color="casual"
                 type="button"
                 @click="oAuth('discord')"
               >
@@ -361,16 +361,16 @@ export default {
 
 <style scoped lang="scss">
 .loginViewContainer {
-  background-color: #fff4d7;
+  background-color: rgb(var(--v-theme-base-light));
 }
 
 .welcomeContainer {
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  color: #fff4d7;
+  color: rgb(var(--v-theme-base-light));
   background: center / cover no-repeat url('/img/game/board-background.webp');
-  box-shadow: inset 0 0 700px -1px #000000;
+  box-shadow: inset 0 0 700px -1px rgb(var(--v-theme-shadow));
 }
 
 .cardLogo {
@@ -379,7 +379,7 @@ export default {
 }
 
 .welcomeContainer h1 {
-  font-family: 'Luckiest Guy', serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 5rem;
   letter-spacing: 0.2rem;
   max-width: 800px;
@@ -402,8 +402,8 @@ export default {
 }
 
 .quote {
-  background-color: #425ce6;
-  color: #fcfdfc;
+  background-color: rgb(var(--v-theme-quote-bg));
+  color: rgb(var(--v-theme-quote-text));
   width: 100%;
   margin-top: 10px;
   padding: 40px 0px;
