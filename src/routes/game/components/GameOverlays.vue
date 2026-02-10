@@ -23,7 +23,7 @@
       id="waiting-for-opponent-counter-scrim"
       v-model="gameStore.waitingForOpponentToCounter"
       persistent
-      scrim="surface-1"
+      scrim="base-dark"
     >
       <template #header>
         {{ showWaitingForOpponentToCounterMessage }}
@@ -217,6 +217,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.game-overlays {
+  contain: var(--contain-isolated);
+}
+
 #counter-scrim-cards {
   position: absolute;
   display: flex;

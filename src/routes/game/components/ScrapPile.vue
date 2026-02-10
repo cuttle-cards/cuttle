@@ -30,15 +30,15 @@
                   :model-value="true"
                   contained
                   persistent
-                  scrim="surface-1"
+                  scrim="base-dark"
                   opacity=".46"
                   class="d-flex flex-column justify-space-around align-center"
                   :class="smAndDown ? 'rounded-sm' : 'rounded-lg'"
                   content-class="d-flex flex-column align-center"
                 >
                   <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-                  <p id="scrap-length" class="text-surface-2 text-center mb-4 mt-1 ">({{ scrap.length }})</p>
-                  <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
+                  <p id="scrap-length" class="text-base-light text-center mb-4 mt-1 ">({{ scrap.length }})</p>
+                  <v-btn v-if="!smAndDown" variant="outlined" color="base-light">
                     {{ $t('game.view') }}
                   </v-btn>
                 </v-overlay>
@@ -57,8 +57,8 @@
           <Transition name="scrap-empty">
             <div v-if="!scrap.length" id="empty-scrap-activator">
               <h3 v-if="!xs" id="scrap-header">{{ $t('game.scrap') }}</h3>
-              <p class="text-surface-2 text-center mb-4 mt-1">({{ scrap.length }})</p>
-              <v-btn v-if="!smAndDown" variant="outlined" color="surface-2">
+              <p class="text-base-light text-center mb-4 mt-1">({{ scrap.length }})</p>
+              <v-btn v-if="!smAndDown" variant="outlined" color="base-light">
                 {{ $t('game.view') }}
               </v-btn>
             </div>
@@ -69,9 +69,9 @@
     <template #title>
       <div class="d-flex justify-space-between align-center w-100">
         <h1>{{ t('game.dialogs.scrapDialog.scrapPile') }}</h1>
-        <v-btn 
+        <v-btn
           icon
-          color="surface-2"
+          color="base-light"
           variant="text"
           data-cy="close-scrap-dialog-x"
           aria-label="Close scrap dialog" 
@@ -97,7 +97,7 @@
     <template #actions>
       <v-btn
         data-cy="close-scrap-dialog-button"
-        color="surface-1"
+        color="base-dark"
         variant="flat"
         @click="showDialog = false"
       >
@@ -186,26 +186,27 @@ function openDialog(e) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3 ease-in-out; // for tidying/messing up pile
+    transition: transform var(--duration-fast) ease-in-out;
     cursor: pointer;
     user-select: none;
+    contain: var(--contain-isolated);
     
     & #scrap-header {
-      font-family: 'Luckiest Guy';
-      color: rgba(var(--v-theme-surface-2));
+      font-family: var(--font-heading);
+      color: rgba(var(--v-theme-base-light));
       text-align: center;
       font-size: 40px;
       line-height: 40px;
     }
 
     & #scrap-length {
-      font-family: 'Luckiest Guy';
+      font-family: var(--font-heading);
     }
 
     & #empty-scrap-activator {
       height: 100%;
       width: 100%;
-      background-color: rgba(var(--v-theme-surface-1), .46);
+      background-color: rgba(var(--v-theme-base-dark), .46);
       padding: 16px;
       border-radius: 20px;
       display: flex;
@@ -215,10 +216,10 @@ function openDialog(e) {
     }
 
     & .scrap-card {
-      transition: transform .3s ease-in;
+      transition: transform var(--duration-fast) ease-in;
     }
 
-    // Psuedo-random rotation+translation of cards in the pile
+    // Pseudo-random rotation+translation of cards in the pile
     @for $i from 0 through 10 {
       & .scrap-card-#{$i} {
         $rotation: sin($i * 30) * 8deg; /* sin(degrees) returns -1 to 1 */
@@ -234,7 +235,7 @@ function openDialog(e) {
 // Entering Scrap Transition //
 ///////////////////////////////
 #scrap .scrap-card.scrap-enter-active {
-  transition: all .8s ease-out;
+  transition: opacity var(--duration-slow) ease-out, transform var(--duration-slow) ease-out;
 }
 
 #scrap .scrap-card.scrap-enter-from {
@@ -247,19 +248,22 @@ function openDialog(e) {
 //////////////////////
 #scrap .threes-player-enter-active,
 #scrap .threes-opponent-enter-active {
-  transition: all .5s ease-in;
+  transition:
+    opacity var(--duration-normal) ease-in,
+    transform var(--duration-normal) ease-in,
+    rotate var(--duration-normal) ease-in;
 }
 
 #scrap .threes-player-enter-from,
 #scrap .threes-opponent-enter-from {
   opacity: 0;
   transform: rotate(15deg) translateX(80px);
-  rotate: y -90deg;
+  rotate: 0 1 0 -90deg;
 }
 
 #scrap .threes-player-leave-active,
 #scrap .threes-opponent-leave-active {
-  transition: all 1.2s ease-out;
+  transition: opacity var(--duration-slow) ease-out, transform var(--duration-slow) ease-out;
 }
 
 // Leaving towards player hand
@@ -278,12 +282,12 @@ function openDialog(e) {
 ////////////////////////////////////////
 #scrap .scrap-empty-enter-active,
 #scrap .scrap-empty-leave-active {
-  transition: all .5s ease-in;
+  transition: opacity var(--duration-normal) ease-in, rotate var(--duration-normal) ease-in;
 }
 
 #scrap .scrap-empty-leave-to {
   opacity: 0;
-  rotate: y -90deg;
+  rotate: 0 1 0 -90deg;
 }
 
 @media (max-width: 960px) and (orientation: landscape) {

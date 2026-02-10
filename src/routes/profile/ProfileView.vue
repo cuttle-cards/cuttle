@@ -1,36 +1,19 @@
 <template>
-  <div style="background-color: rgba(var(--v-theme-surface-1)); min-height: 100vh">
+  <div style="background-color: rgba(var(--v-theme-base-dark)); min-height: 100vh">
     <v-container class="pa-6">
-      <h1 style="color: rgba(var(--v-theme-surface-2))">
+      <h1 style="color: rgba(var(--v-theme-base-light))">
         {{ t('global.profile') }}
       </h1>
-      <p style="color: rgba(var(--v-theme-surface-2))" data-cy="username">
+      <p style="color: rgba(var(--v-theme-base-light))" data-cy="username">
         {{ t('global.username') }}: {{ authStore.username }}
       </p>
 
-      <!-- Discord -->
-      <v-card
-        flat
-        class="pa-4 mt-4"
-        style="background-color: rgba(var(--v-theme-surface-1)); color: rgba(var(--v-theme-surface-2))"
-      >
-        <h2>Discord</h2>
-        <div v-if="hasDiscord">
-          <span data-cy="discord-username" style="color: rgba(var(--v-theme-surface-1))">
-            {{ t('profile.connectedAs') }} {{ discordUsername }}
-          </span>
-        </div>
-        <div v-else style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
-          <span data-cy="not-connected" style="color: #ccc">{{ t('profile.notConnected') }}</span>
-          <DiscordLink />
-        </div>
-      </v-card>
-
+      <LinkedAccountsList />
       <!-- Games List -->
       <v-card
         flat
         class="pa-4 mt-4"
-        style="background-color: rgba(var(--v-theme-surface-2)); color: rgba(var(--v-theme-surface-1))"
+        style="background-color: rgba(var(--v-theme-base-light)); color: rgba(var(--v-theme-base-dark))"
       >
         <h2>{{ t('profile.myGames') }}</h2>
 
@@ -59,7 +42,7 @@
         </div>
 
         <!-- Fallback message when no games -->
-        <p v-else-if="games.length === 0" style="color: rgba(var(--v-theme-surface-1))">
+        <p v-else-if="games.length === 0" style="color: rgba(var(--v-theme-base-dark))">
           {{ t('profile.noGamesFound') }}
         </p>
       </v-card>
@@ -70,22 +53,16 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import DiscordLink from '@/components/DiscordLink.vue';
+
 import { useMyGamesStore } from '@/stores/myGames';
 import ProfileGameListItem from './ProfileGameListItem.vue';
+import LinkedAccountsList from './LinkedAccountsList.vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const myGamesStore = useMyGamesStore();
 
-const hasDiscord = computed(() =>
-  authStore.identities?.some(({ provider }) => provider === 'discord')
-);
-const discordUsername = computed(() => {
-  const discordIdentity = authStore.identities?.find(({ provider }) => provider === 'discord');
-  return discordIdentity?.username || '';
-});
 
 const games = computed(() => myGamesStore.games);
 

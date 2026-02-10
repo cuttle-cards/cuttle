@@ -11,7 +11,7 @@
     class="base-snackbar"
     position="fixed"
     location="bottom"
-    z-index="2412"
+    z-index="2423"
     data-cy="global-snackbar"
     @update:model-value="clear"
   >

@@ -24,7 +24,7 @@
     </template>
     <template #actions>
       <v-btn
-        color="surface-1"
+        color="base-dark"
         variant="flat"
         data-cy="submit-five-dialog"
         :disabled="disableButton"

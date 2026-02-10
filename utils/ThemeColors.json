@@ -1,0 +1,8 @@
+{
+  "BASE_DARK": "base-dark",
+  "BASE_LIGHT": "base-light",
+  "PRIMARY": "primary",
+  "SECONDARY": "secondary",
+  "ACCENT": "accent",
+  "CASUAL": "casual"
+}
