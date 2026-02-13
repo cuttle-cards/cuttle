@@ -920,6 +920,10 @@ export default {
           }
           break;
       }
+      if (!target) {
+        this.handleError('game.snackbar.global.default');
+        return;
+      }
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore
