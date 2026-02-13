@@ -640,8 +640,10 @@ export default {
           });
           return [ ...opponentFaceCardIds, ...opponentJackIds ];
         }
-        case 1:
-          return [ this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id ];
+        case 1: {
+          const queen = this.gameStore.opponent.faceCards.find((card) => card.rank === 12);
+          return queen ? [ queen.id ] : [];
+        }
         default:
           return [];
       }
