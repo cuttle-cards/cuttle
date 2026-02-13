@@ -1159,10 +1159,25 @@ export default {
   & #deck {
     cursor: pointer;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: rgba(255, 255, 255, 0);
+    background-size: cover;
+    margin: 10px;
+    height: 29vh;
+    width: calc(29vh / 1.3);
+    transition: width var(--duration-fast) ease-in-out;
+    background-image: url('/img/game/bg-deck.png');
+    contain: var(--contain-isolated);
     &.reveal-top-two {
       color: white;
       background-image: none;
+      width: calc(29vh * 1.5);
+      max-width: 300px;
+      z-index: 1;
+
       & .resolving-seven-card {
         width: 9.5rem;
       }
@@ -1185,28 +1200,8 @@ export default {
       color: white;
     }
   }
-  & #deck {
-    background-size: cover;
-    position: relative;
-    margin: 10px;
-    height: 29vh;
-    width: calc(29vh / 1.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: width var(--duration-fast) ease-in-out;
-    background-image: url('/img/game/bg-deck.png');
-    contain: var(--contain-isolated);
-
-    &.reveal-top-two {
-      width: calc(29vh * 1.5);
-      max-width: 300px;
-      z-index: 1;
-    }
-  }
-
 }
+
 #field-center {
   width: 100%;
   height: 100%;
