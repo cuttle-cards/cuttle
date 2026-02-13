@@ -43,7 +43,7 @@ export const useMyGamesStore = defineStore('myGames', () => {
       hasMore.value = moreAvailable;
       totalCount.value = total;
     } catch (err) {
-      console.error('Error loading games:', err);
+      console.warn('Error loading games:', err);
     } finally {
       loading.value = false;
     }
