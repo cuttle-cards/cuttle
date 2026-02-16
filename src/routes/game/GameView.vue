@@ -921,7 +921,7 @@ export default {
           break;
       }
       if (!target) {
-        this.handleError('game.snackbar.global.default');
+        this.handleError('lobby.error.fallback');
         return;
       }
       if (this.gameStore.resolvingSeven) {
