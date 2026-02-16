@@ -366,7 +366,8 @@
     "playAiContent2": "to learn the ropes and test your mettle.",
     "gameName": "Game Name",
       "join": "Join",
-      "playVsAi": "Play VS AI"
+      "playVsAi": "Play VS AI",
+      "failedToLoadGameList": "Failed to load game list. Please try again later."
   },
   "rules": {
     "introduction": "Introduction",
@@ -579,6 +580,7 @@
     "connectedAs": "Connected",
     "notConnected": "not connected",
     "replay": "Replay",
-    "linkedAccounts": "Linked Accounts"
+    "linkedAccounts": "Linked Accounts",
+    "failedToLoadGames": "Failed to load game history. Please try again later."
   }
 }

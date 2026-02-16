@@ -215,8 +215,8 @@ export default {
   async created() {
     try {
       await this.gameListStore.requestGameList();
-    } catch (err) {
-      console.warn('Failed to load game list:', err);
+    } catch {
+      this.snackbarStore.alert(this.t('home.failedToLoadGameList'));
     } finally {
       this.loadingData = false;
       this.tab = this.$route.path;

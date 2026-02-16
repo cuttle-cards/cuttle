@@ -55,6 +55,7 @@ import { computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 import { useMyGamesStore } from '@/stores/myGames';
+import { useSnackbarStore } from '@/stores/snackbar';
 import ProfileGameListItem from './ProfileGameListItem.vue';
 import LinkedAccountsList from './LinkedAccountsList.vue';
 import { useI18n } from 'vue-i18n';
@@ -62,7 +63,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const authStore = useAuthStore();
 const myGamesStore = useMyGamesStore();
-
+const snackbarStore = useSnackbarStore();
 
 const games = computed(() => myGamesStore.games);
 
@@ -86,8 +87,8 @@ async function fetchGames() {
       sortDirection: 'desc',
       reset: true
     });
-  } catch (err) {
-    console.warn('Failed to fetch games:', err);
+  } catch {
+    snackbarStore.alert(t('profile.failedToLoadGames'));
   }
 }
 
@@ -108,8 +109,8 @@ async function loadMoreGames() {
       sortBy: 'createdAt',
       sortDirection: 'desc'
     });
-  } catch (err) {
-    console.warn('Failed to load more games:', err);
+  } catch {
+    snackbarStore.alert(t('profile.failedToLoadGames'));
   }
 }
 
