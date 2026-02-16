@@ -61,6 +61,12 @@ export default {
 
 <style lang="scss">
 @use '@/sass/typography';
+@use '@/sass/transitions';
+
+:root {
+  // CSS containment for isolated components
+  --contain-isolated: layout style;
+}
 
 .gradient-text {
   background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);

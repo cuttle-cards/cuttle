@@ -1,7 +1,7 @@
 <template>
   <footer>
     <v-bottom-navigation
-      bg-color="surface-2"
+      bg-color="base-light"
       :elevation="0"
       grow
     >
@@ -35,7 +35,7 @@ const route = useRoute();
 const pageLinks = getPageLinks();
 
 const tabColor = (page) => {
-  return route.name === page ? 'text-primary' : 'text-surface-1';
+  return route.name === page ? 'text-primary' : 'text-base-dark';
 };
 
 </script>

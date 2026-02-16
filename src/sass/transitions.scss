@@ -1,0 +1,83 @@
+:root {
+  // Animation duration buckets (all respect prefers-reduced-motion)
+  --duration-fast: 0.3s;
+  --duration-normal: 0.5s;
+  --duration-slow: 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0s;
+    --duration-normal: 0s;
+    --duration-slow: 0s;
+  }
+}
+
+.slide-down-enter-active,
+.slide-up-enter-active,
+.slide-down-left-enter-active,
+.slide-up-down-enter-active,
+.slide-down-leave-active,
+.slide-up-leave-active,
+.slide-down-left-leave-active,
+.slide-up-down-leave-active {
+  transition: opacity var(--duration-slow), transform var(--duration-slow);
+}
+
+.slide-down-leave-active,
+.slide-up-leave-active,
+.slide-down-left-leave-active,
+.slide-up-down-leave-active {
+  position: absolute;
+}
+
+.slide-down-move,
+.slide-up-move,
+.slide-down-left-move,
+.slide-up-down-move {
+  transition: transform var(--duration-slow);
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-32px);
+}
+
+.slide-down-left-enter-from {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.slide-down-left-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
+.slide-up-down-enter-from {
+  opacity: 0;
+  transform: translateY(-32px);
+}
+
+.slide-up-down-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.card-flip-enter-active {
+  transition: transform var(--duration-slow);
+}
+
+.card-flip-enter-from {
+  transform: rotateY(-90deg);
+}
+
+.card-flip-enter-to {
+  transform: rotateY(0deg);
+}

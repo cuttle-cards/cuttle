@@ -4,7 +4,7 @@
       <v-btn
         icon 
         aria-label="Close rules dialog"
-        color="surface-2" 
+        color="base-light" 
         class="position-fixed top-0 closeBtn"
         size="large"
         @click="emit('close')"
@@ -18,7 +18,7 @@
       <RulesView :is-in-modal="true" :parent-modal-id="'#rulesDialog'" />
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="surface-1" @click="emit('close')">
+      <v-btn variant="outlined" color="base-dark" @click="emit('close')">
         Got It!
       </v-btn>
     </template>

@@ -24,7 +24,7 @@
     <template #actions>
       <v-btn
         variant="text"
-        color="surface-1"
+        color="base-dark"
         data-cy="cancel-counter"
         @click="resolve"
       >

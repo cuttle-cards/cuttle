@@ -1,10 +1,10 @@
 <template>
-  <div style="background-color: rgba(var(--v-theme-surface-1)); min-height: 100vh">
+  <div style="background-color: rgba(var(--v-theme-base-dark)); min-height: 100vh">
     <v-container class="pa-6">
-      <h1 style="color: rgba(var(--v-theme-surface-2))">
+      <h1 style="color: rgba(var(--v-theme-base-light))">
         {{ t('global.profile') }}
       </h1>
-      <p style="color: rgba(var(--v-theme-surface-2))" data-cy="username">
+      <p style="color: rgba(var(--v-theme-base-light))" data-cy="username">
         {{ t('global.username') }}: {{ authStore.username }}
       </p>
 
@@ -13,7 +13,7 @@
       <v-card
         flat
         class="pa-4 mt-4"
-        style="background-color: rgba(var(--v-theme-surface-2)); color: rgba(var(--v-theme-surface-1))"
+        style="background-color: rgba(var(--v-theme-base-light)); color: rgba(var(--v-theme-base-dark))"
       >
         <h2>{{ t('profile.myGames') }}</h2>
 
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Fallback message when no games -->
-        <p v-else-if="games.length === 0" style="color: rgba(var(--v-theme-surface-1))">
+        <p v-else-if="games.length === 0" style="color: rgba(var(--v-theme-base-dark))">
           {{ t('profile.noGamesFound') }}
         </p>
       </v-card>

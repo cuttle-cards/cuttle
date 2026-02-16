@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vuetify({
-        autoImport: false,
+        autoImport: true,
         styles: { configFile: 'src/sass/variables.scss' },
       }),
       vueDevTools(),

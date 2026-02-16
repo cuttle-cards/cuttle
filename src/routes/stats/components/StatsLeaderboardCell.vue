@@ -10,7 +10,7 @@
         :color="colorForScore"
         :variant="variant"
         class="pointer"
-        :class="colorForScore === 'surface-2' ? 'text-surface-1' : 'text-surface-2'"
+        :class="colorForScore === 'base-light' ? 'text-base-dark' : 'text-base-light'"
         rounded="sm"
         :data-cy="`week-${week}-points-${playerRow.username}`"
         v-bind="{
@@ -21,7 +21,7 @@
       </v-chip>
     </template>
     <template #body="{ listProps }">
-      <v-list v-bind="listProps" class="text-surface-1">
+      <v-list v-bind="listProps" class="text-base-dark">
         <v-list-item :title="t('stats.wins')" :data-players-beaten="`${username}-week-${week}`" v-bind="listProps">
           {{ playersBeatenText }}
         </v-list-item>
@@ -108,7 +108,7 @@ export default {
         return this.theme.secondPlace;
       }
       if (this.points === this.topTotalScores.third) {
-        return 'surface-2';
+        return 'base-light';
       }
       return '#000';
     },
@@ -119,7 +119,7 @@ export default {
         case 4:
           return this.theme.secondPlace;
         case 3:
-          return 'surface-2';
+          return 'base-light';
         case 2:
         case 1:
         default:
@@ -130,7 +130,7 @@ export default {
       switch (this.colorForScore) {
         case this.theme.firstPlace:
         case this.theme.secondPlace:
-        case 'surface-2':
+        case 'base-light':
           return 'flat';
         default:
           return 'outlined';

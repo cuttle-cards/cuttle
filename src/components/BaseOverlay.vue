@@ -39,11 +39,12 @@ const _props = defineProps({
   justify-content: center;
   align-items: center;
   text-align: center;
+  contain: var(--contain-isolated);
 }
 .overlay-header {
   font-weight: bold;
-  background-color: rgba(var(--v-theme-surface-2));
-  color: rgba(var(--v-theme-surface-1));
+  background-color: rgba(var(--v-theme-base-light));
+  color: rgba(var(--v-theme-base-dark));
   padding: 24px;
   text-align: center;
   width: 100vw;
