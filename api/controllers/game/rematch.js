@@ -10,8 +10,8 @@ const GameStatus = require('../../../utils/GameStatus.json');
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 
-let game;
 module.exports = async function (req, res) {
+  let game;
   try {
     const { usr: userId } = req.session;
     let { gameId: oldGameId } = req.params;

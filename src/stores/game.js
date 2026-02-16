@@ -358,7 +358,9 @@ export const useGameStore = defineStore('game', () => {
       return;
     }
 
-    scuttlingPlayer.hand.splice(playedCardIndex, 1);
+    if (playedCardIndex !== -1) {
+      scuttlingPlayer.hand.splice(playedCardIndex, 1);
+    }
 
     const targetCardOnField = scuttledPlayer.points[targetCardIndex];
     targetCardOnField.scuttledBy = playedCard;

@@ -1048,6 +1048,7 @@ export default {
           })
           .then(this.clearSelection)
           .catch(this.handleError);
+        return;
       }
       if (!this.selectedCard) {
         return;
