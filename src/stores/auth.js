@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
       } catch (err) {
         // We never want to stop a logout request from resolving
         // so we just capture the error and allow it to clearAuth anyway
-        console.error(err);
+        console.warn('Logout request failed:', err);
       }
       this.clearAuth();
       return;

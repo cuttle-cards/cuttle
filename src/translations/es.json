@@ -365,7 +365,8 @@
     "playAiContent2": "para aprender y poner a prueba tus habilidades.",
     "gameName": "Nombre de la partida",
       "join": "Unirse",
-      "playVsAi": "Jugar contra la IA"
+      "playVsAi": "Jugar contra la IA",
+      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde."
   },
   "rules": {
     "introduction": "Introducción",
@@ -578,6 +579,7 @@
     "connectedAs": "Conectado como",
     "notConnected": "No conectado",
     "replay": "Repetir",
-    "linkedAccounts": "Cuentas vinculadas"
+    "linkedAccounts": "Cuentas vinculadas",
+    "failedToLoadGames": "No se pudo cargar el historial de partidas. Inténtalo de nuevo más tarde."
   }
 }
