@@ -365,7 +365,8 @@
     "playAiContent2": "um die Grundlagen zu lernen und dein Können zu testen.",
     "gameName": "Spielname",
       "join": "Beitreten",
-      "playVsAi": "Gegen die KI spielen"
+      "playVsAi": "Gegen die KI spielen",
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut."
   },
   "rules": {
     "introduction": "Einleitung",
@@ -578,6 +579,7 @@
     "connectedAs": "Verbunden als",
     "notConnected": "Nicht verbunden",
     "replay": "Erneut abspielen",
-    "linkedAccounts": "Verknüpfte Konten"
+    "linkedAccounts": "Verknüpfte Konten",
+    "failedToLoadGames": "Spielverlauf konnte nicht geladen werden. Bitte versuche es später erneut."
   }
 }

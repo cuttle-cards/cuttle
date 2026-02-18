@@ -215,8 +215,8 @@ export default {
   async created() {
     try {
       await this.gameListStore.requestGameList();
-    } catch (err) {
-      console.log(err);
+    } catch {
+      this.snackbarStore.alert(this.t('home.failedToLoadGameList'));
     } finally {
       this.loadingData = false;
       this.tab = this.$route.path;
@@ -251,10 +251,7 @@ export default {
           this.$router.push('/login');
         })
         .catch((err) => {
-          if (err) {
-            console.error(err);
-          }
-          console.log('Error logging out');
+          console.warn('Error logging out:', err);
         });
     },
   },
