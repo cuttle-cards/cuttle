@@ -365,7 +365,8 @@
     "playAiContent2": "pour apprendre les bases et tester votre courage.",
     "gameName": "Nom de la partie",
       "join": "Rejoindre",
-      "playVsAi": "Jouer contre l'IA"
+      "playVsAi": "Jouer contre l'IA",
+      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard."
   },
   "rules": {
     "introduction": "Introduction",
@@ -578,6 +579,7 @@
     "connectedAs": "Connecté en tant que",
     "notConnected": "Non connecté",
     "replay": "Rejouer",
-    "linkedAccounts": "Comptes liés"
+    "linkedAccounts": "Comptes liés",
+    "failedToLoadGames": "Impossible de charger l'historique des parties. Veuillez réessayer plus tard."
   }
 }
