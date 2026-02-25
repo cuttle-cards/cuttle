@@ -80,7 +80,7 @@ const getGameState = async (to) => {
   gameStateIndex = isValidGameStateIndex ? gameStateIndex : -1;
   try {
     const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
-    if(!response.game.players.some(({ username }) => username === authStore.username)) {
+    if (!response.game.players.some(({ username }) => username === authStore.username)) {
       return { name: ROUTE_NAME_SPECTATE, params: { gameId: gameId } };
     }
     if (response?.victory?.gameOver && response.game.rematchGame) {
