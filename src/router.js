@@ -71,6 +71,7 @@ const checkAndSubscribeToLobby = async (to) => {
 
 const getGameState = async (to) => {
   const gameStore = useGameStore();
+  const authStore = useAuthStore();
   const gameId = parseInt(to.params.gameId);
   gameStore.id = gameId;
 
@@ -79,6 +80,9 @@ const getGameState = async (to) => {
   gameStateIndex = isValidGameStateIndex ? gameStateIndex : -1;
   try {
     const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
+    if(!response.game.players.some(({ username }) => username === authStore.username)) {
+      return { name: ROUTE_NAME_SPECTATE, params: { gameId: gameId } };
+    }
     if (response?.victory?.gameOver && response.game.rematchGame) {
       await gameStore.requestGameState(response.game.rematchGame);
       return { name: to.name, params: { gameId: response.game.rematchGame } };
