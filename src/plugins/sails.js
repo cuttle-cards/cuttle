@@ -54,11 +54,22 @@ if (!import.meta.env.PROD) {
   io.sails.url = import.meta.env.VITE_API_URL || 'http://localhost:1337';
 }
 
+let gameEventQueue = Promise.resolve();
+
+export async function addGameEventToQueue(event) {
+  // Each update runs independently - errors won't affect the chain
+  gameEventQueue = gameEventQueue
+    .then(() => handleInGameEvents(event))
+    .catch(error => {
+      console.error('Failed to process game event:', error);
+    });
+}
+
 io.sails.transports = [ 'websocket' ];
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
 
-io.socket.on('game', handleInGameEvents);
+io.socket.on('game', addGameEventToQueue);
 
 io.socket.on('gameCreated', handleGameCreated);
 

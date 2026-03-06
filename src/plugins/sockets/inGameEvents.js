@@ -63,21 +63,21 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.SCUTTLE:
     case SocketEvent.SEVEN_SCUTTLE:
-      gameStore.processScuttle(evData);
+      await gameStore.processScuttle(evData);
       break;
     case SocketEvent.RESOLVE_THREE:
-      gameStore.processThrees(evData.chosenCard, evData.game);
+      await gameStore.processThrees(evData.chosenCard, evData.game);
       break;
     case SocketEvent.RESOLVE_FOUR:
       if (evData.playedBy !== gameStore.myPNum) {
-        gameStore.processFours(evData.discardedCards, evData.game);
+        await gameStore.processFours(evData.discardedCards, evData.game);
       } else {
         gameStore.updateGame(evData.game);
       }
       break;
     case SocketEvent.RESOLVE_FIVE:
       if (evData.playedBy !== gameStore.myPNum) {
-        gameStore.processFives(evData.discardedCards, evData.game);
+        await gameStore.processFives(evData.discardedCards, evData.game);
       } else {
         gameStore.updateGame(evData.game);
       }
@@ -142,7 +142,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
   const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
   const shouldNavigate = targetRoute.name === ROUTE_NAME_LOBBY;
   if (!newRoute && shouldNavigate) {
-    router.replace({
+    await router.replace({
       name: targetRouteName,
       params: {
         gameId: gameStore.id,
