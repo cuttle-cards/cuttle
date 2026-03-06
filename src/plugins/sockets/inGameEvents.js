@@ -7,20 +7,8 @@ import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router
 import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
-let updateQueue = Promise.resolve();
-
-export async function handleInGameEvents(event) {
-  // Each update runs independently - errors won't affect the chain
-  updateQueue = updateQueue
-    .then(() => processGameEvent(event))
-    .catch(error => {
-      console.error('Failed to process game event:', error);
-      // Return resolved promise to continue chain
-    });
-}
-
 // Handles socket updates of game data
-export async function processGameEvent(evData, newRoute = null) {
+export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
   const gameHistoryStore = useGameHistoryStore();
   const snackbarStore = useSnackbarStore();
