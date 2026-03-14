@@ -343,14 +343,13 @@ export const useGameStore = defineStore('game', () => {
       p1Rematch.value = rematch;
     }
   }
-  async function processScuttle({ game, playedCard, targetCard, playedBy }) {
+  async function processScuttle({ game, playedCard, targetCard, playedBy, change }) {
     if (!player.value) {
       updateGame(game);
       return;
     }
     const scuttlingPlayer = players.value[playedBy];
     const scuttledPlayer = players.value[(playedBy + 1) % 2];
-    const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCard.id);
     const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCard.id);
 
     if (targetCardIndex === -1) {
@@ -358,8 +357,11 @@ export const useGameStore = defineStore('game', () => {
       return;
     }
 
-    if (playedCardIndex !== -1) {
-      scuttlingPlayer.hand.splice(playedCardIndex, 1);
+    if (change !== MoveType.SEVEN_SCUTTLE) {
+      const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCard.id);
+      if (playedCardIndex !== -1) {
+        scuttlingPlayer.hand.splice(playedCardIndex, 1);
+      }
     }
 
     const targetCardOnField = scuttledPlayer.points[targetCardIndex];
