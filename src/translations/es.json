@@ -564,10 +564,14 @@
     }
   },
   "announcement": {
-    "activatorText": "Actualización de Reglas: ¡No se puede un tres por un tres!",
-    "title": "Actualización del Tres",
-    "heading": "No se puede un tres por un tres",
-    "paragraph": "Para evitar que los jugadores retrasen el juego indefinidamente haciendo la 'no-jugada' de jugar un tres para tomar un tres diferente del descarte, ya no se permite que los tres sean la carta seleccionada al tomar del descarte. ¡Todavía puedes usar un tres para tomar cualquier otra carta, solo no otro tres! Esto debería tener un impacto mínimo en la mayoría de las partidas, ya que tomar un tres con otro tres rara vez es una jugada que valga la pena, pero como ha surgido recientemente, este cambio debería prevenir patrones de juego poco divertidos en situaciones donde los jugadores tienen la intención de retrasar la partida."
+    "activatorText": "¡Felicidades! ¡Has obtenido un lugar en el campeonato de la temporada!",
+    "title": "Invitación al Campeonato",
+    "heading": "Conviértete en un Campeón de Cuttle",
+    "paragraph": "¡Felicidades! Has obtenido un lugar en el torneo del Campeonato de la Temporada Cuttle Clubs 2026. Cada temporada, los 8 mejores jugadores en la clasificación obtienen el derecho a competir en el campeonato de la temporada. Has ganado este prestigioso privilegio esta temporada y estás invitado a competir en el Campeonato de la Temporada Cuttle Clubs 2026. Para participar, por favor completa tu disponibilidad en este",
+    "when2MeetLink": " enlace de when2meet ",
+    "paragraph2": "para confirmar tu disponibilidad. Si es posible, únete al ",
+    "discordLink": " Cuttle Discord ",
+    "paragraph3": "y envía un mensaje directo a aleph_one para confirmar los detalles del torneo. De lo contrario, envía un correo electrónico a play.cuttle.cards@gmail.com para informarnos si deseas competir. Los torneos generalmente se llevan a cabo los fines de semana"
   },
   "profile": {
     "myGames": "Mis juegos",
