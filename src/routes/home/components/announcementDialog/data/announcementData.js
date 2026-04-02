@@ -7,8 +7,8 @@ export const announcementData = {
   displayCards: [],
   // imgSrc: '/img/announcement/clubs_2025_cuttle_season_championship.svg',
   startTime: '2026-04-01',
-  endTime: '2025-04-10',
-  userIds: [ 1879, 37341, 204, 887, 1058, 456, 1076, 212 ],
+  endTime: '2026-04-10',
+  userIds: [ 1879, 37341, 204, 887, 1058, 456, 1076, 212, 1 ],
   announcementText: [
     {
       heading: 'announcement.heading',
