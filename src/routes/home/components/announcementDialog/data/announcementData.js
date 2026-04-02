@@ -1,7 +1,7 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'clubs2025Participants',
+  id: 'clubs2026Participants',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [],
