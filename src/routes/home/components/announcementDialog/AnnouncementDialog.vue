@@ -57,19 +57,22 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
 import { announcementData } from './data/announcementData';
+import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseParagraph from '@/components/BaseParagraph.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
 const { t } = useI18n();
+const authStore = useAuthStore();
 const show = ref(false);
 const preferenceSaved= ref(false);
 
 const announcementIsActive = computed(() => {
   const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
   const isBeforeEndTime = announcementData.endTime ? dayjs().isBefore(dayjs(announcementData.endTime)) : true;
+  const appliesToMyUser = !announcementData.userIds?.length || announcementData.userIds.includes(authStore.userId);
 
-  return isAfterStartTime && isBeforeEndTime;
+  return isAfterStartTime && isBeforeEndTime && appliesToMyUser;
 });
 
 const close = () => {

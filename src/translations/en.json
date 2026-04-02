@@ -565,10 +565,14 @@
     }
   },
   "announcement": {
-    "activatorText": "Rule Update: Can't three for a three!",
-    "title": "Three Update",
-    "heading": "Can't three for a three",
-    "paragraph": "In order to prevent players from indefinitely stalling the game by making the 'non-move' of playing a three to pull a different three from the scrap, threes are no longer allowed as the selected card when picking from the scrap. You can still three for anything else, just not another three! This should have minimal impact on most games, as threeing-for-a-three is rarely a worthwhile move, but as it's come up recently, this change should prevent unfun play patterns in situations wher players are intent on stalling the game."
+    "activatorText": "Congratulations! You've earned a season championship spot!",
+    "title": "Championship Invitation",
+    "heading": "Become a Cuttle Champion",
+    "paragraph": "Congratulations! You've earned a spot in the Clubs 2026 Cuttle Season Championship tournament. Every season, the top 8 players on the ranked leaderboard earn the right to compete in the season championship tournament. You've earned this esteemed privilege this season and are invited to compete in the Clubs 2026 Cuttle Season Championship! To participate, please fill out your availability on this",
+    "when2MeetLink": " when2meet link ",
+    "paragraph2": "to confirm your availability. If possible, please join the ",
+    "discordLink": " Cuttle Discord ",
+    "paragraph3": "and DM aleph_one to confirm tournament logistics. Otherwise please email play.cuttle.cards@gmail.com to let us know if you'd like to compete! Tournaments are generally held on weekends"
   },
   "profile": {
     "myGames": "My Games",

@@ -564,10 +564,14 @@
     }
   },
   "announcement": {
-    "activatorText": "Regelupdate: Man kann keine Drei für eine Drei tauschen!",
-    "title": "Drei-Update",
-    "heading": "Man kann keine Drei für eine Drei tauschen",
-    "paragraph": "Um zu verhindern, dass Spieler das Spiel unbegrenzt verzögern, indem sie den 'Nicht-Zug' machen, eine Drei zu spielen, um eine andere Drei aus dem Ablagestapel zu ziehen, sind Dreien nicht mehr als ausgewählte Karte erlaubt, wenn man vom Ablagestapel zieht. Du kannst immer noch eine Drei für alles andere tauschen, nur nicht für eine andere Drei! Dies sollte minimale Auswirkungen auf die meisten Spiele haben, da das Tauschen einer Drei gegen eine Drei selten ein lohnender Zug ist, aber da es kürzlich vorgekommen ist, sollte diese Änderung unfaire Spielmuster in Situationen verhindern, in denen Spieler darauf abzielen, das Spiel zu verzögern."
+    "activatorText": "Glückwunsch! Du hast dir einen Platz in der Saisonmeisterschaft gesichert!",
+    "title": "Einladung zur Meisterschaft",
+    "heading": "Werde ein Cuttle-Champion",
+    "paragraph": "Glückwunsch! Du hast dir einen Platz im Clubs 2026 Cuttle Saisonmeisterschaftsturnier verdient. In jeder Saison erhalten die Top 8 Spieler der Rangliste das Recht, an der Saisonmeisterschaft teilzunehmen. Du hast dir dieses angesehene Privileg in dieser Saison verdient und bist eingeladen, am Clubs 2026 Cuttle Saisonmeisterschaftsturnier teilzunehmen! Um teilzunehmen, fülle bitte deine Verfügbarkeit über diesen",
+    "when2MeetLink": " when2meet Link ",
+    "paragraph2": "aus, um deine Verfügbarkeit zu bestätigen. Wenn möglich, tritt bitte dem ",
+    "discordLink": " Cuttle Discord ",
+    "paragraph3": "bei und sende eine Direktnachricht an aleph_one, um die Turnierdetails zu bestätigen. Alternativ sende bitte eine E-Mail an play.cuttle.cards@gmail.com, um uns mitzuteilen, ob du teilnehmen möchtest! Turniere finden in der Regel an Wochenenden statt"
   },
   "profile": {
     "myGames": "Meine Spiele",

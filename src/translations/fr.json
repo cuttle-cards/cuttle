@@ -564,10 +564,14 @@
     }
   },
   "announcement": {
-    "activatorText": "Mise à jour des Règles : On ne peut pas échanger un trois contre un trois !",
-    "title": "Mise à Jour du Trois",
-    "heading": "On ne peut pas échanger un trois contre un trois",
-    "paragraph": "Afin d'empêcher les joueurs de retarder indéfiniment le jeu en faisant le 'non-coup' de jouer un trois pour piocher un trois différent de la défausse, les trois ne sont plus autorisés comme carte sélectionnée lorsqu'on pioche dans la défausse. Vous pouvez toujours utiliser un trois pour piocher n'importe quelle autre carte, mais pas un autre trois ! Cela devrait avoir un impact minimal sur la plupart des parties, car échanger un trois contre un trois est rarement un coup intéressant, mais comme cela s'est produit récemment, ce changement devrait prévenir des schémas de jeu peu amusants dans les situations où les joueurs ont l'intention de retarder la partie."
+    "activatorText": "Félicitations ! Vous avez obtenu une place pour le championnat de la saison !",
+    "title": "Invitation au Championnat",
+    "heading": "Devenez un Champion Cuttle",
+    "paragraph": "Félicitations ! Vous avez obtenu une place dans le tournoi du Championnat de la Saison Cuttle Clubs 2026. Chaque saison, les 8 meilleurs joueurs du classement obtiennent le droit de participer au championnat de la saison. Vous avez gagné ce privilège prestigieux cette saison et êtes invité à participer au Championnat de la Saison Cuttle Clubs 2026 ! Pour participer, veuillez indiquer vos disponibilités via ce",
+    "when2MeetLink": " lien when2meet ",
+    "paragraph2": "afin de confirmer votre disponibilité. Si possible, veuillez rejoindre le ",
+    "discordLink": " Cuttle Discord ",
+    "paragraph3": "et envoyer un message privé à aleph_one pour confirmer les détails du tournoi. Sinon, veuillez envoyer un e-mail à play.cuttle.cards@gmail.com pour nous indiquer si vous souhaitez participer ! Les tournois ont généralement lieu le week-end"
   },
   "profile": {
     "myGames": "Mes jeux",
