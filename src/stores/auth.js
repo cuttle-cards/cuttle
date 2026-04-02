@@ -6,15 +6,17 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     // This value will ONLY be null on the initial load
     authenticated: null,
+    userId: null,
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
     identities: []
   }),
   actions: {
-    authSuccess(username) {
+    authSuccess(username, userId) {
       this.authenticated = true;
       this.username = username;
+      this.userId = userId;
     },
     clearAuth() {
       this.authenticated = false;
@@ -45,7 +47,7 @@ export const useAuthStore = defineStore('auth', {
     requestReauthenticate({ username, password }) {
       return new Promise((resolve, reject) => {
         // Assume successful login - cancel upon error
-        this.authSuccess(username);
+        this.authSuccess(username, null);
         io.socket.get(
           '/api/user/reLogin',
           {
@@ -55,6 +57,7 @@ export const useAuthStore = defineStore('auth', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.mustReauthenticate = false;
+              this.authSuccess(username, res);
               return resolve(res);
             }
             this.clearAuth();
@@ -74,7 +77,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, identities } = status;
+        const { authenticated, username, identities, id } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -82,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
         }
         // If the user is authenticated and has a username, add it to the store
         if (username) {
-          this.authSuccess(username);
+          this.authSuccess(username, id);
         }
         if (identities) {
           this.identities = identities;
@@ -133,7 +136,7 @@ export const useAuthStore = defineStore('auth', {
         await reconnectSockets();
         // If the response was successful, the user is logged in
         this.setIsReturningUser();
-        this.authSuccess(username);
+        this.authSuccess(username, data);
         return;
       } catch (err) {
         this.clearAuth();
