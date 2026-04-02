@@ -14,7 +14,7 @@ export const announcementData = {
       heading: 'announcement.heading',
       paragraph: [
         { text: 'announcement.paragraph' },
-        { text: 'announcement.when2MeetLink', url: 'https://twitch.tv/cuttle_cards' },
+        { text: 'announcement.when2MeetLink', url: 'https://www.when2meet.com/?35931369-XljOu' },
         { text: 'announcement.paragraph2' },
         { text: 'announcement.discordLink', url: 'https://discord.gg/TrT6qkJJ5u' },
         { text: 'announcement.paragraph3' },
