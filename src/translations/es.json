@@ -571,7 +571,7 @@
     "when2MeetLink": " enlace de when2meet ",
     "paragraph2": "para confirmar tu disponibilidad. Si es posible, únete al ",
     "discordLink": " Cuttle Discord ",
-    "paragraph3": "y envía un mensaje directo a aleph_one para confirmar los detalles del torneo. De lo contrario, envía un correo electrónico a play.cuttle.cards@gmail.com para informarnos si deseas competir. Los torneos generalmente se llevan a cabo los fines de semana"
+    "paragraph3": "y envía un mensaje directo a aleph_one para confirmar los detalles del torneo. De lo contrario, envía un correo electrónico a {'play.cuttle.cards@gmail.com'} para informarnos si deseas competir. Los torneos generalmente se llevan a cabo los fines de semana"
   },
   "profile": {
     "myGames": "Mis juegos",
