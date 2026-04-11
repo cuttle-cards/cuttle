@@ -564,14 +564,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Félicitations ! Vous avez obtenu une place pour le championnat de la saison !",
-    "title": "Invitation au Championnat",
-    "heading": "Devenez un Champion Cuttle",
-    "paragraph": "Félicitations ! Vous avez obtenu une place dans le tournoi du Championnat de la Saison Cuttle Clubs 2026. Chaque saison, les 8 meilleurs joueurs du classement obtiennent le droit de participer au championnat de la saison. Vous avez gagné ce privilège prestigieux cette saison et êtes invité à participer au Championnat de la Saison Cuttle Clubs 2026 ! Pour participer, veuillez indiquer vos disponibilités via ce",
-    "when2MeetLink": " lien when2meet ",
-    "paragraph2": "afin de confirmer votre disponibilité. Si possible, veuillez rejoindre le ",
-    "discordLink": " Cuttle Discord ",
-    "paragraph3": "et envoyer un message privé à aleph_one pour confirmer les détails du tournoi. Sinon, veuillez envoyer un e-mail à {'play.cuttle.cards@gmail.com'} pour nous indiquer si vous souhaitez participer ! Les tournois ont généralement lieu le week-end"
+    "activatorText": "Championnat du Monde Cuttle V !",
+    "title": "Championnat du Monde Cuttle V",
+    "heading": "L'ultime confrontation",
+    "paragraph": "Le Championnat du Monde Cuttle V a lieu aujourd'hui, samedi 11 avril à 13h ET ! Regardez les 8 meilleurs joueurs de l'année écoulée de jeu classé s'affronter dans un tournoi à double élimination pour le titre de Champion du Monde Cuttle ! Regardez-le en direct sur ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   },
   "profile": {
     "myGames": "Mes jeux",
