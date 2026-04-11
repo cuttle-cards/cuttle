@@ -565,14 +565,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Congratulations! You've earned a season championship spot!",
-    "title": "Championship Invitation",
-    "heading": "Become a Cuttle Champion",
-    "paragraph": "Congratulations! You've earned a spot in the Clubs 2026 Cuttle Season Championship tournament. Every season, the top 8 players on the ranked leaderboard earn the right to compete in the season championship tournament. You've earned this esteemed privilege this season and are invited to compete in the Clubs 2026 Cuttle Season Championship! To participate, please fill out your availability on this",
-    "when2MeetLink": " when2meet link ",
-    "paragraph2": "to confirm your availability. If possible, please join the ",
-    "discordLink": " Cuttle Discord ",
-    "paragraph3": "and DM aleph_one to confirm tournament logistics. Otherwise please email {'play.cuttle.cards@gmail.com'} to let us know if you'd like to compete! Tournaments are generally held on weekends"
+    "activatorText": "Cuttle World Championship V!",
+    "title": "Cuttle World Championship V",
+    "heading": "Ultimate showdown",
+    "paragraph": "Cuttle World Championship V is today, Saturday April 11th at 1pm ET! Watch the top 8 players from the past year of ranked play compete in a double elimination showdown for the title of Cuttle World Champion! Watch it live at ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   },
   "profile": {
     "myGames": "My Games",
