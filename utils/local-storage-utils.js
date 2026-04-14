@@ -1,5 +1,6 @@
 const LS_PREFERS_RANKED_NAME = 'prefersRanked';
 const LS_IS_RETURNING_USER_NAME = 'isReturningUser';
+const LS_PLAY_TIME_DIALOG_DISMISSED = 'playTimeDialogDismissed';
 
 const getLocalStorage = (key) => {
   try {
@@ -17,4 +18,10 @@ const setLocalStorage = (key, value) => {
   }
 };
 
-export { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME, LS_IS_RETURNING_USER_NAME };
+export {
+  getLocalStorage,
+  setLocalStorage,
+  LS_PREFERS_RANKED_NAME,
+  LS_IS_RETURNING_USER_NAME,
+  LS_PLAY_TIME_DIALOG_DISMISSED,
+};

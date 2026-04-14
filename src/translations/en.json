@@ -68,6 +68,16 @@
       "casual": "Game Mode changed to Casual",
       "ranked": "Game Mode changed to Ranked"
     },
+    "playTimeDialog": {
+      "title": "Find a Game",
+      "openPlaySessions": "We have open play sessions every Wednesday at 8:30pm ET and every Thursday at 12pm ET. If you hop on the site at those times, you'll always have someone to play!",
+      "discord": "We have a {0} and you can use its {1} channel to find matches.",
+      "discordLink": "Discord channel",
+      "findAGame": "#find-a-game",
+      "botPlay": "You can play against the bot from the home page.",
+      "goHome": "Go Home",
+      "stay": "Stay in Lobby"
+    },
     "error": {
       "fallback": "An unknown error has occurred.",
       "forbidden": "You are not a player in this game!",

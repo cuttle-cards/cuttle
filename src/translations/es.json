@@ -68,6 +68,16 @@
       "casual": "El modo de juego cambió a Amistoso",
       "ranked": "El modo de juego cambió a Competitivo"
     },
+    "playTimeDialog": {
+      "title": "Encuentra una partida",
+      "openPlaySessions": "Tenemos sesiones de juego abiertas todos los miércoles a las 8:30pm ET y todos los jueves a las 12pm ET. Si entras al sitio en esos horarios, ¡siempre habrá alguien con quien jugar!",
+      "discord": "Tenemos un {0} y puedes usar su canal {1} para encontrar partidas.",
+      "discordLink": "canal de Discord",
+      "findAGame": "#find-a-game",
+      "botPlay": "Puedes jugar contra el bot desde la página de inicio.",
+      "goHome": "Ir al inicio",
+      "stay": "Quedarme en el lobby"
+    },
     "error": {
       "fallback": "Se ha producido un error desconocido.",
       "forbidden": "¡No eres un jugador en este juego!",

@@ -68,6 +68,16 @@
       "casual": "Spielmodus geändert zu Freizeit",
       "ranked": "Spielmodus geändert zu Rangliste"
     },
+    "playTimeDialog": {
+      "title": "Finde ein Spiel",
+      "openPlaySessions": "Wir haben offene Spielsitzungen jeden Mittwoch um 20:30 Uhr ET und jeden Donnerstag um 12:00 Uhr ET. Wenn du zu diesen Zeiten auf die Seite kommst, findest du immer jemanden zum Spielen!",
+      "discord": "Wir haben einen {0} und du kannst den {1}-Kanal nutzen, um Mitspieler zu finden.",
+      "discordLink": "Discord-Kanal",
+      "findAGame": "#find-a-game",
+      "botPlay": "Du kannst von der Startseite aus gegen den Bot spielen.",
+      "goHome": "Zur Startseite",
+      "stay": "Im Lobby bleiben"
+    },
     "error": {
       "fallback": "Ein unbekannter Fehler ist aufgetreten.",
       "forbidden": "Du bist kein Spieler in diesem Spiel!",

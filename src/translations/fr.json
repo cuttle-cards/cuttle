@@ -68,6 +68,16 @@
       "casual": "Mode de jeu modifié à Classique",
       "ranked": "Mode de jeu modifié à Classée"
     },
+    "playTimeDialog": {
+      "title": "Trouver une partie",
+      "openPlaySessions": "Nous avons des sessions de jeu ouvertes tous les mercredis à 20h30 ET et tous les jeudis à 12h ET. Si vous vous connectez à ces horaires, vous trouverez toujours quelqu'un avec qui jouer !",
+      "discord": "Nous avons un {0} et vous pouvez utiliser son canal {1} pour trouver des adversaires.",
+      "discordLink": "canal Discord",
+      "findAGame": "#find-a-game",
+      "botPlay": "Vous pouvez jouer contre le bot depuis la page d'accueil.",
+      "goHome": "Retour à l'accueil",
+      "stay": "Rester dans le lobby"
+    },
     "error": {
       "fallback": "Une erreur inconnue s'est produite.",
       "forbidden": "Vous n'êtes pas un joueur dans ce jeu !",
