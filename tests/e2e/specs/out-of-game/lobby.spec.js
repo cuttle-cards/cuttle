@@ -626,6 +626,33 @@ describe('Lobby - P1 Perspective', () => {
   });
 });
 
+describe('Lobby - Play Time Dialog', () => {
+  beforeEach(() => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    window.localStorage.setItem('announcement', announcementData.id);
+    cy.signupPlayer(myUser);
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
+      cy.window()
+        .its('cuttle.gameStore')
+        .then((store) => store.requestSubscribe(gameSummary.gameId));
+      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+      cy.wrap(gameSummary).as('gameSummary');
+    });
+  });
+
+  it('Dismisses dialog and sets localStorage when staying in lobby', () => {
+    cy.tick(60000);
+    cy.get('#play-time-dialog').should('be.visible');
+    cy.get('[data-cy=play-time-dialog-stay]').click();
+    cy.get('#play-time-dialog').should('not.exist');
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem('playTimeDialogDismissed')).to.eq('true');
+    });
+  });
+
+});
+
 describe('Lobby invite links', () => {
   beforeEach(() => {
     cy.wipeDatabase();
