@@ -1,38 +1,3 @@
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { getLocalStorage, setLocalStorage, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils.js';
-import BaseDialog from '@/components/BaseDialog.vue';
-
-const emit = defineEmits([ 'leave' ]);
-const { t } = useI18n();
-
-const show = ref(false);
-let timer = null;
-
-function dismiss() {
-  show.value = false;
-  setLocalStorage(LS_PLAY_TIME_DIALOG_DISMISSED, 'true');
-}
-
-function goHome() {
-  dismiss();
-  emit('leave');
-}
-
-onMounted(() => {
-  if (!getLocalStorage(LS_PLAY_TIME_DIALOG_DISMISSED)) {
-    timer = setTimeout(() => {
-      show.value = true;
-    }, 60000);
-  }
-});
-
-onBeforeUnmount(() => {
-  clearTimeout(timer);
-});
-</script>
-
 <template>
   <BaseDialog
     id="play-time-dialog"
@@ -84,6 +49,41 @@ onBeforeUnmount(() => {
     </template>
   </BaseDialog>
 </template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { getLocalStorage, setLocalStorage, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils.js';
+import BaseDialog from '@/components/BaseDialog.vue';
+
+const emit = defineEmits([ 'leave' ]);
+const { t } = useI18n();
+
+const show = ref(false);
+let timer = null;
+
+function dismiss() {
+  show.value = false;
+  setLocalStorage(LS_PLAY_TIME_DIALOG_DISMISSED, 'true');
+}
+
+function goHome() {
+  dismiss();
+  emit('leave');
+}
+
+onMounted(() => {
+  if (!getLocalStorage(LS_PLAY_TIME_DIALOG_DISMISSED)) {
+    timer = setTimeout(() => {
+      show.value = true;
+    }, 60000);
+  }
+});
+
+onBeforeUnmount(() => {
+  clearTimeout(timer);
+});
+</script>
 
 <style scoped>
 .discord-link {
