@@ -642,7 +642,7 @@ describe('Lobby - Play Time Dialog', () => {
   });
 
   it('Dismisses dialog and sets localStorage when staying in lobby', () => {
-    cy.tick(60000);
+    cy.wait(61000);
     cy.get('#play-time-dialog').should('be.visible');
     cy.get('[data-cy=play-time-dialog-stay]').click();
     cy.get('#play-time-dialog').should('not.exist');
