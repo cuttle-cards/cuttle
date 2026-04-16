@@ -459,7 +459,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should('have.class', 'ready');
   });
 
-  it('Brings you into the game when readying after game has started', function () {
+  it('Brings you into the game when reconnecting after game has started', function () {
     const { gameId } = this.gameSummary;
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=ready-button]').click();
