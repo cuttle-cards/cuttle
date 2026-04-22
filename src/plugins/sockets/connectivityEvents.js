@@ -3,7 +3,8 @@ import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useGameListStore } from '@/stores/gameList';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME, ROUTE_NAME_LOBBY } from '@/router';
+import GameStatus from '_/utils/GameStatus.json';
 
 export async function handleConnect() {
   const authStore = useAuthStore();
@@ -33,6 +34,22 @@ export async function handleConnect() {
       }
 
       return gameStore.requestSpectate(gameId, gameHistoryStore.currentGameStateIndex);
+    }
+    case ROUTE_NAME_LOBBY: {
+      const gameId = Number(router.currentRoute.value.params.gameId);
+      if (!Number.isInteger(gameId)) {
+        router.push({ name: ROUTE_NAME_HOME });
+        return;
+      }
+      try {
+        const { game } = await gameStore.requestSubscribe(gameId);
+        if (game.status === GameStatus.STARTED) {
+          router.push({ name: ROUTE_NAME_GAME, params: { gameId } });
+        }
+      } catch (err) {
+        router.push({ name: ROUTE_NAME_HOME });
+      }
+      return;
     }
     case ROUTE_NAME_HOME: {
       return gameListStore.requestGameList();
