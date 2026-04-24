@@ -142,11 +142,11 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :class="{ 'reveal-top-two': gameStore.resolvingSeven }"
+            :class="{ 'reveal-top-two': gameStore.resolvingSeven || gameStore.showingSevenReveal }"
             elevation="0"
             @click="drawCard"
           >
-            <template v-if="!gameStore.resolvingSeven">
+            <template v-if="!gameStore.resolvingSeven && !gameStore.showingSevenReveal">
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -155,31 +155,40 @@
               </h1>
             </template>
 
-            <template v-if="gameStore.resolvingSeven">
-              <p class="mt-2">
-                {{ t('game.playFromDeck') }}
-              </p>
-              <div class="d-flex">
-                <GameCard
-                  v-if="topCard"
-                  :suit="topCard.suit"
-                  :rank="topCard.rank"
-                  :data-top-card="`${topCard.rank}-${topCard.suit}`"
-                  :is-selected="topCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectTopCard"
-                />
-                <GameCard
-                  v-if="secondCard"
-                  :suit="secondCard.suit"
-                  :rank="secondCard.rank"
-                  :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
-                  :is-selected="secondCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectSecondCard"
-                />
+            <Transition name="seven-reveal">
+              <div
+                v-if="gameStore.resolvingSeven || gameStore.showingSevenReveal"
+                class="seven-reveal-outer"
+              >
+                <div
+                  id="seven-reveal-inner"
+                  class="d-flex"
+                  :class="{ 'seven-pre-flip': gameStore.showingSevenReveal }"
+                >
+                  <GameCard
+                    :suit="gameStore.showingSevenReveal ? undefined : topCard?.suit"
+                    :rank="gameStore.showingSevenReveal ? undefined : topCard?.rank"
+                    :data-top-card="!gameStore.showingSevenReveal && topCard
+                      ? `${topCard.rank}-${topCard.suit}` : undefined"
+                    :is-selected="topCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectTopCard"
+                  />
+                  <GameCard
+                    :suit="gameStore.showingSevenReveal ? undefined : secondCard?.suit"
+                    :rank="gameStore.showingSevenReveal ? undefined : secondCard?.rank"
+                    :data-second-card="!gameStore.showingSevenReveal && secondCard
+                      ? `${secondCard.rank}-${secondCard.suit}` : undefined"
+                    :is-selected="secondCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectSecondCard"
+                  />
+                </div>
+                <p v-if="gameStore.resolvingSeven" class="seven-reveal-label mt-2">
+                  {{ t('game.playFromDeck') }}
+                </p>
               </div>
-            </template>
+            </Transition>
           </v-card>
           <ScrapPile :scrap="scrap" />
         </div>
@@ -1175,12 +1184,45 @@ export default {
     transition: width var(--duration-fast) ease-in-out;
     background-image: url('/img/game/bg-deck.png');
     contain: var(--contain-isolated);
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      border-radius: 9px;
+      transition: opacity var(--duration-slow);
+      pointer-events: none;
+    }
     &.reveal-top-two {
-      color: white;
-      background-image: none;
-      width: calc(29vh * 1.5);
-      max-width: 300px;
       z-index: 1;
+      overflow: visible;
+      contain: none;
+      &::before {
+        opacity: 1;
+      }
+
+      & .seven-reveal-outer {
+        flex: 1;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: visible;
+      }
+
+      & #seven-reveal-inner {
+        transition: transform var(--duration-fast) ease-in;
+      }
+
+      & .seven-reveal-label {
+        position: absolute;
+        top: 0.5rem;
+        width: 100%;
+        text-align: center;
+        color: white;
+      }
 
       & .resolving-seven-card {
         width: 9.5rem;

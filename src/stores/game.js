@@ -172,6 +172,7 @@ export const useGameStore = defineStore('game', () => {
   const opponentQueenCount = computed(() => queenCount(opponent.value));
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
+  const showingSevenReveal = ref(false);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
   const hasGlassesEight = computed(() => {
     const faceCards = player.value?.faceCards ?? [];
@@ -401,6 +402,12 @@ export const useGameStore = defineStore('game', () => {
       ];
       await sleep(1000);
     }
+    updateGame(game);
+  }
+  async function processResolveSeven(game) {
+    showingSevenReveal.value = true;
+    await sleep(1000);
+    showingSevenReveal.value = false;
     updateGame(game);
   }
   function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
@@ -732,6 +739,7 @@ export const useGameStore = defineStore('game', () => {
     opponentQueenCount,
     playerWins,
     resolvingSeven,
+    showingSevenReveal,
     isPlayersTurn,
     hasGlassesEight,
     iWantRematch,
@@ -763,6 +771,7 @@ export const useGameStore = defineStore('game', () => {
     processThrees,
     processFours,
     processFives,
+    processResolveSeven,
     handleGameResponse,
     transformGameUrl,
     makeSocketRequest,
