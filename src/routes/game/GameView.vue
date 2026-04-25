@@ -1228,13 +1228,18 @@ export default {
 
       & .seven-reveal-label {
         position: absolute;
-        top: 0.5rem;
+        top: -42px;
         width: 100%;
         text-align: center;
-        color: white;
+        color: rgba(var(--v-theme-base-light));
+        // color: white;
+        font-size: 32px;
+        font-weight: bold;
+        font-family: Changa;
       }
 
       & .seven-card-wrapper {
+        margin-top: 32px;
         // `translate` and `rotate` are independent CSS properties — no `transform` conflict
         transition: translate var(--duration-slow);
 
