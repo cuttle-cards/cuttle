@@ -1232,7 +1232,6 @@ export default {
         width: 100%;
         text-align: center;
         color: rgba(var(--v-theme-base-light));
-        // color: white;
         font-size: 32px;
         font-weight: bold;
         font-family: Changa;
@@ -1240,7 +1239,6 @@ export default {
 
       & .seven-card-wrapper {
         margin-top: 32px;
-        // `translate` and `rotate` are independent CSS properties — no `transform` conflict
         transition: translate var(--duration-slow);
 
         &.seven-card-offset {
