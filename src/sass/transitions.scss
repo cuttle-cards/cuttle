@@ -101,10 +101,10 @@
 // with the wrapper's `translate` transition and the card's `transform` animation.
 @keyframes sevenWrapperRotateIn {
   from { rotate: 0deg; }
-  to { rotate: 12deg; }
+  to { rotate: 8deg; }
 }
 
 @keyframes sevenWrapperRotateOut {
-  from { rotate: 12deg; }
+  from { rotate: 8deg; }
   to { rotate: 0deg; }
 }

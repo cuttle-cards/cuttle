@@ -414,7 +414,8 @@ export const useGameStore = defineStore('game', () => {
     await sleep(500); // card 1 entry animation
     firstCardRevealed.value = true; // card 1 flips
     await sleep(1500); // card 1 flip (1s) + card 2 entry (0.5s)
-    secondCardRevealed.value = true; // card 2 flips
+    secondCardRevealed.value = true; // card 2 flips + rotates back
+    await sleep(1000); // wait for card 2's sevenWrapperRotateOut to finish before removing .seven-animating
     showingSevenReveal.value = false;
   }
   function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
