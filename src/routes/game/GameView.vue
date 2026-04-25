@@ -569,6 +569,8 @@ export default {
         case 'jack':
         case 'sevenJack':
           return Transitions.SLIDE_UP;
+        case 'sevenPoints':
+          return Transitions.SLIDE_UP_LEFT;
         default:
           return Transitions.SLIDE_DOWN_LEFT;
       }
@@ -582,6 +584,12 @@ export default {
       ) {
         return Transitions.SLIDE_DOWN;
       }
+
+      // Playing from the deck
+      if (this.gameStore.lastEventChange === 'sevenFaceCard') {
+        return Transitions.SLIDE_UP_LEFT;
+      }
+
       // Defaults in below (from hand) out left (to scrap)
       return Transitions.SLIDE_DOWN_LEFT;
     },
