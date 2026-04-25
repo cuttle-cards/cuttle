@@ -83,15 +83,28 @@
 }
 
 // Per-card staggered slide-in for seven reveal.
-// Each card slides from left into its natural flex position, one at a time.
+// Card starts at deck center (wrapper's translate offset cancels the card start offset).
 // animation-fill-mode: both keeps card 2 invisible during its delay.
 @keyframes sevenCardSlideIn {
   from {
     opacity: 0;
-    transform: translateX(-64px);
+    transform: translateX(-72px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+// Wrapper rotation: builds up in sync with the card's slide-in, reverses on reveal.
+// Uses the CSS `rotate` property (separate from `transform`) so it composes cleanly
+// with the wrapper's `translate` transition and the card's `transform` animation.
+@keyframes sevenWrapperRotateIn {
+  from { rotate: 0deg; }
+  to { rotate: 12deg; }
+}
+
+@keyframes sevenWrapperRotateOut {
+  from { rotate: 12deg; }
+  to { rotate: 0deg; }
 }

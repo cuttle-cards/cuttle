@@ -166,7 +166,10 @@
               >
                 <div
                   class="seven-card-wrapper"
-                  :class="{ 'seven-card-offset': !gameStore.firstCardRevealed }"
+                  :class="{
+                    'seven-card-offset': !gameStore.firstCardRevealed,
+                    'seven-card-revealing': gameStore.firstCardRevealed,
+                  }"
                 >
                   <GameCard
                     :suit="gameStore.firstCardRevealed ? topCard?.suit : undefined"
@@ -180,7 +183,10 @@
                 </div>
                 <div
                   class="seven-card-wrapper"
-                  :class="{ 'seven-card-offset': !gameStore.secondCardRevealed }"
+                  :class="{
+                    'seven-card-offset': !gameStore.secondCardRevealed,
+                    'seven-card-revealing': gameStore.secondCardRevealed,
+                  }"
                 >
                   <GameCard
                     :suit="gameStore.secondCardRevealed ? secondCard?.suit : undefined"
@@ -1229,15 +1235,30 @@ export default {
       }
 
       & .seven-card-wrapper {
-        transition: transform var(--duration-slow);
+        // `translate` and `rotate` are independent CSS properties — no `transform` conflict
+        transition: translate var(--duration-slow);
 
         &.seven-card-offset {
-          transform: rotate(12deg) translateX(72px);
+          translate: 72px 0;
         }
       }
 
       & .resolving-seven-card {
         width: 9.5rem;
+      }
+
+      // Rotation builds up in sync with each card's slide-in
+      & .seven-animating .seven-card-wrapper {
+        animation: sevenWrapperRotateIn var(--duration-normal) ease-out both;
+      }
+
+      & .seven-animating .seven-card-wrapper:nth-child(2) {
+        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+      }
+
+      // On reveal, rotation returns to neutral (higher specificity overrides RotateIn)
+      & .seven-animating .seven-card-wrapper.seven-card-revealing {
+        animation: sevenWrapperRotateOut var(--duration-slow) ease-out both;
       }
 
       & .seven-animating .resolving-seven-card {
