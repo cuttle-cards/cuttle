@@ -155,40 +155,48 @@
               </h1>
             </template>
 
-            <Transition name="seven-reveal">
+            <div
+              v-if="gameStore.resolvingSeven || gameStore.showingSevenReveal"
+              class="seven-reveal-outer"
+              :class="{ 'seven-animating': gameStore.showingSevenReveal }"
+            >
               <div
-                v-if="gameStore.resolvingSeven || gameStore.showingSevenReveal"
-                class="seven-reveal-outer"
+                id="seven-reveal-inner"
+                class="d-flex"
               >
                 <div
-                  id="seven-reveal-inner"
-                  class="d-flex"
-                  :class="{ 'seven-pre-flip': gameStore.showingSevenReveal }"
+                  class="seven-card-wrapper"
+                  :class="{ 'seven-card-offset': !gameStore.firstCardRevealed }"
                 >
                   <GameCard
-                    :suit="gameStore.showingSevenReveal ? undefined : topCard?.suit"
-                    :rank="gameStore.showingSevenReveal ? undefined : topCard?.rank"
-                    :data-top-card="!gameStore.showingSevenReveal && topCard
+                    :suit="gameStore.firstCardRevealed ? topCard?.suit : undefined"
+                    :rank="gameStore.firstCardRevealed ? topCard?.rank : undefined"
+                    :data-top-card="(gameStore.firstCardRevealed && topCard)
                       ? `${topCard.rank}-${topCard.suit}` : undefined"
                     :is-selected="topCardIsSelected"
                     class="mb-4 resolving-seven-card"
                     @click="selectTopCard"
                   />
+                </div>
+                <div
+                  class="seven-card-wrapper"
+                  :class="{ 'seven-card-offset': !gameStore.secondCardRevealed }"
+                >
                   <GameCard
-                    :suit="gameStore.showingSevenReveal ? undefined : secondCard?.suit"
-                    :rank="gameStore.showingSevenReveal ? undefined : secondCard?.rank"
-                    :data-second-card="!gameStore.showingSevenReveal && secondCard
+                    :suit="gameStore.secondCardRevealed ? secondCard?.suit : undefined"
+                    :rank="gameStore.secondCardRevealed ? secondCard?.rank : undefined"
+                    :data-second-card="(gameStore.secondCardRevealed && secondCard)
                       ? `${secondCard.rank}-${secondCard.suit}` : undefined"
                     :is-selected="secondCardIsSelected"
                     class="mb-4 resolving-seven-card"
                     @click="selectSecondCard"
                   />
                 </div>
-                <p v-if="gameStore.resolvingSeven" class="seven-reveal-label mt-2">
-                  {{ t('game.playFromDeck') }}
-                </p>
               </div>
-            </Transition>
+              <p class="seven-reveal-label mt-2">
+                {{ t('game.playFromDeck') }}
+              </p>
+            </div>
           </v-card>
           <ScrapPile :scrap="scrap" />
         </div>
@@ -1191,7 +1199,7 @@ export default {
       background: rgba(0, 0, 0, 0.32);
       opacity: 0;
       border-radius: 9px;
-      transition: opacity var(--duration-slow);
+      transition: opacity var(--duration-normal);
       pointer-events: none;
     }
     &.reveal-top-two {
@@ -1212,10 +1220,6 @@ export default {
         overflow: visible;
       }
 
-      & #seven-reveal-inner {
-        transition: transform var(--duration-fast) ease-in;
-      }
-
       & .seven-reveal-label {
         position: absolute;
         top: 0.5rem;
@@ -1224,8 +1228,24 @@ export default {
         color: white;
       }
 
+      & .seven-card-wrapper {
+        transition: transform var(--duration-slow);
+
+        &.seven-card-offset {
+          transform: rotate(12deg) translateX(72px);
+        }
+      }
+
       & .resolving-seven-card {
         width: 9.5rem;
+      }
+
+      & .seven-animating .resolving-seven-card {
+        animation: sevenCardSlideIn var(--duration-normal) ease-out both;
+      }
+
+      & .seven-animating .seven-card-wrapper:nth-child(2) .resolving-seven-card {
+        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
       }
     }
     & #empty-deck-text {

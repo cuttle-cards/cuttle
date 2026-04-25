@@ -82,24 +82,16 @@
   transform: rotateY(0deg);
 }
 
-// Seven reveal: outer container slides in from the left when deck cards first appear
-.seven-reveal-enter-active {
-  transition: opacity var(--duration-normal), transform var(--duration-slow);
-}
-
-.seven-reveal-enter-from {
-  opacity: 0;
-  transform: translateX(0px);
-}
-.seven-reveal-enter-to {
-  transform: translateX(64px);
-}
-
-// Pre-flip offset: inner card row shifted right during face-down preview so the
-// cards sit visibly off-center to the right of the deck image.
-// Class is removed simultaneously with suit/rank props being set, so the
-// leftward slide and the CARD_FLIP transition inside each card fire together.
-.seven-pre-flip {
-  transform: translateX(64px);
-  transition: transform var(--duration-slow);
+// Per-card staggered slide-in for seven reveal.
+// Each card slides from left into its natural flex position, one at a time.
+// animation-fill-mode: both keeps card 2 invisible during its delay.
+@keyframes sevenCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-64px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

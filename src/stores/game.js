@@ -173,6 +173,8 @@ export const useGameStore = defineStore('game', () => {
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
   const showingSevenReveal = ref(false);
+  const firstCardRevealed = ref(true);
+  const secondCardRevealed = ref(true);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
   const hasGlassesEight = computed(() => {
     const faceCards = player.value?.faceCards ?? [];
@@ -406,9 +408,14 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processResolveSeven(game) {
     showingSevenReveal.value = true;
-    await sleep(1000);
-    showingSevenReveal.value = false;
+    firstCardRevealed.value = false;
+    secondCardRevealed.value = false;
     updateGame(game);
+    await sleep(500); // card 1 entry animation
+    firstCardRevealed.value = true; // card 1 flips
+    await sleep(1500); // card 1 flip (1s) + card 2 entry (0.5s)
+    secondCardRevealed.value = true; // card 2 flips
+    showingSevenReveal.value = false;
   }
   function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
     switch (jwres.statusCode) {
@@ -740,6 +747,8 @@ export const useGameStore = defineStore('game', () => {
     playerWins,
     resolvingSeven,
     showingSevenReveal,
+    firstCardRevealed,
+    secondCardRevealed,
     isPlayersTurn,
     hasGlassesEight,
     iWantRematch,
