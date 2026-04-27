@@ -1539,6 +1539,17 @@ export default {
     & #deck {
       height: 13vh;
       width: calc(13vh / 1.3);
+
+      &.reveal-top-two .resolving-seven-card {
+        width: calc(13vh / 1.3);
+      }
+
+      &.reveal-top-two .seven-reveal-label {
+        font-size: 18px;
+        width: max-content;
+        left: 50%;
+        transform: translate(-50%, 24px);
+      }
     }
   }
   #opponent-hand {
