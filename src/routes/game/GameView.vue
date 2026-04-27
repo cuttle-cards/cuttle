@@ -600,7 +600,7 @@ export default {
         case 'sevenJack':
           return Transitions.SLIDE_DOWN;
         case 'sevenPoints':
-          return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LOWER_LEFT;
+          return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
         case 'resolve':
           // Different one-offs cause different direction transitions
           switch (this.gameStore.lastEventOneOffRank) {
@@ -637,7 +637,7 @@ export default {
       }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
-        return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LOWER_LEFT;
+        return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
       }
 
       // Otherwise in from opponent hand, out towards scrap
