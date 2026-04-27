@@ -1205,30 +1205,31 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0);
-    background-size: cover;
+    background-color: transparent;
     margin: 10px;
     height: 29vh;
     width: calc(29vh / 1.3);
+    isolation: isolate;
     transition: width var(--duration-fast) ease-in-out;
-    background-image: url('/img/game/bg-deck.png');
     contain: var(--contain-isolated);
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.32);
-      opacity: 0;
-      border-radius: 9px;
-      transition: opacity var(--duration-normal);
+      background-image: url('/img/game/bg-deck.png');
+      background-size: cover;
+      border-radius: inherit;
+      filter: brightness(1);
+      transition: filter var(--duration-normal);
       pointer-events: none;
+      z-index: -1;
     }
     &.reveal-top-two {
       z-index: 1;
       overflow: visible;
       contain: none;
       &::before {
-        opacity: 1;
+        filter: brightness(0.68);
       }
 
       & .seven-reveal-outer {
