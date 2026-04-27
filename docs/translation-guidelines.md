@@ -33,15 +33,15 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **Stalemate** :  The game has reached a dead end, it then ends in a tie.
 - **Season** :  A period of time during which the stats are compiled.
 - **Casual game** :  Standard game that has no effect on statistics.
-- **Ranked game** :  Competitive game from wich the outcome is compiled in the statistics of the current seaon.
+- **Ranked game** :  Competitive game from which the outcome is compiled in the statistics of the current season.
 
 
 ## Translation guide
 
 - **Scuttle** :  This word is meant to stay the same in every language.  It is used as a noun and a verb in English, but these two uses are not an obligation.  For languages with grammatical genders, the translator may use the one that 'sounds better' in their language.
 - **Scrap pile** :  This expression is not meant to transmit the idea of "a pile of junk or old metalic wastes".  So it should be translated to a word that refers to something where you discard - **things that you no longer need.  Many languages have a word for the pile of discarded cards in card games, that word is perfect.
-- **To srap a card** :  To get rid of a card by putting it in the scrap pile.  
-- **Deck, hand, discard, pick, royal,...** :  Most language already have a specific terminology for card games.  These words should be used.
+- **To scrap a card** :  To get rid of a card by putting it in the scrap pile.  
+- **Deck, hand, discard, pick, royal,...** :  Most languages already have a specific terminology for card games.  These words should be used.
 - **One-off** :  This refers to the idea of an action taking place once with no persistent effect.  If the target language has such a word/expression, it may be used. 
   A basic literal translation (with Google translate) of one-off might sound weird.  In that case, it can be translated to something like "Ability, Effect, super power, ...". 
 - **Glasses eight** :  The idea is that a sideways 8 looks like a pair of glasses and glasses give you good vision, therefore allowing you to see you opponent's hand. Ideally this term should be translated to a word for glasses, but if that sounds unnatural in the target language, consider alternatives that convey that this is a card that grants vision
