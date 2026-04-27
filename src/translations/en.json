@@ -498,8 +498,8 @@
     },
     "tournaments": {
       "title": "Tournaments",
-      "competitiveCuttle1": "Competitive Cuttle is divided into 4 seasons per year,one per suit: Clubs, Diamonds, Hearts, and Spades. At the end of each season, the top 8 players play a double elimination championship tournament and the champions are permanently accoladed on the site.",
-      "competitiveCuttle2": "Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 rankedmatches each player wins against unique opponents (ignoring stalemates) and assign players points based on their weekly standing.",
+      "competitiveCuttle1": "Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds, Hearts, and Spades. At the end of each season, the top 8 players play a double elimination championship tournament and the champions are permanently accoladed on the site.",
+      "competitiveCuttle2": "Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked matches each player wins against unique opponents (ignoring stalemates) and assign players points based on their weekly standing.",
       "championPlayer": "Champion Player",
       "secondPlacePlayer": "Second Place Player",
       "thirdPlacePlayer": "Third Place Player",
@@ -565,10 +565,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Rule Update: Can't three for a three!",
-    "title": "Three Update",
-    "heading": "Can't three for a three",
-    "paragraph": "In order to prevent players from indefinitely stalling the game by making the 'non-move' of playing a three to pull a different three from the scrap, threes are no longer allowed as the selected card when picking from the scrap. You can still three for anything else, just not another three! This should have minimal impact on most games, as threeing-for-a-three is rarely a worthwhile move, but as it's come up recently, this change should prevent unfun play patterns in situations wher players are intent on stalling the game."
+    "activatorText": "Cuttle World Championship V!",
+    "title": "Cuttle World Championship V",
+    "heading": "Ultimate showdown",
+    "paragraph": "Cuttle World Championship V is today, Saturday April 11th at 1pm ET! Watch the top 8 players from the past year of ranked play compete in a double elimination showdown for the title of Cuttle World Champion! Watch it live at ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   },
   "profile": {
     "myGames": "My Games",

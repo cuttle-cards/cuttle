@@ -564,10 +564,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Actualización de Reglas: ¡No se puede un tres por un tres!",
-    "title": "Actualización del Tres",
-    "heading": "No se puede un tres por un tres",
-    "paragraph": "Para evitar que los jugadores retrasen el juego indefinidamente haciendo la 'no-jugada' de jugar un tres para tomar un tres diferente del descarte, ya no se permite que los tres sean la carta seleccionada al tomar del descarte. ¡Todavía puedes usar un tres para tomar cualquier otra carta, solo no otro tres! Esto debería tener un impacto mínimo en la mayoría de las partidas, ya que tomar un tres con otro tres rara vez es una jugada que valga la pena, pero como ha surgido recientemente, este cambio debería prevenir patrones de juego poco divertidos en situaciones donde los jugadores tienen la intención de retrasar la partida."
+    "activatorText": "¡Campeonato Mundial de Cuttle V!",
+    "title": "Campeonato Mundial de Cuttle V",
+    "heading": "El enfrentamiento definitivo",
+    "paragraph": "¡El Campeonato Mundial de Cuttle V es hoy, sábado 11 de abril a la 1pm ET! ¡Mira a los 8 mejores jugadores del último año de juego clasificatorio competir en un enfrentamiento de doble eliminación por el título de Campeón Mundial de Cuttle! Míralo en vivo en ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   },
   "profile": {
     "myGames": "Mis juegos",

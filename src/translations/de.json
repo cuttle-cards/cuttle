@@ -564,10 +564,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Regelupdate: Man kann keine Drei für eine Drei tauschen!",
-    "title": "Drei-Update",
-    "heading": "Man kann keine Drei für eine Drei tauschen",
-    "paragraph": "Um zu verhindern, dass Spieler das Spiel unbegrenzt verzögern, indem sie den 'Nicht-Zug' machen, eine Drei zu spielen, um eine andere Drei aus dem Ablagestapel zu ziehen, sind Dreien nicht mehr als ausgewählte Karte erlaubt, wenn man vom Ablagestapel zieht. Du kannst immer noch eine Drei für alles andere tauschen, nur nicht für eine andere Drei! Dies sollte minimale Auswirkungen auf die meisten Spiele haben, da das Tauschen einer Drei gegen eine Drei selten ein lohnender Zug ist, aber da es kürzlich vorgekommen ist, sollte diese Änderung unfaire Spielmuster in Situationen verhindern, in denen Spieler darauf abzielen, das Spiel zu verzögern."
+    "activatorText": "Cuttle-Weltmeisterschaft V!",
+    "title": "Cuttle-Weltmeisterschaft V",
+    "heading": "Das ultimative Aufeinandertreffen",
+    "paragraph": "Die Cuttle-Weltmeisterschaft V ist heute, Samstag, den 11. April um 13 Uhr ET! Schau zu, wie die Top 8 Spieler aus dem vergangenen Jahr des Ranglistenspiels in einem Doppeleliminations-Showdown um den Titel des Cuttle-Weltmeisters kämpfen! Schau es live auf ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   },
   "profile": {
     "myGames": "Meine Spiele",

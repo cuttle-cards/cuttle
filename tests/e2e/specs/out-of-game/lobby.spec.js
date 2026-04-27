@@ -418,7 +418,48 @@ describe('Lobby - P0 Perspective', () => {
     });
   });
 
-  it('Brings you into the game when readying after game has started', function () {
+  it('Shows opponent joining on socket reconnect', function () {
+    const { gameId } = this.gameSummary;
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(gameId);
+
+    cy.wait(1000);
+    cy.get('[data-cy=opponent-indicator]').should('not.contain', opponentOne.username);
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.reconnectSocket());
+
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+  });
+
+  it('Shows opponent readying on socket reconnect', function () {
+    const { gameId } = this.gameSummary;
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(gameId);
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.readyOpponent(gameId);
+    cy.wait(1000);
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.reconnectSocket());
+
+    cy.get('[data-cy=opponent-indicator] [data-cy="lobby-card-container"]').should('have.class', 'ready');
+  });
+
+  it('Brings you into the game when reconnecting after game has started', function () {
     const { gameId } = this.gameSummary;
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=ready-button]').click();
@@ -435,7 +476,6 @@ describe('Lobby - P0 Perspective', () => {
       .its('cuttle.authStore')
       .then((store) => store.reconnectSocket());
 
-    cy.get('[data-cy=ready-button]').click();
     assertGameStarted();
   });
 });

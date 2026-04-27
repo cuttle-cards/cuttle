@@ -26,7 +26,7 @@ On your turn you must make exactly one of the following actions below.
 
    - To play a card for points, click a card in your hand to select it, then click your field.
 
-3. **Scuttle:** You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this scraps both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
+3. **Scuttle:** You may play a number card from your hand onto a lower valued number card that your opponent has played for points; this scraps both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
 
    - To scuttle an opponent's point card, click a higher number card (Ace - Ten) in your hand to select it, then click the card you'd like to scuttle.
 
@@ -39,21 +39,21 @@ On your turn you must make exactly one of the following actions below.
 
 ## One-Offs
 
-- **Ace**: Scrap all **Point** cards
+- **Ace**: Scrap all **Point** cards, including your own.
 - **Two**: One of two effects:
   1. Counter **target One-Off** (play this when an opponent plays a **One-Off** effect to stop it from happening)
   2. Scrap **target Royal or Glasses Eight**
 - **Three**: Choose one card from the **Scrap Pile** and put it in your hand.
 - **Four**: Your opponent discards two cards of their choice from their hand to the **Scrap Pile**
 - **Five**: Discard one card then draw up to three cards from the **Deck** up to the 8 card hand limit.
-- **Six**: Scrap all **Royals and Glasses Eights**
+- **Six**: Scrap all **Royals and Glasses Eights**, including your own.
 - **Seven**: Reveal the top two cards from the **Deck** and choose one of them to play immediately. Play this card however you would like. The other card is placed back on top of the deck.
 - **Nine**: Return an opponent's card on the field to their hand. It can't be played next turn.
 
 ## Royals & Glasses Eights
 
 - **Eight**: While you control an Eight as a **"Glasses Eight"**, your opponent plays with her hand revealed to you. Unlike one-offs, Glasses Eights remain under your control until scrapped.
-- **Jack**: Play a Jack on top of an oppnent's **Point Card** to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.
+- **Jack**: Play a Jack on top of an opponent's **Point Card** to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.
 - **Queen**: While you control a Queen, your other cards cannot be **targeted** by your opponent's cards. (Does not protect against aces, sixes or scuttling.)
 - **King**: While you have a King, the minimum points needed to win is reduced. Each additional King further reduces the limit.
   - 1 King: 14 points to win
