@@ -406,7 +406,7 @@ export const useGameStore = defineStore('game', () => {
     }
     updateGame(game);
   }
-  async function processResolveSeven(game) {
+  async function processSeven(game) {
     showingSevenReveal.value = true;
     firstCardRevealed.value = false;
     secondCardRevealed.value = false;
@@ -781,7 +781,7 @@ export const useGameStore = defineStore('game', () => {
     processThrees,
     processFours,
     processFives,
-    processResolveSeven,
+    processSeven,
     handleGameResponse,
     transformGameUrl,
     makeSocketRequest,

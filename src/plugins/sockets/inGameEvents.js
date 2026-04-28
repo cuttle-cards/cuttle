@@ -62,7 +62,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.RESOLVE:
       if (evData.game.lastEvent?.oneOff?.rank === 7) {
-        await gameStore.processResolveSeven(evData.game);
+        await gameStore.processSeven(evData.game);
       } else {
         gameStore.updateGame(evData.game);
       }
