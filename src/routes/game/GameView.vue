@@ -155,31 +155,54 @@
               </h1>
             </template>
 
-            <template v-if="gameStore.resolvingSeven">
-              <p class="mt-2">
+            <div
+              v-if="gameStore.resolvingSeven"
+              class="seven-reveal-outer"
+              :class="{ 'seven-animating': gameStore.showingSevenReveal }"
+            >
+              <div
+                id="seven-reveal-inner"
+                class="d-flex"
+              >
+                <div
+                  class="seven-card-wrapper"
+                  :class="{
+                    'seven-card-offset': !gameStore.firstCardRevealed,
+                    'seven-card-revealing': gameStore.firstCardRevealed,
+                  }"
+                >
+                  <GameCard
+                    :suit="gameStore.firstCardRevealed ? topCard?.suit : undefined"
+                    :rank="gameStore.firstCardRevealed ? topCard?.rank : undefined"
+                    :data-top-card="(gameStore.firstCardRevealed && topCard)
+                      ? `${topCard.rank}-${topCard.suit}` : undefined"
+                    :is-selected="topCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectTopCard"
+                  />
+                </div>
+                <div
+                  class="seven-card-wrapper"
+                  :class="{
+                    'seven-card-offset': !gameStore.secondCardRevealed,
+                    'seven-card-revealing': gameStore.secondCardRevealed,
+                  }"
+                >
+                  <GameCard
+                    :suit="gameStore.secondCardRevealed ? secondCard?.suit : undefined"
+                    :rank="gameStore.secondCardRevealed ? secondCard?.rank : undefined"
+                    :data-second-card="(gameStore.secondCardRevealed && secondCard)
+                      ? `${secondCard.rank}-${secondCard.suit}` : undefined"
+                    :is-selected="secondCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectSecondCard"
+                  />
+                </div>
+              </div>
+              <p class="seven-reveal-label mt-2">
                 {{ t('game.playFromDeck') }}
               </p>
-              <div class="d-flex">
-                <GameCard
-                  v-if="topCard"
-                  :suit="topCard.suit"
-                  :rank="topCard.rank"
-                  :data-top-card="`${topCard.rank}-${topCard.suit}`"
-                  :is-selected="topCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectTopCard"
-                />
-                <GameCard
-                  v-if="secondCard"
-                  :suit="secondCard.suit"
-                  :rank="secondCard.rank"
-                  :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
-                  :is-selected="secondCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectSecondCard"
-                />
-              </div>
-            </template>
+            </div>
           </v-card>
           <ScrapPile :scrap="scrap" />
         </div>
@@ -546,6 +569,8 @@ export default {
         case 'jack':
         case 'sevenJack':
           return Transitions.SLIDE_UP;
+        case 'sevenPoints':
+          return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
         default:
           return Transitions.SLIDE_DOWN_LEFT;
       }
@@ -559,6 +584,12 @@ export default {
       ) {
         return Transitions.SLIDE_DOWN;
       }
+
+      // Playing from the deck
+      if (this.gameStore.lastEventChange === 'sevenFaceCard') {
+        return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
+      }
+
       // Defaults in below (from hand) out left (to scrap)
       return Transitions.SLIDE_DOWN_LEFT;
     },
@@ -568,6 +599,8 @@ export default {
         case 'jack':
         case 'sevenJack':
           return Transitions.SLIDE_DOWN;
+        case 'sevenPoints':
+          return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
         case 'resolve':
           // Different one-offs cause different direction transitions
           switch (this.gameStore.lastEventOneOffRank) {
@@ -602,6 +635,11 @@ export default {
       ) {
         return Transitions.SLIDE_UP;
       }
+      // Playing from the deck
+      if (this.gameStore.lastEventChange === 'sevenFaceCard') {
+        return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
+      }
+
       // Otherwise in from opponent hand, out towards scrap
       return Transitions.SLIDE_UP_DOWN;
     },
@@ -1167,23 +1205,86 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0);
-    background-size: cover;
+    background-color: transparent;
     margin: 10px;
     height: 29vh;
     width: calc(29vh / 1.3);
+    isolation: isolate;
     transition: width var(--duration-fast) ease-in-out;
-    background-image: url('/img/game/bg-deck.png');
     contain: var(--contain-isolated);
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('/img/game/bg-deck.png');
+      background-size: cover;
+      border-radius: inherit;
+      filter: brightness(1);
+      transition: filter var(--duration-normal);
+      pointer-events: none;
+      z-index: -1;
+    }
     &.reveal-top-two {
-      color: white;
-      background-image: none;
-      width: calc(29vh * 1.5);
-      max-width: 300px;
       z-index: 1;
+      overflow: visible;
+      contain: none;
+      &::before {
+        filter: brightness(0.68);
+      }
+
+      & .seven-reveal-outer {
+        flex: 1;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: visible;
+      }
+
+      & .seven-reveal-label {
+        position: absolute;
+        top: -48px;
+        width: 100%;
+        color: rgba(var(--v-theme-base-light));
+        font-size: 32px;
+        font-weight: bold;
+        font-family: Changa;
+      }
+
+      & .seven-card-wrapper {
+        margin-top: 32px;
+        transition: translate var(--duration-slow);
+
+        &.seven-card-offset {
+          translate: 72px 0;
+        }
+      }
 
       & .resolving-seven-card {
         width: 9.5rem;
+      }
+
+      // Rotation builds up in sync with each card's slide-in
+      & .seven-animating .seven-card-wrapper {
+        animation: sevenWrapperRotateIn var(--duration-normal) ease-out both;
+      }
+
+      & .seven-animating .seven-card-wrapper:nth-child(2) {
+        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+      }
+
+      // On reveal, rotation returns to neutral (higher specificity overrides RotateIn)
+      & .seven-animating .seven-card-wrapper.seven-card-revealing {
+        animation: sevenWrapperRotateOut var(--duration-slow) ease-out both;
+      }
+
+      & .seven-animating .resolving-seven-card {
+        animation: sevenCardSlideIn var(--duration-normal) ease-out both;
+      }
+
+      & .seven-animating .seven-card-wrapper:nth-child(2) .resolving-seven-card {
+        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
       }
     }
     & #empty-deck-text {
@@ -1438,6 +1539,17 @@ export default {
     & #deck {
       height: 13vh;
       width: calc(13vh / 1.3);
+
+      &.reveal-top-two .resolving-seven-card {
+        width: calc(13vh / 1.7);
+      }
+
+      &.reveal-top-two .seven-reveal-label {
+        font-size: 18px;
+        width: max-content;
+        left: 50%;
+        transform: translate(-50%, 24px);
+      }
     }
   }
   #opponent-hand {
