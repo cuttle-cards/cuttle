@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
@@ -411,7 +411,7 @@ export const useGameStore = defineStore('game', () => {
     firstCardRevealed.value = false;
     secondCardRevealed.value = false;
     updateGame(game);
-    await sleep(500); // card 1 entry animation
+    await nextTick(); // card 1 entry animation
     firstCardRevealed.value = true; // card 1 flips
     await sleep(1500); // card 1 flip (1s) + card 2 entry (0.5s)
     secondCardRevealed.value = true; // card 2 flips + rotates back
