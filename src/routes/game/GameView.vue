@@ -1245,7 +1245,9 @@ export default {
       & .seven-reveal-label {
         position: absolute;
         top: -48px;
-        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content;
         color: rgba(var(--v-theme-base-light));
         font-size: 32px;
         font-weight: bold;
