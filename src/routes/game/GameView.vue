@@ -1541,7 +1541,7 @@ export default {
       width: calc(13vh / 1.3);
 
       &.reveal-top-two .resolving-seven-card {
-        width: calc(13vh / 1.3);
+        width: calc(13vh / 1.7);
       }
 
       &.reveal-top-two .seven-reveal-label {
