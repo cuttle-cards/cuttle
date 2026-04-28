@@ -142,11 +142,11 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :class="{ 'reveal-top-two': gameStore.resolvingSeven || gameStore.showingSevenReveal }"
+            :class="{ 'reveal-top-two': gameStore.resolvingSeven }"
             elevation="0"
             @click="drawCard"
           >
-            <template v-if="!gameStore.resolvingSeven && !gameStore.showingSevenReveal">
+            <template v-if="!gameStore.resolvingSeven">
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -156,7 +156,7 @@
             </template>
 
             <div
-              v-if="gameStore.resolvingSeven || gameStore.showingSevenReveal"
+              v-if="gameStore.resolvingSeven"
               class="seven-reveal-outer"
               :class="{ 'seven-animating': gameStore.showingSevenReveal }"
             >
