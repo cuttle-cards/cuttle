@@ -1,14 +1,13 @@
 import { myUser } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 import { assertGameState, assertVictory, assertLoss } from '../../support/helpers';
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function setup() {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('announcement', announcementData.id);
+  cy.dismissIntroPopups();
   cy.get('[data-cy=create-ai-game]').click();
   cy.get('[data-player-hand-card]').should('have.length', 5);
   cy.get('[data-cy=opponent-username]').should('contain', 'CuttleBot');

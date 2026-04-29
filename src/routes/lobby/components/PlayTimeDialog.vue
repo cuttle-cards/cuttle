@@ -12,7 +12,8 @@
         {{ t('lobby.playTimeDialog.openPlaySessions') }}
       </p>
       <p class="mt-4" data-cy="play-time-dialog-discord">
-        <i18n-t keypath="lobby.playTimeDialog.discord" tag="span">
+        <span>
+          {{ t('lobby.playTimeDialog.discord') }}
           <a
             class="discord-link"
             data-cy="play-time-dialog-discord-link"
@@ -23,7 +24,7 @@
             {{ t('lobby.playTimeDialog.discordLink') }}
           </a>
           <strong>{{ t('lobby.playTimeDialog.findAGame') }}</strong>
-        </i18n-t>
+        </span>
       </p>
       <p class="mt-4" data-cy="play-time-dialog-bot">
         {{ t('lobby.playTimeDialog.botPlay') }}

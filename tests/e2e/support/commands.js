@@ -1,5 +1,6 @@
 import { hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
+import { announcementData } from '../../../src/routes/home/components/announcementDialog/data/announcementData';
 import MoveType from '../../../utils/MoveType.json';
 
 /**
@@ -88,6 +89,13 @@ Cypress.Commands.add('wipeDatabase', () => {
     url: 'localhost:1337/api/test/wipe-database'
   });
   cy.log('Wiped database');
+});
+
+Cypress.Commands.add('dismissIntroPopups', () => {
+  cy.window().then((win) => {
+    win.localStorage.setItem('announcement', announcementData.id);
+    win.localStorage.setItem('playTimeDialogDismissed', 'true');
+  });
 });
 
 Cypress.Commands.add('refreshOpponentSocket', () => {

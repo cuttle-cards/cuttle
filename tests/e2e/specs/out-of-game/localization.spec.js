@@ -5,15 +5,13 @@ import en from '../../../../src/translations/en.json';
 import de from '../../../../src/translations/de.json';
 import ukr from '../../../../src/translations/ukr.json';
 
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
-
 describe('Localization', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
   });
 
   const checkAndChangeLanguage = (name, lang) => {

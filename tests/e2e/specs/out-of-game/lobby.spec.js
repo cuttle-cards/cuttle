@@ -7,7 +7,7 @@ import ThemeColors from '../../../../utils/ThemeColors.json';
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('announcement', announcementData.id);
+  cy.dismissIntroPopups();
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -485,7 +485,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -673,15 +673,19 @@ describe('Lobby - Play Time Dialog', () => {
     window.localStorage.setItem('announcement', announcementData.id);
     cy.signupPlayer(myUser);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
-      cy.window()
-        .its('cuttle.gameStore')
-        .then((store) => store.requestSubscribe(gameSummary.gameId));
-      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
       cy.wrap(gameSummary).as('gameSummary');
     });
   });
 
-  it('Dismisses dialog and sets localStorage when staying in lobby', () => {
+  function enterLobby(gameId) {
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((store) => store.requestSubscribe(gameId));
+    cy.vueRoute(`/lobby/${gameId}`);
+  }
+
+  it('Dismisses dialog and sets localStorage when staying in lobby', function () {
+    enterLobby(this.gameSummary.gameId);
     cy.wait(61000);
     cy.get('#play-time-dialog').should('be.visible');
     cy.get('[data-cy=play-time-dialog-stay]').click();
@@ -689,6 +693,13 @@ describe('Lobby - Play Time Dialog', () => {
     cy.window().then((win) => {
       expect(win.localStorage.getItem('playTimeDialogDismissed')).to.eq('true');
     });
+  });
+
+  it('Does not show dialog if it has already been dismissed', function () {
+    cy.window().then((win) => win.localStorage.setItem('playTimeDialogDismissed', 'true'));
+    enterLobby(this.gameSummary.gameId);
+    cy.wait(62000);
+    cy.get('#play-time-dialog').should('not.exist');
   });
 
 });
@@ -699,7 +710,7 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
