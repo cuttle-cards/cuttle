@@ -1248,8 +1248,10 @@ export default {
         left: 50%;
         transform: translateX(-50%);
         width: max-content;
+        max-width: 25vw;
+        text-align: center;
         color: rgba(var(--v-theme-base-light));
-        font-size: 32px;
+        font-size: min(32px, 2.3vw);
         font-weight: bold;
         font-family: Changa;
       }
