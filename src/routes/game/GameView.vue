@@ -1207,8 +1207,8 @@ export default {
     align-items: center;
     background-color: transparent;
     margin: 10px;
-    height: 29vh;
-    width: calc(29vh / 1.3);
+    height: min(29vh, calc((25vw - 20px) * 1.3));
+    width: min(calc(29vh / 1.3), calc(25vw - 20px));
     isolation: isolate;
     transition: width var(--duration-fast) ease-in-out;
     contain: var(--contain-isolated);
@@ -1264,7 +1264,7 @@ export default {
       }
 
       & .resolving-seven-card {
-        width: 9.5rem;
+        width: min(9.5rem, 12vw);
       }
 
       // Rotation builds up in sync with each card's slide-in
