@@ -2,6 +2,7 @@
   // Animation duration buckets (all respect prefers-reduced-motion)
   --duration-fast: 0.3s;
   --duration-normal: 0.5s;
+  --duration-medium-slow: 0.8s;
   --duration-slow: 1s;
 }
 
@@ -9,6 +10,7 @@
   :root {
     --duration-fast: 0s;
     --duration-normal: 0s;
+    --duration-medium-slow: 0s;
     --duration-slow: 0s;
   }
 }

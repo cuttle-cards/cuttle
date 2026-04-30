@@ -1228,7 +1228,6 @@ export default {
       z-index: 1;
       overflow: visible;
       contain: none;
-      --duration-slow: 0.8s;
       &::before {
         filter: brightness(0.68);
       }
@@ -1259,7 +1258,7 @@ export default {
 
       & .seven-card-wrapper {
         margin-top: 32px;
-        transition: translate var(--duration-slow);
+        transition: translate var(--duration-medium-slow);
 
         &.seven-card-offset {
           translate: 72px 0;
@@ -1281,7 +1280,12 @@ export default {
 
       // On reveal, rotation returns to neutral (higher specificity overrides RotateIn)
       & .seven-animating .seven-card-wrapper.seven-card-revealing {
-        animation: sevenWrapperRotateOut var(--duration-slow) ease-out both;
+        animation: sevenWrapperRotateOut var(--duration-medium-slow) ease-out both;
+      }
+
+      // Speed up card-flip for the seven reveal; higher specificity overrides the base rule
+      & .card-flip-enter-active {
+        transition-duration: var(--duration-medium-slow);
       }
 
       & .seven-animating .resolving-seven-card {
@@ -1577,10 +1581,4 @@ export default {
   }
 }
 
-// Ensure the reveal-top-two --duration-slow override respects reduced-motion
-@media (prefers-reduced-motion: reduce) {
-  #field-left #deck.reveal-top-two {
-    --duration-slow: 0s;
-  }
-}
 </style>
