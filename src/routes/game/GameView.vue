@@ -1258,7 +1258,7 @@ export default {
 
       & .seven-card-wrapper {
         margin-top: 32px;
-        transition: translate var(--duration-slow);
+        transition: translate var(--duration-medium-slow);
 
         &.seven-card-offset {
           translate: 72px 0;
@@ -1275,12 +1275,17 @@ export default {
       }
 
       & .seven-animating .seven-card-wrapper:nth-child(2) {
-        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+        animation-delay: var(--duration-normal);
       }
 
       // On reveal, rotation returns to neutral (higher specificity overrides RotateIn)
       & .seven-animating .seven-card-wrapper.seven-card-revealing {
-        animation: sevenWrapperRotateOut var(--duration-slow) ease-out both;
+        animation: sevenWrapperRotateOut var(--duration-medium-slow) ease-out both;
+      }
+
+      // Speed up card-flip for the seven reveal; higher specificity overrides the base rule
+      & .card-flip-enter-active {
+        transition-duration: var(--duration-medium-slow);
       }
 
       & .seven-animating .resolving-seven-card {
@@ -1288,7 +1293,7 @@ export default {
       }
 
       & .seven-animating .seven-card-wrapper:nth-child(2) .resolving-seven-card {
-        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+        animation-delay: var(--duration-normal);
       }
     }
     & #empty-deck-text {
@@ -1575,4 +1580,5 @@ export default {
     margin-top: -16px;
   }
 }
+
 </style>
