@@ -1228,6 +1228,7 @@ export default {
       z-index: 1;
       overflow: visible;
       contain: none;
+      --duration-slow: 0.8s;
       &::before {
         filter: brightness(0.68);
       }
@@ -1275,7 +1276,7 @@ export default {
       }
 
       & .seven-animating .seven-card-wrapper:nth-child(2) {
-        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+        animation-delay: var(--duration-normal);
       }
 
       // On reveal, rotation returns to neutral (higher specificity overrides RotateIn)
@@ -1288,7 +1289,7 @@ export default {
       }
 
       & .seven-animating .seven-card-wrapper:nth-child(2) .resolving-seven-card {
-        animation-delay: calc(var(--duration-normal) + var(--duration-slow));
+        animation-delay: var(--duration-normal);
       }
     }
     & #empty-deck-text {
@@ -1573,6 +1574,13 @@ export default {
 @media (max-width: 960px) and (orientation: landscape) {
   #player-score {
     margin-top: -16px;
+  }
+}
+
+// Ensure the reveal-top-two --duration-slow override respects reduced-motion
+@media (prefers-reduced-motion: reduce) {
+  #field-left #deck.reveal-top-two {
+    --duration-slow: 0s;
   }
 }
 </style>
