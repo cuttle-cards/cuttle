@@ -413,9 +413,9 @@ export const useGameStore = defineStore('game', () => {
     updateGame(game);
     await nextTick(); // card 1 entry animation
     firstCardRevealed.value = true; // card 1 flips
-    await sleep(1500); // card 1 flip (1s) + card 2 entry (0.5s)
+    await sleep(500); // card 2 starts while card 1 still flipping (0.3s overlap at --duration-slow 0.8s)
     secondCardRevealed.value = true; // card 2 flips + rotates back
-    await sleep(1000); // wait for card 2's sevenWrapperRotateOut to finish before removing .seven-animating
+    await sleep(800); // wait for card 2's sevenWrapperRotateOut (--duration-slow 0.8s) to finish
     showingSevenReveal.value = false;
   }
   function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
