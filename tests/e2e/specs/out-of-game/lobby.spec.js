@@ -3,6 +3,7 @@ import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import ThemeColors from '../../../../utils/ThemeColors.json';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
@@ -670,7 +671,7 @@ describe('Lobby - Play Time Dialog', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    window.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
     cy.signupPlayer(myUser);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
@@ -691,12 +692,12 @@ describe('Lobby - Play Time Dialog', () => {
     cy.get('[data-cy=play-time-dialog-stay]').click();
     cy.get('#play-time-dialog').should('not.exist');
     cy.window().then((win) => {
-      expect(win.localStorage.getItem('playTimeDialogDismissed')).to.eq('true');
+      expect(win.localStorage.getItem(LS_PLAY_TIME_DIALOG_DISMISSED)).to.eq('true');
     });
   });
 
   it('Does not show dialog if it has already been dismissed', function () {
-    cy.window().then((win) => win.localStorage.setItem('playTimeDialogDismissed', 'true'));
+    cy.window().then((win) => win.localStorage.setItem(LS_PLAY_TIME_DIALOG_DISMISSED, 'true'));
     enterLobby(this.gameSummary.gameId);
     cy.wait(62000);
     cy.get('#play-time-dialog').should('not.exist');

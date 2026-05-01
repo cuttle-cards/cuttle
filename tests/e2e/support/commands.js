@@ -1,6 +1,7 @@
 import { hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 import { announcementData } from '../../../src/routes/home/components/announcementDialog/data/announcementData';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils';
 import MoveType from '../../../utils/MoveType.json';
 
 /**
@@ -93,8 +94,8 @@ Cypress.Commands.add('wipeDatabase', () => {
 
 Cypress.Commands.add('dismissIntroPopups', () => {
   cy.window().then((win) => {
-    win.localStorage.setItem('announcement', announcementData.id);
-    win.localStorage.setItem('playTimeDialogDismissed', 'true');
+    win.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
+    win.localStorage.setItem(LS_PLAY_TIME_DIALOG_DISMISSED, 'true');
   });
 });
 
