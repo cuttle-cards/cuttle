@@ -45,7 +45,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.DELETE_DECK:
     case SocketEvent.CONCEDE:
     case SocketEvent.RE_LOGIN:
-    case SocketEvent.RESOLVE:
     case SocketEvent.FIZZLE:
     case SocketEvent.TARGETED_ONE_OFF:
     case SocketEvent.ONE_OFF:
@@ -60,6 +59,13 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
       gameStore.updateGame(evData.game);
+      break;
+    case SocketEvent.RESOLVE:
+      if (evData.game.lastEvent?.oneOff?.rank === 7) {
+        await gameStore.processSevens(evData.game);
+      } else {
+        gameStore.updateGame(evData.game);
+      }
       break;
     case SocketEvent.SCUTTLE:
     case SocketEvent.SEVEN_SCUTTLE:
