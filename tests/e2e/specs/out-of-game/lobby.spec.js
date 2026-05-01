@@ -3,7 +3,7 @@ import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import ThemeColors from '../../../../utils/ThemeColors.json';
-import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../../utils/local-storage-utils';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
