@@ -1,7 +1,7 @@
 import { hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 import { announcementData } from '../../../src/routes/home/components/announcementDialog/data/announcementData';
-import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '_/utils/local-storage-utils';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../utils/local-storage-utils';
 import MoveType from '../../../utils/MoveType.json';
 
 /**
