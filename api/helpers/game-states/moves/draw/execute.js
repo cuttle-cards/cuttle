@@ -36,12 +36,16 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
 
     player.hand.push(result.deck.shift());
-    result.turn++;
+    const handExceedsLimit = player.hand.length > 8;
+
+    if (!handExceedsLimit) {
+      result.turn++;
+    }
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: handExceedsLimit ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
       playedBy,
       playedCard: null,
       targetCard: null,

@@ -88,6 +88,9 @@ export async function handleInGameEvents(evData, newRoute = null) {
         gameStore.updateGame(evData.game);
       }
       break;
+    case SocketEvent.DISCARD_TO_HAND_LIMIT:
+      gameStore.updateGame(evData.game);
+      break;
 
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });

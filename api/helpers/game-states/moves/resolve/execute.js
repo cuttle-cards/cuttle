@@ -89,7 +89,10 @@ module.exports = {
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
-    
+
+    const nineTargetedPlayer = playedBy ? result.p1 : result.p0;
+    const nineOverflow = oneOff.rank === 9 && nineTargetedPlayer.hand.length > 8;
+
     result.scrap.push(result.oneOff);
     result = {
       ...result,
@@ -97,7 +100,8 @@ module.exports = {
       targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
-      turn: result.turn + 1,
+      phase: nineOverflow ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: nineOverflow ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);

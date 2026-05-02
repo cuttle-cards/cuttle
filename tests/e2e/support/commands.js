@@ -39,6 +39,7 @@ const transformGameUrl = (api, slug, gameId = null) => {
     case 'resolveThree':
     case 'resolveFour':
     case 'resolveFive':
+    case 'discardToHandLimit':
     case 'seven/points':
     case 'seven/scuttle':
     case 'seven/faceCard':
@@ -474,6 +475,21 @@ Cypress.Commands.add('resolveOpponent', (gameId = null) => {
  * @param card1 {suit: number, rank: number} OPTIONAL
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
+Cypress.Commands.add('discardToHandLimitOpponent', (card1, card2 = null) => {
+  const moveType = MoveType.DISCARD_TO_HAND_LIMIT;
+  transformGameUrl('game', 'discardToHandLimit').then((url) => {
+    io.socket.request({
+      method: 'post',
+      url,
+      data: {
+        moveType,
+        cardId1: card1?.id,
+        ...(card2 && { cardId2: card2.id }),
+      },
+    });
+  });
+});
+
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
 
   const moveType = MoveType.RESOLVE_FOUR;

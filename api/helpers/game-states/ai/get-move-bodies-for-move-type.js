@@ -140,6 +140,24 @@ module.exports = {
         }
         break;
 
+      case MoveType.DISCARD_TO_HAND_LIMIT: {
+        if (playerHand.length === 9) {
+          res = playerHand.map((card) => ({ moveType, playedBy, cardId1: card.id }));
+        } else {
+          for (let i = 0; i < playerHand.length; i++) {
+            for (let j = i + 1; j < playerHand.length; j++) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId1: playerHand[i].id,
+                cardId2: playerHand[j].id,
+              });
+            }
+          }
+        }
+        break;
+      }
+
       case MoveType.SEVEN_POINTS:
         res = deck.slice(0, 2)
           .filter((card) => card.rank <= 10)

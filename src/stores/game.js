@@ -219,11 +219,16 @@ export const useGameStore = defineStore('game', () => {
         return isPlayersTurn.value;
       case GamePhase.RESOLVING_FIVE:
         return !isPlayersTurn.value;
+      case GamePhase.DISCARDING_TO_HAND_LIMIT:
+        return (player.value?.hand?.length ?? 0) <= 8;
       default:
         return false;
     }
   });
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
+  const showDiscardToHandLimit = computed(
+    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && (player.value?.hand?.length ?? 0) > 8,
+  );
   const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
     () => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value,
@@ -624,6 +629,11 @@ export const useGameStore = defineStore('game', () => {
     const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
     await makeSocketRequest('resolveFour', reqData);
   }
+  async function requestDiscardToHandLimit({ cardId1, cardId2 }) {
+    const moveType = MoveType.DISCARD_TO_HAND_LIMIT;
+    const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
+    await makeSocketRequest('discardToHandLimit', reqData);
+  }
   async function requestResolve() {
     const moveType = MoveType.RESOLVE;
     await makeSocketRequest('resolve', { moveType });
@@ -763,6 +773,7 @@ export const useGameStore = defineStore('game', () => {
     showResolveFour,
     waitingForOpponentToDiscard,
     showResolveFive,
+    showDiscardToHandLimit,
     playingFromDeck,
     waitingForOpponentToPlayFromDeck,
     waitingForOpponentToStalemate,
@@ -801,6 +812,7 @@ export const useGameStore = defineStore('game', () => {
     requestPlayTargetedOneOff,
     requestPlayJack,
     requestDiscard,
+    requestDiscardToHandLimit,
     requestResolve,
     requestResolveThree,
     requestResolveFive,

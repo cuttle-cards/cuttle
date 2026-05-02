@@ -806,4 +806,97 @@ describe('Playing NINES', () => {
       });
     });
   }); // End Opponent playing NINES describe
+
+  describe('Nine triggers discard-to-hand-limit', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('Nine returns card to opponent hand at hand limit, triggering discard dialog for opponent', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.NINE_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_HEARTS,
+          Card.TWO_OF_HEARTS,
+          Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_HEARTS,
+          Card.SEVEN_OF_HEARTS,
+          Card.EIGHT_OF_HEARTS,
+        ],
+        p1Points: [ Card.TEN_OF_DIAMONDS ],
+        p1FaceCards: [],
+      });
+
+      // Player plays nine as targeted one-off against opponent's point card
+      cy.get('[data-player-hand-card=9-3]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('#player-hand-targeting').should('be.visible');
+      cy.get('[data-opponent-point-card=10-1]').click();
+      cy.resolveOpponent();
+
+      // Opponent now has 9 cards (8 in hand + TEN_OF_DIAMONDS returned), must discard
+      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+      cy.discardToHandLimitOpponent(Card.ACE_OF_HEARTS);
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_HEARTS,
+          Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_HEARTS,
+          Card.SEVEN_OF_HEARTS,
+          Card.EIGHT_OF_HEARTS,
+          Card.TEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES, Card.ACE_OF_HEARTS ],
+      });
+    });
+
+    it('Nine returns card to player hand at hand limit, triggering discard dialog for player', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.TWO_OF_CLUBS,
+          Card.THREE_OF_CLUBS,
+          Card.FOUR_OF_CLUBS,
+          Card.SIX_OF_CLUBS,
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+        ],
+        p0Points: [ Card.TEN_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.NINE_OF_SPADES ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Opponent plays nine targeting player's point card
+      cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS, 'point');
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      // Player now has 9 cards (8 in hand + TEN_OF_CLUBS returned), must discard
+      cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+      cy.get('[data-discard-hand-limit-card]').first()
+        .click();
+      cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+      // Player is back to 8 cards, it's now player's turn
+      cy.get('[data-player-hand-card]').should('have.length', 8);
+      cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+    });
+  }); // End Nine triggers discard-to-hand-limit
 });
