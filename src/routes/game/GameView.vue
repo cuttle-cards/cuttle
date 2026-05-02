@@ -172,6 +172,7 @@
                   }"
                 >
                   <GameCard
+                    v-if="topCard"
                     :suit="gameStore.firstCardRevealed ? topCard?.suit : undefined"
                     :rank="gameStore.firstCardRevealed ? topCard?.rank : undefined"
                     :data-top-card="(gameStore.firstCardRevealed && topCard)
@@ -182,6 +183,7 @@
                   />
                 </div>
                 <div
+                  v-if="secondCard"
                   class="seven-card-wrapper"
                   :class="{
                     'seven-card-offset': !gameStore.secondCardRevealed,
