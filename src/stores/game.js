@@ -448,6 +448,7 @@ export const useGameStore = defineStore('game', () => {
       case 'resolveThree':
       case 'resolveFour':
       case 'resolveFive':
+      case 'discardToHandLimit':
       case 'seven/points':
       case 'seven/scuttle':
       case 'seven/faceCard':
@@ -629,10 +630,11 @@ export const useGameStore = defineStore('game', () => {
     const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
     await makeSocketRequest('resolveFour', reqData);
   }
-  async function requestDiscardToHandLimit({ cardId1, cardId2 }) {
-    const moveType = MoveType.DISCARD_TO_HAND_LIMIT;
-    const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
-    await makeSocketRequest('discardToHandLimit', reqData);
+  async function requestDiscardToHandLimit(cardIds) {
+    await makeSocketRequest('discardToHandLimit', {
+      moveType: MoveType.DISCARD_TO_HAND_LIMIT,
+      discardedCards: cardIds,
+    });
   }
   async function requestResolve() {
     const moveType = MoveType.RESOLVE;

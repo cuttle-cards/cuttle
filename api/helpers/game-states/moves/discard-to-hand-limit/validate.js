@@ -14,8 +14,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to discard to hand limit
-     * @param { String } requestedMove.cardId1 - First card to be discarded
-     * @param { String } [requestedMove.cardId2] - Second card to be discarded (required if hand > 9)
+     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard (must equal hand.length - 8)
      * @param { MoveType.DISCARD_TO_HAND_LIMIT } requestedMove.moveType
      */
     requestedMove: {
@@ -42,19 +41,20 @@ module.exports = {
       }
 
       const player = playedBy ? currentState.p1 : currentState.p0;
+      const overflowCount = player.hand.length - 8;
 
-      if (player.hand.length <= 8) {
+      if (overflowCount <= 0) {
         throw new BadRequestError('game.snackbar.oneOffs.discardToHandLimit.handNotOverLimit');
       }
 
-      const { cardId1, cardId2 } = requestedMove;
+      const { discardedCards } = requestedMove;
 
-      const selectedCard1 = player.hand.find(card => card.id === cardId1);
-      if (!selectedCard1) {
+      if (!Array.isArray(discardedCards) || discardedCards.length !== overflowCount) {
         throw new BadRequestError('game.snackbar.oneOffs.discardToHandLimit.mustSelectCards');
       }
 
-      if (player.hand.length > 9 && !player.hand.find(card => card.id === cardId2)) {
+      const allInHand = discardedCards.every(id => player.hand.some(card => card.id === id));
+      if (!allInHand) {
         throw new BadRequestError('game.snackbar.oneOffs.discardToHandLimit.mustSelectCards');
       }
 

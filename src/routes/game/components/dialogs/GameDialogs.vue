@@ -163,12 +163,7 @@ export default {
       });
     },
     discardToHandLimit(cardIds) {
-      const [ cardId1 ] = cardIds;
-      const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
-      this.gameStore.requestDiscardToHandLimit({
-        cardId1,
-        cardId2,
-      });
+      this.gameStore.requestDiscardToHandLimit(cardIds);
     },
     handleError() {
       this.$emit('handle-error');

@@ -13,8 +13,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to discard to hand limit
-     * @param { String } requestedMove.cardId1 - First card to be discarded
-     * @param { String } [requestedMove.cardId2] - Second card to be discarded (if needed)
+     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard (exactly hand.length - 8)
      * @param { MoveType.DISCARD_TO_HAND_LIMIT } requestedMove.moveType
      */
     requestedMove: {
@@ -33,21 +32,17 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
-    const { cardId1, cardId2 } = requestedMove;
+    const { discardedCards: discardIds } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
     const discardedCards = [];
 
-    const cardIndex1 = player.hand.findIndex(({ id }) => id === cardId1);
-    discardedCards.push(player.hand[cardIndex1]);
-    result.scrap.push(...player.hand.splice(cardIndex1, 1));
-
-    if (cardId2) {
-      const cardIndex2 = player.hand.findIndex(({ id }) => id === cardId2);
-      if (cardIndex2 !== -1) {
-        discardedCards.push(player.hand[cardIndex2]);
-        result.scrap.push(...player.hand.splice(cardIndex2, 1));
+    for (const cardId of discardIds) {
+      const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
+      if (cardIndex !== -1) {
+        discardedCards.push(player.hand[cardIndex]);
+        result.scrap.push(...player.hand.splice(cardIndex, 1));
       }
     }
 
