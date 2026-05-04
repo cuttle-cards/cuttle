@@ -483,7 +483,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.get('#discard-to-hand-limit-dialog').should('not.exist');
   });
 
-  it('Draws at hand limit triggers discard dialog (P0 perspective)', () => {
+  it('Draws at hand limit triggers discard dialog (P1 perspective)', () => {
     cy.loadGameFixture(1, {
       p0Hand: [
         Card.ACE_OF_CLUBS,
@@ -502,11 +502,8 @@ describe('Game Basic Moves - P1 Perspective', () => {
       p1FaceCards: [],
       topCard: Card.TEN_OF_CLUBS,
       secondCard: Card.JACK_OF_CLUBS,
-      deck: [ Card.QUEEN_OF_CLUBS ],
     });
-    // Player (P1) draws - passing turn to P0
-    cy.get('#deck').click();
-    // Opponent (P0) draws with a full hand of 8
+    // Opponent (P0) goes first and draws with a full hand of 8
     cy.drawCardOpponent();
     // Opponent now has 9 cards - wait for their discard
     cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
@@ -525,7 +522,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS ],
+      p1Hand: [ Card.ACE_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.ACE_OF_CLUBS ],

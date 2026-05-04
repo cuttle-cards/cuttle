@@ -476,16 +476,9 @@ Cypress.Commands.add('resolveOpponent', (gameId = null) => {
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
 Cypress.Commands.add('discardToHandLimitOpponent', (...cards) => {
-  const moveType = MoveType.DISCARD_TO_HAND_LIMIT;
-  transformGameUrl('game', 'discardToHandLimit').then((url) => {
-    io.socket.request({
-      method: 'post',
-      url,
-      data: {
-        moveType,
-        discardedCards: cards.map((card) => card.id),
-      },
-    });
+  cy.makeSocketRequest('game', 'discardToHandLimit', {
+    moveType: MoveType.DISCARD_TO_HAND_LIMIT,
+    discardedCards: cards.map((card) => card.id),
   });
 });
 
