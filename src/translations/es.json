@@ -133,6 +133,11 @@
         "discard": "Descartar",
         "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Descartar y robar",
         "nice": "¡Bien!",

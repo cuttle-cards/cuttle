@@ -122,6 +122,11 @@
         "discard": "Abwerfen",
         "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",
         "nice": "Schön!",

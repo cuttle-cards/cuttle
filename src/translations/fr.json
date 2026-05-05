@@ -133,6 +133,11 @@
         "discard": "Défausser",
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",

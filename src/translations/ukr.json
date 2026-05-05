@@ -122,6 +122,11 @@
         "discard": "Відкинути",
         "opponentHasResolved": "Ваш суперник вирішив чотирку з відривом. Ви повинні відкинути дві карти. Клікніть, щоб вибрати карти для відкидання."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Відкинути та взяти",
         "nice": "Класно!",
