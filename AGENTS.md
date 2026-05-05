@@ -67,6 +67,8 @@ In case of conflicting rules, the following hierarchy applies:
 - **Discovery**: Glob `src/components` for shared, general-purpose components. Page-specific components are often located in `src/routes/[routeName]/components/`. Page entry points are in `src/routes/[routeName]/[RouteName]View.vue`.
 - **UI Library**: Vuetify is used. See existing components for usage patterns.
 - **Routing**: `src/router.js` defines routes and navigation guards.
+- **State Management**: Pinia is used for state management; stores are located in `src/stores` and use the setup store syntax
+- **Syntax** Use `<script setup>` for all new vue components
 
 ### Backend (Sails.js)
 - **Routes**: `config/routes.js` maps endpoints to controller actions.
@@ -123,9 +125,4 @@ Before completing any task, verify:
 1.  **Discovery**: Confirm your implementation matches discovered patterns.
 2.  **Security**: No secrets hardcoded; policies are correctly applied.
 3.  **Pattern Consistency**: Changes align with existing file and project structures.
-4.  **Automated Checks**: Run `npm run lint` and `npm run test:unit`.
-
----
-
-**Remember**: You are a discovery system first, a code generator second. When in doubt, search, read, and ask questions before writing code.
-
+4.  **Automated Checks**: Run `npm run lint` to verify code style
