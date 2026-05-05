@@ -36,75 +36,57 @@
   </BaseDialog>
 </template>
 
-<script>
-import { mapStores } from 'pinia';
-import { useGameStore } from '@/stores/game';
+<script setup>
+import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useGameStore } from '@/stores/game.js';
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
-import { useI18n } from 'vue-i18n';
 
-export default {
-  name: 'DiscardToHandLimitDialog',
-  components: {
-    BaseDialog,
-    GameCard,
+const props = defineProps({
+  modelValue: {
+    required: true,
+    type: Boolean,
   },
-  props: {
-    modelValue: {
-      required: true,
-      type: Boolean,
-    },
-  },
-  emits: [ 'discard' ],
-  setup() {
-    const { t } = useI18n();
-    return { t };
-  },
-  data() {
-    return {
-      selectedIds: [],
-    };
-  },
-  computed: {
-    ...mapStores(useGameStore),
-    show: {
-      get() {
-        return this.modelValue;
-      },
-      set() {
-        // do nothing - parent controls whether dialog is open
-      },
-    },
-    hand() {
-      return this.gameStore.player.hand;
-    },
-    discardCount() {
-      return Math.max(0, this.hand.length - 8);
-    },
-    readyToDiscard() {
-      return this.selectedIds.length === this.discardCount;
-    },
-  },
-  methods: {
-    selectCard(handIndex) {
-      const cardId = this.hand[handIndex].id;
-      if (this.selectedIds.includes(cardId)) {
-        this.selectedIds.splice(this.selectedIds.indexOf(cardId), 1);
-      } else {
-        this.selectedIds.push(cardId);
-        if (this.selectedIds.length > this.discardCount) {
-          this.selectedIds.splice(0, 1);
-        }
-      }
-    },
-    discard() {
-      if (this.readyToDiscard) {
-        this.$emit('discard', [ ...this.selectedIds ]);
-        this.selectedIds = [];
-      }
-    },
-  },
-};
+});
+
+const emit = defineEmits([ 'discard' ]);
+
+const { t } = useI18n();
+const gameStore = useGameStore();
+const { player } = storeToRefs(gameStore);
+
+const selectedIds = ref([]);
+
+const show = computed({
+  get: () => props.modelValue,
+  set: () => {},
+});
+
+const hand = computed(() => player.value.hand);
+const discardCount = computed(() => Math.max(0, hand.value.length - 8));
+const readyToDiscard = computed(() => selectedIds.value.length === discardCount.value);
+
+function selectCard(handIndex) {
+  const cardId = hand.value[handIndex].id;
+  const idx = selectedIds.value.indexOf(cardId);
+  if (idx !== -1) {
+    selectedIds.value.splice(idx, 1);
+  } else {
+    selectedIds.value.push(cardId);
+    if (selectedIds.value.length > discardCount.value) {
+      selectedIds.value.splice(0, 1);
+    }
+  }
+}
+
+function discard() {
+  if (readyToDiscard.value) {
+    emit('discard', [ ...selectedIds.value ]);
+    selectedIds.value = [];
+  }
+}
 </script>
 
 <style lang="scss" scoped>
