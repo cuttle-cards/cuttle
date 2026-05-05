@@ -120,6 +120,11 @@ module.exports = {
             discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
 
+        case MoveType.DISCARD_TO_HAND_LIMIT:
+          return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
+            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])} ` : ''
+          }to the hand limit.`;
+
         case MoveType.RESOLVE_FIVE:
           if (discardedCards.length) {
             return `${player} discarded the ${getFullCardName(

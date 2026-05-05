@@ -467,14 +467,66 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.drawCardOpponent();
     // Opponent now has 8 cards in hand
     cy.get('[data-opponent-hand-card]').should('have.length', 8);
-    // Player attempts to draw with full hand
+    // Player draws with full hand - now has 9 cards, triggering discard-to-hand-limit dialog
     cy.get('#deck').click();
-    // Test that Error snackbar for hand limit
-    assertSnackbar('You are at the hand limit; you cannot draw.');
-    // Player still has 8 cards in hand
+    // Player now has 9 cards in hand
+    cy.get('[data-player-hand-card]').should('have.length', 9);
+    // Discard-to-hand-limit dialog appears
+    cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+    // Player selects one card to discard
+    cy.get('[data-discard-hand-limit-card]').first()
+      .click();
+    cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+    // Player is back to 8 cards in hand
     cy.get('[data-player-hand-card]').should('have.length', 8);
-    // Opponent still has 8 cards in hand
-    cy.get('[data-opponent-hand-card]').should('have.length', 8);
+    // Dialog is gone
+    cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+  });
+
+  it('Draws at hand limit triggers discard dialog (P1 perspective)', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [
+        Card.ACE_OF_CLUBS,
+        Card.TWO_OF_CLUBS,
+        Card.THREE_OF_CLUBS,
+        Card.FOUR_OF_CLUBS,
+        Card.SIX_OF_CLUBS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_CLUBS,
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.ACE_OF_SPADES ],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.TEN_OF_CLUBS,
+      secondCard: Card.JACK_OF_CLUBS,
+    });
+    // Opponent (P0) goes first and draws with a full hand of 8
+    cy.drawCardOpponent();
+    // Opponent now has 9 cards - wait for their discard
+    cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+    cy.discardToHandLimitOpponent(Card.ACE_OF_CLUBS);
+    cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+    assertGameState(1, {
+      p0Hand: [
+        Card.TWO_OF_CLUBS,
+        Card.THREE_OF_CLUBS,
+        Card.FOUR_OF_CLUBS,
+        Card.SIX_OF_CLUBS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_CLUBS,
+        Card.TEN_OF_CLUBS,
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.ACE_OF_SPADES ],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [ Card.ACE_OF_CLUBS ],
+    });
   });
 
   it('draws last card from deck, and displays snackbar', () => {

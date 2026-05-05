@@ -133,6 +133,11 @@
         "discard": "Descartar",
         "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Descartar y robar",
         "nice": "¡Bien!",
@@ -337,6 +342,11 @@
           "notYourTurn": "No es tu turno para descartar",
           "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
           "mustSelectCards": "Debes seleccionar dos cartas para descartar"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",

@@ -21,6 +21,10 @@
 
     <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
     <FiveDialog v-if="gameStore.showResolveFive" @resolve-five="resolveFive" />
+    <DiscardToHandLimitDialog
+      :model-value="gameStore.showDiscardToHandLimit"
+      @discard="discardToHandLimit"
+    />
 
     <ThreeDialog
       :model-value="pickingFromScrap"
@@ -52,6 +56,7 @@ import { useAuthStore } from '@/stores/auth';
 import CannotCounterDialog from './components/CannotCounterDialog.vue';
 import CounterDialog from './components/CounterDialog.vue';
 import FourDialog from './components/FourDialog.vue';
+import DiscardToHandLimitDialog from './components/DiscardToHandLimitDialog.vue';
 import GameOverDialog from './components/gameOver/GameOverDialog.vue';
 import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
 import SevenDoubleJacksDialog from './components/SevenDoubleJacksDialog.vue';
@@ -65,6 +70,7 @@ export default {
   components: {
     CannotCounterDialog,
     CounterDialog,
+    DiscardToHandLimitDialog,
     FourDialog,
     GameOverDialog,
     ReauthenticateDialog,
@@ -155,6 +161,9 @@ export default {
         cardId1,
         cardId2,
       });
+    },
+    discardToHandLimit(cardIds) {
+      this.gameStore.requestDiscardToHandLimit(cardIds);
     },
     handleError() {
       this.$emit('handle-error');

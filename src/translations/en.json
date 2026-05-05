@@ -122,6 +122,11 @@
         "discard": "Discard",
         "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Discard and Draw",
         "nice": "Nice!",
@@ -338,6 +343,11 @@
           "notYourTurn": "It's not your turn to discard",
           "notResolvingFourPhase": "Can't discard unless your opponent played a four",
           "mustSelectCards": "You must select two cards to discard"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",

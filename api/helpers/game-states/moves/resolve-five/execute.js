@@ -48,21 +48,19 @@ module.exports = {
     }
 
     const cardsToDraw = Math.min(3, result.deck.length);
-    const spaceInHand = 8 - player.hand.length;
-    const actualCardsToDraw = Math.min(cardsToDraw, spaceInHand);
-
-    player.hand.push(...result.deck.splice(0, actualCardsToDraw));
+    player.hand.push(...result.deck.splice(0, cardsToDraw));
+    const handExceedsLimit = player.hand.length > 8;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: handExceedsLimit ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
       playedBy,
       playedCard: null,
       targetCard: null,
       resolved: result.oneOff,
       oneOff: null,
-      turn: result.turn + 1,
+      turn: handExceedsLimit ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);
