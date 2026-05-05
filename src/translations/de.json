@@ -343,6 +343,11 @@
           "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
           "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
         },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
+        },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",
           "incorrectCard": "Falsche Karte gespielt",

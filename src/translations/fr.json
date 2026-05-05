@@ -343,6 +343,11 @@
           "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
           "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
         },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
+        },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
           "incorrectCard": "Mauvaise carte jouée",
