@@ -36,9 +36,15 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
+      const activePlayerPNum = currentState.p0.hand.length > 8 ? 0 : 1;
+      if (playedBy !== activePlayerPNum) {
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
+      }
+
       if (currentState.phase !== GamePhase.DISCARDING_TO_HAND_LIMIT) {
         throw new BadRequestError('game.snackbar.oneOffs.discardToHandLimit.notDiscardingPhase');
       }
+
 
       const player = playedBy ? currentState.p1 : currentState.p0;
       const overflowCount = player.hand.length - 8;
