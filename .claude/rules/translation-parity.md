@@ -1,3 +1,8 @@
+---
+paths:
+  - "src/translations/*.json"
+---
+
 ## Translation File Parity
 
 All JSON files in this directory must have identical keys in identical order at all times.
