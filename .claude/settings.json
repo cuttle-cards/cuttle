@@ -1,0 +1,76 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(ls)",
+      "Bash(grep *)",
+      "Bash(cat *)",
+      "Bash(wc *)",
+      "Bash(echo *)",
+      "Bash(node -e *)",
+      "Bash(node --version*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git rev-parse*)",
+      "Bash(git remote*)",
+      "Bash(git fetch*)",
+      "Bash(git stash list*)",
+      "Bash(git switch *)",
+      "Bash(git checkout -b *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run test:unit*)",
+      "Bash(npm run test:agents*)",
+      "Bash(npm run build*)",
+      "Bash(npm run start:*)",
+      "Bash(npm run:*)",
+      "Bash(npm view *)",
+      "Bash(npm info *)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr diff*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh pr create*)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view*)",
+      "Bash(gh run list*)",
+      "Bash(gh run view*)",
+      "Bash(gh label list*)",
+      "Bash(gh repo view*)",
+      "Bash(gh api *)",
+      "Bash(gh status*)",
+      "WebSearch",
+      "WebFetch(domain:vitejs.dev)",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:vitest.dev)",
+      "WebFetch(domain:docs.cypress.io)",
+      "WebFetch(domain:devtools.vuejs.org)",
+      "WebFetch(domain:sailsjs.com)",
+      "WebFetch(domain:vuejs.org)",
+      "WebFetch(domain:pinia.vuejs.org)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:developer.mozilla.org)"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/git-guardrails.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
