@@ -49,18 +49,18 @@ module.exports = {
 
     const cardsToDraw = Math.min(3, result.deck.length);
     player.hand.push(...result.deck.splice(0, cardsToDraw));
-    const handExceedsLimit = player.hand.length > 8;
+    const playerMustDiscard = player.hand.length > 8;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: handExceedsLimit ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       playedBy,
       playedCard: null,
       targetCard: null,
       resolved: result.oneOff,
       oneOff: null,
-      turn: handExceedsLimit ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);

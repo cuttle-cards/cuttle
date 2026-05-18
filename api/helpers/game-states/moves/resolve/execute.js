@@ -58,7 +58,9 @@ module.exports = {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
       result.oneOff = null;
-      result.turn++;
+      const playerMustDiscard = (playedBy ? result.p0 : result.p1).hand.length > 8;
+      result.phase = playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN;
+      result.turn = playerMustDiscard ? result.turn : result.turn + 1;
       return exits.success(result);
     }
 
@@ -90,8 +92,7 @@ module.exports = {
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
 
-    const nineTargetedPlayer = playedBy ? result.p1 : result.p0;
-    const nineOverflow = oneOff.rank === 9 && nineTargetedPlayer.hand.length > 8;
+    const playerMustDiscard = (playedBy ? result.p0 : result.p1).hand.length > 8;
 
     result.scrap.push(result.oneOff);
     result = {
@@ -100,8 +101,8 @@ module.exports = {
       targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
-      phase: nineOverflow ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
-      turn: nineOverflow ? result.turn : result.turn + 1,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);

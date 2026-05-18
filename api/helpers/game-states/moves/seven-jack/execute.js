@@ -60,12 +60,13 @@ module.exports = {
     const { oneOff } = result;
     result.scrap.push(oneOff);
 
-    result.turn++;
+    const playerMustDiscard = player.hand.length > 8;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       playedBy,
       playedCard,
       targetCard,
