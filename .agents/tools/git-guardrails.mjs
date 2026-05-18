@@ -67,7 +67,7 @@ export const RULES = [
 export const checkDestructive = (command) => {
   const segs = segments(command);
   for (const rule of RULES) {
-    if (segs.some(rule.test)) return rule.reason;
+    if (segs.some(rule.test)) { return rule.reason; }
   }
 };
 
@@ -89,7 +89,7 @@ export function evaluate(command, branch) {
   }
 
   const reason = checkDestructive(command);
-  if (reason) return reason;
+  if (reason) { return reason; }
 
   if (isCommitOnMain(command, branch)) {
     return 'Cannot commit directly on main. Create a feature branch first: git switch -c feat/your-branch';

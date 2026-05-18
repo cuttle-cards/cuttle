@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { RULES, checkDestructive, isCommitOnMain, isPushOnMain, evaluate } from '../git-guardrails.mjs';
+import { checkDestructive, isCommitOnMain, isPushOnMain, evaluate } from '../git-guardrails.mjs';
 
 describe('git-guardrails', () => {
   describe('checkDestructive', () => {
