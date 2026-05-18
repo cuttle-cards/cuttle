@@ -153,6 +153,7 @@ storybook-static
 # Personal/local AI settings (not committed)
 .claude/settings.local.json
 .cursor*
-# Track .gemini symlinks but not local overrides
+# Track .gemini and .codex config but not local overrides
 .gemini/settings.local.json
+.codex/config.local.toml
 

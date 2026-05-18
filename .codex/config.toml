@@ -1,0 +1,8 @@
+project_doc_fallback_filenames = ["AGENTS.md"]
+project_doc_max_bytes = 65536
+
+[features]
+hooks = false
+
+[shell_environment_policy]
+inherit = "core"
