@@ -155,5 +155,6 @@ storybook-static
 .cursor*
 # Track .gemini and .codex config but not local overrides
 .gemini/settings.local.json
+.gemini-clipboard/
 .codex/config.local.toml
 
