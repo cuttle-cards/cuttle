@@ -47,26 +47,29 @@ From `docs/CONTRIBUTING.md`:
 
 ## Create the PR
 
+The body must follow `.github/PULL_REQUEST_TEMPLATE.md` exactly:
+
 ```bash
 gh pr create \
   --title "type(scope): subject" \
   --body "$(cat <<'EOF'
-## Summary
+<!-- Thanks for contributing to Cuttle! 🎉 -->
 
-- Bullet 1
-- Bullet 2
+## Issue number
 
-## Test plan
+Resolves #[issue] (or "No linked issue — [reason]" if none)
 
-- [ ] Run `npm run lint`
-- [ ] Run `npm run test:unit`
-- [ ] Manual smoke: [describe steps]
+## Please check the following
 
-## Version label
+- [ ] Do the tests still pass? (see [Run the Tests](https://github.com/cuttle-cards/cuttle/blob/main/docs/setup-development.md#run-the-tests))
+- [ ] Is the code formatted properly? (see [Linting (Formatting)](https://github.com/cuttle-cards/cuttle/blob/main/docs/setup-development.md#linting-formatting))
+- For New Features:
+  - [ ] Have tests been added to cover any new features or fixes?
+  - [ ] Has the documentation been updated accordingly?
 
-Suggest: `patch-version` / `minor-version` / `major-version`
+## Please describe additional details for testing this change
 
-Closes #[issue]
+[Manual testing steps, smoke test instructions, or verification commands]
 EOF
 )"
 ```
