@@ -1,5 +1,13 @@
-All translatation files in @src/translations should have the same keys in the same order at all times.
+## Translation File Parity
 
-Any time you add a new key to any of the translation json files, you must add that same key in the same position to all other language files and translate the value into the language of that file e.g. use an English value in @en.json and a french value in @fr.json.
+All JSON files in this directory must have identical keys in identical order at all times.
 
-Likewise if you delete a key from one translation file, delete it from all files, and if you modify the text/translation of one value in one file, ensure that the translations are appropriately matching in each other translation file.
+Before editing any translation file, read all other files in this directory to understand the current key set and order.
+
+When adding a key: add it at the same position in every file, with the value translated into each file's language (e.g. English in en.json, French in fr.json).
+
+When deleting a key: delete it from every file.
+
+When changing a value: update the corresponding translation in every other file so the meaning stays in sync across languages.
+
+This applies whether translation changes are the primary task or incidental to a larger change.
