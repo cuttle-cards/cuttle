@@ -223,7 +223,7 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
         cy.setupGameAsP1();
       });
 
-      it.only('Skips discarding when opponent nines player at the hand limit and player then plays points', () => {
+      it('Skips discarding when opponent nines player at the hand limit and player then plays points', () => {
         cy.loadGameFixture(1, {
           p0Hand: [ Card.NINE_OF_SPADES ],
           p0Points: [],
