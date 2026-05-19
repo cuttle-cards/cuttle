@@ -223,7 +223,67 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
         cy.setupGameAsP1();
       });
 
-      it.only('Forces player to discard down to hand limit after opponent nines and player draws', () => {
+      it.only('Skips discarding when opponent nines player at the hand limit and player then plays points', () => {
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.NINE_OF_SPADES ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p1Points: [ Card.TEN_OF_CLUBS ],
+          p1FaceCards: [],
+          topCard: Card.TWO_OF_HEARTS,
+        });
+
+        // Opponent (P0) plays nine targeting player's (P1's) point card
+        cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS, 'point');
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
+
+        // Player now has 9 cards (8 in hand + TEN_OF_CLUBS returned) — no immediate discard
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Player plays NINE_OF_CLUBS for points — hand drops to 8, no discard triggered
+        cy.get('[data-player-hand-card=9-0]').click();
+        cy.get('[data-move-choice=points]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Turn indicator shows it is now the opponent's turn
+        cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+
+        assertGameState(1, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p1Points: [ Card.NINE_OF_CLUBS ],
+          p1FaceCards: [],
+          scrap: [ Card.NINE_OF_SPADES ],
+        });
+      });
+
+      it('Forces player to discard down to hand limit after opponent nines and player draws', () => {
         cy.loadGameFixture(1, {
           p0Hand: [ Card.NINE_OF_SPADES ],
           p0Points: [],
