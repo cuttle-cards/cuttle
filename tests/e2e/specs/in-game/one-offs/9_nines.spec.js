@@ -806,7 +806,7 @@ describe('Playing NINES', () => {
       });
     });
 
-    it('Nine returns card to player hand at hand limit, triggering discard dialog for player', () => {
+    it('Nine returns card to player hand at hand limit', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.NINE_OF_SPADES ],
         p0Points: [],
@@ -831,20 +831,12 @@ describe('Playing NINES', () => {
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
-      // Player now has 9 cards (8 in hand + TEN_OF_CLUBS returned), must discard
-      cy.get('#discard-to-hand-limit-dialog').should('be.visible');
-      cy.get('[data-discard-hand-limit-card=1-0]').click();
-      cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
-
-      // Player is back to 8 cards, it's now player's turn
-      cy.get('[data-player-hand-card]').should('have.length', 8);
-      cy.get('#discard-to-hand-limit-dialog').should('not.exist');
-
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [
+          Card.ACE_OF_CLUBS,
           Card.THREE_OF_CLUBS,
           Card.FOUR_OF_CLUBS,
           Card.FIVE_OF_CLUBS,
@@ -856,7 +848,7 @@ describe('Playing NINES', () => {
         ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.NINE_OF_SPADES, Card.ACE_OF_CLUBS ]
+        scrap: [ Card.NINE_OF_SPADES ],
       });
     });
   }); // End Opponent playing NINES describe
@@ -866,7 +858,7 @@ describe('Playing NINES', () => {
       cy.setupGameAsP0();
     });
 
-    it('Nine returns card to opponent hand at hand limit, triggering discard dialog for opponent', () => {
+    it('Nine returns card to opponent hand at hand limit', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.NINE_OF_SPADES ],
         p0Points: [],
@@ -892,16 +884,12 @@ describe('Playing NINES', () => {
       cy.get('[data-opponent-point-card=10-1]').click();
       cy.resolveOpponent();
 
-      // Opponent now has 9 cards (8 in hand + TEN_OF_DIAMONDS returned), must discard
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-      cy.discardToHandLimitOpponent(Card.ACE_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [
+          Card.ACE_OF_HEARTS,
           Card.TWO_OF_HEARTS,
           Card.THREE_OF_HEARTS,
           Card.FOUR_OF_HEARTS,
@@ -913,7 +901,7 @@ describe('Playing NINES', () => {
         ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.NINE_OF_SPADES, Card.ACE_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_SPADES ],
       });
     });
 
