@@ -418,7 +418,7 @@ module.exports \= {
  },  
 };
 
-The `emitGameState()` helper is used to send the latest game state to the client. For the MVP rollout, it will emit an event that matches the current data structure used by the client in production, e.g:
+The `publishGameState()` helper is used to send the latest game state to the client. For the MVP rollout, it will emit an event that matches the current data structure used by the client in production, e.g:
 
      Game.publish(\[fullGame.id\], {  
        change: 'points',  
