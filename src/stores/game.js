@@ -226,7 +226,7 @@ export const useGameStore = defineStore('game', () => {
   });
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
   const showDiscardToHandLimit = computed(
-    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && (player.value?.hand?.length ?? 0) > 8,
+    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value
   );
   const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
