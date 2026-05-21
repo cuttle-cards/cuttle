@@ -296,7 +296,6 @@
         "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
-        "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !",
         "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
       },

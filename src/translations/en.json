@@ -297,7 +297,6 @@
         "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
-        "deckIsEmpty": "The deck is empty; you cannot draw.",
         "handLimit": "You are at the hand limit; you cannot draw.",
         "exhaustedDeck": "Deck exhausted; revealing player hands"
       },

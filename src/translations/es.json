@@ -296,7 +296,6 @@
         "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
-        "deckIsEmpty": "El mazo está vacío; no puedes robar.",
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
         "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },

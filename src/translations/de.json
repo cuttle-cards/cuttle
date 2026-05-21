@@ -296,7 +296,6 @@
         "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
-        "deckIsEmpty": "Das Deck ist leer; du kannst nicht ziehen.",
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
         "exhaustedDeck": "Deck erschöpft; Kartenhände der Spieler werden angezeigt"
       },
