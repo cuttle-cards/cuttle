@@ -21,6 +21,7 @@ module.exports = {
       case GamePhase.RESOLVING_THREE:
       case GamePhase.RESOLVING_FIVE:
       case GamePhase.RESOLVING_SEVEN:
+      case GamePhase.DISCARDING_TO_HAND_LIMIT:
         return exits.success(currentState.turn % 2);
 
       case GamePhase.COUNTERING: {
@@ -31,8 +32,6 @@ module.exports = {
       case GamePhase.RESOLVING_FOUR:
         return exits.success((currentState.turn + 1) % 2);
 
-      case GamePhase.DISCARDING_TO_HAND_LIMIT:
-        return exits.success(currentState.p0.hand.length > 8 ? 0 : 1);
 
       case GamePhase.CONSIDERING_STALEMATE:
         return exits.success((currentState.playedBy + 1) % 2);
