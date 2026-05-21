@@ -132,7 +132,7 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
         cy.setupGameAsP0();
       });
 
-      it.only('Discards down to hand limit after playing a 4 on opponent when player has 10 cards in hand', () => {
+      it('Discards down to hand limit after playing a 4 on opponent when player has 10 cards in hand', () => {
         cy.loadGameFixture(0, {
           p0Hand: [
             Card.FOUR_OF_CLUBS,
