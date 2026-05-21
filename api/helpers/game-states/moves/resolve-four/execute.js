@@ -51,7 +51,8 @@ module.exports = {
       result.scrap.push(...player.hand.splice(cardIndex2, 1));
     }
 
-    const playerMustDiscard = player.hand.length > 8;
+    const activePlayer = playedBy ? result.p0 : result.p1;
+    const playerMustDiscard = activePlayer.hand.length > 8;
 
     result = {
       ...result,
