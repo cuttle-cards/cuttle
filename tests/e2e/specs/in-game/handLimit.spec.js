@@ -126,6 +126,70 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
     });
   });
 
+  describe('Fours and Hand Limit', () => {
+    describe('P0 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP0();
+      });
+
+      it.only('Discards down to hand limit after playing a 4 on opponent when player has 10 cards in hand', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.FOUR_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES, Card.TWO_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+        });
+
+        // Player plays four — opponent must discard 2 cards
+        cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
+        cy.discardOpponent(Card.ACE_OF_SPADES, Card.TWO_OF_SPADES);
+
+        // Discard-to-hand-limit dialog appears — player (P0) still has 9 cards after playing the four
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+
+        // Player discards 1 card to reach hand limit
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.ACE_OF_CLUBS ],
+        });
+      });
+    });
+  });
+
   describe('Fives and Hand Limit', () => {
     describe('P0 perspective', () => {
       beforeEach(() => {
