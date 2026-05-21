@@ -218,9 +218,8 @@ export const useGameStore = defineStore('game', () => {
       case GamePhase.RESOLVING_FOUR:
         return isPlayersTurn.value;
       case GamePhase.RESOLVING_FIVE:
-        return !isPlayersTurn.value;
       case GamePhase.DISCARDING_TO_HAND_LIMIT:
-        return (player.value?.hand?.length ?? 0) <= 8;
+        return !isPlayersTurn.value;
       default:
         return false;
     }
