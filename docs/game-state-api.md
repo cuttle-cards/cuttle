@@ -64,6 +64,7 @@ A GameState record represents one move made by a player and the resulting game s
       5. scuttle  
       6. untargetedOneOff  
       7. targetedOneOff  
+      8. discardingToHandLimit
    2. countering \- phase where players play counters. Only legal moves are   
       1. counter  
       2. resolve  
