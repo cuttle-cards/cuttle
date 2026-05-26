@@ -79,9 +79,7 @@ A GameState record represents one move made by a player and the resulting game s
       5. sevenTargetedOneOff  
       6. sevenJack  
 6. playedCard: `String | null` the card that was played  
-   1. Can be null  
 7. targetCard: `String | null` the card that was targeted  
-   1. Can be null  
 8. discardedCards: `Array<String>`  
 9. p0Hand: `Array<String>`  
    1. Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
