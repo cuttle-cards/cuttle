@@ -172,7 +172,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
    16. sevenJack  
    17. sevenUntargetedOneOff  
    18. sevenTargetedOneOff  
-   19. Pass
+   19. pass
    20. discardToHandLimit
 4. playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
 5. targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
