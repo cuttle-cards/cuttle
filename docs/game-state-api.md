@@ -373,23 +373,30 @@ module.exports \= {
      type: 'ref',  
      description: 'The move being requested. Specifies which player is asking to draw a card',  
    }  
- },  
- sync: true, // synchronous helper  
- fn: ({ currentState, requestedMove }, exits) \=\> {  
-   const result \= \_.cloneDeep(currentState);  
-   const player \= requestedMove.playedBy \=== 0 ? result.p0 : result.p1;
+  },  
+  sync: true, // synchronous helper  
+  fn: ({ currentState, requestedMove, playedBy }, exits) => {
+    let result = _.cloneDeep(currentState);
 
-   // Move cards  
-   const topCard \= result.deck.shift();  
-   player.hand.push(topCard);
+    const player = playedBy ? result.p1 : result.p0;
 
-   result \= {  
-     ...result,  
-     ...requestedMove,  
-   };
+    player.hand.push(result.deck.shift());
+    const playerMustDiscard = player.hand.length > 8;
 
-   return exits.success(result);  
- },  
+    result = {
+      ...result,
+      ...requestedMove,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
+      playedBy,
+      playedCard: null,
+      targetCard: null,
+      discardedCards: [],
+      resolved: null,
+    };
+
+    return exits.success(result);
+  },
 };
 ```
 
