@@ -13,57 +13,57 @@ This doc outlines the database, backend processing, and client socket payload ar
 
 Enum describing the phase of a turn the game is currently in. Used to validate which next-moves are legal.
 
-1. main \- 'main' player phase. Can make 'regular' moves:  
-   1. draw  
-   2. points  
-   3. faceCard  
-   4. jack  
-   5. scuttle  
-   6. untargetedOneOff  
-   7. targetedOneOff  
-2. countering \- phase where players play counters. Only legal moves are   
-   1. counter  
-   2. resolve  
-3. resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-4. resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
-5. resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
-6. resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
-   1. sevenPoints  
-   2. sevenFaceCard  
-   3. sevenScuttle  
-   4. sevenUntargetedOneOff  
-   5. sevenTargetedOneOff  
-   6. sevenJack  
-7. discardingToHandLimit \- discarding due to hand limit at end of turn. Only legal move is discardToHandLimit  
-8. consideringStalemate \- deciding whether to accept opponent's stalemate request. Only legal moves are stalemateAccept and stalemateReject
+* main \- 'main' player phase. Can make 'regular' moves:  
+   * draw  
+   * points  
+   * faceCard  
+   * jack  
+   * scuttle  
+   * untargetedOneOff  
+   * targetedOneOff  
+* countering \- phase where players play counters. Only legal moves are   
+   * counter  
+   * resolve  
+* resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
+* resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
+* resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
+* resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
+   * sevenPoints  
+   * sevenFaceCard  
+   * sevenScuttle  
+   * sevenUntargetedOneOff  
+   * sevenTargetedOneOff  
+   * sevenJack  
+* discardingToHandLimit \- discarding due to hand limit at end of turn. Only legal move is discardToHandLimit  
+* consideringStalemate \- deciding whether to accept opponent's stalemate request. Only legal moves are stalemateAccept and stalemateReject
 
 ## MoveType
 
 Enum designating which kind of move was made.
 
-1. initialize  
-2. draw  
-3. points  
-4. scuttle  
-5. faceCard (king, queen, or glasses eight)  
-6. jack  
-7. untargetedOneOff  
-8. targetedOneOff  
-9. counter  
-10. resolve  
-11. resolveThree (picking a card from the scrap)  
-12. resolveFour (discarding from hand)  
-13. sevenPoints  
-14. sevenScuttle  
-15. sevenFaceCard  
-16. sevenJack  
-17. sevenUntargetedOneOff  
-18. sevenTargetedOneOff  
-19. pass  
-20. discardToHandLimit  
-21. stalemateRequest  
-22. stalemateReject  
-23. stalemateAccept
+* initialize  
+* draw  
+* points  
+* scuttle  
+* faceCard (king, queen, or glasses eight)  
+* jack  
+* untargetedOneOff  
+* targetedOneOff  
+* counter  
+* resolve  
+* resolveThree (picking a card from the scrap)  
+* resolveFour (discarding from hand)  
+* sevenPoints  
+* sevenScuttle  
+* sevenFaceCard  
+* sevenJack  
+* sevenUntargetedOneOff  
+* sevenTargetedOneOff  
+* pass  
+* discardToHandLimit  
+* stalemateRequest  
+* stalemateReject  
+* stalemateAccept
 
 # Database Layer
 
@@ -71,52 +71,52 @@ Enum designating which kind of move was made.
 
 The `Game` object/table is reduced to the metadata about the game that doesn’t generally change while a game is played. It has the game’s id, name, the ids of which users are p0 and p1.
 
-1. id: primary key  
-2. name: `String`  
-3. p0: `int` fk (user) \- id of which user is player 0  
-4. p1: `int` fk (user) \- id of which user is player 1  
-5. p0Ready: `boolean` \- whether p0 is ready for the game to start  
-6. p1Ready: `boolean` \- whether p1 is ready for the game to start  
-7. status: `int` (enum) \- what state of the game lifecycle we are in  
-   1.   "CREATED" : 1,  
-   2.   "STARTED" : 2,  
-   3.   "FINISHED" : 3,  
-   4.   "ARCHIVED" : 4  
-8. lock: `String` \- UUID specifying which request currently locked the game for updates  
-9. lockedAt: `timestampz` \- Time the game was last locked  
-10. winner: `int` fk (user) \- which user won the game  
-11. match: `int` fk(match) \- which match the game is part of
+* id: primary key  
+* name: `String`  
+* p0: `int` fk (user) \- id of which user is player 0  
+* p1: `int` fk (user) \- id of which user is player 1  
+* p0Ready: `boolean` \- whether p0 is ready for the game to start  
+* p1Ready: `boolean` \- whether p1 is ready for the game to start  
+* status: `int` (enum) \- what state of the game lifecycle we are in  
+   *   "CREATED" : 1,  
+   *   "STARTED" : 2,  
+   *   "FINISHED" : 3,  
+   *   "ARCHIVED" : 4  
+* lock: `String` \- UUID specifying which request currently locked the game for updates  
+* lockedAt: `timestampz` \- Time the game was last locked  
+* winner: `int` fk (user) \- which user won the game  
+* match: `int` fk(match) \- which match the game is part of
 
 ## GameStateRow
 
 A GameState record represents one move made by a player and the resulting game state. It contains a breadth of data that can be used to power various features and analysis within a given game and across games. GameStateRows are compressed using domain-specific string\[\] lists to represent the cards. They can be uncompressed into the `GameState` object with the `unpackGameState()` helper.
 
-1. id: primary key  
-2. playedBy: `int` 0 | 1: Which player made the move (0 if p0, 1 if p1)  
-3. moveType: `MoveType` \- designates which kind of move was made  
-4. turn: `int` \- which turn number the move was made on  
-5. phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
-6. playedCard: `String | null` the card that was played  
-7. targetCard: `String | null` the card that was targeted  
-8. discardedCards: `Array<String>`  
-9. p0Hand: `Array<String>`  
-   1. Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
-   2. ex) `[‘AC’, ‘5H’, ‘8D(JS-p0,JD-p1,JH-p0)’]`  
-      1. P0 hand has the Ace of Clubs, 5 of Hearts, 8 of Diamonds  
-         1. 8 of diamonds has the jack of spades, jack of diamonds, and jack of hearts on it  
-10. p1Hand: `Array<String>`: Cards in p1 hand  
-11. p0Points: `Array<String>`: Cards in p0 points  
-12. p1Points: `Array<String>`  
-13. p0FaceCards: `Array<String>`  
-14. p1FaceCards: `Array<String>`  
-15. deck: `Array<String>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
-16. scrap: `Array<String>`  
-17. oneOff: `String | null`  
-18. oneOffTarget: `String | null`  
-19. twos: `Array<String>`  
-20. resolving: `String`  
-21. gameId: ID \- FK to the games table  
-22. createdAt: `timestampz` \- When the move took place
+* id: primary key  
+* playedBy: `int` 0 | 1: Which player made the move (0 if p0, 1 if p1)  
+* moveType: `MoveType` \- designates which kind of move was made  
+* turn: `int` \- which turn number the move was made on  
+* phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
+* playedCard: `String | null` the card that was played  
+* targetCard: `String | null` the card that was targeted  
+* discardedCards: `Array<String>`  
+* p0Hand: `Array<String>`  
+   * Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
+   * ex) `[‘AC’, ‘5H’, ‘8D(JS-p0,JD-p1,JH-p0)’]`  
+      * P0 hand has the Ace of Clubs, 5 of Hearts, 8 of Diamonds  
+         * 8 of diamonds has the jack of spades, jack of diamonds, and jack of hearts on it  
+* p1Hand: `Array<String>`: Cards in p1 hand  
+* p0Points: `Array<String>`: Cards in p0 points  
+* p1Points: `Array<String>`  
+* p0FaceCards: `Array<String>`  
+* p1FaceCards: `Array<String>`  
+* deck: `Array<String>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
+* scrap: `Array<String>`  
+* oneOff: `String | null`  
+* oneOffTarget: `String | null`  
+* twos: `Array<String>`  
+* resolving: `String`  
+* gameId: ID \- FK to the games table  
+* createdAt: `timestampz` \- When the move took place
 
 ## Game State Array\<String\> Lists {#game-state-array<string>-lists}
 
@@ -150,95 +150,95 @@ Jacks are listed from bottom to top order, meaning that the last jack in the lis
 
 Represents a single card, in its object format.
 
-1. id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
-2. suit: `0 | 1 | 2 | 3`  
-3. rank: `[1- 13]`  
-4. isFrozen: `Boolean` \- whether the card is currently frozen due to a 9 and can’t be played this turn
+* id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
+* suit: `0 | 1 | 2 | 3`  
+* rank: `[1- 13]`  
+* isFrozen: `Boolean` \- whether the card is currently frozen due to a 9 and can’t be played this turn
 
 ## Player
 
 Represents one player in the game.
 
-1. hand: `Array<Card>`  
-2. points: `Array<Card>`  
-3. faceCards: `Array<Card>`
+* hand: `Array<Card>`  
+* points: `Array<Card>`  
+* faceCards: `Array<Card>`
 
 
 ## GameState
 
 An uncompressed, object-oriented representation of a `GameStateRow`, created using the `unpackGameState()` helper used for all game logic processing e.g. validating which moves are legal and executing the change of a given move. Conversely, a `GameState` can be converted to a `GameStateRow` object using the `packGameState()` helper. Generally, game logic is processed using `GameState` objects and then the result is converted + saved with `saveGameState()`.
 
-1. id: primary key  
-2. playedBy: `int?` 0 | 1 | null: Which player made the move (0 if p0, 1 if p1)  
-3. moveType: `MoveType` \- designates which kind of move was made  
-4. playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
-5. targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
-6. discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
-7. turn: `int` \- which turn number the move was made on  
-8. phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
-9. p0: `Player`  
-10. p1: `Player`  
-11. deck: `Array<Card>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
-12. scrap: `Array<Card>` \- the cards currently in the scrap  
-13. oneOff: `Card | null` \- the current one-off that is waiting to resolve or be countered. Playing a oneOff removes the card from the player’s hand and puts it here while players counter back and forth until someone resolves, at which point the oneOff and all twos are scrapped and the effect resolves or fizzles base on the number of twos played   
-14. oneOffTarget: `Card | null` \- when a 2 or 9 one-off is played, this describes which card is targeted by its effect  
-15. oneOffTargetType `‘point’ | ‘faceCard’ | ‘jack’`  
-    1. When the current oneOff is a 2/9, this describes where the target is located e.g. if the target is the 8 of hearts, is that a point card or face card (glasses)  
-16. twos: `Array<Card>` \- array of twos that have been played to counter the current oneOff  
-17. resolved: `Card | null` \- for a MoveType.RESOLVE move, this describes which oneOff just resolved or fizzled. This is not considered a “place” the cards can exist as the card is in the scrap at that point. Instead it’s just a description of which oneOff just resolved/fizzled.  
-18. gameId: ID \- FK to the games table  
-19. createdAt: `timestampz` \- When the move took place
+* id: primary key  
+* playedBy: `int?` 0 | 1 | null: Which player made the move (0 if p0, 1 if p1)  
+* moveType: `MoveType` \- designates which kind of move was made  
+* playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
+* targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
+* discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
+* turn: `int` \- which turn number the move was made on  
+* phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
+* p0: `Player`  
+* p1: `Player`  
+* deck: `Array<Card>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
+* scrap: `Array<Card>` \- the cards currently in the scrap  
+* oneOff: `Card | null` \- the current one-off that is waiting to resolve or be countered. Playing a oneOff removes the card from the player’s hand and puts it here while players counter back and forth until someone resolves, at which point the oneOff and all twos are scrapped and the effect resolves or fizzles base on the number of twos played   
+* oneOffTarget: `Card | null` \- when a 2 or 9 one-off is played, this describes which card is targeted by its effect  
+* oneOffTargetType `‘point’ | ‘faceCard’ | ‘jack’`  
+    * When the current oneOff is a 2/9, this describes where the target is located e.g. if the target is the 8 of hearts, is that a point card or face card (glasses)  
+* twos: `Array<Card>` \- array of twos that have been played to counter the current oneOff  
+* resolved: `Card | null` \- for a MoveType.RESOLVE move, this describes which oneOff just resolved or fizzled. This is not considered a “place” the cards can exist as the card is in the scrap at that point. Instead it’s just a description of which oneOff just resolved/fizzled.  
+* gameId: ID \- FK to the games table  
+* createdAt: `timestampz` \- When the move took place
 
 # Api Layer
 
 ## Socket Payload
 
-1. moveType: MoveType  
-2. playerId: int  
-3. playedCard?: Object (the card that was played)  
-4. targetCard?: Object (the card that was targeted)  
-5. attachedToTarget?: Object (the point card that the target was attached to if the target was a jack)  
-6. gameOver: boolean  
-7. game: Object (full game state)  
-   1. id: int  
-   2. name: string  
-   3. status: enum  
-      1. CREATED  
-      2. STARTED  
-      3. FINISHED  
-      4. ARCHIVED  
-   4. players: Array\<Player\>  
-   5. passes: int  
-   6. deck: Array\<Card\>  
-   7. scrap: Array\<Card\>  
-   8. oneOff: Card | null  
-   9. oneOffTarget  
-      1. nullable, card object | player  
-   10. oneOffTargetType: enum  
-       1. PLAYER  
-       2. POINT\_CARD  
-       3. FACE\_CARD  
-       4. JACK  
-   11. attachedToTarget: Card | null  
-   12. twos : Array\<Card\>  
-   13. turn: int  
-   14. phase: GamePhase  
-   15. log  
-       1. array of moves  
-   16. spectatingUsers  
-       1. array of users  
-8. \<Player\>  
-   1. Hand Array\<Card\>  
-   2. Points Array\<Card\>  
-   3. Face Cards Array\<Card\>  
-   4. Name String  
-   5. ID Int  
-9. \<Card\>
+* moveType: MoveType  (which type of move was done last)
+* playerId: int  
+* playedCard?: Object (the card that was played)  
+* targetCard?: Object (the card that was targeted)  
+* attachedToTarget?: Object (the point card that the target was attached to if the target was a jack)  
+* gameOver: boolean  
+* game: Object (full game state)  
+   * id: int  
+   * name: string  
+   * status: enum  
+      * CREATED  
+      * STARTED  
+      * FINISHED  
+      * ARCHIVED  
+   * players: Array\<Player\>  
+   * passes: int  
+   * deck: Array\<Card\>  
+   * scrap: Array\<Card\>  
+   * oneOff: Card | null  
+   * oneOffTarget  
+      * nullable, card object | player  
+   * oneOffTargetType: enum  
+       * PLAYER  
+       * POINT\_CARD  
+       * FACE\_CARD  
+       * JACK  
+   * attachedToTarget: Card | null  
+   * twos : Array\<Card\>  
+   * turn: int  
+   * phase: GamePhase  
+   * log  
+       * array of moves  
+   * spectatingUsers  
+       * array of users  
+* \<Player\>  
+   * Hand Array\<Card\>  
+   * Points Array\<Card\>  
+   * Face Cards Array\<Card\>  
+   * Name String  
+   * ID Int  
+* \<Card\>
 
-   1. id: Int  
-   2. suit: int  
-   3. rank: int  
-   4. Frozen: Bool
+   * id: Int  
+   * suit: int  
+   * rank: int  
+   * Frozen: Bool
 
 # Backend Control Flow
 
