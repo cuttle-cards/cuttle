@@ -36,24 +36,26 @@ A GameState record represents one move made by a player and the resulting game s
 1. id: primary key  
 2. playedBy: `int` 0 | 1: Which player made the move (0 if p0, 1 if p1)  
 3. moveType: `Enum (int?)` \- designates which kind of move was made. Corresponds to one of the following:  
-   1. draw  
-   2. points  
-   3. scuttle  
-   4. faceCard (king, queen, or glasses eight)  
-   5. jack  
-   6. untargetedOneOff  
-   7. targetedOneOff  
-   8. counter  
-   9. resolve  
-   10. resolveThree (picking a card from the scrap)  
-   11. resolveFour (discarding from hand)  
-   12. sevenPoints  
-   13. sevenScuttle  
-   14. sevenFaceCard  
-   15. sevenJack  
-   16. sevenUntargetedOneOff  
-   17. sevenTargetedOneOff  
-   18. pass  
+   1. initialize  
+   2. draw  
+   3. points  
+   4. scuttle  
+   5. faceCard (king, queen, or glasses eight)  
+   6. jack  
+   7. untargetedOneOff  
+   8. targetedOneOff  
+   9. counter  
+   10. resolve  
+   11. resolveThree (picking a card from the scrap)  
+   12. resolveFour (discarding from hand)  
+   13. sevenPoints  
+   14. sevenScuttle  
+   15. sevenFaceCard  
+   16. sevenJack  
+   17. sevenUntargetedOneOff  
+   18. sevenTargetedOneOff  
+   19. pass
+   20. discardToHandLimit
 4. turn: `int` \- which turn number the move was made on  
 5. phase: `enum` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
    1. main \- ‘main’ player phase. Can make ‘regular’ moves:  
@@ -170,7 +172,8 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
    16. sevenJack  
    17. sevenUntargetedOneOff  
    18. sevenTargetedOneOff  
-   19. Pass  
+   19. Pass
+   20. discardToHandLimit
 4. playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
 5. targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
 6. discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
