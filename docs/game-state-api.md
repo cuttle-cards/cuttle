@@ -147,7 +147,7 @@ Represents one player in the game.
 
 ## GameState
 
-An uncompressed, object-oriented representation of a `GameStateRow` using the `saveGameState()` helper. Conversely, a `GameStateRow` can be converted to a `GameState` object using the `unpackGameState()` helper. Generally, game logic is processed using `GameState` objects and then the result is converted back to a `GameStateRow` to be persisted in the database.
+An uncompressed, object-oriented representation of a `GameStateRow`, created using the `unpackGameState()` helper used for all game logic processing e.g. validating which moves are legal and executing the change of a given move. Conversely, a `GameState` can be converted to a `GameStateRow` object using the `packGameState()` helper. Generally, game logic is processed using `GameState` objects and then the result is converted + saved with `saveGameState()`.
 
 1. id: primary key  
 2. playedBy: `int?` 0 | 1 | null: Which player made the move (0 if p0, 1 if p1)  
@@ -264,6 +264,7 @@ An uncompressed, object-oriented representation of a `GameStateRow` using the `s
 
 Generally, requests to make moves on the game will lock the requested game to prevent other requests from updating it, retrieve the latest game state, validate the requested move, make the requested changes, persist the changes in the database, and emit a socket event with the resulting state. This is done via a single endpoint in `api/controllers/game/move`. It delegates to move-specific helpers based on the `moveType` specified in the request body. These `execute()` and `validate()` helpers for each move live in a folder named after the move inside `api/helpers/gamestate/moves` e.g. `api/helpers/gamestate/moves/draw/execute.js`
 
+```javascript
 // api/controller/game/move  
  // Request to make a move  
 // Which move is requested is determined by req.body.moveType  
@@ -314,8 +315,10 @@ module.exports \= async function (req, res) {
    return res.badRequest({ message: err.message });  
  }  
 };
+```
 
 The `validate` helper functions (e.g. `sails.helpers.gamestate.move.draw.validate()`) will be MoveType-specific utilities that throw errors if the move is illegal e.g. because it is not your turn or because another move e.g. countering is ongoing.  
+```javascript
 // api/helpers/moves/draw/validate.js  
 const GameStatus \= require('../../utils/GameStatus.json');  
 module.exports \= {  
@@ -336,43 +339,35 @@ module.exports \= {
    }  
  },  
  sync: true, // synchronous helper  
- fn: ({ currentState, requestedMove }, exits) \=\> {  
-   if (\!currentState) {  
-     return exits.error({ message: 'Cannot draw because this game has not started yet' });  
-   }
+  fn: ({ currentState, playedBy }, exits) => {
+    try {
 
-   switch (currentState.phase) {  
-     // Only allowed phase  
-     case GamePhase.MAIN:  
-       break;  
-     case GamePhase.COUNTERING:  
-       return exits.error({ message: 'Cannot draw while players are countering one-offs' });  
-     case GamePhase.RESOLVING\_THREE:  
-       return exits.error({ message: 'Cannot draw while player is choosing card from scrap' });  
-     case GamePhase.RESOLVE\_FOUR:  
-       return exits.error({ message: 'Cannot draw while player chooses what to discard from 4'});  
-     case GamePhase.RESOLVE\_FIVE:  
-       return exits.error({ message: 'Cannot draw while player chooses what to discard for 5' });  
-     case GamePhase.RESOLVING\_SEVEN:  
-       return exits.error({ message: 'Cannot draw while someone is playing from the top of the deck' });  
-     default:  
-       return exits.error({ message: \`Cannot draw because game is corrupted. Unidentified phase: ${currentState.phase}\` });  
-   }
+      // Must be MAIN phase of the turn
+      if (currentState.phase !== GamePhase.MAIN) {
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
+      }
 
-   if (requestedMove.playedBy \!== (currentState.turn) % 2) {  
-     return exits.error({message: "It's not your turn"});  
-   }
+      // Must be your turn
+      if (currentState.turn % 2 !== playedBy) {
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
+      }
 
-   if (currentState.deck.length \< 1) {  
-     return exits.error({message: 'No cards in deck'});  
-   }
+      // Deck must have cards
+      if (!currentState.deck.length) {
+        throw new BadRequestError('game.snackbar.draw.deckIsEmpty');
+      }
 
-   return exits.success();  
- },  
+      return exits.success();
+    } catch (err) {
+      return exits.error(err);
+    }
+  },
 };
+```
 
 The `execute()` helpers return a new GameState object that reflects the changes of a given move, including moving cards around, updating the turn, setting the phase, and which player played the move.
 
+```javascript
 // api/helpers/moves/draw/execute.js  
 const \_ \= require('lodash');
 
@@ -416,21 +411,23 @@ module.exports \= {
    return exits.success(result);  
  },  
 };
+```
 
 The `publishGameState()` helper is used to send the latest game state to the client. For the MVP rollout, it will emit an event that matches the current data structure used by the client in production, e.g:
 
+```javascript
      Game.publish(\[fullGame.id\], {  
        change: 'points',  
        game: fullGame,  
        victory,  
      });
-
+```
 The published event should have the following shape:  
-      
-  {  
+
+```javascript
+  const socketUpdate = {  
        change: MoveType,  
        game: PopulatedGame,  
        victory: { gameOver: boolean, winner: boolean | null, conceded: boolean, currentMatch: Match | null } 
   };
-
-
+```
