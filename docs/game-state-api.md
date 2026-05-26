@@ -1,10 +1,10 @@
 # Move History and Gamestate API
 
-This doc outlines a proposal for the database and api payload architecture of individual moves and the resulting game states in cuttle.cards. This is intended to facilitate a variety of features that leverage more granular data collection (ie the game state after each move) and decouple the representation of where cards are located from the representation of the users so a given user can be in more than one game at once. In particular this will make possible:
+This doc outlines the database, backend processing, and client socket payload architecture of processing individual moves and their resulting game states in cuttle.cards. This powers the core game loop and facilitates a variety of features that leverage granular data collection and decouple the representation of where cards are located from the representation of the users so a given user can be in more than one game at once. In particular makes possible:
 
 * Building the vs AI experience into the main application   
-* Watchable game replayed of completed games ✅  
-* Async play  
+* Watchable game replayed of completed games   
+* Async play
 * Strategic analysis of gameplay
 
 # Database Layer
