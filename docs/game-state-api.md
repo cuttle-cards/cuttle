@@ -7,6 +7,36 @@ This doc outlines the database, backend processing, and client socket payload ar
 * Async play
 * Strategic analysis of gameplay
 
+# Enums
+
+## GamePhase
+
+Enum describing the phase of a turn the game is currently in. Used to validate which next-moves are legal.
+
+1. main \- 'main' player phase. Can make 'regular' moves:  
+   1. draw  
+   2. points  
+   3. faceCard  
+   4. jack  
+   5. scuttle  
+   6. untargetedOneOff  
+   7. targetedOneOff  
+2. countering \- phase where players play counters. Only legal moves are   
+   1. counter  
+   2. resolve  
+3. resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
+4. resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
+5. resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
+6. resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
+   1. sevenPoints  
+   2. sevenFaceCard  
+   3. sevenScuttle  
+   4. sevenUntargetedOneOff  
+   5. sevenTargetedOneOff  
+   6. sevenJack  
+7. discardingToHandLimit \- discarding due to hand limit at end of turn. Only legal move is discardToHandLimit  
+8. consideringStalemate \- deciding whether to accept opponent's stalemate request. Only legal moves are stalemateAccept and stalemateReject
+
 # Database Layer
 
 ## Game
@@ -57,29 +87,7 @@ A GameState record represents one move made by a player and the resulting game s
    19. pass
    20. discardToHandLimit
 4. turn: `int` \- which turn number the move was made on  
-5. phase: `enum` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
-   1. main \- ‘main’ player phase. Can make ‘regular’ moves:  
-      1. draw  
-      2. points  
-      3. faceCard  
-      4. jack  
-      5. scuttle  
-      6. untargetedOneOff  
-      7. targetedOneOff  
-      8. discardingToHandLimit
-   2. countering \- phase where players play counters. Only legal moves are   
-      1. counter  
-      2. resolve  
-   3. resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-   4. resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
-   5. resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
-   6. resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
-      1. sevenPoints  
-      2. sevenFaceCard  
-      3. sevenScuttle  
-      4. sevenUntargetedOneOff  
-      5. sevenTargetedOneOff  
-      6. sevenJack  
+5. phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
 6. playedCard: `String | null` the card that was played  
 7. targetCard: `String | null` the card that was targeted  
 8. discardedCards: `Array<String>`  
@@ -147,13 +155,14 @@ Represents one player in the game.
 2. points: `Array<Card>`  
 3. faceCards: `Array<Card>`
 
+
 ## GameState
 
 An uncompressed, object-oriented representation of a `GameStateRow`, created using the `unpackGameState()` helper used for all game logic processing e.g. validating which moves are legal and executing the change of a given move. Conversely, a `GameState` can be converted to a `GameStateRow` object using the `packGameState()` helper. Generally, game logic is processed using `GameState` objects and then the result is converted + saved with `saveGameState()`.
 
 1. id: primary key  
 2. playedBy: `int?` 0 | 1 | null: Which player made the move (0 if p0, 1 if p1)  
-3. moveType: `Enum (int?)` \- designates which kind of move was made. Corresponds to one of the following:  
+3. moveType: `Enum ()` \- designates which kind of move was made. Corresponds to one of the following:  
    1. initialize  
    2. draw  
    3. points  
@@ -174,32 +183,14 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
    18. sevenTargetedOneOff  
    19. pass
    20. discardToHandLimit
+   21. stalemateRequest
+   22. stalemateReject
+   23. stalemateAccept
 4. playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
 5. targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
 6. discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
 7. turn: `int` \- which turn number the move was made on  
-8. phase: `enum` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
-   1. main \- ‘main’ player phase. Can make ‘regular’ moves:  
-      1. draw  
-      2. points  
-      3. faceCard  
-      4. jack  
-      5. scuttle  
-      6. untargetedOneOff  
-      7. targetedOneOff  
-   2. countering \- phase where players play counters. Only legal moves are   
-      1. counter  
-      2. resolve  
-   3. resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-   4. resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
-   5. resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
-   6. resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
-      1. sevenPoints  
-      2. sevenFaceCard  
-      3. sevenScuttle  
-      4. sevenUntargetedOneOff  
-      5. sevenTargetedOneOff  
-      6. sevenJack  
+8. phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
 9. p0: `Player`  
 10. p1: `Player`  
 11. deck: `Array<Card>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
@@ -246,9 +237,10 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
    11. attachedToTarget: Card | null  
    12. twos : Array\<Card\>  
    13. turn: int  
-   14. log  
+   14. phase: GamePhase  
+   15. log  
        1. array of moves  
-   15. spectatingUsers  
+   16. spectatingUsers  
        1. array of users  
 8. \<Player\>  
    1. Hand Array\<Card\>  
