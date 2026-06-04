@@ -36,7 +36,7 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const activePlayerPNum = currentState.p0.hand.length > 8 ? 0 : 1;
+      const activePlayerPNum = currentState.turn % 2;
       if (playedBy !== activePlayerPNum) {
         throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
