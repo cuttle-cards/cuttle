@@ -483,7 +483,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.get('#discard-to-hand-limit-dialog').should('not.exist');
   });
 
-  it('Draws at hand limit triggers discard dialog (P1 perspective)', () => {
+  it('Opponent draws at hand limit triggers discard dialog (opponent perspective)', () => {
     cy.loadGameFixture(1, {
       p0Hand: [
         Card.ACE_OF_CLUBS,
