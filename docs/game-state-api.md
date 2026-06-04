@@ -1,9 +1,9 @@
 # Move History and Gamestate API
 
-This doc outlines the database, backend processing, and client socket payload architecture of processing individual moves and their resulting game states in cuttle.cards. This powers the core game loop and facilitates a variety of features that leverage granular data collection and decouple the representation of where cards are located from the representation of the users so a given user can be in more than one game at once. In particular makes possible:
+This doc outlines the database, backend processing, and client socket payload architecture of processing individual moves and their resulting game states in cuttle.cards. This powers the core game loop and facilitates a variety of features that leverage granular data collection. In particular makes possible:
 
 * Building the vs AI experience into the main application   
-* Watchable game replayed of completed games   
+* Watchable game replays of completed games   
 * Async play
 * Strategic analysis of gameplay
 
@@ -21,11 +21,13 @@ Enum describing the phase of a turn the game is currently in. Used to validate w
    * scuttle  
    * untargetedOneOff  
    * targetedOneOff  
+   * requestStalemate
+   
 * countering \- phase where players play counters. Only legal moves are   
    * counter  
    * resolve  
 * resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-* resolvingFour \- Choosing cards to discard. Only legal move is resolveFour  
+* resolvingFour \- Choosing cards to discard due to opponent four. Only legal move is resolveFour  
 * resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
 * resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
    * sevenPoints  
@@ -69,7 +71,7 @@ Enum designating which kind of move was made.
 
 ## Game
 
-The `Game` object/table is reduced to the metadata about the game that doesn’t generally change while a game is played. It has the game’s id, name, the ids of which users are p0 and p1.
+The `Game` object/table contains the metadata about the game that doesn’t generally change while a game is played. It has the game’s id, name, the ids of which users are p0 and p1.
 
 * id: primary key  
 * name: `String`  
@@ -109,12 +111,12 @@ A GameState record represents one move made by a player and the resulting game s
 * p1Points: `Array<String>`  
 * p0FaceCards: `Array<String>`  
 * p1FaceCards: `Array<String>`  
-* deck: `Array<String>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
-* scrap: `Array<String>`  
-* oneOff: `String | null`  
-* oneOffTarget: `String | null`  
-* twos: `Array<String>`  
-* resolving: `String`  
+* deck: `Array<String>`: Cards in the deck, in order
+* scrap: `Array<String>`: list of cards currently in the scrap
+* oneOff: `String | null`: the one-off currently in play, before resolution. Unset once resolved
+* oneOffTarget: `String | null`: target of the currently resolving one-off. Unset once one-off resolves 
+* twos: `Array<String>`: array of twos played as counters, currently on the stack, awaiting resolution
+* resolving: `String`: one-off being resolved in a secondary step e.g. a three while awaiting player selection from the scrap
 * gameId: ID \- FK to the games table  
 * createdAt: `timestampz` \- When the move took place
 
@@ -400,7 +402,7 @@ module.exports \= {
 };
 ```
 
-The `publishGameState()` helper is used to send the latest game state to the client. For the MVP rollout, it will emit an event that matches the current data structure used by the client in production, e.g:
+The `publishGameState()` helper is used to send the latest game state to the client
 
 ```javascript
      Game.publish(\[fullGame.id\], {  
@@ -409,7 +411,7 @@ The `publishGameState()` helper is used to send the latest game state to the cli
        victory,  
      });
 ```
-The published event should have the following shape:  
+The published event has the following shape:  
 
 ```javascript
   const socketUpdate = {  
