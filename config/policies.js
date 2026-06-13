@@ -39,7 +39,7 @@ module.exports.policies = {
     oAuthCompleteRegistration: [ 'hasValidUsername', 'hasNoProfanity', 'hasValidOAuthProvider' ],
   },
 
-  'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
+  'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity', 'rateLimitCreateGame' ],
   'game/ai/create-vs-ai': [ 'isLoggedIn', 'isSocket' ],
   'game/ai/ai-move': [ 'isLoggedIn', 'isSocket' ],
   'game/get-list': 'isLoggedIn',

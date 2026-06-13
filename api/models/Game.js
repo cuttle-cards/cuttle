@@ -58,6 +58,9 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false,
     },
+    createdBy: {
+      model: 'user',
+    },
     p0: {
       model: 'user',
     },

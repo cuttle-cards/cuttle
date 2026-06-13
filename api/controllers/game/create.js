@@ -4,7 +4,7 @@ module.exports = function (req, res) {
   const { gameName, isRanked = false } = req.body;
   if (req.body.gameName) {
     gameAPI
-      .createGame(gameName, isRanked)
+      .createGame(gameName, isRanked, undefined, req.session.usr)
       .then(function (game) {
         sails.sockets.broadcast('GameList', 'gameCreated', {
           id: game.id,

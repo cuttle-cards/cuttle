@@ -659,6 +659,21 @@ describe('Home - Create Game', () => {
       cy.get('[data-cy=game-list-item]').should('have.length', 0);
     });
   });
+
+  it.only('Shows error when too many games are created in a short period', () => {
+    for (let i = 0; i < 5; i++) {
+      cy.createGamePlayer({ gameName: `Game ${i}`, isRanked: false });
+    }
+
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .type('One too many');
+    cy.get('[data-cy=submit-create-game]').click();
+
+    assertSnackbar('Too many requests');
+  });
 });
 
 describe('Announcement Dialogs', () => {
