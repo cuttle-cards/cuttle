@@ -788,8 +788,18 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   p1FaceCards: {suit: number, rank: number}[],
  *   topCard?: {suit: number, rank: number}
  *   secondCard?: {suit: number, rank: number}
- *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
+ *   scrap?: {suit: number, rank: number}[]
+ *   deck?: {suit: number, rank: number}[]
  * }
+ *
+ * Deck/scrap behavior (see api/controllers/game/load-fixture-gamestate.js):
+ * - If `deck` is omitted, every card not assigned elsewhere in the fixture becomes the deck (shuffled).
+ * - If `deck` is provided, the deck contains ONLY those cards (plus topCard/secondCard prepended),
+ *   and EVERY card not assigned in the fixture is appended to scrap. This is the common cause of
+ *   surprising assertGameState failures: a short `deck` puts ~40 cards into scrap, and when the
+ *   deck reaches zero mid-test the game reveals opponent hands.
+ *
+ * For the discovery/writing pattern when using a short `deck`, see docs/patterns/e2e-game-fixtures.md.
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture, gameId = null) => {
   if (gameId) {

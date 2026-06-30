@@ -360,7 +360,22 @@ export function setupSeasons() {
  *   p1Hand: {suit: number, rank: number}[],
  *   p1Points: {suit: number, rank: number}[],
  *   p1FaceCards: {suit: number, rank: number}[],
+ *   topCard?: {suit: number, rank: number},
+ *   secondCard?: {suit: number, rank: number},
+ *   scrap?: {suit: number, rank: number}[],
+ *   deck?: {suit: number, rank: number}[],
  * }
+ *
+ * Notes:
+ * - `scrap` is a subset check — every fixture.scrap card must appear in actual scrap,
+ *   but actual scrap may contain additional cards. Convention: list every expected
+ *   scrap card anyway (including the ~40 cards loadGameFixture pushes to scrap when
+ *   it was called with a short `deck`).
+ * - `deck: []` is the signal to assert the "deck-exhausted, opponent hand revealed"
+ *   state. When the game's deck reaches zero, opponent hands become visible; without
+ *   `deck: []` here the assertion takes the "hidden" branch and fails on `allHidden`.
+ *
+ * See docs/patterns/e2e-game-fixtures.md for the canonical short-deck pattern.
  */
 function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
   cy.window()
@@ -702,8 +717,21 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
  *   p1Hand: {suit: number, rank: number}[],
  *   p1Points: {suit: number, rank: number}[],
  *   p1FaceCards: {suit: number, rank: number}[],
+ *   topCard?: {suit: number, rank: number},
+ *   secondCard?: {suit: number, rank: number},
+ *   scrap?: {suit: number, rank: number}[],
+ *   deck?: {suit: number, rank: number}[],
  * }
  * @param pNum: int [0, 1]
+ *
+ * Notes:
+ * - `scrap` is a subset check; list every expected card anyway when loadGameFixture
+ *   was called with a short `deck` (it appends ~40 unused cards to scrap).
+ * - `deck: []` asserts the "deck-exhausted" state and unhides opponent hands. Omit
+ *   it and the helper will assert opponent hands are hidden — which fails once the
+ *   real deck empties.
+ *
+ * See docs/patterns/e2e-game-fixtures.md.
  */
 export function assertGameState(pNum, fixture, spectating = false) {
   cy.log('Asserting game state:', fixture);
