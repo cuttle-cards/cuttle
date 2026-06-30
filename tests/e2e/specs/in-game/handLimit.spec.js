@@ -215,6 +215,7 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
           p1FaceCards: [],
           topCard: Card.NINE_OF_CLUBS,
           secondCard: Card.TEN_OF_CLUBS,
+          deck: [ Card.JACK_OF_CLUBS ],
         });
 
         // Play five and resolve — discard one card first
@@ -228,12 +229,76 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
         cy.get('#discard-to-hand-limit-dialog').should('be.visible');
 
         // Player discards 1 card
-        cy.get('[data-discard-hand-limit-card]').first()
-          .click();
+        cy.get('[data-discard-hand-limit-card=2-0]').click();
         cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
 
         cy.get('[data-player-hand-card]').should('have.length', 8);
         cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture
+            Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
       });
 
       it('Five resolves to 10 cards triggering discard of 2', () => {
@@ -256,6 +321,7 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
           p1FaceCards: [],
           topCard: Card.TEN_OF_CLUBS,
           secondCard: Card.JACK_OF_CLUBS,
+          deck: [ Card.QUEEN_OF_CLUBS ],
         });
 
         // Play five and resolve — discard one card first (9 cards → 8 after discard → 10 after drawing 3)
@@ -269,14 +335,77 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
         cy.get('#discard-to-hand-limit-dialog').should('be.visible');
 
         // Player must select 2 cards to discard
-        cy.get('[data-discard-hand-limit-card]').eq(0)
-          .click();
-        cy.get('[data-discard-hand-limit-card]').eq(1)
-          .click();
+        cy.get('[data-discard-hand-limit-card=2-0]').click();
+        cy.get('[data-discard-hand-limit-card=3-0]').click();
         cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
 
         cy.get('[data-player-hand-card]').should('have.length', 8);
         cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS,
+            Card.QUEEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
       });
     });
   });
