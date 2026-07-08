@@ -47,12 +47,6 @@ module.exports = {
         throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
-      // Must be under hand limit of 8
-      const player = playedBy ? currentState.p1 : currentState.p0;
-      if (player.hand.length >= 8) {
-        throw new BadRequestError('game.snackbar.draw.handLimit');
-      }
-
       // Deck must have cards
       if (!currentState.deck.length) {
         throw new BadRequestError('game.snackbar.draw.deckIsEmpty');

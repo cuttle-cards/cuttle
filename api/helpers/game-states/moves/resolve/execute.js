@@ -53,12 +53,16 @@ module.exports = {
       twos: [],
     };
 
+    const activePlayer = result.turn % 2 === 0 ? result.p0 : result.p1;
+    const playerMustDiscard = activePlayer.hand.length > 8;
+
     // If one-off fizzles, make no other changes
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
       result.oneOff = null;
-      result.turn++;
+      result.phase = playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN;
+      result.turn = playerMustDiscard ? result.turn : result.turn + 1;
       return exits.success(result);
     }
 
@@ -89,7 +93,7 @@ module.exports = {
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
-    
+
     result.scrap.push(result.oneOff);
     result = {
       ...result,
@@ -97,7 +101,8 @@ module.exports = {
       targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
-      turn: result.turn + 1,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);

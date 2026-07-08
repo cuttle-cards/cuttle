@@ -140,6 +140,27 @@ module.exports = {
         }
         break;
 
+      case MoveType.DISCARD_TO_HAND_LIMIT: {
+        const overflowCount = playerHand.length - 8;
+        if (overflowCount <= 0) {break;}
+        const getCombinations = (arr, k) => {
+          if (k === 1) {return arr.map((item) => [ item ]);}
+          const result = [];
+          for (let i = 0; i <= arr.length - k; i++) {
+            for (const rest of getCombinations(arr.slice(i + 1), k - 1)) {
+              result.push([ arr[i], ...rest ]);
+            }
+          }
+          return result;
+        };
+        res = getCombinations(playerHand, overflowCount).map((combo) => ({
+          moveType,
+          playedBy,
+          discardedCards: combo.map((card) => card.id),
+        }));
+        break;
+      }
+
       case MoveType.SEVEN_POINTS:
         res = deck.slice(0, 2)
           .filter((card) => card.rank <= 10)

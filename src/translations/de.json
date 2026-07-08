@@ -122,6 +122,11 @@
         "discard": "Abwerfen",
         "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",
         "nice": "Schön!",
@@ -291,7 +296,6 @@
         "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
-        "deckIsEmpty": "Das Deck ist leer; du kannst nicht ziehen.",
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
         "exhaustedDeck": "Deck erschöpft; Kartenhände der Spieler werden angezeigt"
       },
@@ -337,6 +341,11 @@
           "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
           "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
           "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",

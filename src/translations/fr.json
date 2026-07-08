@@ -133,6 +133,11 @@
         "discard": "Défausser",
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",
@@ -291,7 +296,6 @@
         "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
-        "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !",
         "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
       },
@@ -337,6 +341,11 @@
           "notYourTurn": "Ce n'est pas à vous de défausser",
           "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
           "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
