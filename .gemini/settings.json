@@ -1,0 +1,26 @@
+{
+  "context": {
+    "fileName": ["AGENTS.md"]
+  },
+  "experimental": {
+    "enableAgents": true
+  },
+  "general": {
+    "plan": {
+      "enabled": true
+    }
+  },
+  "hooks": {
+    "BeforeTool": [
+      {
+        "matcher": "^run_shell_command$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$GEMINI_PROJECT_DIR/.agents/tools/git-guardrails.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
