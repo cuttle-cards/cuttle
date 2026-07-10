@@ -27,10 +27,11 @@ run it. **Do not invent new Cypress commands or helpers** — reuse what is docu
    (see *Scenario → Fixture*).
 2. **Parse the move sequence** into ordered Cypress steps (see *Moves → Cypress steps*).
 3. **Write the test** into `tests/e2e/specs/playground/videoPlayground.spec.js` — under the right
-   topic/seat block — and give it `.only`, clearing every other `.only` in the file (see *Writing
-   the test*).
+   topic/seat block, with a `markClipStart()` call right after `loadGameFixture` — and give it
+   `.only`, clearing every other `.only` in the file (see *Writing the test*).
 4. **Run it** headless with video (see *Running*).
-5. **Rename the video** to a scenario slug and report the path (see *Saving the video*).
+5. **Trim & save the video**: cut everything before the marker so the clip opens with the cards in
+   place, name it with a scenario slug, and report the path (see *Trimming & saving the video*).
 
 Confirm the fixture and move list with the user in prose *before* running if the scenario is
 ambiguous — a wrong fixture wastes a ~15s recording run.
@@ -191,6 +192,42 @@ nested inside `describe('Video Playground')`, **hoist them to module scope once*
 non-breaking (nested describes can still reference module-scope functions), and it's a
 prerequisite for topic blocks.
 
+### The clip-start marker (enables auto-trimming)
+Every clip must open with the cards already in place — not with the app loading or the game being
+set up. To make the trim point deterministic (setup time varies run to run), each test flashes a
+brief full-screen black frame **the instant `loadGameFixture` resolves**; the trim step later finds
+that black frame with `ffmpeg blackdetect` and cuts to its end.
+
+Ensure this helper exists at **module scope** (add it once if missing):
+
+```js
+// Flash a full-screen black frame as a fiducial for automatic video trimming.
+// Call immediately after cy.loadGameFixture(...) — the board is set, nothing has moved yet.
+function markClipStart(holdMs = 500) {
+  cy.document().then((doc) => {
+    const overlay = doc.createElement('div');
+    overlay.id = 'clip-start-marker';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#000;';
+    doc.body.appendChild(overlay);
+  });
+  cy.wait(holdMs);                                         // black frames get recorded
+  cy.get('#clip-start-marker').then(($el) => $el.remove());
+}
+```
+
+Every generated test body follows this shape:
+
+```js
+cy.loadGameFixture(<pNum>, { /* … */ });
+markClipStart();          // ← trim point: cards are in place
+cy.wait(1500);            // brief static hold so the clip opens on a settled board
+// START RECORDING //
+// … moves …
+```
+
+Use `cy.document()` (the app's document), **not** `document` (that's the Cypress runner frame). The
+overlay is removed within the test, and the black frames are trimmed out of the final clip.
+
 ### No topic given (default)
 Add the `it(...)` to the existing seat block: `describe('Video Playground')` for a p0 clip, or
 `describe('Playground as p1')` for a p1 clip. (These carry their own `setupGameAsP0` /
@@ -272,18 +309,36 @@ incomplete (most often a duplicate card in the fixture, or an out-of-turn move).
 
 ---
 
-## Saving the video
+## Trimming & saving the video
 
-Cypress writes `tests/e2e/videos/videoPlayground.spec.js.mp4` and overwrites it each run. Rename it
-to a scenario slug so recordings accumulate, then report the final path:
+Cypress writes `tests/e2e/videos/videoPlayground.spec.js.mp4` (the raw clip, including app load +
+game setup). Trim it so it opens on the settled board, using the `markClipStart()` black frame as
+the cut point. Requires `ffmpeg` (`brew install ffmpeg` if `command -v ffmpeg` is empty).
 
 ```bash
-mv tests/e2e/videos/videoPlayground.spec.js.mp4 \
-   tests/e2e/videos/<scenario-slug>.mp4     # e.g. two-counter-then-points-win.mp4
+RAW="tests/e2e/videos/videoPlayground.spec.js.mp4"
+SLUG="<scenario-slug>"                                   # e.g. two-counter-then-points-win
+
+# 1. Find the end of the marker's black frame (seconds from video start)
+BLACK_END=$(ffmpeg -hide_banner -i "$RAW" -vf "blackdetect=d=0.1:pic_th=0.85" -an -f null - 2>&1 \
+  | grep -oE 'black_end:[0-9.]+' | head -1 | cut -d: -f2)
+
+if [ -z "$BLACK_END" ]; then
+  echo "No black marker found — leaving raw clip untrimmed at $RAW"       # investigate: did markClipStart() run?
+else
+  # 2. Re-encode from BLACK_END (frame-accurate), drop audio; keep the raw as a backup
+  ffmpeg -hide_banner -y -i "$RAW" -ss "$BLACK_END" \
+    -c:v libx264 -preset veryfast -crf 20 -an \
+    "tests/e2e/videos/${SLUG}.mp4"
+  mv "$RAW" "tests/e2e/videos/${SLUG}.raw.mp4"
+  echo "Trimmed clip: tests/e2e/videos/${SLUG}.mp4 (cut at ${BLACK_END}s); raw kept as ${SLUG}.raw.mp4"
+fi
 ```
 
-This only accumulates if the run used `trashAssetsBeforeRuns=false` (see *Running*) — otherwise the
-next run wipes the folder. `tests/e2e/videos/` is gitignored, so saved clips stay local.
-
-Tell the user the saved path. If the run failed, do **not** present a video — report the failure
-and the fix instead.
+Notes:
+- `blackdetect` reports the first fully-black interval; that's the marker (the game board is a wooden
+  table, never black, so there are no false positives). `pic_th=0.85` tolerates scrollbars/edges.
+- Accumulation across runs relies on `trashAssetsBeforeRuns=false` (see *Running*); otherwise the
+  next run wipes `tests/e2e/videos/`. The folder is gitignored, so clips stay local.
+- Report the trimmed `<slug>.mp4` path to the user. If the run failed, do **not** present a video —
+  report the failure and the fix instead.
