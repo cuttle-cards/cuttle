@@ -4,10 +4,11 @@ description: >-
   Generate and record gameplay video footage for Cuttle. Use when the user
   describes an in-game situation and a sequence of moves and wants a video clip
   of it — e.g. "record a video of…", "make a clip showing…", "generate footage
-  of…", "film a scenario where…". Translates the description into a Cypress test
-  in tests/e2e/specs/playground/videoPlayground.spec.js, marks it .only(),
-  clears every other .only(), runs Cypress headless with video, and saves a
-  named .mp4 to tests/e2e/videos/.
+  of…", "film a scenario where…". Optionally organizes the clip under a named
+  topic/category (the tutorial video it's for). Translates the description into a
+  Cypress test in tests/e2e/specs/playground/videoPlayground.spec.js, marks it
+  .only(), clears every other .only(), runs Cypress headless with video, and
+  saves a named .mp4 to tests/e2e/videos/.
 ---
 
 # Record Cuttle gameplay video
@@ -22,10 +23,12 @@ run it. **Do not invent new Cypress commands or helpers** — reuse what is docu
 
 ## End-to-end procedure
 
-1. **Parse the scenario** into a `loadGameFixture` object (see *Scenario → Fixture*).
+1. **Parse the scenario** into a `loadGameFixture` object, and note any **topic** the user names
+   (see *Scenario → Fixture*).
 2. **Parse the move sequence** into ordered Cypress steps (see *Moves → Cypress steps*).
-3. **Write the test** into `tests/e2e/specs/playground/videoPlayground.spec.js` and give it
-   `.only`, clearing every other `.only` in the file (see *Writing the test*).
+3. **Write the test** into `tests/e2e/specs/playground/videoPlayground.spec.js` — under the right
+   topic/seat block — and give it `.only`, clearing every other `.only` in the file (see *Writing
+   the test*).
 4. **Run it** headless with video (see *Running*).
 5. **Rename the video** to a scenario slug and report the path (see *Saving the video*).
 
@@ -37,9 +40,11 @@ ambiguous — a wrong fixture wastes a ~15s recording run.
 ## Scenario → Fixture
 
 Set up state with `cy.loadGameFixture(pNum, fixture)` after the `beforeEach` game setup. The
-human/"player" is **p0** by default (`setupGameAsP0`, in the top-level `describe('Video
-Playground')`). Use **p1** (`setupGameAsP1`, the `describe('Playground as p1')` block) only when
-the scenario reads better from the second player's seat.
+human/"player" is **p0** by default; use **p1** only when the scenario reads better from the
+second player's seat (or when you want the opponent to move first — as p1 the opponent is p0, who
+goes first). The seat decides three things that must agree: the `loadGameFixture` `pNum`
+(`0`/`1`), which setup runs in the enclosing `beforeEach` (`cy.setupGameAsP0()` /
+`cy.setupGameAsP1()`), and where the test is placed — see *Writing the test*.
 
 Cards come from `import { Card } from '../../fixtures/cards';` — names are `Card.RANK_OF_SUIT`,
 e.g. `Card.EIGHT_OF_SPADES`, `Card.TWO_OF_HEARTS`.
@@ -174,11 +179,58 @@ every one-off (Two through Nine, jacks, god combo, counters).
 
 ## Writing the test
 
-- Add the new `it('<clear scenario title>', () => { ... })` inside `describe('Video Playground')`
-  (p0) or `describe('Playground as p1')` (p1), matching the file's existing style and `cy.wait`
-  cadence.
-- Mark **the new test** `.only` and **remove `.only` from every other** `it`/`describe` in the
-  file. There are nested describes — scan the whole file. Exactly one `.only` must remain. Verify:
+Write the new `it('<clear scenario title>', () => { ... })` in the file's existing style and
+`cy.wait` cadence. **Where** it goes depends on whether the user names a **topic**.
+
+### Shared timing helpers must be at module scope
+The pacing helpers (`playerMoveWithDelay`, `playerPointsWithDelay`, `playerScuttleWithDelay`,
+`playerJackWithDelay`, `opponentPointsWithDelay`, `opponentScuttleWithDelay`,
+`opponentDrawWithDelay`) let any block reuse consistent timing. They must live at **module scope**
+(top of the file, outside every `describe`) so topic/seat blocks can call them. If they are still
+nested inside `describe('Video Playground')`, **hoist them to module scope once** — this is
+non-breaking (nested describes can still reference module-scope functions), and it's a
+prerequisite for topic blocks.
+
+### No topic given (default)
+Add the `it(...)` to the existing seat block: `describe('Video Playground')` for a p0 clip, or
+`describe('Playground as p1')` for a p1 clip. (These carry their own `setupGameAsP0` /
+`setupGameAsP1` `beforeEach`.)
+
+### Topic given — organize by topic, then by seat
+A **topic** is the tutorial video the clip will appear in (e.g. "Countering", "One-Off Basics",
+"Endgames"). Structure:
+
+```js
+describe('<Topic>', () => {
+  describe('Player perspective (P0)', () => {
+    beforeEach(() => cy.setupGameAsP0());
+
+    it('<scenario title>', () => { /* cy.loadGameFixture(0, …) + moves */ });
+  });
+
+  describe('Opponent perspective (P1)', () => {
+    beforeEach(() => cy.setupGameAsP1());
+
+    it('<scenario title>', () => { /* cy.loadGameFixture(1, …) + moves */ });
+  });
+});
+```
+
+Rules:
+- **Find or create the topic block.** Search for an existing top-level `describe('<Topic>')`
+  (match case-insensitively / on the obvious intent). Reuse it if present; otherwise add it as a
+  new **top-level** `describe`, a sibling of `describe('Video Playground')`.
+- **Find or create the seat block** inside the topic. Create only the seat(s) you need — a topic
+  may have just P0, just P1, or both ("as necessary"). Each seat `describe` **owns its
+  `beforeEach`** (`cy.setupGameAsP0()` or `cy.setupGameAsP1()`); do not depend on the top-level
+  `Video Playground` setup. Use consistent seat titles like `'Player perspective (P0)'` and
+  `'Opponent perspective (P1)'` (no apostrophes — they'd break the single-quoted string).
+- **Add the `it(...)`** inside the matching seat block.
+
+### Exclusive `.only` (both cases)
+- Mark **the new test** `.only` (`it.only('…', …)`) and **remove `.only` from every other**
+  `it`/`describe` in the file. There are nested describes — scan the whole file. Exactly one
+  `.only` must remain. Verify:
 
   ```bash
   grep -rn '\.only' tests/e2e/specs/playground/videoPlayground.spec.js   # expect exactly 1 line
@@ -199,14 +251,18 @@ curl -s -o /dev/null -w '%{http_code}' --max-time 4 http://localhost:8080   # ex
 # if not 200:  npm run start:dev   (run in background; starts Vite :8080 + Sails :1337; wait for both)
 ```
 
-Then run headless with video. **There is no `--video` CLI flag in Cypress 15** — video is set via
-`--config`, and the playground spec is excluded from headless runs by default, so override
-`excludeSpecPattern` with a non-matching glob (an empty value is ignored):
+Then run headless with video. Three `--config` overrides are required:
+- **`video=true`** — there is no `--video` CLI flag in Cypress 15; video is config-only and the
+  repo sets `video: false`.
+- **`excludeSpecPattern=**/__none__/**`** — the playground spec is excluded from headless runs by
+  default; override with a non-matching glob (an empty value is ignored).
+- **`trashAssetsBeforeRuns=false`** — Cypress otherwise **empties `tests/e2e/videos/` before every
+  run**, deleting previously-saved clips. Turning it off preserves earlier recordings.
 
 ```bash
 npx cypress run --no-runner-ui \
   --spec tests/e2e/specs/playground/videoPlayground.spec.js \
-  --config "video=true,excludeSpecPattern=**/__none__/**"
+  --config "video=true,trashAssetsBeforeRuns=false,excludeSpecPattern=**/__none__/**"
 ```
 
 `.only` restricts execution to the one test, so the single spec-level video contains only your
@@ -225,6 +281,9 @@ to a scenario slug so recordings accumulate, then report the final path:
 mv tests/e2e/videos/videoPlayground.spec.js.mp4 \
    tests/e2e/videos/<scenario-slug>.mp4     # e.g. two-counter-then-points-win.mp4
 ```
+
+This only accumulates if the run used `trashAssetsBeforeRuns=false` (see *Running*) — otherwise the
+next run wipes the folder. `tests/e2e/videos/` is gitignored, so saved clips stay local.
 
 Tell the user the saved path. If the run failed, do **not** present a video — report the failure
 and the fix instead.
