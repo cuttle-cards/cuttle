@@ -26,9 +26,10 @@ run it. **Do not invent new Cypress commands or helpers** — reuse what is docu
 1. **Parse the scenario** into a `loadGameFixture` object, and note any **topic** the user names
    (see *Scenario → Fixture*).
 2. **Parse the move sequence** into ordered Cypress steps (see *Moves → Cypress steps*).
-3. **Write the test** into `tests/e2e/specs/playground/videoPlayground.spec.js` — under the right
-   topic/seat block, with a `markClipStart()` call right after `loadGameFixture` — and give it
-   `.only`, clearing every other `.only` in the file (see *Writing the test*).
+3. **Add or reuse the test** in `tests/e2e/specs/playground/videoPlayground.spec.js` — reuse/edit a
+   matching existing test if there is one, else add a new `it(...)` under the right topic/seat
+   block, with a `markClipStart()` call right after `loadGameFixture`. Tests are kept for reuse;
+   give the target `.only` and clear every other `.only` (see *Writing the test*).
 4. **Run it** headless with video (see *Running*).
 5. **Trim & save the video**: cut everything before the marker so the clip opens with the cards in
    place, name it with a scenario slug, and report the path (see *Trimming & saving the video*).
@@ -180,8 +181,20 @@ every one-off (Two through Nine, jacks, god combo, counters).
 
 ## Writing the test
 
-Write the new `it('<clear scenario title>', () => { ... })` in the file's existing style and
+Add (or update) an `it('<clear scenario title>', () => { ... })` in the file's existing style and
 `cy.wait` cadence. **Where** it goes depends on whether the user names a **topic**.
+
+### Test code is a persistent, reusable library
+The generated tests are **kept, never deleted** — `videoPlayground.spec.js` is a growing (tracked)
+library of reproducible scenarios. Do not remove test code as "cleanup." Concretely:
+- **Re-record** an existing clip (e.g. after a UI change) → just re-run; the test is already there.
+- **Tweak** a clip (different cards, timing, an extra move) → **edit the existing `it(...)` in
+  place**, then re-run. Don't add a near-duplicate.
+- **New scenario** → add a new `it(...)`.
+
+So before writing, **search the file for a test that already matches the request** (by title /
+topic / fixture) and reuse or edit it; only add a fresh `it(...)` when none matches. The only
+per-run throwaway change is which single test carries `.only` (see *Exclusive `.only`*).
 
 ### Shared timing helpers must be at module scope
 The pacing helpers (`playerMoveWithDelay`, `playerPointsWithDelay`, `playerScuttleWithDelay`,
@@ -265,17 +278,19 @@ Rules:
 - **Add the `it(...)`** inside the matching seat block.
 
 ### Exclusive `.only` (both cases)
-- Mark **the new test** `.only` (`it.only('…', …)`) and **remove `.only` from every other**
-  `it`/`describe` in the file. There are nested describes — scan the whole file. Exactly one
-  `.only` must remain. Verify:
+- Put `.only` on **the single test you're recording this run** (`it.only('…', …)`) and **remove
+  `.only` from every other** `it`/`describe`. This only toggles *which* test runs — it never
+  deletes any test. There are nested describes — scan the whole file. Exactly one `.only` must
+  remain. Verify:
 
   ```bash
   grep -rn '\.only' tests/e2e/specs/playground/videoPlayground.spec.js   # expect exactly 1 line
   ```
 
-- `.only` will trip `eslint-plugin-no-only-tests` (`npm run lint`). That is **expected** for this
-  ad-hoc video workflow — playground specs are excluded from CI. Remind the user to strip `.only`
-  before committing (or leave it uncommitted).
+- `.only` trips `eslint-plugin-no-only-tests` (`npm run lint`) and would fail CI if playground
+  specs run there. It's fine while recording, but **before committing, remove the lone `.only`**
+  (turning `it.only(` back into `it(`) so `grep '.only'` returns nothing. The scenarios themselves
+  stay in the file for reuse and reproducibility — only the `.only` marker is transient.
 
 ---
 
