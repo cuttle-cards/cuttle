@@ -730,6 +730,9 @@ describe('God Combo Tutorial', () => {
       });
 
       cy.playPointsOpponent(Card.TEN_OF_SPADES);
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
     });
   });
 
@@ -781,7 +784,8 @@ describe('God Combo Tutorial', () => {
       cy.wait(800);
       cy.get('[data-move-choice=points]').click();
 
-      cy.get('#game-over-dialog').should('exist');
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
     });
 
     it('Has God combo', () => {
@@ -827,6 +831,9 @@ describe('God Combo Tutorial', () => {
       cy.get('[data-player-hand-card=10-3]').click();
       cy.wait(500);
       cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
     });
   });
 });
