@@ -11,6 +11,20 @@ import { assertGameState } from '../../support/helpers';
  * for realistic timing. Game logic is not appropriately tested; the focus is on
  * being able to record the screen to create quick move-highlight videos
  */
+
+// Flash a full-screen black frame as a fiducial for automatic video trimming.
+// Call immediately after cy.loadGameFixture(...) — the board is set, nothing has moved yet.
+function markClipStart(holdMs = 500) {
+  cy.document().then((doc) => {
+    const overlay = doc.createElement('div');
+    overlay.id = 'clip-start-marker';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#000;';
+    doc.body.appendChild(overlay);
+  });
+  cy.wait(holdMs);
+  cy.get('#clip-start-marker').then(($el) => $el.remove());
+}
+
 describe('Video Playground', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -752,5 +766,67 @@ describe('Playground as p1', () => {
     cy.get('[data-player-hand-card=10-3]').click();
     cy.wait(500);
     cy.get('[data-move-choice=points]').click();
+  });
+});
+
+describe('God Combo Tutorial', () => {
+  describe('Player perspective (P0)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    // P0 god-combo clips go here.
+  });
+
+  describe('Opponent perspective (P1)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP1();
+    });
+
+    it('Both players glasses, player counters an ace and wins with points', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.TWO_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_SPADES, Card.NINE_OF_HEARTS ],
+        p1FaceCards: [ Card.EIGHT_OF_SPADES, Card.QUEEN_OF_HEARTS ],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+
+      // START RECORDING //
+
+      // Opponent plays an Ace (would scrap all point cards)
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+      cy.wait(1500);
+
+      // Player counters with a Two to save their points
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
+
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-2]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Opponent resolves (declines to re-counter); the ace is negated
+      cy.resolveOpponent();
+      cy.wait(1000);
+      cy.get('#turn-indicator').contains('YOUR TURN');
+
+      // Player plays a point card for the win
+      cy.get('[data-player-hand-card=10-1]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('exist');
+    });
   });
 });
