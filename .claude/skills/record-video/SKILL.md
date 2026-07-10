@@ -288,24 +288,59 @@ curl -s -o /dev/null -w '%{http_code}' --max-time 4 http://localhost:8080   # ex
 # if not 200:  npm run start:dev   (run in background; starts Vite :8080 + Sails :1337; wait for both)
 ```
 
-Then run headless with video. Three `--config` overrides are required:
-- **`video=true`** — there is no `--video` CLI flag in Cypress 15; video is config-only and the
-  repo sets `video: false`.
-- **`excludeSpecPattern=**/__none__/**`** — the playground spec is excluded from headless runs by
-  default; override with a non-matching glob (an empty value is ignored).
-- **`trashAssetsBeforeRuns=false`** — Cypress otherwise **empties `tests/e2e/videos/` before every
-  run**, deleting previously-saved clips. Turning it off preserves earlier recordings.
+Then run headless under **Chrome** with the dedicated **`cypress.video.config.js`**:
 
 ```bash
-npx cypress run --no-runner-ui \
-  --spec tests/e2e/specs/playground/videoPlayground.spec.js \
-  --config "video=true,trashAssetsBeforeRuns=false,excludeSpecPattern=**/__none__/**"
+npx cypress run --browser chrome --no-runner-ui \
+  --config-file cypress.video.config.js \
+  --spec tests/e2e/specs/playground/videoPlayground.spec.js
+```
+
+The `cypress.video.config.js` file (repo root) extends `cypress.config.js` and bakes in everything
+the recording needs — **recreate it if it's missing** (contents below). It exists because:
+- **Window size** — headless browsers default to a ~1280px-wide window, which clips the top/bottom
+  of the game board (the board is laid out in `vh`/`vw` against the real window, so the opponent
+  username gets cut off). A `before:browser:launch` hook forces a true **1920×1080** recording
+  window (`--window-size=1920,1168` — Chrome reserves ~88px of height for window chrome — plus
+  `--force-device-scale-factor=1` and `--hide-scrollbars`).
+- **`video: true`** — there is no `--video` CLI flag in Cypress 15; the base config sets it false.
+- **`excludeSpecPattern: []`** — the base config excludes playground specs from headless runs.
+- **`trashAssetsBeforeRuns: false`** — otherwise Cypress empties `tests/e2e/videos/` before every
+  run, deleting previously-saved clips.
+
+```js
+// cypress.video.config.js
+const { defineConfig } = require('cypress');
+const base = require('./cypress.config');
+const W = 1920, H = 1080, CHROME_HEIGHT_OVERHEAD = 88;
+module.exports = defineConfig({
+  ...base,
+  video: true,
+  e2e: {
+    ...base.e2e,
+    excludeSpecPattern: [],
+    setupNodeEvents(on) {
+      on('before:browser:launch', (browser = {}, launchOptions) => {
+        if (browser.family === 'chromium') {
+          launchOptions.args.push(`--window-size=${W},${H + CHROME_HEIGHT_OVERHEAD}`);
+          launchOptions.args.push('--force-device-scale-factor=1', '--hide-scrollbars');
+        } else if (browser.name === 'electron') {
+          launchOptions.preferences.width = W;
+          launchOptions.preferences.height = H;
+        }
+        return launchOptions;
+      });
+    },
+  },
+  trashAssetsBeforeRuns: false,
+});
 ```
 
 `.only` restricts execution to the one test, so the single spec-level video contains only your
 scenario. The run should end with the target test **passing** — a failure means the video is
 incomplete (most often a duplicate card in the fixture, or an out-of-turn move). Fix and re-run.
-(While iterating you can append `,retries=0` to `--config` for faster feedback.)
+(While iterating you can add `--config retries=0` for faster feedback.) Confirm the raw video is
+**1920×1080** (`ffprobe -v error -select_streams v:0 -show_entries stream=width,height <file>`).
 
 ---
 
