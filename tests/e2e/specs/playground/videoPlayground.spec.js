@@ -684,6 +684,42 @@ describe('Video Playground', () => {
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
   });
+
+  it('Loses to a jack steal then points for the win', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.TEN_OF_SPADES, Card.FIVE_OF_HEARTS ],
+      p0Points: [],
+      p0FaceCards: [ Card.KING_OF_HEARTS ],
+      p1Hand: [ Card.JACK_OF_CLUBS, Card.EIGHT_OF_SPADES ],
+      p1Points: [ Card.NINE_OF_DIAMONDS ],
+      p1FaceCards: [],
+    });
+    markClipStart();
+
+    cy.wait(1500);
+    // START RECORDING //
+
+    // Player plays the ten for points
+    cy.get('[data-player-hand-card=10-3]').click();
+    cy.wait(800);
+    cy.get('[data-move-choice=points]').click();
+
+    // Opponent steals the ten with a jack
+    cy.wait(1200);
+    cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.TEN_OF_SPADES);
+
+    // Player draws
+    cy.wait(1200);
+    cy.get('#deck').click();
+
+    // Opponent plays the eight for points to win
+    cy.wait(1200);
+    cy.playPointsOpponent(Card.EIGHT_OF_SPADES);
+
+    // Game over — hold ~3s for the game-over dialog's entrance animation
+    cy.get('#game-over-dialog').should('be.visible');
+    cy.wait(3000);
+  });
 });
 
 describe('Playground as p1', () => {
