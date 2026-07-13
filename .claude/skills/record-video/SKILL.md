@@ -178,12 +178,12 @@ the clip lingers on the result. These are the **last two statements** of the tes
 
 ```js
 cy.get('#game-over-dialog').should('be.visible');
-cy.wait(1000);   // keep the result dialog fully on screen at the end of the clip
+cy.wait(3000);   // keep the result dialog on screen; its entrance animation takes ~3s
 ```
 
 Use `.should('be.visible')` (not just `.should('exist')`) so the dialog has actually rendered
-before the hold. The trailing `cy.wait(1000)` must be the final line so the recording doesn't cut
-away while the dialog is still animating in.
+before the hold. The trailing `cy.wait(3000)` must be the final line — the game-over dialog has an
+entrance animation that runs ~3s, so a shorter hold cuts away before it settles.
 
 Useful scrims/dialogs to wait on for realistic timing and correctness:
 `#waiting-for-opponent-counter-scrim`, `#waiting-for-opponent-discard-scrim`, `#counter-dialog`,
@@ -271,7 +271,7 @@ cy.wait(1500);            // brief static hold so the clip opens on a settled bo
 // … moves …
 // If the scenario ends the game (win / loss / stalemate), finish with:
 cy.get('#game-over-dialog').should('be.visible');
-cy.wait(1000);            // hold on the result at the end of the clip
+cy.wait(3000);            // hold ~3s for the game-over dialog's entrance animation
 ```
 
 Use `cy.document()` (the app's document), **not** `document` (that's the Cypress runner frame). The
