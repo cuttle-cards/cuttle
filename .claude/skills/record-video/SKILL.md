@@ -222,22 +222,41 @@ prerequisite for topic blocks.
 ### The clip-start marker (enables auto-trimming)
 Every clip must open with the cards already in place — not with the app loading or the game being
 set up. To make the trim point deterministic (setup time varies run to run), each test flashes a
-brief full-screen black frame **the instant `loadGameFixture` resolves**; the trim step later finds
-that black frame with `ffmpeg blackdetect` and cuts to its end.
+full-screen black frame **the instant `loadGameFixture` resolves**; the trim step later finds that
+black frame with `ffmpeg blackdetect` and cuts to its end.
 
-Ensure this helper exists at **module scope** (add it once if missing):
+**Critical:** Chrome's screencast (what Cypress records) only captures a frame on visual change, so
+a *static* black overlay — or any still hold, like a display-only clip — can drop to a single frame
+or none, which `blackdetect` then can't find. The helper works around this two ways: (1) an
+invisible 2px "ticker" that animates forever, keeping frames flowing during static periods; and
+(2) the marker overlay itself pulses between two near-black shades (both still "black" to
+`blackdetect`) so the marker reliably records. Ensure this helper exists at **module scope** (add
+it once if missing):
 
 ```js
-// Flash a full-screen black frame as a fiducial for automatic video trimming.
-// Call immediately after cy.loadGameFixture(...) — the board is set, nothing has moved yet.
-function markClipStart(holdMs = 500) {
+function markClipStart(holdMs = 600) {
   cy.document().then((doc) => {
+    if (!doc.getElementById('clip-ticker-style')) {
+      const style = doc.createElement('style');
+      style.id = 'clip-ticker-style';
+      style.textContent =
+        '@keyframes clipTick{from{left:0}to{left:2px}}' +
+        '#clip-ticker{position:fixed;bottom:0;left:0;width:2px;height:2px;' +
+        'background:rgba(0,0,0,0.01);z-index:2147483646;pointer-events:none;' +
+        'animation:clipTick 40ms linear infinite alternate}' +
+        '@keyframes clipMarkerPulse{from{background:#000}to{background:#030303}}' +
+        '#clip-start-marker{position:fixed;inset:0;z-index:2147483647;background:#000;' +
+        'animation:clipMarkerPulse 40ms steps(1) infinite alternate}';
+      doc.head.appendChild(style);
+      const ticker = doc.createElement('div');
+      ticker.id = 'clip-ticker';
+      doc.body.appendChild(ticker);
+    }
     const overlay = doc.createElement('div');
     overlay.id = 'clip-start-marker';
-    overlay.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#000;';
     doc.body.appendChild(overlay);
   });
-  cy.wait(holdMs);                                         // black frames get recorded
+  cy.wait(holdMs);
   cy.get('#clip-start-marker').then(($el) => $el.remove());
 }
 ```
@@ -393,16 +412,18 @@ BLACK_END=$(ffmpeg -hide_banner -i "$RAW" -vf "blackdetect=d=0.1:pic_th=0.85" -a
 if [ -z "$BLACK_END" ]; then
   echo "No black marker found — leaving raw clip untrimmed at $RAW"       # investigate: did markClipStart() run?
 else
-  # 2. Re-encode from BLACK_END (frame-accurate), drop audio; keep the raw as a backup
+  # 2. Re-encode from BLACK_END (frame-accurate), drop audio, then delete the untrimmed raw
   ffmpeg -hide_banner -y -i "$RAW" -ss "$BLACK_END" \
     -c:v libx264 -preset veryfast -crf 20 -an \
     "tests/e2e/videos/${SLUG}.mp4"
-  mv "$RAW" "tests/e2e/videos/${SLUG}.raw.mp4"
-  echo "Trimmed clip: tests/e2e/videos/${SLUG}.mp4 (cut at ${BLACK_END}s); raw kept as ${SLUG}.raw.mp4"
+  rm -f "$RAW"
+  echo "Trimmed clip: tests/e2e/videos/${SLUG}.mp4 (cut at ${BLACK_END}s)"
 fi
 ```
 
 Notes:
+- **Delete the untrimmed raw** once the trimmed `<slug>.mp4` is produced — the raw is throwaway (it
+  just holds the app-load/setup prefix that was trimmed off), and keeping raws doubles disk use.
 - `blackdetect` reports the first fully-black interval; that's the marker (the game board is a wooden
   table, never black, so there are no false positives). `pic_th=0.85` tolerates scrollbars/edges.
 - Accumulation across runs relies on `trashAssetsBeforeRuns=false` (see *Running*); otherwise the
