@@ -898,7 +898,7 @@ describe('God Combo Tutorial', () => {
   });
 });
 
-describe('Numbered Tutorial', () => {
+describe('Offense Tutorial', () => {
   describe('Player perspective (P0)', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
