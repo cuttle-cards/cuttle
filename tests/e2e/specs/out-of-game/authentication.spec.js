@@ -1,6 +1,5 @@
 import { assertSnackbar } from '../../support/helpers';
 import { myUser } from '../../fixtures/userFixtures';
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
@@ -38,7 +37,7 @@ describe('Auth - Page Content', () => {
     cy.wipeDatabase();
     cy.visit('/signup');
     cy.signupOpponent(myUser);
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
   });
 
   it('Displays logo and navigates to rules page', () => {
@@ -111,7 +110,7 @@ describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/signup');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
   });
 
   /**

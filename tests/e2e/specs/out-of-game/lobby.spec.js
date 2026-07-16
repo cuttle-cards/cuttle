@@ -3,11 +3,12 @@ import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import ThemeColors from '../../../../utils/ThemeColors.json';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../../utils/local-storage-utils';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('announcement', announcementData.id);
+  cy.dismissIntroPopups();
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -485,7 +486,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -666,13 +667,51 @@ describe('Lobby - P1 Perspective', () => {
   });
 });
 
+describe('Lobby - Play Time Dialog', () => {
+  beforeEach(() => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    window.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
+    cy.signupPlayer(myUser);
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
+      cy.wrap(gameSummary).as('gameSummary');
+    });
+  });
+
+  function enterLobby(gameId) {
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((store) => store.requestSubscribe(gameId));
+    cy.vueRoute(`/lobby/${gameId}`);
+  }
+
+  it('Dismisses dialog and sets localStorage when staying in lobby', function () {
+    enterLobby(this.gameSummary.gameId);
+    cy.wait(61000);
+    cy.get('#play-time-dialog').should('be.visible');
+    cy.get('[data-cy=play-time-dialog-stay]').click();
+    cy.get('#play-time-dialog').should('not.exist');
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem(LS_PLAY_TIME_DIALOG_DISMISSED)).to.eq('true');
+    });
+  });
+
+  it('Does not show dialog if it has already been dismissed', function () {
+    cy.window().then((win) => win.localStorage.setItem(LS_PLAY_TIME_DIALOG_DISMISSED, 'true'));
+    enterLobby(this.gameSummary.gameId);
+    cy.wait(62000);
+    cy.get('#play-time-dialog').should('not.exist');
+  });
+
+});
+
 describe('Lobby invite links', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game

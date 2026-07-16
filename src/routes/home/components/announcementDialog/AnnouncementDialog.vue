@@ -55,7 +55,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
+import { getLocalStorage, setLocalStorage, LS_ANNOUNCEMENT } from '_/utils/local-storage-utils.js';
 import { announcementData } from './data/announcementData';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
@@ -77,13 +77,13 @@ const announcementIsActive = computed(() => {
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage('announcement', announcementData.id);
+    setLocalStorage(LS_ANNOUNCEMENT, announcementData.id);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
-if (getLocalStorage('announcement') !== announcementData.id) {
+if (getLocalStorage(LS_ANNOUNCEMENT) !== announcementData.id) {
   show.value = true;
 }
 </script>

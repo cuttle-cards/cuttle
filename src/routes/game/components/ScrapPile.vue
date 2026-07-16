@@ -314,7 +314,7 @@ function openDialog(e) {
   }
 
   #scrap .scrap-card.scrap-enter-from {
-    transform: translateY(-200px);
+    transform: translateY(-80px);
     opacity: 0;
   }
 }

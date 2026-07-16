@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
@@ -172,6 +172,9 @@ export const useGameStore = defineStore('game', () => {
   const opponentQueenCount = computed(() => queenCount(opponent.value));
   const playerWins = computed(() => gameIsOver.value && winnerPNum.value === myPNum.value);
   const resolvingSeven = computed(() => phase.value === GamePhase.RESOLVING_SEVEN);
+  const showingSevenReveal = ref(false);
+  const firstCardRevealed = ref(true);
+  const secondCardRevealed = ref(true);
   const isPlayersTurn = computed(() => turn.value % 2 === myPNum.value);
   const hasGlassesEight = computed(() => {
     const faceCards = player.value?.faceCards ?? [];
@@ -402,6 +405,18 @@ export const useGameStore = defineStore('game', () => {
       await sleep(1000);
     }
     updateGame(game);
+  }
+  async function processSevens(game) {
+    showingSevenReveal.value = true;
+    firstCardRevealed.value = false;
+    secondCardRevealed.value = false;
+    updateGame(game);
+    await nextTick(); // card 1 entry animation
+    firstCardRevealed.value = true; // card 1 flips
+    await sleep(500); // card 2 starts while card 1 still flipping (0.3s overlap at --duration-slow 0.8s)
+    secondCardRevealed.value = true; // card 2 flips + rotates back
+    await sleep(800); // wait for card 2's sevenWrapperRotateOut (--duration-slow 0.8s) to finish
+    showingSevenReveal.value = false;
   }
   function handleGameResponse(jwres, resolve, reject, returnFullResponse = false) {
     switch (jwres.statusCode) {
@@ -732,6 +747,9 @@ export const useGameStore = defineStore('game', () => {
     opponentQueenCount,
     playerWins,
     resolvingSeven,
+    showingSevenReveal,
+    firstCardRevealed,
+    secondCardRevealed,
     isPlayersTurn,
     hasGlassesEight,
     iWantRematch,
@@ -763,6 +781,7 @@ export const useGameStore = defineStore('game', () => {
     processThrees,
     processFours,
     processFives,
+    processSevens,
     handleGameResponse,
     transformGameUrl,
     makeSocketRequest,

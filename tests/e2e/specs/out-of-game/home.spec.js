@@ -3,7 +3,6 @@ import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -13,7 +12,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('announcement', announcementData.id);
+  cy.dismissIntroPopups();
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -439,9 +438,7 @@ describe('Home - Create Game', () => {
 
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
-    cy.window().then((win) => {
-      win.localStorage.setItem('announcement', announcementData.id);
-    });
+    cy.dismissIntroPopups();
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 

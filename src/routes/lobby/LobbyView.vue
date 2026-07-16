@@ -86,6 +86,8 @@
         <v-spacer />
       </v-row>
     </v-container>
+
+    <PlayTimeDialog @leave="leave" />
   </div>
 </template>
 
@@ -100,6 +102,7 @@ import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 import { ROUTE_NAME_GAME } from '_/src/router';
+import PlayTimeDialog from '@/routes/lobby/components/PlayTimeDialog.vue';
 
 // Deps
 const { t } = useI18n();

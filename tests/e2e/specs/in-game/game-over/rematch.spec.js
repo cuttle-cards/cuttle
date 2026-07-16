@@ -9,7 +9,6 @@ import {
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
-import { announcementData } from '../../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 const dayjs = require('dayjs');
 
@@ -48,7 +47,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
 
     // Set up season
     const [ , diamondsSeason ] = seasonFixtures;
@@ -256,7 +255,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('announcement', announcementData.id);
+    cy.dismissIntroPopups();
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -408,7 +407,7 @@ describe('Spectating Rematches', () => {
   describe('Spectating Casual Rematches', () => {
     beforeEach(() => {
       cy.setupGameAsSpectator();
-      window.localStorage.setItem('announcement', announcementData.id);
+      cy.dismissIntroPopups();
     });
 
     it('Spectates a casual match using rematch', () => {
@@ -467,7 +466,7 @@ describe('Spectating Rematches', () => {
   describe('Spectating Ranked Matches', () => {
     beforeEach(() => {
       cy.setupGameAsSpectator(true);
-      window.localStorage.setItem('announcement', announcementData.id);
+      cy.dismissIntroPopups();
       const [ , , currentSeason ] = seasonFixtures;
       cy.loadSeasonFixture([ currentSeason ]);
     });

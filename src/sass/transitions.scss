@@ -2,6 +2,7 @@
   // Animation duration buckets (all respect prefers-reduced-motion)
   --duration-fast: 0.3s;
   --duration-normal: 0.5s;
+  --duration-medium-slow: 0.8s;
   --duration-slow: 1s;
 }
 
@@ -9,6 +10,7 @@
   :root {
     --duration-fast: 0s;
     --duration-normal: 0s;
+    --duration-medium-slow: 0s;
     --duration-slow: 0s;
   }
 }
@@ -16,10 +18,14 @@
 .slide-down-enter-active,
 .slide-up-enter-active,
 .slide-down-left-enter-active,
+.enter-from-upper-left-enter-active,
+.enter-from-left-enter-active,
 .slide-up-down-enter-active,
 .slide-down-leave-active,
 .slide-up-leave-active,
 .slide-down-left-leave-active,
+.enter-from-upper-left-leave-active,
+.enter-from-left-leave-active,
 .slide-up-down-leave-active {
   transition: opacity var(--duration-slow), transform var(--duration-slow);
 }
@@ -27,6 +33,8 @@
 .slide-down-leave-active,
 .slide-up-leave-active,
 .slide-down-left-leave-active,
+.enter-from-upper-left-leave-active,
+.enter-from-left-leave-active,
 .slide-up-down-leave-active {
   position: absolute;
 }
@@ -34,6 +42,8 @@
 .slide-down-move,
 .slide-up-move,
 .slide-down-left-move,
+.enter-from-upper-left-move,
+.enter-from-left-move,
 .slide-up-down-move {
   transition: transform var(--duration-slow);
 }
@@ -60,6 +70,26 @@
   transform: translateX(-32px);
 }
 
+.enter-from-upper-left-enter-from {
+  opacity: 0;
+  transform: translate(-32px, -32px);
+}
+
+.enter-from-upper-left-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
+.enter-from-left-enter-from {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
+.enter-from-left-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
 .slide-up-down-enter-from {
   opacity: 0;
   transform: translateY(-32px);
@@ -80,4 +110,31 @@
 
 .card-flip-enter-to {
   transform: rotateY(0deg);
+}
+
+// Per-card staggered slide-in for seven reveal.
+// Card starts at deck center (wrapper's translate offset cancels the card start offset).
+// animation-fill-mode: both keeps card 2 invisible during its delay.
+@keyframes sevenCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Wrapper rotation: builds up in sync with the card's slide-in, reverses on reveal.
+// Uses the CSS `rotate` property (separate from `transform`) so it composes cleanly
+// with the wrapper's `translate` transition and the card's `transform` animation.
+@keyframes sevenWrapperRotateIn {
+  from { rotate: 0deg; }
+  to { rotate: 8deg; }
+}
+
+@keyframes sevenWrapperRotateOut {
+  from { rotate: 8deg; }
+  to { rotate: 0deg; }
 }
