@@ -11,6 +11,44 @@ import { assertGameState } from '../../support/helpers';
  * for realistic timing. Game logic is not appropriately tested; the focus is on
  * being able to record the screen to create quick move-highlight videos
  */
+
+// Flash a full-screen black frame as a fiducial for automatic video trimming.
+// Call immediately after cy.loadGameFixture(...) — the board is set, nothing has moved yet.
+//
+// Chrome's screencast (what Cypress records) only captures frames on visual change, so a static
+// black overlay — or any still period, like a display-only clip — can drop to a single frame or
+// none, which blackdetect then can't find. To avoid that, install a tiny, essentially-invisible
+// element that animates every frame for the rest of the test, forcing continuous frame capture.
+function markClipStart(holdMs = 600) {
+  cy.document().then((doc) => {
+    if (!doc.getElementById('clip-ticker-style')) {
+      const style = doc.createElement('style');
+      style.id = 'clip-ticker-style';
+      style.textContent =
+        // Invisible 2px ticker that animates forever, so static periods (e.g. a display-only
+        // clip's hold) keep producing screencast frames.
+        '@keyframes clipTick{from{left:0}to{left:2px}}' +
+        '#clip-ticker{position:fixed;bottom:0;left:0;width:2px;height:2px;' +
+        'background:rgba(0,0,0,0.01);z-index:2147483646;pointer-events:none;' +
+        'animation:clipTick 40ms linear infinite alternate}' +
+        // Full-screen fiducial that pulses between two near-black shades (both detected as black
+        // by ffmpeg blackdetect) so the marker itself forces frames and is reliably captured.
+        '@keyframes clipMarkerPulse{from{background:#000}to{background:#030303}}' +
+        '#clip-start-marker{position:fixed;inset:0;z-index:2147483647;background:#000;' +
+        'animation:clipMarkerPulse 40ms steps(1) infinite alternate}';
+      doc.head.appendChild(style);
+      const ticker = doc.createElement('div');
+      ticker.id = 'clip-ticker';
+      doc.body.appendChild(ticker);
+    }
+    const overlay = doc.createElement('div');
+    overlay.id = 'clip-start-marker';
+    doc.body.appendChild(overlay);
+  });
+  cy.wait(holdMs);
+  cy.get('#clip-start-marker').then(($el) => $el.remove());
+}
+
 describe('Video Playground', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -647,60 +685,40 @@ describe('Video Playground', () => {
     cy.resolveOpponent();
   });
 
-  it('Loses to god combo', () => {
+  it('Loses to a jack steal then points for the win', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [
-        Card.SIX_OF_DIAMONDS,
-        Card.SEVEN_OF_CLUBS,
-        Card.EIGHT_OF_CLUBS,
-        Card.NINE_OF_DIAMONDS,
-        Card.JACK_OF_HEARTS
-      ],
+      p0Hand: [ Card.TEN_OF_SPADES, Card.FIVE_OF_HEARTS ],
       p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
-      p1Points: [],
-      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_HEARTS ],
+      p1Hand: [ Card.JACK_OF_CLUBS, Card.EIGHT_OF_SPADES ],
+      p1Points: [ Card.NINE_OF_DIAMONDS ],
+      p1FaceCards: [],
     });
+    markClipStart();
 
-    cy.wait(2000);
+    cy.wait(1500);
+    // START RECORDING //
 
-    cy.get('[data-player-hand-card=6-1]').click();
-    cy.wait(500);
-    cy.get('[data-move-choice=oneOff]').click();
+    // Player plays the ten for points
+    cy.get('[data-player-hand-card=10-3]').click();
+    cy.wait(800);
+    cy.get('[data-move-choice=points]').click();
 
-    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
-    cy.wait(1000);
+    // Opponent steals the ten with a jack
+    cy.wait(1200);
+    cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.TEN_OF_SPADES);
 
-    cy.counterOpponent(Card.TWO_OF_HEARTS);
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible');
-    cy.wait(1000);
+    // Player draws
+    cy.wait(1200);
+    cy.get('#deck').click();
 
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    // Opponent plays the eight for points to win
+    cy.wait(1200);
+    cy.playPointsOpponent(Card.EIGHT_OF_SPADES);
 
-    assertGameState(0, {
-      p0Hand: [
-        Card.SEVEN_OF_CLUBS,
-        Card.EIGHT_OF_CLUBS,
-        Card.NINE_OF_DIAMONDS,
-        Card.JACK_OF_HEARTS
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.TEN_OF_SPADES ],
-      p1Points: [],
-      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
-      scrap: [
-        Card.SIX_OF_DIAMONDS,
-        Card.TWO_OF_HEARTS
-      ]
-    });
-
-    cy.playPointsOpponent(Card.TEN_OF_SPADES);
+    // Game over — hold ~3s for the game-over dialog's entrance animation
+    cy.get('#game-over-dialog').should('be.visible');
+    cy.wait(3000);
   });
 });
 
@@ -709,48 +727,624 @@ describe('Playground as p1', () => {
     cy.setupGameAsP1();
   });
 
-  it('Has God combo', () => {
-    cy.loadGameFixture(1, {
-      p0Hand: [
-        Card.SIX_OF_DIAMONDS,
-        Card.SEVEN_OF_CLUBS,
-        Card.EIGHT_OF_CLUBS,
-        Card.NINE_OF_DIAMONDS,
-        Card.JACK_OF_HEARTS
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
-      p1Points: [],
-      p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+  // Non-topic p1 clips go here.
+});
+
+describe('God Combo Tutorial', () => {
+  describe('Player perspective (P0)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
     });
 
-    cy.wait(2000);
+    it('Loses to god combo', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [
+          Card.SIX_OF_DIAMONDS,
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_DIAMONDS,
+          Card.JACK_OF_HEARTS
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+      });
 
-    cy.playOneOffOpponent(Card.SIX_OF_DIAMONDS);
+      cy.wait(2000);
 
-    // Player Counters
-    cy.get('#counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=counter]')
-      .click();
-    cy.wait(1000);
+      cy.get('[data-player-hand-card=6-1]').click();
+      cy.wait(500);
+      cy.get('[data-move-choice=oneOff]').click();
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.wait(1000);
+
+      cy.counterOpponent(Card.TWO_OF_HEARTS);
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible');
+      cy.wait(1000);
+
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(0, {
+        p0Hand: [
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_DIAMONDS,
+          Card.JACK_OF_HEARTS
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_SPADES ],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+        scrap: [
+          Card.SIX_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS
+        ]
+      });
+
+      cy.playPointsOpponent(Card.TEN_OF_SPADES);
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+  });
+
+  describe('Opponent perspective (P1)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP1();
+    });
+
+    it('Both players glasses, player counters an ace and wins with points', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.TWO_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_SPADES, Card.NINE_OF_HEARTS ],
+        p1FaceCards: [ Card.EIGHT_OF_SPADES, Card.QUEEN_OF_HEARTS ],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+
+      // START RECORDING //
+
+      // Opponent plays an Ace (would scrap all point cards)
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+      cy.wait(1500);
+
+      // Player counters with a Two to save their points
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
+
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-2]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Opponent resolves (declines to re-counter); the ace is negated
+      cy.resolveOpponent();
+      cy.wait(1000);
+      cy.get('#turn-indicator').contains('YOUR TURN');
+
+      // Player plays a point card for the win
+      cy.get('[data-player-hand-card=10-1]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+
+    it('Has God combo', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [
+          Card.SIX_OF_DIAMONDS,
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_DIAMONDS,
+          Card.JACK_OF_HEARTS
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_SPADES, Card.TWO_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
+      });
+
+      cy.wait(2000);
+
+      cy.playOneOffOpponent(Card.SIX_OF_DIAMONDS);
+
+      // Player Counters
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
 
 
-    cy.get('#choose-two-dialog')
-      .should('be.visible')
-      .get('[data-counter-dialog-card=2-2]')
-      .click();
-    cy.wait(1000);
-    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-2]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
-    // Opponent Resolves
-    cy.resolveOpponent();
-    cy.wait(1000);
-    cy.get('#turn-indicator').contains('YOUR TURN');
+      // Opponent Resolves
+      cy.resolveOpponent();
+      cy.wait(1000);
+      cy.get('#turn-indicator').contains('YOUR TURN');
 
-    cy.get('[data-player-hand-card=10-3]').click();
-    cy.wait(500);
-    cy.get('[data-move-choice=points]').click();
+      cy.get('[data-player-hand-card=10-3]').click();
+      cy.wait(500);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+  });
+});
+
+describe('Offense Tutorial', () => {
+  describe('Player perspective (P0)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('0 - Scuttle the glasses eight, then lose to a two for the win', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.NINE_OF_HEARTS, Card.EIGHT_OF_CLUBS, Card.EIGHT_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.NINE_OF_DIAMONDS, Card.TEN_OF_SPADES, Card.TWO_OF_CLUBS ],
+        p1Points: [ Card.EIGHT_OF_HEARTS ],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays 9H for points
+      cy.get('[data-player-hand-card=9-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays 9D for points
+      cy.wait(1200);
+      cy.playPointsOpponent(Card.NINE_OF_DIAMONDS);
+
+      // Player scuttles opponent's 8H (points) with 8S
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=8-3]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=scuttle]').click();
+      cy.wait(800);
+      cy.get('[data-opponent-point-card=8-2]').click();
+
+      // Opponent plays 10S for points
+      cy.wait(1200);
+      cy.playPointsOpponent(Card.TEN_OF_SPADES);
+
+      // Player draws
+      cy.wait(1200);
+      cy.get('#deck').click();
+
+      // Opponent plays 2C for the win
+      cy.wait(1200);
+      cy.playPointsOpponent(Card.TWO_OF_CLUBS);
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+
+    it('3 - Resolve an ace, then win with a king out', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.TEN_OF_HEARTS, Card.FOUR_OF_CLUBS, Card.SIX_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [ Card.KING_OF_CLUBS ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays the six for points
+      cy.get('[data-player-hand-card=6-3]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays an ace; player cannot counter and lets it resolve
+      cy.wait(1200);
+      cy.playOneOffOpponent(Card.ACE_OF_DIAMONDS);
+      cy.wait(1200);
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      // Player plays the ten for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=10-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the four for the win
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=4-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+
+    it('4 - An ace scraps points even through a queen', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [
+          Card.NINE_OF_CLUBS, Card.NINE_OF_DIAMONDS, Card.NINE_OF_HEARTS, Card.NINE_OF_SPADES,
+          Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES,
+        ],
+        p0Points: [],
+        p0FaceCards: [ Card.QUEEN_OF_SPADES ],
+        p1Hand: [
+          Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS,
+          Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays a nine for points
+      cy.get('[data-player-hand-card=9-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays an eight for points
+      cy.wait(1200);
+      cy.playPointsOpponent(Card.EIGHT_OF_CLUBS);
+
+      // Player plays another nine for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=9-1]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays an ace; the queen does NOT protect points from an ace
+      cy.wait(1200);
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+      cy.wait(1200);
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+      cy.wait(1500);
+    });
+
+    it('5 - Counter the ace, then win with points', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.FIVE_OF_DIAMONDS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.EIGHT_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays the lower ten (hearts) for points
+      cy.get('[data-player-hand-card=10-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the second ten (spades) for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=10-3]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays an ace
+      cy.wait(1200);
+      cy.playOneOffOpponent(Card.ACE_OF_DIAMONDS);
+      cy.wait(1200);
+
+      // Player counters with a two
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Opponent resolves (declines to re-counter); the ace is negated
+      cy.resolveOpponent();
+      cy.wait(1000);
+      cy.get('#turn-indicator').contains('YOUR TURN');
+
+      // Player plays the four for the win
+      cy.get('[data-player-hand-card=4-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+
+    it('6 - Counter battle: player counters, opponent counters back, the ace resolves', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.FIVE_OF_DIAMONDS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays the lower ten for points
+      cy.get('[data-player-hand-card=10-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the second ten for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=10-3]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent plays an ace
+      cy.wait(1200);
+      cy.playOneOffOpponent(Card.ACE_OF_DIAMONDS);
+      cy.wait(1200);
+
+      // Player counters with a two
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Opponent counters back with their own two
+      cy.counterOpponent(Card.TWO_OF_HEARTS);
+      cy.wait(1200);
+
+      // Player cannot counter again; resolves the stack, so the ace takes effect
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+      cy.wait(1500);
+    });
+
+    it('7 - A hand full of options', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [
+          Card.QUEEN_OF_SPADES, Card.JACK_OF_HEARTS, Card.SIX_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS, Card.NINE_OF_CLUBS, Card.TEN_OF_DIAMONDS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES,
+          Card.THREE_OF_CLUBS, Card.THREE_OF_DIAMONDS, Card.THREE_OF_HEARTS, Card.THREE_OF_SPADES,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      // Static display of the player's hand and options
+      cy.wait(3000);
+    });
+
+    it('8 - Scuttle battle, then win with a king out', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [
+          Card.KING_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.SEVEN_OF_HEARTS,
+          Card.NINE_OF_CLUBS, Card.TEN_OF_DIAMONDS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.NINE_OF_DIAMONDS, Card.TEN_OF_SPADES, Card.THREE_OF_CLUBS, Card.THREE_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Player plays the king
+      cy.get('[data-player-hand-card=13-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=faceCard]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the seven for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=7-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent scuttles the seven with the nine of diamonds
+      cy.wait(1200);
+      cy.scuttleOpponent(Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_HEARTS);
+
+      // Player plays the nine of clubs for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=9-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent scuttles the nine with the ten of spades
+      cy.wait(1200);
+      cy.scuttleOpponent(Card.TEN_OF_SPADES, Card.NINE_OF_CLUBS);
+
+      // Player plays the ten of diamonds for points
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=10-1]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the four for the win
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=4-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
+  });
+
+  describe('Opponent perspective (P1)', () => {
+    beforeEach(() => {
+      cy.setupGameAsP1();
+    });
+
+    it('1 - An ace scraps two of the players tens', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.THREE_OF_CLUBS ],
+        p1Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
+        p1FaceCards: [],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Opponent plays an ace
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+      cy.wait(1200);
+
+      // Player cannot counter; lets it resolve, scrapping both tens
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+      cy.wait(1500);
+    });
+
+    it('2 - A six destroys two of the players kings', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.SIX_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.THREE_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_SPADES, Card.KING_OF_HEARTS ],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Opponent plays a six
+      cy.playOneOffOpponent(Card.SIX_OF_CLUBS);
+      cy.wait(1200);
+
+      // Player cannot counter; lets it resolve, scrapping both kings
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+      cy.wait(1500);
+    });
+
+    it('9 - Scuttle recovery: player wins behind a glasses eight', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.TEN_OF_HEARTS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
+        p1Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
+        p1FaceCards: [ Card.EIGHT_OF_CLUBS ],
+      });
+      markClipStart();
+
+      cy.wait(1500);
+      // START RECORDING //
+
+      // Opponent scuttles the player's ace of diamonds with the ten of hearts
+      cy.scuttleOpponent(Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS);
+      cy.wait(1200);
+
+      // Player plays the ten of clubs for points
+      cy.get('[data-player-hand-card=10-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      // Opponent draws
+      cy.wait(1200);
+      cy.drawCardOpponent();
+
+      // Player plays the ace of clubs for the win
+      cy.wait(1200);
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.wait(1000);
+    });
   });
 });
