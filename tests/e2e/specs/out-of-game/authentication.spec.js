@@ -49,6 +49,7 @@ describe('Auth - Page Content', () => {
   it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
     cy.wipeDatabase();
     cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     cy.get('[data-cy="user-menu"]').click();
     cy.get('[data-nav=\'Log Out\']').click();
@@ -119,17 +120,21 @@ describe('Signing Up', () => {
   it('Successfully signs up and navigates to home page', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
     cy.get('[data-cy=submit]').click();
     assertSuccessfulAuth(myUser.username);
   });
   it('Signs up by pressing enter on the username field', () => {
     cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     assertSuccessfulAuth(myUser.username);
   });
   it('Signs up by pressing enter on the password field', () => {
     cy.get('[data-cy=username]').type(myUser.username);
-    cy.get('[data-cy=password]').type(myUser.password + '{enter}');
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
+    cy.get('[data-cy=password]').type('{enter}');
     assertSuccessfulAuth(myUser.username);
   });
 
@@ -139,6 +144,7 @@ describe('Signing Up', () => {
   it('Requires password to be at least eight characters', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type('sh0rt');
+    cy.get('[data-cy=confirm-password]').type('sh0rt');
     cy.get('#password-messages').should('contain', 'Password must contain at least eight characters');
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
     forceFormSubmit();
@@ -154,6 +160,7 @@ describe('Signing Up', () => {
   });
   it('Username is required', () => {
     cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
     forceFormSubmit();
     assertFailedAuth('/signup');
@@ -163,6 +170,7 @@ describe('Signing Up', () => {
     cy.signupOpponent(myUser);
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password);
     cy.get('[data-cy=submit]').click();
     assertFailedAuth('/signup');
     assertSnackbar('That username is already registered to another user; try logging in!', 'error');
@@ -170,9 +178,24 @@ describe('Signing Up', () => {
   it('Rejects signup if username contains profanity', () => {
     cy.get('[data-cy=username]').type('shitUser');
     cy.get('[data-cy=password]').type('password123');
+    cy.get('[data-cy=confirm-password]').type('password123');
     cy.get('[data-cy=submit]').click();
     assertFailedAuth('/signup');
     assertSnackbar('Please use respectful language', 'error');
+  });
+  it('Rejects signup when confirm password does not match', () => {
+    cy.get('[data-cy=username]').type(myUser.username);
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=confirm-password]').type(myUser.password + 'mismatch');
+    cy.get('#confirm-password-messages').should('contain', 'Passwords must match');
+    cy.get('[data-cy=submit]').should('be.disabled');
+    assertFailedAuth('/signup');
+  });
+  it('Rejects signup when confirm password is empty', () => {
+    cy.get('[data-cy=username]').type(myUser.username);
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=submit]').should('be.disabled');
+    assertFailedAuth('/signup');
   });
 });
 

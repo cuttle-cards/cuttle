@@ -27,6 +27,7 @@
   "login": {
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
+    "confirmPassword": "Confirm Password",
     "title": "Welcome to Cuttle.Cards",
     "subtitle": "The card game that will have you hooked from the first hand!",
     "formHeaderLogin": "Log In to get Started!",

@@ -90,6 +90,23 @@
                 @click:append-inner="showPass = !showPass"
               />
 
+              <template v-if="!isLoggingIn">
+                <label for="confirm-password" class="text-body-1 font-weight-bold">
+                  {{ t('login.confirmPassword') }}
+                </label>
+                <v-text-field
+                  id="confirm-password"
+                  v-model="confirmPw"
+                  class="my-4"
+                  variant="solo"
+                  :rules="confirmPasswordRules"
+                  :density="$vuetify.display.mdAndDown ? 'compact' : 'default'"
+                  :type="showPass ? 'text' : 'password'"
+                  autocomplete="new-password"
+                  data-cy="confirm-password"
+                />
+              </template>
+
               <div
                 id="login-button-container"
                 class="d-flex flex-column flex-md-row justify-space-between align-center flex-wrap"
@@ -259,11 +276,13 @@ export default {
     return {
       username: '',
       pw: '',
+      confirmPw: '',
       loading: false,
       showPass: false,
       isFormValid: false,
       usernameRules: [ this.isAlphaNumeric ],
       passwordRules: [ this.has8OrMoreCharacters ],
+      confirmPasswordRules: [ this.passwordsMatch ],
     };
   },
   computed: {
@@ -322,6 +341,7 @@ export default {
     },
     switchMode() {
       this.pw = '';
+      this.confirmPw = '';
       if (this.isLoggingIn) {
         this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login-container' });
       } else {
@@ -331,6 +351,7 @@ export default {
     handleLogin() {
       this.username = '';
       this.pw = '';
+      this.confirmPw = '';
       this.loading = false;
       const { lobbyRedirectId } = this.$route.params;
       if (!lobbyRedirectId) {
@@ -350,6 +371,9 @@ export default {
     },
     has8OrMoreCharacters(val) {
       return val.length >= 8 || 'Password must contain at least eight characters';
+    },
+    passwordsMatch(val) {
+      return val === this.pw || 'Passwords must match';
     },
     scrollAndFocusLogin() {
       this.$refs.loginContainer.scrollIntoView();
