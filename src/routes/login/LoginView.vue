@@ -53,7 +53,7 @@
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
             <p class="text-h4 text-center font-weight-medium mb-10">
-              {{ formHeaderText }}
+              <span class="font-weight-bold text-primary">{{ formHeaderEmphasis }}</span>{{ formHeaderText }}
             </p>
 
             <v-form
@@ -292,6 +292,11 @@ export default {
     },
     goingToForm() {
       return this.$route.hash === '#login-container';
+    },
+    formHeaderEmphasis() {
+      return this.isLoggingIn
+        ? this.t('login.formHeaderLoginEmphasis')
+        : this.t('login.formHeaderSignupEmphasis');
     },
     formHeaderText() {
       return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
