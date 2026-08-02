@@ -190,11 +190,17 @@ describe('Signing Up', () => {
     cy.get('#confirm-password-messages').should('contain', 'Passwords must match');
     cy.get('[data-cy=submit]').should('be.disabled');
     assertFailedAuth('/signup');
+    // Hitting enter must not bypass the mismatch guard
+    cy.get('[data-cy=confirm-password]').type('{enter}');
+    assertFailedAuth('/signup');
   });
   it('Rejects signup when confirm password is empty', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=submit]').should('be.disabled');
+    assertFailedAuth('/signup');
+    // Hitting enter must not bypass the empty-confirm guard
+    cy.get('[data-cy=password]').type('{enter}');
     assertFailedAuth('/signup');
   });
 });

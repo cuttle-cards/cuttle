@@ -359,8 +359,6 @@ export default {
       }
     },
     switchMode() {
-      this.pw = '';
-      this.confirmPw = '';
       if (this.isLoggingIn) {
         this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login-container' });
       } else {
