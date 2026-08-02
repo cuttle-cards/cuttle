@@ -148,6 +148,13 @@ module.exports = [
           multiline: 'below',
         },
       ],
+      'vue/enforce-style-attribute': [ 'error', { allow: [ 'scoped' ] } ],
+    },
+  },
+  {
+    files: [ 'src/App.vue' ],
+    rules: {
+      'vue/enforce-style-attribute': 'off',
     },
   },
   {
