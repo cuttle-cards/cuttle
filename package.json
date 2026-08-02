@@ -93,5 +93,8 @@
     "version:minor": "npm version minor",
     "version:major": "npm version major",
     "build-storybook": "storybook build"
+  },
+  "overrides": {
+    "minimist": "1.2.6"
   }
 }
