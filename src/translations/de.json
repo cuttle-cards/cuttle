@@ -27,6 +27,7 @@
   "login": {
     "noAccount": "Hast du kein Konto?",
     "haveAccount": "Hast du bereits ein Konto?",
+    "confirmPassword": "Passwort bestätigen",
     "title": "Willkommen bei Cuttle.Cards",
     "subtitle": "Das Kartenspiel, das dich vom ersten Spiel an fesseln wird!",
     "formHeaderLogin": "Melde dich an, um loszulegen!",

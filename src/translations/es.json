@@ -27,6 +27,7 @@
   "login": {
     "noAccount": "¿No tienes una cuenta?",
     "haveAccount": "¿Ya tienes una cuenta?",
+    "confirmPassword": "Confirmar contraseña",
     "title": "Bienvenido a Cuttle.Cards",
     "subtitle": "¡El juego de cartas que te enganchará desde la primera mano!",
     "formHeaderLogin": "¡Inicia sesión para comenzar!",

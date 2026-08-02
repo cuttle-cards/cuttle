@@ -114,8 +114,8 @@
                 <v-btn
                   class="px-16"
                   :loading="loading"
-                  :disabled="!isFormValid"
-                  :color="isFormValid ? 'primary' : 'disabled'"
+                  :disabled="!canSubmit"
+                  :color="canSubmit ? 'primary' : 'disabled'"
                   type="submit"
                   size="x-large"
                   text-color="white"
@@ -308,6 +308,15 @@ export default {
       }
       return this.t('login.haveAccount');
     },
+    // When signing up, the confirm-password field must also match. Vuetify's isFormValid
+    // ignores the confirm field until it's been interacted with, so gate submission
+    // explicitly to keep an untouched/empty confirm field from enabling the button.
+    canSubmit() {
+      if (!this.isFormValid) {
+        return false;
+      }
+      return this.isLoggingIn || this.pw === this.confirmPw;
+    },
   },
   watch: {
     $route: {
@@ -327,6 +336,11 @@ export default {
   },
   methods: {
     async submitLogin() {
+      // Guard the enter-key path: pressing enter submits the form regardless of the
+      // button's disabled state, so re-check the confirm-password match here.
+      if (!this.isLoggingIn && this.pw !== this.confirmPw) {
+        return;
+      }
       this.loading = true;
       const action = this.isLoggingIn ? this.authStore.requestLogin : this.authStore.requestSignup;
       try {
