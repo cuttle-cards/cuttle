@@ -143,6 +143,10 @@ module.exports = {
       case MoveType.DISCARD_TO_HAND_LIMIT: {
         const overflowCount = playerHand.length - 8;
         if (overflowCount <= 0) {break;}
+        // Enumerates every set of cards the player could discard: C(hand, overflow) move bodies.
+        // Bounded by game rules: hands start <= 8 and a turn is a single action, whose largest net
+        // gain is a Five (discard 1, draw 3 = +2), so in normal play hand <= ~10 and overflow is 1-2
+        // (C(9,1)=9, C(10,2)=45). Recursion depth = overflow (~2). No blow-up risk.
         const getCombinations = (arr, k) => {
           if (k === 1) {return arr.map((item) => [ item ]);}
           const result = [];
