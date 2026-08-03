@@ -587,11 +587,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle World Championship V!",
-    "title": "Cuttle World Championship V",
-    "heading": "Ultimate showdown",
-    "paragraph": "Cuttle World Championship V is today, Saturday April 11th at 1pm ET! Watch the top 8 players from the past year of ranked play compete in a double elimination showdown for the title of Cuttle World Champion! Watch it live at ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Hand Limit Rework",
+    "title": "Hand Limit",
+    "heading": "At the end of your turn, discard down to 8",
+    "paragraph": "We've simplified the hand limit. Before, the 8-card limit touched drawing, Fives, and Nines each in its own way — you couldn't draw past 8, a Five could only refill up to 8, and getting Nined near the limit had its own wrinkles — so each one needed its own explanation.",
+    "paragraph2": "Now a single rule covers them all: play freely during your turn, then discard down to 8 at the end of it. It's easier to learn, gives you more flexibility, and cuts down on turns where your only legal move works against you."
   },
   "profile": {
     "myGames": "My Games",

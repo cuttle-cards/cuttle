@@ -586,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle-Weltmeisterschaft V!",
-    "title": "Cuttle-Weltmeisterschaft V",
-    "heading": "Das ultimative Aufeinandertreffen",
-    "paragraph": "Die Cuttle-Weltmeisterschaft V ist heute, Samstag, den 11. April um 13 Uhr ET! Schau zu, wie die Top 8 Spieler aus dem vergangenen Jahr des Ranglistenspiels in einem Doppeleliminations-Showdown um den Titel des Cuttle-Weltmeisters kämpfen! Schau es live auf ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Handkartenlimit-Überarbeitung",
+    "title": "Handkartenlimit",
+    "heading": "Lege am Ende deines Zuges auf 8 Karten ab",
+    "paragraph": "Wir haben das Handkartenlimit vereinfacht. Früher wirkte sich das 8-Karten-Limit auf das Ziehen, auf Fünfen und auf Neunen jeweils unterschiedlich aus – du konntest nicht über 8 hinaus ziehen, eine Fünf konnte nur bis auf 8 auffüllen, und von einer Neun nahe am Limit getroffen zu werden hatte seine eigenen Tücken –, sodass jeweils eine eigene Erklärung nötig war.",
+    "paragraph2": "Jetzt gibt es eine einzige Regel für alles: Spiele während deines Zuges frei und lege am Ende auf 8 Karten ab. Das ist leichter zu lernen, gibt dir mehr Flexibilität und reduziert Züge, in denen dein einziger legaler Zug dir selbst schadet."
   },
   "profile": {
     "myGames": "Meine Spiele",

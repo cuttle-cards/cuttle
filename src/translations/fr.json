@@ -586,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat du Monde Cuttle V !",
-    "title": "Championnat du Monde Cuttle V",
-    "heading": "L'ultime confrontation",
-    "paragraph": "Le Championnat du Monde Cuttle V a lieu aujourd'hui, samedi 11 avril à 13h ET ! Regardez les 8 meilleurs joueurs de l'année écoulée de jeu classé s'affronter dans un tournoi à double élimination pour le titre de Champion du Monde Cuttle ! Regardez-le en direct sur ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Refonte de la limite de main",
+    "title": "Limite de main",
+    "heading": "À la fin de votre tour, défaussez-vous jusqu'à 8 cartes",
+    "paragraph": "Nous avons simplifié la limite de main. Auparavant, la limite de 8 cartes affectait la pioche, les Cinq et les Neuf chacun à sa manière — vous ne pouviez pas piocher au-delà de 8, un Cinq ne pouvait compléter que jusqu'à 8, et se faire jouer un Neuf près de la limite avait ses propres subtilités —, si bien que chaque cas nécessitait sa propre explication.",
+    "paragraph2": "Désormais, une seule règle couvre tout : jouez librement pendant votre tour, puis défaussez-vous jusqu'à 8 cartes à la fin. C'est plus facile à apprendre, cela vous donne plus de flexibilité et réduit les tours où votre seul coup légal vous dessert."
   },
   "profile": {
     "myGames": "Mes jeux",

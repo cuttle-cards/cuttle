@@ -586,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato Mundial de Cuttle V!",
-    "title": "Campeonato Mundial de Cuttle V",
-    "heading": "El enfrentamiento definitivo",
-    "paragraph": "¡El Campeonato Mundial de Cuttle V es hoy, sábado 11 de abril a la 1pm ET! ¡Mira a los 8 mejores jugadores del último año de juego clasificatorio competir en un enfrentamiento de doble eliminación por el título de Campeón Mundial de Cuttle! Míralo en vivo en ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Rediseño del límite de mano",
+    "title": "Límite de mano",
+    "heading": "Al final de tu turno, descarta hasta quedarte con 8",
+    "paragraph": "Hemos simplificado el límite de mano. Antes, el límite de 8 cartas afectaba al robo, a los Cincos y a los Nueves de forma distinta en cada caso: no podías robar por encima de 8, un Cinco solo podía rellenar hasta 8, y que te jugaran un Nueve cerca del límite tenía sus propias peculiaridades, así que cada caso necesitaba su propia explicación.",
+    "paragraph2": "Ahora una única regla lo cubre todo: juega con libertad durante tu turno y luego descarta hasta quedarte con 8 al final. Es más fácil de aprender, te da más flexibilidad y reduce los turnos en los que tu única jugada legal te perjudica."
   },
   "profile": {
     "myGames": "Mis juegos",
