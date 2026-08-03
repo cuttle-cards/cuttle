@@ -51,6 +51,7 @@ module.exports = {
       result.scrap.push(...player.hand.splice(cardIndex2, 1));
     }
 
+    // active player is the opposite of the one who discarded
     const activePlayer = playedBy ? result.p0 : result.p1;
     const playerMustDiscard = activePlayer.hand.length > 8;
 
