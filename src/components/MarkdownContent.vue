@@ -17,9 +17,9 @@ const text = computed(() => parse(props.markdown));
   <div class="markdown" v-html="text" />
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .markdown {
-  p {
+  :deep(p) {
     padding-bottom: 16px;
   }
 }
