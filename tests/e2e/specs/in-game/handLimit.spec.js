@@ -540,4 +540,130 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
       });
     });
   });
+
+  describe('Passing and Hand Limit', () => {
+    describe('P1 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP1();
+      });
+
+      it('Forces player to discard down to hand limit after passing while over the limit with an empty deck', () => {
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.NINE_OF_SPADES ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p1Points: [ Card.TEN_OF_CLUBS ],
+          p1FaceCards: [],
+          // Empty deck so the player can pass (rather than draw) on their turn
+          deck: [],
+        });
+
+        // Opponent (P0) plays nine targeting player's (P1's) point card, returning it to hand
+        cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS, 'point');
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
+
+        // Player now has 9 cards (8 in hand + TEN_OF_CLUBS returned) — no immediate discard
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Deck is empty, so on the player's turn the deck shows PASS; clicking it passes the turn
+        cy.get('#turn-indicator').contains('YOUR TURN');
+        cy.get('#deck').should('contain', '(0)')
+          .should('contain', 'PASS')
+          .click();
+
+        // Passing while over the hand limit triggers the discard-to-hand-limit dialog
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+
+        // Player discards 1 card to reach the hand limit
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Turn passes to the opponent only after discarding down to the limit
+        cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+
+        assertGameState(1, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            Card.NINE_OF_SPADES,
+            Card.ACE_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture (empty deck sends all unused cards to scrap)
+            Card.TWO_OF_CLUBS,
+            Card.JACK_OF_CLUBS,
+            Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
+      });
+    });
+  });
 });
