@@ -19,9 +19,10 @@
  * VERSION HISTORY
  * 0.0.0 => Prior to GameState API
  * 1.0.0 => GameState API release
- * 1.0.1 => Cannot Three for a Three
- * 1.0.2 => Hand limit rework: discard down to 8 at end of your turn
+ * 1.1.0 => Five Rework: Discard, then draw 3 cards
+ * 1.1.1 => Cannot Three for a Three
+ * 1.1.2 => Hand limit rework: discard down to 8 at end of your turn
  */
 module.exports = {
-  CURRENT_RULES_VERSION: '1.0.2',
+  CURRENT_RULES_VERSION: '1.1.2',
 };
