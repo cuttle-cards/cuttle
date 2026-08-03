@@ -40,10 +40,10 @@ module.exports = {
 
     for (const cardId of discardIds) {
       const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-      if (cardIndex !== -1) {
-        discardedCards.push(player.hand[cardIndex]);
-        result.scrap.push(...player.hand.splice(cardIndex, 1));
-      }
+      if (cardIndex === -1) { continue; } // validate() guarantees presence; guard prevents splice(-1) footgun
+      const [ discarded ] = player.hand.splice(cardIndex, 1);
+      discardedCards.push(discarded);
+      result.scrap.push(discarded);
     }
 
     result.turn++;
