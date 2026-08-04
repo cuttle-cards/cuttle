@@ -12,13 +12,13 @@
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
         <GameCard
-          v-for="(card, index) in hand"
+          v-for="card in hand"
           :key="card.id"
           :suit="card.suit"
           :rank="card.rank"
           :data-discard-hand-limit-card="`${card.rank}-${card.suit}`"
           :class="{ 'is-selected': selectedIds.includes(card.id) }"
-          @click="selectCard(index)"
+          @click="selectCard(card.id)"
         />
       </div>
     </template>
@@ -68,8 +68,7 @@ const hand = computed(() => player.value.hand);
 const discardCount = computed(() => Math.max(0, hand.value.length - 8));
 const readyToDiscard = computed(() => selectedIds.value.length === discardCount.value);
 
-function selectCard(handIndex) {
-  const cardId = hand.value[handIndex].id;
+function selectCard(cardId) {
   const idx = selectedIds.value.indexOf(cardId);
   if (idx !== -1) {
     selectedIds.value.splice(idx, 1);
