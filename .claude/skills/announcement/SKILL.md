@@ -105,9 +105,10 @@ keys only) and sits just before the `profile` block in each file. Replace its co
 ```
 
 Rules:
-- **Translation parity is mandatory** (see `.claude/rules/translation-parity.md`): all five files
-  must hold the **same keys in the same order**, with the text properly translated into de/es/fr/ukr
-  (not left in English).
+- **Translation parity is mandatory** (see `.claude/rules/translation-parity.md`, esp. its
+  "Values must be in the file's language" section): all five files must hold the **same keys in the
+  same order**, with the text properly translated into de/es/fr/ukr — never copy the English string
+  into a non-English file as a placeholder.
 - If you added extra blocks/links in Step 2, add their keys (`heading2`, `paragraph2`, `linkLabel`,
   …) to **every** file.
 - Remove any now-unused keys from the previous announcement (e.g. a `twitchLink` that the new
