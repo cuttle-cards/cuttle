@@ -48,7 +48,7 @@
               </h2>
               <p class="text-lg">
                 {{ t('rules.rulesReadText') }}
-                <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
+                <a href="/img/cuttle_rules_v6.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
                 {{ t('rules.rulesWatchText') }}
               </p>
               <div class="w-100 my-4">
