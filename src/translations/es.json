@@ -136,6 +136,11 @@
         "discard": "Descartar",
         "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
+      "discardToHandLimit": {
+        "title": "Descarta las cartas sobrantes",
+        "body": "Tienes más de 8 cartas en la mano. Descarta hasta el límite de 8 cartas en la mano.",
+        "discard": "Descartar"
+      },
       "five": {
         "discardAndDraw": "Descartar y robar",
         "nice": "¡Bien!",
@@ -294,7 +299,6 @@
         "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
-        "deckIsEmpty": "El mazo está vacío; no puedes robar.",
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
         "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
@@ -340,6 +344,11 @@
           "notYourTurn": "No es tu turno para descartar",
           "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
           "mustSelectCards": "Debes seleccionar dos cartas para descartar"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "Solo puedes descartar hasta el límite de la mano durante la fase de descarte",
+          "handNotOverLimit": "Tu mano no supera el límite",
+          "mustSelectCards": "Debes seleccionar cartas para descartar hasta el límite de la mano"
         },
         "five": {
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",
@@ -407,9 +416,9 @@
     "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente.",
     "playTitle": "Turno",
     "playText-1": "Un jugador (tradicionalmente el crupier) recibe 6 cartas y su oponente recibe 5. El jugador con 5 cartas juega primero.",
-    "playText-2": "En tu turno debes realizar exactamente una de las siguientes acciones:",
+    "playText-2": "En tu turno debes realizar exactamente una de las siguientes acciones y luego descartar hasta el límite de 8 cartas en la mano si tienes 9 o más cartas en la mano.",
     "draw": "Robar",
-    "drawDescription": "Roba una carta del mazo. No puedes superar el límite de 8 cartas en la mano. Si no quedan cartas en el mazo, puedes pasar. Tres pases consecutivos, la partida acaba en empate",
+    "drawDescription": "Roba una carta del mazo. Si no quedan cartas en el mazo, puedes pasar. Tres pases consecutivos, la partida acaba en empate",
     "points": "Puntos",
     "pointsDescription": "Juega una carta de puntos de tu mano. Vale su clasificación en puntos y dura hasta que se hunda.",
     "scuttle": "Hundir",
@@ -446,7 +455,7 @@
       "four": "Cuatro",
       "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
       "five": "Cinco",
-      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el límite de mano de 8 cartas.",
+      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja.",
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
@@ -577,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato Mundial de Cuttle V!",
-    "title": "Campeonato Mundial de Cuttle V",
-    "heading": "El enfrentamiento definitivo",
-    "paragraph": "¡El Campeonato Mundial de Cuttle V es hoy, sábado 11 de abril a la 1pm ET! ¡Mira a los 8 mejores jugadores del último año de juego clasificatorio competir en un enfrentamiento de doble eliminación por el título de Campeón Mundial de Cuttle! Míralo en vivo en ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Rediseño del límite de mano",
+    "title": "Límite de mano",
+    "heading": "Al final de tu turno, descarta hasta quedarte con 8",
+    "paragraph": "Hemos simplificado el límite de mano. Antes, el límite de 8 cartas afectaba al robo, a los Cincos y a los Nueves de forma distinta en cada caso: no podías robar por encima de 8, un Cinco solo podía rellenar hasta 8, y que te jugaran un Nueve cerca del límite tenía sus propias peculiaridades, así que cada caso necesitaba su propia explicación.",
+    "paragraph2": "Ahora una única regla lo cubre todo: juega con libertad durante tu turno y luego descarta hasta quedarte con 8 al final. Es más fácil de aprender, te da más flexibilidad y reduce los turnos en los que tu única jugada legal te perjudica."
   },
   "profile": {
     "myGames": "Mis juegos",

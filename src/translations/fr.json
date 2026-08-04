@@ -136,6 +136,11 @@
         "discard": "Défausser",
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
+      "discardToHandLimit": {
+        "title": "Défaussez les cartes en trop",
+        "body": "Vous avez plus de 8 cartes en main. Défaussez-vous jusqu'à la limite de 8 cartes en main.",
+        "discard": "Défausser"
+      },
       "five": {
         "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",
@@ -294,7 +299,6 @@
         "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
-        "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !",
         "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
       },
@@ -340,6 +344,11 @@
           "notYourTurn": "Ce n'est pas à vous de défausser",
           "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
           "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "Vous ne pouvez vous défausser jusqu'à la limite de main que pendant la phase de défausse",
+          "handNotOverLimit": "Votre main ne dépasse pas la limite",
+          "mustSelectCards": "Vous devez sélectionner des cartes à défausser pour revenir à la limite de main"
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
@@ -407,9 +416,9 @@
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement.",
     "playTitle": "Jouer",
     "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
-    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
+    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes, puis vous défausser jusqu’à la limite de 8 cartes en main si vous avez 9 cartes ou plus en main.",
     "draw": "Piocher",
-    "drawDescription": "Prenez une carte de la pioche. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
+    "drawDescription": "Prenez une carte de la pioche. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
     "points": "Points",
     "pointsDescription": "Les cartes à points (de 1 à 10) peuvent être posées dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes à points peuvent être éliminées par certaines cartes tactiques ou par un scuttle.",
     "scuttle": "Scuttle",
@@ -446,7 +455,7 @@
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
+      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu.",
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
@@ -577,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat du Monde Cuttle V !",
-    "title": "Championnat du Monde Cuttle V",
-    "heading": "L'ultime confrontation",
-    "paragraph": "Le Championnat du Monde Cuttle V a lieu aujourd'hui, samedi 11 avril à 13h ET ! Regardez les 8 meilleurs joueurs de l'année écoulée de jeu classé s'affronter dans un tournoi à double élimination pour le titre de Champion du Monde Cuttle ! Regardez-le en direct sur ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Refonte de la limite de main",
+    "title": "Limite de main",
+    "heading": "À la fin de votre tour, défaussez-vous jusqu'à 8 cartes",
+    "paragraph": "Nous avons simplifié la limite de main. Auparavant, la limite de 8 cartes affectait la pioche, les Cinq et les Neuf chacun à sa manière — vous ne pouviez pas piocher au-delà de 8, un Cinq ne pouvait compléter que jusqu'à 8, et se faire jouer un Neuf près de la limite avait ses propres subtilités —, si bien que chaque cas nécessitait sa propre explication.",
+    "paragraph2": "Désormais, une seule règle couvre tout : jouez librement pendant votre tour, puis défaussez-vous jusqu'à 8 cartes à la fin. C'est plus facile à apprendre, cela vous donne plus de flexibilité et réduit les tours où votre seul coup légal vous dessert."
   },
   "profile": {
     "myGames": "Mes jeux",

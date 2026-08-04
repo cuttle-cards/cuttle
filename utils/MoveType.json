@@ -12,6 +12,7 @@
   "RESOLVE_THREE": "resolveThree",
   "RESOLVE_FOUR": "resolveFour",
   "RESOLVE_FIVE": "resolveFive",
+  "DISCARD_TO_HAND_LIMIT": "discardToHandLimit",
   "SEVEN_POINTS": "sevenPoints",
   "SEVEN_SCUTTLE": "sevenScuttle",
   "SEVEN_FACE_CARD": "sevenFaceCard",

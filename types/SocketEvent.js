@@ -19,6 +19,7 @@ export default {
   RESOLVE_THREE: 'resolveThree',
   RESOLVE_FOUR: 'resolveFour',
   RESOLVE_FIVE: 'resolveFive',
+  DISCARD_TO_HAND_LIMIT: 'discardToHandLimit',
   SCUTTLE: 'scuttle',
   SEVEN_FACE_CARD: 'sevenFaceCard',
   SEVEN_JACK: 'sevenJack',

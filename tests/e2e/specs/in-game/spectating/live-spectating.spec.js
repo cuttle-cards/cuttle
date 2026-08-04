@@ -21,7 +21,6 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.dismissIntroPopups();
 }
 
 describe('Spectating Games', () => {
@@ -439,7 +438,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
-    cy.dismissIntroPopups();
   });
 
   it('Spectate unranked games with rematch', function () {

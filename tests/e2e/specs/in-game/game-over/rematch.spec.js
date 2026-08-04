@@ -47,7 +47,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.dismissIntroPopups();
 
     // Set up season
     const [ , diamondsSeason ] = seasonFixtures;
@@ -255,7 +254,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.dismissIntroPopups();
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -407,7 +405,6 @@ describe('Spectating Rematches', () => {
   describe('Spectating Casual Rematches', () => {
     beforeEach(() => {
       cy.setupGameAsSpectator();
-      cy.dismissIntroPopups();
     });
 
     it('Spectates a casual match using rematch', () => {
@@ -466,7 +463,6 @@ describe('Spectating Rematches', () => {
   describe('Spectating Ranked Matches', () => {
     beforeEach(() => {
       cy.setupGameAsSpectator(true);
-      cy.dismissIntroPopups();
       const [ , , currentSeason ] = seasonFixtures;
       cy.loadSeasonFixture([ currentSeason ]);
     });

@@ -125,6 +125,11 @@
         "discard": "Abwerfen",
         "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
       },
+      "discardToHandLimit": {
+        "title": "Überzählige Karten ablegen",
+        "body": "Du hast mehr als 8 Karten auf der Hand. Lege auf die Handkartenobergrenze von 8 ab.",
+        "discard": "Ablegen"
+      },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",
         "nice": "Schön!",
@@ -294,7 +299,6 @@
         "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
-        "deckIsEmpty": "Das Deck ist leer; du kannst nicht ziehen.",
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
         "exhaustedDeck": "Deck erschöpft; Kartenhände der Spieler werden angezeigt"
       },
@@ -340,6 +344,11 @@
           "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
           "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
           "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
+          "handNotOverLimit": "Deine Hand ist nicht über der Obergrenze",
+          "mustSelectCards": "Du musst Karten auswählen, um auf die Handkartenobergrenze abzulegen"
         },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",
@@ -407,9 +416,9 @@
     "goalText": "Das Ziel ist es, der erste Spieler zu sein, der 21 oder mehr Punkte auf seinem Spielfeld hat. Der erste Spieler, der das Ziel erreicht, gewinnt sofort.",
     "playTitle": "Spiel",
     "playText-1": "Ein Spieler (traditionell der Geber) erhält 6 Karten, und sein Gegner erhält 5 Karten. Der Spieler mit 5 Karten beginnt.",
-    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausführen:",
+    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausführen und danach auf die Handkartenobergrenze von 8 ablegen, wenn du 9 oder mehr Karten auf der Hand hast.",
     "draw": "Ziehen",
-    "drawDescription": "Nimm eine Karte vom Stapel. Du darfst nicht mehr als 8 Karten auf der Hand haben. Wenn keine Karten mehr im Stapel sind, kannst du passen. Drei aufeinanderfolgende Pässe enden das Spiel unentschieden.",
+    "drawDescription": "Nimm eine Karte vom Stapel. Wenn keine Karten mehr im Stapel sind, kannst du passen. Drei aufeinanderfolgende Pässe enden das Spiel unentschieden.",
     "points": "Punkte",
     "pointsDescription": "Spiele eine Zahlenkarte aus deiner Hand. Sie zählt so viele Punkte wie ihr Wert und bleibt, bis sie entfernt wird.",
     "scuttle": "Angreifen",
@@ -446,7 +455,7 @@
       "four": "Vier",
       "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
       "five": "Fünf",
-      "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel, bis zur Handkartenobergrenze von 8.",
+      "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel.",
       "six": "Sechs",
       "sixDescription": "Entferne alle Royals und Brillen-Achten auf dem Spielfeld.",
       "seven": "Sieben",
@@ -577,11 +586,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle-Weltmeisterschaft V!",
-    "title": "Cuttle-Weltmeisterschaft V",
-    "heading": "Das ultimative Aufeinandertreffen",
-    "paragraph": "Die Cuttle-Weltmeisterschaft V ist heute, Samstag, den 11. April um 13 Uhr ET! Schau zu, wie die Top 8 Spieler aus dem vergangenen Jahr des Ranglistenspiels in einem Doppeleliminations-Showdown um den Titel des Cuttle-Weltmeisters kämpfen! Schau es live auf ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Handkartenlimit-Überarbeitung",
+    "title": "Handkartenlimit",
+    "heading": "Lege am Ende deines Zuges auf 8 Karten ab",
+    "paragraph": "Wir haben das Handkartenlimit vereinfacht. Früher wirkte sich das 8-Karten-Limit auf das Ziehen, auf Fünfen und auf Neunen jeweils unterschiedlich aus – du konntest nicht über 8 hinaus ziehen, eine Fünf konnte nur bis auf 8 auffüllen, und von einer Neun nahe am Limit getroffen zu werden hatte seine eigenen Tücken –, sodass jeweils eine eigene Erklärung nötig war.",
+    "paragraph2": "Jetzt gibt es eine einzige Regel für alles: Spiele während deines Zuges frei und lege am Ende auf 8 Karten ab. Das ist leichter zu lernen, gibt dir mehr Flexibilität und reduziert Züge, in denen dein einziger legaler Zug dir selbst schadet."
   },
   "profile": {
     "myGames": "Meine Spiele",

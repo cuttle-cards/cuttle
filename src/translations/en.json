@@ -125,6 +125,11 @@
         "discard": "Discard",
         "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
+      },
       "five": {
         "discardAndDraw": "Discard and Draw",
         "nice": "Nice!",
@@ -295,7 +300,6 @@
         "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
-        "deckIsEmpty": "The deck is empty; you cannot draw.",
         "handLimit": "You are at the hand limit; you cannot draw.",
         "exhaustedDeck": "Deck exhausted; revealing player hands"
       },
@@ -341,6 +345,11 @@
           "notYourTurn": "It's not your turn to discard",
           "notResolvingFourPhase": "Can't discard unless your opponent played a four",
           "mustSelectCards": "You must select two cards to discard"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
@@ -408,9 +417,9 @@
     "goalText": "The goal is to be the first player to have 21 or more points worth of point cards on your field. The first player to reach the goal wins immediately.",
     "playTitle": "Play",
     "playText-1": "One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",
-    "playText-2": "On your turn you must perform exactly one of the following actions:",
+    "playText-2": "On your turn, you must perform exactly one of the following actions, then discard down to the 8-card hand limit if you have 9 or more cards in hand.",
     "draw": "Draw",
-    "drawDescription": "Take one card from the deck. You may not draw past the 8-card hand limit.  If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate",
+    "drawDescription": "Take one card from the deck. If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate",
     "points": "Points",
     "pointsDescription": "Play a number card from your hand. Worth its rank in points and lasts until scrapped.",
     "scuttle": "Scuttle",
@@ -447,7 +456,7 @@
       "four": "Four",
       "fourDescription": "Your opponent discards two cards of their choice.",
       "five": "Five",
-      "fiveDescription": "Discard one card then draw up to three cards from the deck up to the 8 card hand limit.",
+      "fiveDescription": "Discard one card then draw up to three cards from the deck.",
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
@@ -578,11 +587,11 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle World Championship V!",
-    "title": "Cuttle World Championship V",
-    "heading": "Ultimate showdown",
-    "paragraph": "Cuttle World Championship V is today, Saturday April 11th at 1pm ET! Watch the top 8 players from the past year of ranked play compete in a double elimination showdown for the title of Cuttle World Champion! Watch it live at ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Hand Limit Rework",
+    "title": "Hand Limit",
+    "heading": "At the end of your turn, discard down to 8",
+    "paragraph": "We've simplified the hand limit. Before, the 8-card limit touched drawing, Fives, and Nines each in its own way — you couldn't draw past 8, a Five could only refill up to 8, and getting Nined near the limit had its own wrinkles — so each one needed its own explanation.",
+    "paragraph2": "Now a single rule covers them all: play freely during your turn, then discard down to 8 at the end of it. It's easier to learn, gives you more flexibility, and cuts down on turns where your only legal move works against you."
   },
   "profile": {
     "myGames": "My Games",

@@ -120,6 +120,20 @@ module.exports = {
             discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
 
+        case MoveType.DISCARD_TO_HAND_LIMIT: {
+          const names = discardedCards.map(getFullCardName);
+          let cardList;
+          if (names.length === 1) {
+            cardList = `the ${names[0]}`;
+          } else if (names.length === 2) {
+            cardList = `the ${names[0]} and ${names[1]}`;
+          } else {
+            const allButLast = [ `the ${names[0]}`, ...names.slice(1, -1) ].join(', ');
+            cardList = `${allButLast}, and ${names[names.length - 1]}`;
+          }
+          return `${player} discarded ${cardList} to the hand limit.`;
+        }
+
         case MoveType.RESOLVE_FIVE:
           if (discardedCards.length) {
             return `${player} discarded the ${getFullCardName(
