@@ -12,7 +12,6 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.dismissIntroPopups();
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -438,7 +437,6 @@ describe('Home - Create Game', () => {
 
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
-    cy.dismissIntroPopups();
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 

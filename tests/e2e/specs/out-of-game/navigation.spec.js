@@ -48,7 +48,6 @@ describe('Navigation', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.dismissIntroPopups();
   });
 
   describe('Authenticated Navigation', () => {
@@ -86,7 +85,6 @@ describe('Navigation', () => {
 
   describe('Unauthenticated Navigation', () => {
     beforeEach(() => {
-      cy.dismissIntroPopups();
     });
 
     it('Navigates between Login and Rules when unauthenticated on DESKTOP', () => {
