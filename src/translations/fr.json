@@ -137,9 +137,9 @@
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
       "discardToHandLimit": {
-        "title": "Discard Excess Cards",
-        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
-        "discard": "Discard"
+        "title": "Défaussez les cartes en trop",
+        "body": "Vous avez plus de 8 cartes en main. Défaussez-vous jusqu'à la limite de 8 cartes en main.",
+        "discard": "Défausser"
       },
       "five": {
         "discardAndDraw": "Jeter et piocher",
@@ -346,9 +346,9 @@
           "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
         },
         "discardToHandLimit": {
-          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
-          "handNotOverLimit": "Your hand is not over the limit",
-          "mustSelectCards": "You must select cards to discard down to the hand limit"
+          "notDiscardingPhase": "Vous ne pouvez vous défausser jusqu'à la limite de main que pendant la phase de défausse",
+          "handNotOverLimit": "Votre main ne dépasse pas la limite",
+          "mustSelectCards": "Vous devez sélectionner des cartes à défausser pour revenir à la limite de main"
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",

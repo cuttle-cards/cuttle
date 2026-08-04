@@ -126,9 +126,9 @@
         "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
       },
       "discardToHandLimit": {
-        "title": "Discard Excess Cards",
-        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
-        "discard": "Discard"
+        "title": "Überzählige Karten ablegen",
+        "body": "Du hast mehr als 8 Karten auf der Hand. Lege auf die Handkartenobergrenze von 8 ab.",
+        "discard": "Ablegen"
       },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",
@@ -346,9 +346,9 @@
           "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
         },
         "discardToHandLimit": {
-          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
-          "handNotOverLimit": "Your hand is not over the limit",
-          "mustSelectCards": "You must select cards to discard down to the hand limit"
+          "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
+          "handNotOverLimit": "Deine Hand ist nicht über der Obergrenze",
+          "mustSelectCards": "Du musst Karten auswählen, um auf die Handkartenobergrenze abzulegen"
         },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",

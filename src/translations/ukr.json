@@ -126,9 +126,9 @@
         "opponentHasResolved": "Ваш суперник вирішив чотирку з відривом. Ви повинні відкинути дві карти. Клікніть, щоб вибрати карти для відкидання."
       },
       "discardToHandLimit": {
-        "title": "Discard Excess Cards",
-        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
-        "discard": "Discard"
+        "title": "Скиньте зайві карти",
+        "body": "У вас на руці більше 8 карт. Скиньте карти до ліміту у 8 карт.",
+        "discard": "Скинути"
       },
       "five": {
         "discardAndDraw": "Відкинути та взяти",
@@ -346,9 +346,9 @@
           "mustSelectCards": "Ви повинні вибрати дві картки для відкидання"
         },
         "discardToHandLimit": {
-          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
-          "handNotOverLimit": "Your hand is not over the limit",
-          "mustSelectCards": "You must select cards to discard down to the hand limit"
+          "notDiscardingPhase": "Ви можете скидати карти до ліміту руки лише під час фази скидання",
+          "handNotOverLimit": "Ваша рука не перевищує ліміт",
+          "mustSelectCards": "Ви повинні вибрати карти, щоб скинути до ліміту руки"
         },
         "five": {
           "selectCardToDiscard": "Ви повинні вибрати одну картку для відкидання",
