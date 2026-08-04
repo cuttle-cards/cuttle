@@ -18,11 +18,11 @@
  * 
  * VERSION HISTORY
  * 0.0.0 => First ruleset online
- * 0.0.1 => Reduced goal for 3 and 4 kings
- * 0.1.1 => Five Rework: Discard, then draw 3 cards
- * 1.0.0 => GameState API release
- * 1.0.1 => Cannot Three for a Three
- * 1.0.2 => Hand limit rework: discard down to 8 at end of your turn
+ * 0.0.1 (#207) => Reduced goal for 3 and 4 kings
+ * 0.1.1 (#855) => Five Rework: Discard, then draw 3 cards
+ * 1.0.0 (#1197) => GameState API release
+ * 1.0.1 (#1320) => Cannot Three for a Three
+ * 1.0.2 (#1359) => Hand limit rework: discard down to 8 at end of your turn
  */
 module.exports = {
   CURRENT_RULES_VERSION: '1.0.2',
