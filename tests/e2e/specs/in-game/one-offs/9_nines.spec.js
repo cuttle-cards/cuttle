@@ -805,5 +805,105 @@ describe('Playing NINES', () => {
         scrap: [ Card.NINE_OF_HEARTS, Card.NINE_OF_SPADES ],
       });
     });
+
+    it('Nine returns card to player hand at hand limit', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.NINE_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.THREE_OF_CLUBS,
+          Card.FOUR_OF_CLUBS,
+          Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS,
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+        ],
+        p1Points: [ Card.TEN_OF_CLUBS ],
+        p1FaceCards: [],
+      });
+
+      // Opponent (P0) plays nine targeting player's (P1's) point card
+      cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS, 'point');
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.THREE_OF_CLUBS,
+          Card.FOUR_OF_CLUBS,
+          Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS,
+          Card.SEVEN_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.TEN_OF_CLUBS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES ],
+      });
+    });
   }); // End Opponent playing NINES describe
+
+  describe('Nine triggers discard-to-hand-limit', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('Nine returns card to opponent hand at hand limit', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.NINE_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_HEARTS,
+          Card.TWO_OF_HEARTS,
+          Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_HEARTS,
+          Card.SEVEN_OF_HEARTS,
+          Card.EIGHT_OF_HEARTS,
+        ],
+        p1Points: [ Card.TEN_OF_DIAMONDS ],
+        p1FaceCards: [],
+      });
+
+      // Player plays nine as targeted one-off against opponent's point card
+      cy.get('[data-player-hand-card=9-3]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('#player-hand-targeting').should('be.visible');
+      cy.get('[data-opponent-point-card=10-1]').click();
+      cy.resolveOpponent();
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.ACE_OF_HEARTS,
+          Card.TWO_OF_HEARTS,
+          Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_HEARTS,
+          Card.SEVEN_OF_HEARTS,
+          Card.EIGHT_OF_HEARTS,
+          Card.TEN_OF_DIAMONDS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES ],
+      });
+    });
+
+  }); // End Nine triggers discard-to-hand-limit
 });

@@ -1,7 +1,5 @@
 import { hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
-import { announcementData } from '../../../src/routes/home/components/announcementDialog/data/announcementData';
-import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../utils/local-storage-utils';
 import MoveType from '../../../utils/MoveType.json';
 
 /**
@@ -39,6 +37,7 @@ const transformGameUrl = (api, slug, gameId = null) => {
     case 'resolveThree':
     case 'resolveFour':
     case 'resolveFive':
+    case 'discardToHandLimit':
     case 'seven/points':
     case 'seven/scuttle':
     case 'seven/faceCard':
@@ -90,13 +89,6 @@ Cypress.Commands.add('wipeDatabase', () => {
     url: 'localhost:1337/api/test/wipe-database'
   });
   cy.log('Wiped database');
-});
-
-Cypress.Commands.add('dismissIntroPopups', () => {
-  cy.window().then((win) => {
-    win.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
-    win.localStorage.setItem(LS_PLAY_TIME_DIALOG_DISMISSED, 'true');
-  });
 });
 
 Cypress.Commands.add('refreshOpponentSocket', () => {
@@ -474,6 +466,13 @@ Cypress.Commands.add('resolveOpponent', (gameId = null) => {
  * @param card1 {suit: number, rank: number} OPTIONAL
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
+Cypress.Commands.add('discardToHandLimitOpponent', (...cards) => {
+  cy.makeSocketRequest('game', 'discardToHandLimit', {
+    moveType: MoveType.DISCARD_TO_HAND_LIMIT,
+    discardedCards: cards.map((card) => card.id),
+  });
+});
+
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
 
   const moveType = MoveType.RESOLVE_FOUR;

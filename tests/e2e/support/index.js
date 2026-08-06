@@ -15,6 +15,8 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+import { announcementData } from '../../../src/routes/home/components/announcementDialog/data/announcementData';
+import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../utils/local-storage-utils';
 
 const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
 Cypress.on('uncaught:exception', (err) => {
@@ -25,6 +27,14 @@ Cypress.on('uncaught:exception', (err) => {
 
 // Hide Vue DevTools panel during tests to prevent it from covering UI elements
 Cypress.on('window:before:load', (win) => {
+  // Suppress the intro popups (home announcement + lobby play-time dialog) in tests so their
+  // scrims don't cover UI elements. Must be seeded BEFORE the app loads: the dialogs read
+  // localStorage at mount, so setting these flags after cy.visit would be too late. Uses the
+  // current announcement id via import, so it stays correct across future announcements. Tests
+  // that specifically exercise a dialog opt out by clearing its flag before the component mounts
+  // (see the "Lobby - Play Time Dialog" block in lobby.spec.js).
+  win.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
+  win.localStorage.setItem(LS_PLAY_TIME_DIALOG_DISMISSED, 'true');
   win.document.head.insertAdjacentHTML(
     'beforeend',
     '<style>.vue-devtools__panel { display: none !important; }</style>'

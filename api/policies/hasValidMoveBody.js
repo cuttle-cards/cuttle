@@ -43,7 +43,7 @@ module.exports = function (req, res, next) {
       }
       return next();
 
-    // Requires `card1` and optionally accepts `card2`
+    // Requires `cardId1` and optionally accepts `cardId2`
     case MoveType.RESOLVE_FOUR:
       {
         if (!cardId1) {
@@ -56,6 +56,20 @@ module.exports = function (req, res, next) {
 
         if (cardId2 && !DeckIds.includes(cardId2)) {
           return res.badRequest({ message: `${cardId2} is not a valid cardId` });
+        }
+      }
+      return next();
+
+    // Requires a non-empty `discardedCards` array of valid card IDs
+    case MoveType.DISCARD_TO_HAND_LIMIT:
+      {
+        const { discardedCards } = req.body;
+        if (!Array.isArray(discardedCards) || discardedCards.length === 0) {
+          return res.badRequest({ message: 'Must specify cards to discard' });
+        }
+        const invalidId = discardedCards.find((id) => !DeckIds.includes(id));
+        if (invalidId) {
+          return res.badRequest({ message: `${invalidId} is not a valid cardId` });
         }
       }
       return next();

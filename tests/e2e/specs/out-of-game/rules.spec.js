@@ -5,7 +5,6 @@ describe('Rules Page', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.vueRoute('/rules');
-    cy.dismissIntroPopups();
   });
 
   it('Navigates to Login when unauthenticated and home when authenticated using the Ready To Play button', () => {

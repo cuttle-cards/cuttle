@@ -51,12 +51,15 @@ module.exports = {
       result.scrap.push(...player.hand.splice(cardIndex2, 1));
     }
 
-    result.turn++;
+    // active player is the opposite of the one who discarded
+    const activePlayer = playedBy ? result.p0 : result.p1;
+    const playerMustDiscard = activePlayer.hand.length > 8;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       playedBy,
       playedCard: null,
       targetCard: null,

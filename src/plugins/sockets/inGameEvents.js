@@ -55,6 +55,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SEVEN_DISCARD:
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
+    case SocketEvent.DISCARD_TO_HAND_LIMIT:
     case SocketEvent.STALEMATE_REQUEST:
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
