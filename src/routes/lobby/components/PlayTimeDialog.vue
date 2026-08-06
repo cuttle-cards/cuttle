@@ -12,19 +12,22 @@
         {{ t('lobby.playTimeDialog.openPlaySessions') }}
       </p>
       <p class="mt-4" data-cy="play-time-dialog-discord">
-        <span>
-          {{ t('lobby.playTimeDialog.discord') }}
-          <a
-            class="discord-link"
-            data-cy="play-time-dialog-discord-link"
-            href="https://discord.com/invite/dS5BRjaHrm"
-            target="_blank"
-            rel="noopener"
-          >
-            {{ t('lobby.playTimeDialog.discordLink') }}
-          </a>
-          <strong>{{ t('lobby.playTimeDialog.findAGame') }}</strong>
-        </span>
+        <i18n-t keypath="lobby.playTimeDialog.discord" tag="span" scope="global">
+          <template #0>
+            <a
+              class="discord-link"
+              data-cy="play-time-dialog-discord-link"
+              href="https://discord.com/invite/dS5BRjaHrm"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ t('lobby.playTimeDialog.discordLink') }}
+            </a>
+          </template>
+          <template #1>
+            <strong>{{ t('lobby.playTimeDialog.findAGame') }}</strong>
+          </template>
+        </i18n-t>
       </p>
       <p class="mt-4" data-cy="play-time-dialog-bot">
         {{ t('lobby.playTimeDialog.botPlay') }}
