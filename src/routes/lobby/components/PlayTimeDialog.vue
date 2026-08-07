@@ -13,7 +13,7 @@
       </p>
       <p class="mt-4" data-cy="play-time-dialog-discord">
         <i18n-t keypath="lobby.playTimeDialog.discord" tag="span" scope="global">
-          <template #0>
+          <template #discordLink>
             <a
               class="discord-link"
               data-cy="play-time-dialog-discord-link"
@@ -24,7 +24,7 @@
               {{ t('lobby.playTimeDialog.discordLink') }}
             </a>
           </template>
-          <template #1>
+          <template #channel>
             <strong>{{ t('lobby.playTimeDialog.findAGame') }}</strong>
           </template>
         </i18n-t>

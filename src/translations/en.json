@@ -74,7 +74,7 @@
     "playTimeDialog": {
       "title": "Find a Game",
       "openPlaySessions": "We have open play sessions every Wednesday at 8:30pm ET and every Thursday at 12pm ET. If you hop on the site at those times, you'll always have someone to play!",
-      "discord": "We have a {0} and you can use its {1} channel to find matches.",
+      "discord": "We have a {discordLink} and you can use its {channel} channel to find matches.",
       "discordLink": "discord server",
       "findAGame": "#find-a-game",
       "botPlay": "You can play against the bot from the home page.",
