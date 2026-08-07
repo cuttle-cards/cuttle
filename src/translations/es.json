@@ -74,8 +74,8 @@
     "playTimeDialog": {
       "title": "Encuentra una partida",
       "openPlaySessions": "Tenemos sesiones de juego abiertas todos los miércoles a las 8:30pm ET y todos los jueves a las 12pm ET. Si entras al sitio en esos horarios, ¡siempre habrá alguien con quien jugar!",
-      "discord": "Tenemos un {0} y puedes usar su canal {1} para encontrar partidas.",
-      "discordLink": "canal de Discord",
+      "discord": "Tenemos un {discordLink} y puedes usar su canal {channel} para encontrar partidas.",
+      "discordLink": "servidor de Discord",
       "findAGame": "#find-a-game",
       "botPlay": "Puedes jugar contra el bot desde la página de inicio.",
       "goHome": "Ir al inicio",
