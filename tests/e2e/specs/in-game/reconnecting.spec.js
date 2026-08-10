@@ -813,7 +813,9 @@ describe('Reconnecting after game is over', () => {
       const oldGameId = Number(url.split('/').pop());
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
     });
-    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
@@ -828,7 +830,9 @@ describe('Reconnecting after game is over', () => {
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=gameover-rematch]').click();
-    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=my-rematch-indicator]')
