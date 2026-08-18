@@ -51,6 +51,15 @@ describe('Spectating Games', () => {
     });
   });
 
+  it('Redirects a non-player to spectate when they navigate to the game route', () => {
+    cy.setupGameAsSpectator();
+    cy.get('@gameId').then((gameId) => {
+      cy.visit(`/game/${gameId}`);
+      cy.url().should('include', `/spectate/${gameId}`);
+      cy.get('#deck').should('be.visible');
+    });
+  });
+
   it('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {

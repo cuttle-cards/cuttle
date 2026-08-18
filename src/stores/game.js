@@ -510,7 +510,8 @@ export const useGameStore = defineStore('game', () => {
             });
           case 401:
             authStore.mustReauthenticate = true;
-            return resolve(jwres.body.message);
+            // Resolve without a game state; ReauthenticateDialog handles recovery
+            return resolve(null);
           default:
             return reject(jwres.body.message);
         }
