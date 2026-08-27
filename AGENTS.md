@@ -82,6 +82,9 @@ In case of conflicting rules, the following hierarchy applies:
 
 ### Dependencies
 - **Policy**: Do not add, update, or remove dependencies without explicit approval.
+- **Transitive vulnerabilities**: Fix by bumping the top-level dependency that owns the transitive package, not by adding an `overrides` entry. A global override applies to every consumer in the tree, so it can downgrade packages that already resolve to a patched version, and an exact pin blocks future patches.
+- **Lockfile**: `package-lock.json` must be produced by `npm install`. Never hand-edit it. `npm ci` installs a hand-edited lockfile verbatim rather than rejecting it, so a bad edit will not be caught by CI.
+- **Verification**: After a dependency change, confirm the resulting tree with `npm ls <package>` and `npm audit`. Note that `npm run test:unit` and the Cypress e2e suite both run on `sails-disk`; database adapter changes are not exercised by CI and need `npm run docker:start` to validate against Postgres.
 
 ## Constraints and Escalation
 
