@@ -5,6 +5,9 @@
     </h2>
     <p>
       <template v-for="(chunk, index) in paragraph" :key="`text-chunk-${index}`">
+        <!-- Separator: whitespace condensing drops the newlines between chunks, so without an
+             interpolated space the links run into the words on either side of them -->
+        {{ index > 0 ? ' ' : '' }}
         <!-- Remote Link -->
         <a
           v-if="chunk.url"
