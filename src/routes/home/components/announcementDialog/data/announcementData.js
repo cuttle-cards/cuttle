@@ -6,6 +6,7 @@ export const announcementData = {
   title: 'announcement.title',
   displayCards: [],
   imgSrc: '/img/announcement/diamonds_2026_cuttle_season_championship.svg',
+  imgHref: 'https://challonge.com/diamonds_2026_cuttle_season_championship',
   startTime: '2026-08-25',
   endTime: '2026-08-31',
   announcementText: [
