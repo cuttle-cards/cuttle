@@ -586,11 +586,13 @@
     }
   },
   "announcement": {
-    "activatorText": "Refonte de la limite de main",
-    "title": "Limite de main",
-    "heading": "À la fin de votre tour, défaussez-vous jusqu'à 8 cartes",
-    "paragraph": "Nous avons simplifié la limite de main. Auparavant, la limite de 8 cartes affectait la pioche, les Cinq et les Neuf chacun à sa manière — vous ne pouviez pas piocher au-delà de 8, un Cinq ne pouvait compléter que jusqu'à 8, et se faire jouer un Neuf près de la limite avait ses propres subtilités —, si bien que chaque cas nécessitait sa propre explication.",
-    "paragraph2": "Désormais, une seule règle couvre tout : jouez librement pendant votre tour, puis défaussez-vous jusqu'à 8 cartes à la fin. C'est plus facile à apprendre, cela vous donne plus de flexibilité et réduit les tours où votre seul coup légal vous dessert."
+    "activatorText": "Championnat de saison Diamonds 2026 !",
+    "title": "Championnat Diamonds 2026",
+    "heading": "Championnat de saison Cuttle",
+    "paragraph": "Le Championnat de saison Diamonds 2026 de Cuttle a lieu ce dimanche 30 août à 12h30 ET ! Regardez les 8 meilleurs joueurs de la dernière saison classée s'affronter en double élimination pour le titre de Champion de la saison Diamonds 2026 de Cuttle. À suivre en direct sur",
+    "twitchLink": "Twitch",
+    "linkSeparator": "ou",
+    "youtubeLink": "YouTube"
   },
   "profile": {
     "myGames": "Mes jeux",
