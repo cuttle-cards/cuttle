@@ -1,14 +1,14 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'diamonds2026Announcement',
+  id: 'diamonds2026LiveAnnouncement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [],
   imgSrc: '/img/announcement/diamonds_2026_cuttle_season_championship.svg',
   imgHref: 'https://challonge.com/diamonds_2026_cuttle_season_championship',
-  startTime: '2026-08-25',
-  endTime: '2026-08-31',
+  startTime: '2026-08-30T12:00:00-04:00',
+  endTime: '2026-08-30T17:00:00-04:00',
   announcementText: [
     {
       heading: 'announcement.heading',
