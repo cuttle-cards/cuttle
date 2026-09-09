@@ -62,15 +62,10 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.updateGame(evData.game);
       break;
     case SocketEvent.RESOLVE:
-      switch (evData.game.lastEvent?.oneOff?.rank) {
-        case 7:
-          await gameStore.processSevens(evData.game);
-          break;
-        case 9:
-          await gameStore.processNines(evData.targetCard, evData.game);
-          break;
-        default:
-          gameStore.updateGame(evData.game);
+      if (evData.game.lastEvent?.oneOff?.rank === 7) {
+        await gameStore.processSevens(evData.game);
+      } else {
+        gameStore.updateGame(evData.game);
       }
       break;
     case SocketEvent.SCUTTLE:

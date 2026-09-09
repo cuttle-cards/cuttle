@@ -221,7 +221,9 @@
         "emptyDeck": "No se puede jugar con el mazo vacío",
         "multipleQueens": "No puedes jugar un {rank} mientras tu rival tenga 2 o más Reinas",
         "noRoyals": "No hay Figuras para tomar como objetivo",
-        "noRoyalsOrPoints": "No hay cartas de puntos ni Figuras para tomar como objetivo"
+        "noRoyalsOrPoints": "No hay cartas de puntos ni Figuras para tomar como objetivo",
+        "queenBlocksNine": "No puedes jugar un Nueve mientras tu rival tenga una Reina",
+        "nineNeedsTwoTargets": "Un Nueve necesita dos cartas como objetivo"
       },
       "points": {
         "displayName": "Puntos",
@@ -241,7 +243,7 @@
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
-        "9": "Pon la carta objetivo encima del mazo",
+        "9": "Devuelve dos cartas objetivo a la mano de su controlador",
         "10": "Sin efecto",
         "11": "Juega sobre una carta de puntos objetivo para robarla",
         "12": "Tus otras cartas no pueden ser objetivo de habilidades Únicas (pero sí pueden ser hundidas por cartas de puntos más altas)",
@@ -295,7 +297,7 @@
         "cardFrozen": "¡Esa carta está bloqueada! Debes esperar a tu turno para jugarla.",
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
-        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
+        "blockedByMultipleQueens": "No puedes jugar un Dos como carta de habilidad única con objetivo cuando tu oponente tiene más de una reina",
         "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
@@ -363,7 +365,13 @@
           "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
           "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
         },
-        "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila"
+        "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila",
+        "nine": {
+          "blockedByAnyQueen": "No puedes jugar un Nueve como carta de habilidad única mientras tu rival tenga una Reina",
+          "needTwoTargets": "Tu rival necesita al menos dos cartas que puedas tomar como objetivo con un Nueve",
+          "mustSelectTwoTargets": "Un Nueve debe tomar como objetivo exactamente dos cartas",
+          "duplicateTarget": "Un Nueve debe tomar como objetivo dos cartas diferentes"
+        }
       }
     }
   },
@@ -462,7 +470,7 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
-      "nineDescription": "Pon una carta del campo de tu rival encima del mazo.",
+      "nineDescription": "Devuelve dos cartas del campo de tu rival a su mano. Puede volver a jugarlas de inmediato. No puedes jugar un Nueve como carta de habilidad única mientras tu rival tenga una Reina.",
       "ten": "Diez",
       "tenDescription": "Sin efecto."
     },
@@ -491,7 +499,7 @@
       "rule2": "Baraja dos comodines (Jokers) en el mazo. Los comodines cuentan como Figuras con el efecto \"Roba una Figura objetivo\", similar a la Sota. Al igual que las Sotas, pueden transferir el control de una Figura de cualquier jugador a cualquier otro jugador.",
       "rule3": "El límite de cartas en la mano se reduce a 7 (de 8).",
       "rule4": "Se pueden jugar Sotas para transferir el control de cualquier carta de puntos a cualquier otro jugador. Por lo tanto, puedes \"robarte\" puntos a ti mismo (o a cualquier otra persona) para dárselos a tu compañero, potencialmente ganando en tu turno con sus puntos (su objetivo aún está determinado por la cantidad de Reyes en su propio campo).",
-      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para poner una carta del campo de tu rival encima del mazo."
+      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para devolver dos cartas a la mano de su controlador. En cualquier caso, las cartas devueltas pueden volver a jugarse en el siguiente turno de su propietario."
     },
     "faq": {
       "title": "FAQ",
@@ -588,12 +596,11 @@
   },
   "announcement": {
     "activatorText": "¡Los Nueves reciben una mejora!",
-    "title": "Beta de reglas: Nueves al mazo",
-    "heading": "Los Nueves ahora ponen cartas encima del mazo",
-    "paragraph": "El Nueve es una de las cartas más altas de la baraja, pero su efecto único siempre ha sido el más específico. Ahora, en lugar de devolver una carta a la mano de su controlador, un Nueve pone una carta del campo de tu rival encima del mazo: una carta de puntos, una Figura o la Jota superior de una pila. Su siguiente robo será su propia carta, así que el Nueve les cuesta un turno entero. Ya no se congela nada, y las Damas siguen protegiendo igual que antes.",
-    "heading2": "La primera de cuatro pruebas de la temporada de Picas",
-    "paragraph2": "Esto es una beta, y la primera de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
-    "patreonLink": "Ayuda a refinar el 4 y el 9"
+    "title": "Beta de reglas: los Nueves devuelven dos cartas",
+    "heading": "Los Nueves ahora devuelven dos cartas",
+    "paragraph": "El Nueve es una de las cartas más altas del mazo, pero su habilidad única siempre ha sido la más específica y la menos impactante. Por eso la estamos mejorando: un Nueve como carta de habilidad única ahora devuelve dos cartas del campo de tu rival a la mano de su controlador — en cualquier combinación de cartas de puntos, Figuras y Jotas — y las cartas devueltas ya no quedan congeladas, así que pueden volver a jugarse de inmediato. Como una Reina protege todo lo demás que controla tu rival, no puedes jugar un Nueve como carta de habilidad única mientras tenga una Reina.",
+    "heading2": "En pruebas durante la temporada de Espadas",
+    "paragraph2": "Esto es una beta. La mantendremos durante toda la temporada de Espadas para que todos la prueben en partidas reales, y después la someteremos a una votación de la comunidad hacia el final del año para decidir si se queda."
   },
   "profile": {
     "myGames": "Mis juegos",

@@ -408,8 +408,10 @@ Cypress.Commands.add('playOneOffOpponent', (card, gameId = null) => {
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
  * @param targetType string 'faceCard' | 'point' | 'jack'
+ * @param targetTwo {suit: number, rank: number} OPTIONAL second target, required for nines
+ * @param targetTwoType string OPTIONAL 'faceCard' | 'point' | 'jack' -- the second target's location
  */
-Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) => {
+Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType, targetTwo, targetTwoType) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot play targeted one-off with invalid card ${card}`);
   }
@@ -418,12 +420,18 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
     throw new Error(`Cannot play targeted one-off with invalid target ${target}`);
   }
 
+  if (targetTwo && !hasValidSuitAndRank(targetTwo)) {
+    throw new Error(`Cannot play targeted one-off with invalid second target ${targetTwo}`);
+  }
+
   const moveType = MoveType.ONE_OFF;
   cy.makeSocketRequest('game', 'targetedOneOff', {
     moveType,
     targetId: target.id,
     cardId: card.id,
     targetType,
+    // Nines return two cards, so they send a second target
+    ...(targetTwo && { targetIdTwo: targetTwo.id, targetTypeTwo: targetTwoType }),
   });
 });
 
@@ -630,28 +638,36 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
   });
 });
 
-Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targetType) => {
-  if (!hasValidSuitAndRank(card)) {
-    throw new Error(`Cannot play targeted one-off via seven with invalid card ${card}`);
-  }
-  if (!hasValidSuitAndRank(target)) {
-    throw new Error(`Cannot play targeted one-off via seven with invalid card ${target}`);
-  }
-  Cypress.log({
-    displayName: 'Opponent seven targeted one-off',
-    name: 'Opponent plays one-off from seven',
-    message: printCard(card),
-  });
+Cypress.Commands.add(
+  'playTargetedOneOffFromSevenOpponent',
+  (card, target, targetType, targetTwo, targetTwoType) => {
+    if (!hasValidSuitAndRank(card)) {
+      throw new Error(`Cannot play targeted one-off via seven with invalid card ${card}`);
+    }
+    if (!hasValidSuitAndRank(target)) {
+      throw new Error(`Cannot play targeted one-off via seven with invalid card ${target}`);
+    }
+    if (targetTwo && !hasValidSuitAndRank(targetTwo)) {
+      throw new Error(`Cannot play targeted one-off via seven with invalid second target ${targetTwo}`);
+    }
+    Cypress.log({
+      displayName: 'Opponent seven targeted one-off',
+      name: 'Opponent plays one-off from seven',
+      message: printCard(card),
+    });
 
-  const cardId = card.id;
-  const targetId = target.id;
-  cy.makeSocketRequest('game', 'seven/targetedOneOff', {
-    moveType: MoveType.SEVEN_ONE_OFF,
-    cardId,
-    targetId,
-    targetType,
-  });
-});
+    const cardId = card.id;
+    const targetId = target.id;
+    cy.makeSocketRequest('game', 'seven/targetedOneOff', {
+      moveType: MoveType.SEVEN_ONE_OFF,
+      cardId,
+      targetId,
+      targetType,
+      // Nines return two cards, so they send a second target
+      ...(targetTwo && { targetIdTwo: targetTwo.id, targetTypeTwo: targetTwoType }),
+    });
+  },
+);
 
 Cypress.Commands.add('passOpponent', (gameId = null) => {
   cy.log('Opponent Passes');

@@ -484,7 +484,7 @@ describe('Opponent playing SEVENS', () => {
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS, Card.KING_OF_SPADES ],
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
@@ -499,31 +499,24 @@ describe('Opponent playing SEVENS', () => {
       // Waiting for opponent
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
-      cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, 'faceCard');
+      // A nine needs two targets, and any queen would block it entirely, so it takes both kings
+      cy.playTargetedOneOffFromSevenOpponent(
+        Card.NINE_OF_DIAMONDS,
+        Card.KING_OF_HEARTS,
+        'faceCard',
+        Card.KING_OF_SPADES,
+        'faceCard',
+      );
       cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
         .click();
 
-      // The queen went to the top of the deck, not back to the player's hand
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.KING_OF_HEARTS, Card.KING_OF_SPADES ],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
-        scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
-      });
-
-      // Player draws their queen straight back off the top
-      cy.get('#deck').click();
-
-      assertGameState(1, {
-        p0Hand: [],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.QUEEN_OF_CLUBS ],
-        p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        p1FaceCards: [],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
       });
     }); // End Opponent NINE from seven
@@ -566,53 +559,45 @@ describe('Opponent playing SEVENS', () => {
       // Waiting for opponent
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
-      cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
+      // The nine takes the jack and the king; the jacked point card is not a target,
+      // so it reverts to its owner's points
+      cy.playTargetedOneOffFromSevenOpponent(
+        Card.NINE_OF_CLUBS,
+        Card.JACK_OF_CLUBS,
+        'jack',
+        Card.KING_OF_HEARTS,
+        'faceCard',
+      );
 
       // Player resolves
       cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
         .click();
 
-      // The jack went to the top of the deck, and the ace it was stealing reverts to its owner
       assertGameState(1, {
         p0Hand: [ Card.TEN_OF_DIAMONDS ],
         p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.JACK_OF_CLUBS, Card.KING_OF_HEARTS ],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
 
-      // Player draws, getting their own jack back rather than the fixture's top card
-      cy.get('#deck').click();
-
-      assertGameState(1, {
-        p0Hand: [ Card.TEN_OF_DIAMONDS ],
-        p0Points: [ Card.ACE_OF_CLUBS ],
-        p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS ],
-        p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
-        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
-      });
-      // The jack is playable right away; nothing is frozen any more
+      // Nines no longer freeze what they return, so the jack can be replayed at once
       cy.get('[data-player-hand-card=11-0]').should('not.have.class', 'frozen');
-
-      cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-
-      // Player replays the jack they just drew
       cy.get('[data-player-hand-card=11-0]').click();
-      cy.get('[data-move-choice=jack]').click();
+      cy.get('[data-move-choice=jack]').should('not.have.class', 'v-card--disabled')
+        .click();
       cy.get('[data-opponent-point-card=1-0]').click();
+      cy.log('Successfully replayed the returned jack immediately');
 
       assertGameState(1, {
-        p0Hand: [],
-        p0Points: [ Card.TEN_OF_DIAMONDS ],
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.KING_OF_HEARTS ],
         p1Points: [ Card.ACE_OF_CLUBS ],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
     });

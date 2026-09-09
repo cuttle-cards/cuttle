@@ -3,6 +3,7 @@
     class="mx-1 player-card"
     :class="{
       selected: isSelected,
+      'selected-target': isSelectedTarget,
       glasses: isGlasses,
       jack: isJack,
       frozen: isFrozen,
@@ -17,6 +18,16 @@
       aria-label="snowflake icon (card is frozen)"
       aria-hidden="false"
       role="img"
+    />
+    <v-icon
+      v-if="isSelectedTarget"
+      class="player-card-icon mr-1 mt-1"
+      color="primary"
+      icon="mdi-check-circle"
+      aria-label="check icon (card is a selected target)"
+      aria-hidden="false"
+      role="img"
+      data-selected-target
     />
     <v-overlay
       :model-value="isValidTarget"
@@ -74,6 +85,10 @@ export default {
       default: false,
     },
     isValidTarget: {
+      type: Boolean,
+      default: false,
+    },
+    isSelectedTarget: {
       type: Boolean,
       default: false,
     },
@@ -254,6 +269,34 @@ export default {
   img {
     border: 3px solid rgba(var(--v-theme-accent-lighten1));
     border-radius: 10px;
+  }
+}
+
+/*
+ * Chosen targets of a multi-target one-off. Deliberately NOT .selected's accent-lighten1,
+ * which is the same colour as .target-overlay and would blend into the targeting highlight.
+ */
+.selected-target {
+  img {
+    border: 4px solid rgb(var(--v-theme-primary));
+    border-radius: 10px;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(var(--v-theme-primary), 0.35);
+  }
+
+  /* Royal art is dark, so the badge needs a light disc to stay legible on every card */
+  .player-card-icon {
+    background: rgb(var(--v-theme-base-light));
+    border-radius: 50%;
   }
 }
 .jack {

@@ -56,7 +56,7 @@ module.exports = {
     const activePlayer = result.turn % 2 === 0 ? result.p0 : result.p1;
     const playerMustDiscard = activePlayer.hand.length > 8;
 
-    // If one-off fizzles, make no other changes
+    // If one-off fizzles, make no other changes to the board
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
@@ -64,6 +64,8 @@ module.exports = {
       // Nothing is pending anymore, so the target slots have to clear too
       result.oneOffTarget = null;
       result.oneOffTargetType = null;
+      result.oneOffTargetTwo = null;
+      result.oneOffTargetTwoType = null;
       result.phase = playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN;
       result.turn = playerMustDiscard ? result.turn : result.turn + 1;
       return exits.success(result);
@@ -102,8 +104,11 @@ module.exports = {
       ...result,
       oneOff: null,
       targetCard: result.oneOffTarget,
+      targetCardTwo: result.oneOffTargetTwo ?? null,
       oneOffTarget: null,
       oneOffTargetType: null,
+      oneOffTargetTwo: null,
+      oneOffTargetTwoType: null,
       phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
       turn: playerMustDiscard ? result.turn : result.turn + 1,
     };
