@@ -14,10 +14,10 @@ const gameStateRow = {
   p0Hand: [],
   p0Points: [ 'AH', 'TH' ],
   p0FaceCards: [],
-  p1Hand: [ 'JC' ],
+  p1Hand: [],
   p1Points: [],
   p1FaceCards: [],
-  deck: [ 'AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', 'TC', 'QC', 'KC',
+  deck: [ 'JC', 'AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', 'TC', 'QC', 'KC',
     'AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', 'TD', 'JD', 'QD', 'KD',
     '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', 'JH', 'QH', 'KH',
     'AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS', 'QS', 'KS' ],
@@ -49,11 +49,12 @@ export const resolveNine = {
       faceCards: [],
     },
     p1: {
-      hand: [ { ...Card.JACK_OF_CLUBS, isFrozen: true } ],
+      hand: [],
       points: [],
       faceCards: [],
     },
     deck: [
+      Card.JACK_OF_CLUBS,
       Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS, 
       Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS, 
       Card.KING_OF_CLUBS,
@@ -89,6 +90,7 @@ export const resolveNine = {
     game: {
       chat: [],
       deck: [
+        Card.JACK_OF_CLUBS,
         Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS,
         Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS, 
         Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.TEN_OF_CLUBS, Card.QUEEN_OF_CLUBS, 
@@ -115,7 +117,7 @@ export const resolveNine = {
       lock: null,
       lockedAt: null,
       log: [
-        'The 9♣️ one-off resolves, returning the J♣️ to definitelyNotTheGovernment6969\'s hand. It cannot be played next turn.',
+        'The 9♣️ one-off resolves, putting the J♣️ on top of the deck.',
       ],
       match: null,
       name: 'Test Game',
@@ -143,7 +145,7 @@ export const resolveNine = {
           frozenId: null,
         },
         {
-          hand: [ { ...Card.JACK_OF_CLUBS, isFrozen: true } ],
+          hand: [],
           points: [],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',

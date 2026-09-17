@@ -241,7 +241,7 @@
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes de la pioche et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
-        "9": "L'adversaire reprend en main la carte ciblée qui est gelée pour un tour.",
+        "9": "Place la carte ciblée sur le dessus de la pioche",
         "10": "Aucune tactique.",
         "11": "Cible et vole une carte à points.",
         "12": "Protège vos cartes à points des attaques tactiques",
@@ -362,6 +362,9 @@
           "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment",
           "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
           "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
+        },
+        "nine": {
+          "onlyTopJack": "Vous ne pouvez cibler que le Valet du dessus d'une pile"
         }
       }
     }
@@ -461,7 +464,7 @@
       "seven": "Sept",
       "sevenDescription": "Révélez les deux premières cartes du deck aux deux joueurs et choisissez-en une à jouer comme vous le souhaitez.",
       "nine": "Neuf",
-      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
+      "nineDescription": "Placez une carte du terrain de votre adversaire sur le dessus de la pioche.",
       "ten": "Dix",
       "tenDescription": "Aucun effet."
     },
@@ -490,7 +493,7 @@
       "rule2": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de transférer un carte Figure d'un joueur vers n'importe quel joueur.",
       "rule3": "Votre main est limitée à 7 cartes (au lien de 8).",
       "rule4": "Les valets peuvent être joués pour transférer n'importe quelle carte à points à n'importe quel autre joueur. Par conséquent, vous pouvez 'voler' des points à vous-même (ou à n'importe qui d'autre) pour les donner à votre partenaire, gagnant potentiellement à votre tour avec leurs points (leur objectif est toujours déterminé par le nombre de  rois sur le terrain).",
-      "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour (son effet habituel est appliqué. L'adversaire reprend en main la carte ciblée et n'a pas le droit de la jouer à son prochain tour."
+      "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour, son effet habituel est appliqué : la carte ciblée est placée sur le dessus de la pioche."
     },
     "faq": {
       "title": "FAQ",
@@ -586,13 +589,12 @@
     }
   },
   "announcement": {
-    "activatorText": "En direct maintenant : Championnat de saison Diamonds 2026 !",
-    "title": "Championnat Diamonds 2026",
-    "heading": "En direct maintenant : Championnat de saison Cuttle",
-    "paragraph": "Le Championnat de saison Diamonds 2026 de Cuttle est en direct en ce moment ! Les 8 meilleurs joueurs de la dernière saison classée s'affrontent en double élimination pour le titre de Champion de la saison Diamonds 2026 de Cuttle. À suivre en direct sur",
-    "twitchLink": "Twitch",
-    "linkSeparator": "ou",
-    "youtubeLink": "YouTube"
+    "activatorText": "Les Neufs sont renforcés !",
+    "title": "Bêta des règles : Neufs sur la pioche",
+    "heading": "Les Neufs placent désormais les cartes sur la pioche",
+    "paragraph": "Le Neuf est l'une des plus fortes cartes du jeu, mais son effet unique a toujours été le plus limité. Désormais, au lieu de renvoyer une carte dans la main de son contrôleur, un Neuf place une carte du terrain de votre adversaire sur le dessus de la pioche : une carte de points, une figure ou le Valet du dessus d'une pile. Sa prochaine pioche lui rendra sa propre carte, le Neuf lui coûte donc un tour entier. Plus rien n'est gelé, et les Dames protègent toujours comme avant.",
+    "heading2": "Test pendant la saison des Piques",
+    "paragraph2": "Il s'agit d'une bêta. Nous la laisserons en place pendant toute la saison des Piques afin que chacun puisse l'essayer en partie réelle, puis nous la soumettrons à un vote de la communauté vers la fin de l'année pour décider si elle reste."
   },
   "profile": {
     "myGames": "Mes jeux",

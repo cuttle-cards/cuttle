@@ -39,14 +39,7 @@ module.exports = {
         if (value) {
           const { convertStrToCard } = sails.helpers.gameStates;
           convertedData[attribute] = Array.isArray(value)
-            ? value.map((cardStr) => {
-              // Is the card frozen
-              const freezeCard =
-                  !!gameStateRow.resolved &&
-                  gameStateRow.resolved[0] === '9' &&
-                  gameStateRow.targetCard === cardStr.substring(0, 3);
-              return convertStrToCard(cardStr, freezeCard);
-            })
+            ? value.map((cardStr) => convertStrToCard(cardStr))
             : convertStrToCard(value);
         }
       });

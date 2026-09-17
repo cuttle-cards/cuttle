@@ -104,7 +104,6 @@ export const useGameStore = defineStore('game', () => {
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
-  const lastEventTargetType = ref(null);
   const lastEventPlayedBy = ref(null);
   // GameOver
   const gameIsOver = ref(false);
@@ -249,7 +248,6 @@ export const useGameStore = defineStore('game', () => {
   function updateGame(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
-    lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
@@ -310,7 +308,6 @@ export const useGameStore = defineStore('game', () => {
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
-    lastEventTargetType.value = null;
     lastEventPlayedBy.value = null;
     lastEventThreeTarget.value = null;
     gameIsOver.value = false;
@@ -737,7 +734,6 @@ export const useGameStore = defineStore('game', () => {
     lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
-    lastEventTargetType,
     lastEventPlayedBy,
     gameIsOver,
     winnerPNum,

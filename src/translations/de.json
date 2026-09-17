@@ -241,7 +241,7 @@
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
         "8": "Dein Gegner spielt mit offener Hand (seine Karten sind für dich sichtbar)",
-        "9": "Gib die Zielkarte zurück in die Hand des Besitzers. Sie kann sie im nächsten Zug nicht spielen",
+        "9": "Lege die Zielkarte oben auf den Nachziehstapel",
         "10": "Kein Effekt",
         "11": "Spiele auf eine Ziel-Punktkarte, um sie zu stehlen",
         "12": "Deine anderen Karten können nur durch Abwerfaktionen angegriffen werden",
@@ -362,6 +362,9 @@
           "wrongPhase": "Du kannst jetzt nicht vom Deck spielen",
           "mustBeDoubleJacks": "Du kannst keine Karten von einer Sieben abwerfen, es sei denn, beide Karten sind Buben",
           "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
+        },
+        "nine": {
+          "onlyTopJack": "Du kannst nur den obersten Buben eines Stapels als Ziel wählen"
         }
       }
     }
@@ -461,7 +464,7 @@
       "seven": "Sieben",
       "sevenDescription": "Zeige die obersten zwei Karten des Stapels beiden Spielern und wähle eine, die du nach Belieben spielst.",
       "nine": "Neun",
-      "nineDescription": "Gib eine Karte vom Spielfeld deines Gegners auf dessen Hand zurück. Sie darf in der nächsten Runde nicht gespielt werden.",
+      "nineDescription": "Lege eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel.",
       "ten": "Zehn",
       "tenDescription": "Kein Effekt."
     },
@@ -490,7 +493,7 @@
       "rule2": "Mische zwei Joker in das Deck. Joker zählen als Royals mit dem Effekt 'Stehle eine Royal-Karte'. Ähnlich wie Buben können sie eine Royal von einem Spieler zu einem anderen transferieren.",
       "rule3": "Das Handkartenlimit ist auf 7 (statt 8) reduziert.",
       "rule4": "Buben können gespielt werden, um eine Punktekarte von einem beliebigen Spieler zu einem anderen zu übertragen. Du kannst daher Punkte von dir selbst (oder anderen) 'stehlen', um sie deinem Partner zu geben und möglicherweise mit deren Punkten in deinem Zug zu gewinnen (ihr Ziel wird weiterhin durch die Anzahl ihrer eigenen Könige auf dem Spielfeld bestimmt).",
-      "rule5": "Neuner können für einen alternativen ähnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zurückzugeben und ihren Effekt zu verhindern. Dies kann außerhalb des Zuges erfolgen, kostet keinen Zug, verhindert jedoch nicht, dass der Besitzer die Karte in seinem nächsten Zug erneut spielt. Alternativ kannst du weiterhin einen Neuner für seinen ursprünglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird dafür genutzt), um eine Karte auf die Hand ihres Besitzers zurückzugeben und zu verhindern, dass sie in der nächsten Runde gespielt wird."
+      "rule5": "Neuner können für einen alternativen ähnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zurückzugeben und ihren Effekt zu verhindern. Dies kann außerhalb des Zuges erfolgen, kostet keinen Zug, verhindert jedoch nicht, dass der Besitzer die Karte in seinem nächsten Zug erneut spielt. Alternativ kannst du weiterhin einen Neuner für seinen ursprünglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird dafür genutzt), um eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel zu legen."
     },
     "faq": {
       "title": "FAQ",
@@ -586,13 +589,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Jetzt live: Diamonds 2026 Saisonmeisterschaft!",
-    "title": "Diamonds 2026 Meisterschaft",
-    "heading": "Jetzt live: Cuttle-Saisonmeisterschaft",
-    "paragraph": "Die Diamonds 2026 Cuttle-Saisonmeisterschaft läuft gerade live! Die 8 besten Spielerinnen und Spieler der vergangenen Ranglistensaison kämpfen im Doppel-K.-o.-Modus um den Titel der Diamonds 2026 Cuttle-Saisonmeisterschaft. Verfolge alles live auf",
-    "twitchLink": "Twitch",
-    "linkSeparator": "oder",
-    "youtubeLink": "YouTube"
+    "activatorText": "Neuner werden gestärkt!",
+    "title": "Regel-Beta: Neuner legen obenauf",
+    "heading": "Neuner legen Karten jetzt oben auf den Nachziehstapel",
+    "paragraph": "Ein Neuner ist eine der höchsten Karten im Spiel, doch sein Einmal-Effekt war schon immer der speziellste. Statt eine Karte auf die Hand ihres Besitzers zurückzugeben, legt ein Neuner jetzt eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel — eine Punktekarte, eine Royal oder den obersten Buben eines Stapels. Ihr nächster Zug bringt ihnen die eigene Karte zurück, der Neuner kostet sie also einen ganzen Zug. Nichts wird mehr eingefroren, und Damen schützen weiterhin wie bisher.",
+    "heading2": "Test während der Pik-Saison",
+    "paragraph2": "Das ist eine Beta. Wir lassen sie die gesamte Pik-Saison über laufen, damit alle sie in echten Partien ausprobieren können, und stellen sie dann gegen Ende des Jahres in einer Community-Umfrage zur Abstimmung."
   },
   "profile": {
     "myGames": "Meine Spiele",

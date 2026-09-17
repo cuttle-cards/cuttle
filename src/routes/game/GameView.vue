@@ -466,8 +466,6 @@ export default {
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
-      targetType: null,
-      nineTargetIndex: null,
       showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
@@ -553,18 +551,10 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_UP;
-            // For nines, transition direction depends on target type
+            // Nines put the target on the deck; the only point card entering here is a
+            // jacked card whose control reverts when its jack is topdecked
             case 9:
-              switch (this.gameStore.lastEventTargetType) {
-                // Nine on jack causes points to swap control
-                case 'jack':
-                  return Transitions.SLIDE_UP;
-                // Everything else expect cards to move back to hand
-                case 'point':
-                case 'faceCard':
-                default:
-                  return Transitions.SLIDE_DOWN;
-              }
+              return Transitions.SLIDE_UP;
             default:
               return Transitions.SLIDE_DOWN_LEFT;
           }
@@ -578,15 +568,6 @@ export default {
       }
     },
     playerFaceCardsTransition() {
-      // If a face card is bounced by a nine, slide down to player hand
-      if (
-        this.gameStore.lastEventChange === 'resolve' &&
-        this.gameStore.lastEventOneOffRank === 9 &&
-        this.gameStore.lastEventTargetType === 'faceCard'
-      ) {
-        return Transitions.SLIDE_DOWN;
-      }
-
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
@@ -610,16 +591,10 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_DOWN;
-            // Nine transitions depend on the target type
+            // Nines move the target off the board entirely (to the deck), or hand a
+            // jacked point card back down to the player
             case 9:
-              switch (this.gameStore.lastEventTargetType) {
-                // Nine on a jack switches point card control
-                case 'jack':
-                  return Transitions.SLIDE_DOWN;
-                // Everything else returns cards to hand
-                default:
-                  return Transitions.SLIDE_UP;
-              }
+              return Transitions.SLIDE_DOWN;
             default:
               return Transitions.SLIDE_UP_DOWN;
           }
@@ -629,14 +604,6 @@ export default {
       }
     },
     opponentFaceCardsTransition() {
-      // If a face card is bounced by a nine, slide up to opponent's hand
-      if (
-        this.gameStore.lastEventChange === 'resolve' &&
-        this.gameStore.lastEventOneOffRank === 9 &&
-        this.gameStore.lastEventTargetType === 'faceCard'
-      ) {
-        return Transitions.SLIDE_UP;
-      }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
@@ -712,18 +679,6 @@ export default {
           return [];
       }
     },
-    nineTarget() {
-      switch (this.targetType) {
-        case 'point':
-          return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
-        case 'faceCard':
-          return this.nineTargetIndex !== null
-            ? this.gameStore.opponent.faceCards[this.nineTargetIndex]
-            : null;
-        default:
-          return null;
-      }
-    },
     // Sevens
     playingFromDeck() {
       return this.gameStore.playingFromDeck;
@@ -787,8 +742,6 @@ export default {
       this.snackbarStore.alert(this.t(messageKey), 'base-dark');
     },
     clearOverlays() {
-      this.nineTargetIndex = null;
-      this.targetType = null;
       this.targeting = false;
     },
     clearSelection() {

@@ -1,23 +1,23 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'diamonds2026LiveAnnouncement',
+  id: 'topdeckNines2026Announcement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
-  displayCards: [],
-  imgSrc: '/img/announcement/diamonds_2026_cuttle_season_championship.svg',
-  imgHref: 'https://challonge.com/diamonds_2026_cuttle_season_championship',
-  startTime: '2026-08-30T12:00:00-04:00',
-  endTime: '2026-08-30T17:00:00-04:00',
+  displayCards: [
+    { suit: 3, rank: 9 },
+    { suit: 2, rank: 9 },
+  ],
+  startTime: '2026-09-16',
+  endTime: '2027-01-05',
   announcementText: [
     {
       heading: 'announcement.heading',
-      paragraph: [
-        { text: 'announcement.paragraph' },
-        { text: 'announcement.twitchLink', url: 'https://www.twitch.tv/cuttle_cards' },
-        { text: 'announcement.linkSeparator' },
-        { text: 'announcement.youtubeLink', url: 'https://www.youtube.com/live/mMYULGUXrfs' },
-      ],
+      paragraph: [ { text: 'announcement.paragraph' } ],
+    },
+    {
+      heading: 'announcement.heading2',
+      paragraph: [ { text: 'announcement.paragraph2' } ],
     },
   ],
 };

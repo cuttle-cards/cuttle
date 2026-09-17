@@ -48,7 +48,7 @@ On your turn you must make exactly one of the following actions below.
 - **Five**: Discard one card then draw up to three cards from the **Deck** up to the 8 card hand limit.
 - **Six**: Scrap all **Royals and Glasses Eights**, including your own.
 - **Seven**: Reveal the top two cards from the **Deck** and choose one of them to play immediately. Play this card however you would like. The other card is placed back on top of the deck.
-- **Nine**: Return an opponent's card on the field to their hand. It can't be played next turn.
+- **Nine**: Put an opponent's card on the field on top of the deck. Only the top Jack of a stack may be targeted.
 
 ## Royals & Glasses Eights
 
