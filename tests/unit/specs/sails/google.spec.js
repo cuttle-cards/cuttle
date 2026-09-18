@@ -54,7 +54,8 @@ describe('Login with Google oAuth', () => {
 
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('test@example.com');
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('google');
   });
 
   it('Logs in with Google oAuth', async () => {
@@ -73,7 +74,8 @@ describe('Login with Google oAuth', () => {
 
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('test@example.com');
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('google');
   });
 
   it('Logs into existing account with Google oAuth', async () => {
@@ -111,6 +113,7 @@ describe('Login with Google oAuth', () => {
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('test@example.com');
     expect(status.id).toEqual(userRes.body);
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('google');
   });
 });

@@ -21,7 +21,7 @@ module.exports = {
       ]);
 
     } catch (err) {
-      return exits.success(false);
+      return exits.error(err);
     }
 
     return exits.success(true);
