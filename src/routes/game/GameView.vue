@@ -230,7 +230,7 @@
                     :scuttled-by="card.scuttledBy"
                     @click="targetOpponentPointCard(index)"
                   />
-                  <TransitionGroup :name="opponentPointsTransition" tag="div" class="jacks-container">
+                  <TransitionGroup :name="opponentJacksTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
@@ -273,7 +273,7 @@
                     :scuttled-by="card.scuttledBy"
                     controlled-by="player"
                   />
-                  <TransitionGroup :name="playerPointsTransition" tag="div" class="jacks-container">
+                  <TransitionGroup :name="playerJacksTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
@@ -556,14 +556,16 @@ export default {
         return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
       };
     },
-    isTopdecking() {
-      return this.gameStore.topdeckedCard !== null;
-    },
-    topdeckedCardId() {
-      return this.gameStore.topdeckedCard?.id ?? null;
+    /**
+     * True for the one list a topdecked card is leaving from. Every other list keeps its
+     * usual direction, so a topdecked jack can head for the deck while the point card it was
+     * stealing goes back to its owner in the same render.
+     */
+    topdeckZone() {
+      return this.gameStore.topdeckedCardZone;
     },
     playerPointsTransition() {
-      if (this.isTopdecking) {
+      if (this.topdeckZone === 'playerPoints') {
         return this.toDeckTransition('player', 'points');
       }
       switch (this.gameStore.lastEventChange) {
@@ -591,7 +593,7 @@ export default {
       }
     },
     playerFaceCardsTransition() {
-      if (this.isTopdecking) {
+      if (this.topdeckZone === 'playerFaceCards') {
         return this.toDeckTransition('player', 'faceCards');
       }
       // Playing from the deck
@@ -603,7 +605,7 @@ export default {
       return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
-      if (this.isTopdecking) {
+      if (this.topdeckZone === 'opponentPoints') {
         return this.toDeckTransition('opponent', 'points');
       }
       switch (this.gameStore.lastEventChange) {
@@ -633,7 +635,7 @@ export default {
       }
     },
     opponentFaceCardsTransition() {
-      if (this.isTopdecking) {
+      if (this.topdeckZone === 'opponentFaceCards') {
         return this.toDeckTransition('opponent', 'faceCards');
       }
       // Playing from the deck
@@ -643,6 +645,20 @@ export default {
 
       // Otherwise in from opponent hand, out towards scrap
       return Transitions.SLIDE_UP_DOWN;
+    },
+    /**
+     * Jacks ride along with the point row they sit on, except when the jack itself is the
+     * card being topdecked -- then it leaves for the deck while its point card goes home.
+     */
+    playerJacksTransition() {
+      return this.topdeckZone === 'playerJacks'
+        ? this.toDeckTransition('player', 'points')
+        : this.playerPointsTransition;
+    },
+    opponentJacksTransition() {
+      return this.topdeckZone === 'opponentJacks'
+        ? this.toDeckTransition('opponent', 'points')
+        : this.opponentPointsTransition;
     },
     //////////////////
     // Interactions //
@@ -771,7 +787,7 @@ export default {
       this.clearSelection();
     },
     isTopdeckedCard(card) {
-      return card.id === this.topdeckedCardId;
+      return card.id === (this.gameStore.topdeckedCard?.id ?? null);
     },
     /**
      * Withholds suit and rank from the card a nine is topdecking, which is all GameCard needs
