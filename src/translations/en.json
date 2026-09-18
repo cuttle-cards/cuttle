@@ -364,9 +364,7 @@
           "mustBeDoubleJacks": "You can't discard from a seven unless both cards are jacks",
           "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
         },
-        "nine": {
-          "onlyTopJack": "You can only target the top Jack of a stack"
-        }
+        "onlyTopJack": "You can only target the top Jack of a stack"
       }
     }
   },
@@ -594,8 +592,9 @@
     "title": "Rules Beta: Topdeck Nines",
     "heading": "Nines now put cards on top of the deck",
     "paragraph": "A Nine is one of the highest cards in the deck, but its one-off has always been the most niche. Now, instead of returning a card to its controller's hand, a Nine one-off puts a card from your opponent's board on top of the deck — a point card, a Royal, or the top Jack of a stack. Their next draw is their own card coming back, so the Nine costs them a whole turn. Nothing is frozen any more, and Queens still protect as before.",
-    "heading2": "Testing through the Spades season",
-    "paragraph2": "This is a beta. We'll run it for the whole Spades season so everyone can feel it out in real games, then put it to a community poll toward the end of the year to decide whether it stays."
+    "heading2": "The first of four Spades season trials",
+    "paragraph2": "This is a beta, and the first of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",
+    "patreonLink": "Help refine the 4 and the 9"
   },
   "profile": {
     "myGames": "My Games",

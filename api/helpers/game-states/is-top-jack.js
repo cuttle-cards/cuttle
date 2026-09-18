@@ -4,7 +4,7 @@ module.exports = {
   description: 'Determines whether the specified jack is the top of the stack attached to the point card it is stealing',
 
   extendedDescription:
-    'Only the top jack of a stack may be targeted by a nine, since removing a buried jack would leave the remaining stack in an order that never occurred.',
+    'Only the top jack of a stack may be targeted. Each jack\'s owner is derived from its position in the stack (see convert-card-to-str.js), so removing a buried jack silently reassigns every jack above it -- and with it, control of the point card.',
 
   inputs: {
     targetId: {
@@ -25,8 +25,6 @@ module.exports = {
   },
   sync: true,
   fn: ({ targetId, player }, exits) => {
-    const host = player.points.find(({ attachments }) => attachments.some(({ id }) => id === targetId));
-
-    return exits.success(host?.attachments.at(-1).id === targetId);
+    return exits.success(player.points.some(({ attachments }) => attachments.at(-1)?.id === targetId));
   },
 };

@@ -17,7 +17,13 @@ export const announcementData = {
     },
     {
       heading: 'announcement.heading2',
-      paragraph: [ { text: 'announcement.paragraph2' } ],
+      paragraph: [
+        { text: 'announcement.paragraph2' },
+        {
+          text: 'announcement.patreonLink',
+          url: 'https://www.patreon.com/cuttle/posts/help-refine-4-9-169762967',
+        },
+      ],
     },
   ],
 };

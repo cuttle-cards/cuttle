@@ -52,9 +52,9 @@ module.exports = {
     }
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
-    // Remove the targeted jack, which the validator guarantees is the top of the stack
-    const jackIndex = targetCard.attachments.findIndex(({ id }) => id === result.oneOffTarget.id);
-    const [ jack ] = targetCard.attachments.splice(jackIndex, 1);
+    // Both one-off validators reject any jack target that isn't the top of its stack,
+    // so the targeted jack is the last attachment
+    const jack = targetCard.attachments.pop();
 
     // Card the jack was stealing goes back to other player
     player.points.push(

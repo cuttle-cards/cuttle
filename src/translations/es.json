@@ -363,9 +363,7 @@
           "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
           "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
         },
-        "nine": {
-          "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila"
-        }
+        "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila"
       }
     }
   },
@@ -593,8 +591,9 @@
     "title": "Beta de reglas: Nueves al mazo",
     "heading": "Los Nueves ahora ponen cartas encima del mazo",
     "paragraph": "El Nueve es una de las cartas más altas de la baraja, pero su efecto único siempre ha sido el más específico. Ahora, en lugar de devolver una carta a la mano de su controlador, un Nueve pone una carta del campo de tu rival encima del mazo: una carta de puntos, una Figura o la Jota superior de una pila. Su siguiente robo será su propia carta, así que el Nueve les cuesta un turno entero. Ya no se congela nada, y las Damas siguen protegiendo igual que antes.",
-    "heading2": "En pruebas durante la temporada de Picas",
-    "paragraph2": "Esto es una beta. La mantendremos durante toda la temporada de Picas para que todo el mundo pueda probarla en partidas reales y después la someteremos a una votación de la comunidad hacia final de año para decidir si se queda."
+    "heading2": "La primera de cuatro pruebas de la temporada de Picas",
+    "paragraph2": "Esto es una beta, y la primera de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
+    "patreonLink": "Ayuda a refinar el 4 y el 9"
   },
   "profile": {
     "myGames": "Mis juegos",

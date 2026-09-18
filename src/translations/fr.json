@@ -363,9 +363,7 @@
           "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
           "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
         },
-        "nine": {
-          "onlyTopJack": "Vous ne pouvez cibler que le Valet du dessus d'une pile"
-        }
+        "onlyTopJack": "Vous ne pouvez cibler que le Valet du dessus d'une pile"
       }
     }
   },
@@ -593,8 +591,9 @@
     "title": "Bêta des règles : Neufs sur la pioche",
     "heading": "Les Neufs placent désormais les cartes sur la pioche",
     "paragraph": "Le Neuf est l'une des plus fortes cartes du jeu, mais son effet unique a toujours été le plus limité. Désormais, au lieu de renvoyer une carte dans la main de son contrôleur, un Neuf place une carte du terrain de votre adversaire sur le dessus de la pioche : une carte de points, une figure ou le Valet du dessus d'une pile. Sa prochaine pioche lui rendra sa propre carte, le Neuf lui coûte donc un tour entier. Plus rien n'est gelé, et les Dames protègent toujours comme avant.",
-    "heading2": "Test pendant la saison des Piques",
-    "paragraph2": "Il s'agit d'une bêta. Nous la laisserons en place pendant toute la saison des Piques afin que chacun puisse l'essayer en partie réelle, puis nous la soumettrons à un vote de la communauté vers la fin de l'année pour décider si elle reste."
+    "heading2": "La première de quatre expérimentations de la saison des Piques",
+    "paragraph2": "Il s'agit d'une bêta, et de la première de quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
+    "patreonLink": "Aidez-nous à affiner le 4 et le 9"
   },
   "profile": {
     "myGames": "Mes jeux",

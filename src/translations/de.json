@@ -363,9 +363,7 @@
           "mustBeDoubleJacks": "Du kannst keine Karten von einer Sieben abwerfen, es sei denn, beide Karten sind Buben",
           "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
         },
-        "nine": {
-          "onlyTopJack": "Du kannst nur den obersten Buben eines Stapels als Ziel wählen"
-        }
+        "onlyTopJack": "Du kannst nur den obersten Buben eines Stapels als Ziel wählen"
       }
     }
   },
@@ -593,8 +591,9 @@
     "title": "Regel-Beta: Neuner legen obenauf",
     "heading": "Neuner legen Karten jetzt oben auf den Nachziehstapel",
     "paragraph": "Ein Neuner ist eine der höchsten Karten im Spiel, doch sein Einmal-Effekt war schon immer der speziellste. Statt eine Karte auf die Hand ihres Besitzers zurückzugeben, legt ein Neuner jetzt eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel — eine Punktekarte, eine Royal oder den obersten Buben eines Stapels. Ihr nächster Zug bringt ihnen die eigene Karte zurück, der Neuner kostet sie also einen ganzen Zug. Nichts wird mehr eingefroren, und Damen schützen weiterhin wie bisher.",
-    "heading2": "Test während der Pik-Saison",
-    "paragraph2": "Das ist eine Beta. Wir lassen sie die gesamte Pik-Saison über laufen, damit alle sie in echten Partien ausprobieren können, und stellen sie dann gegen Ende des Jahres in einer Community-Umfrage zur Abstimmung."
+    "heading2": "Die erste von vier Testregeln der Pik-Saison",
+    "paragraph2": "Das ist eine Beta und die erste von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
+    "patreonLink": "Die 4 und die 9 verbessern"
   },
   "profile": {
     "myGames": "Meine Spiele",
