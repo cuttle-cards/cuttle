@@ -21,7 +21,9 @@ module.exports = {
       ]);
 
     } catch (err) {
-      return exits.success(false);
+      // Surface the failure. Reporting success here left callers running against a database
+      // that was only partially wiped, with no signal that anything had gone wrong.
+      return exits.error(err);
     }
 
     return exits.success(true);
