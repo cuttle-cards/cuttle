@@ -138,3 +138,46 @@
   from { rotate: 8deg; }
   to { rotate: 0deg; }
 }
+
+// Nine one-off: the targeted card flips face down (CARD_FLIP, via GameCard's isBack)
+// and then travels off toward the deck. Which way "toward the deck" is depends on the
+// breakpoint and which half of the field the card sits on -- see toDeckTransition() in
+// GameView. Leave-only: nothing enters a row while a card is being topdecked out of it.
+.to-deck-down-leave-active,
+.to-deck-down-left-leave-active,
+.to-deck-up-left-leave-active,
+.to-deck-left-leave-active {
+  position: absolute;
+  transition: opacity var(--duration-slow), transform var(--duration-slow);
+}
+
+.to-deck-down-move,
+.to-deck-down-left-move,
+.to-deck-up-left-move,
+.to-deck-left-move {
+  transition: transform var(--duration-slow);
+}
+
+// xs: the deck sits below the point rows
+.to-deck-down-leave-to {
+  opacity: 0;
+  transform: translateY(96px);
+}
+
+// xs: and below/left of the face card rows
+.to-deck-down-left-leave-to {
+  opacity: 0;
+  transform: translate(-96px, 96px);
+}
+
+// Above xs: the deck is up and to the left of the player's half
+.to-deck-up-left-leave-to {
+  opacity: 0;
+  transform: translate(-96px, -96px);
+}
+
+// Above xs: and straight left of the opponent's half
+.to-deck-left-leave-to {
+  opacity: 0;
+  transform: translateX(-96px);
+}

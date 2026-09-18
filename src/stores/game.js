@@ -104,6 +104,9 @@ export const useGameStore = defineStore('game', () => {
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
+  // Set only while a nine's topdeck animation is in flight. Drives both the face-down flip
+  // (GameCard renders its back when suit/rank are withheld) and the toward-the-deck exit.
+  const topdeckedCard = ref(null);
   const lastEventPlayedBy = ref(null);
   // GameOver
   const gameIsOver = ref(false);
@@ -308,6 +311,7 @@ export const useGameStore = defineStore('game', () => {
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
+    topdeckedCard.value = null;
     lastEventPlayedBy.value = null;
     lastEventThreeTarget.value = null;
     gameIsOver.value = false;
@@ -370,6 +374,66 @@ export const useGameStore = defineStore('game', () => {
     targetCardOnField.scuttledBy = playedCard;
     await sleep(1000);
     updateGame(game);
+  }
+  /**
+   * Animates a nine putting its target on top of the deck, in three stages so that each
+   * render has only one kind of change in it.
+   *
+   * It has to be staged: a nine can both remove a card from the opponent's points (which
+   * should travel toward the deck) and hand a jacked point card back to its owner (which
+   * should travel toward that owner). A TransitionGroup has a single name per render, so
+   * those two leave directions cannot coexist. Separating them into different renders lets
+   * each use the right one, and avoids having to persist the target's type through resolve.
+   */
+  async function processNines(targetCard, game) {
+    if (!targetCard || !player.value) {
+      updateGame(game);
+      return;
+    }
+
+    // Stage 1: the target flips face down where it sits. Matches CARD_FLIP's --duration-slow
+    // so the flip finishes before the card starts moving.
+    topdeckedCard.value = targetCard;
+    await sleep(1000);
+
+    // Stage 2: it leaves the board toward the deck, and the deck grows to match
+    removeCardFromField(targetCard.id);
+    deck.value.unshift({ isHidden: true });
+    await sleep(1000);
+
+    // Stage 3: authoritative state. A topdecked jack returns its point card here, which is
+    // why this is a separate render from the exit above.
+    topdeckedCard.value = null;
+    updateGame(game);
+  }
+
+  /**
+   * Removes a card from either player's points or face cards, including jacks attached to a
+   * point card. Used to play a card's exit animation before the server state is applied.
+   */
+  function removeCardFromField(cardId) {
+    players.value.forEach((fieldPlayer) => {
+      if (!fieldPlayer) {
+        return;
+      }
+      const faceCardIndex = fieldPlayer.faceCards?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (faceCardIndex > -1) {
+        fieldPlayer.faceCards.splice(faceCardIndex, 1);
+      }
+
+      const pointIndex = fieldPlayer.points?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (pointIndex > -1) {
+        fieldPlayer.points.splice(pointIndex, 1);
+        return;
+      }
+
+      fieldPlayer.points?.forEach((pointCard) => {
+        const jackIndex = pointCard.attachments?.findIndex(({ id }) => id === cardId) ?? -1;
+        if (jackIndex > -1) {
+          pointCard.attachments.splice(jackIndex, 1);
+        }
+      });
+    });
   }
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
@@ -734,6 +798,7 @@ export const useGameStore = defineStore('game', () => {
     lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
+    topdeckedCard,
     lastEventPlayedBy,
     gameIsOver,
     winnerPNum,
@@ -787,6 +852,7 @@ export const useGameStore = defineStore('game', () => {
     setGameOver,
     setRematch,
     processScuttle,
+    processNines,
     processThrees,
     processFours,
     processFives,

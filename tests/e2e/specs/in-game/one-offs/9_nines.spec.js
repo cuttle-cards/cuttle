@@ -71,8 +71,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 47,
       });
-      assertDeckCount(47);
 
       // The opponent's next draw is the card they just lost, proving it was on top
       cy.drawCardOpponent();
@@ -136,8 +136,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_HEARTS ],
+        deckLength: 47,
       });
-      assertDeckCount(47);
     }); // End 9 one-off high-point card
 
     it('Plays a nine as a ONE-OFF to put a face card on top of the deck', () => {
@@ -169,8 +169,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 47,
       });
-      assertDeckCount(47);
     }); // End 9 on face card
 
     it('Plays a 9 on a jack to steal back point card, topdecking the jack', () => {
@@ -229,8 +229,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 49,
       });
-      assertDeckCount(49);
 
       // Should no longer see jack of clubs on screen
       cy.get('[data-player-face-card=11-0]').should('not.exist');
@@ -320,8 +320,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 46,
       });
-      assertDeckCount(46);
 
       // Opponent nines the jack that is now on top of the player's ace
       cy.playTargetedOneOffOpponent(Card.NINE_OF_HEARTS, Card.JACK_OF_SPADES, 'jack');
@@ -335,8 +335,8 @@ describe('Playing NINES', () => {
         p1Points: [ Card.ACE_OF_SPADES ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS, Card.NINE_OF_HEARTS ],
+        deckLength: 47,
       });
-      assertDeckCount(47);
     });
 
     it('Plays a 9 on a point card that has been triple jacked', () => {
@@ -384,8 +384,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS ],
+        deckLength: 46,
       });
-      assertDeckCount(46);
 
       // Opponent draws the ace back, and the player draws the card beneath it
       cy.drawCardOpponent();
@@ -432,8 +432,8 @@ describe('Playing NINES', () => {
         p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [],
+        deckLength: 46,
       });
-      assertDeckCount(46);
     });
 
     it('Plays a nine as a ONE-OFF; the topdecked card is drawn back and replayed immediately', () => {
@@ -475,8 +475,8 @@ describe('Playing NINES', () => {
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 46,
       });
-      assertDeckCount(46);
 
       // STEP 2
       cy.log('STEP 2- P1 plays a six, removing face cards');
@@ -571,8 +571,8 @@ describe('Playing NINES', () => {
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 45,
       });
-      assertDeckCount(45);
 
       // STEP 2
       cy.log('STEP 2- P1 tries to play a six');
@@ -750,8 +750,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 47,
       });
-      assertDeckCount(47);
 
       cy.get('[data-player-hand-card=10-1]').click();
       cy.get('[data-move-choice=points]').click();
@@ -904,8 +904,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 43,
       });
-      assertDeckCount(43);
       cy.get('#discard-to-hand-limit-dialog').should('not.exist');
     });
   }); // End Opponent playing NINES describe
@@ -959,8 +959,8 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 43,
       });
-      assertDeckCount(43);
       cy.get('#discard-to-hand-limit-dialog').should('not.exist');
     });
   }); // End Nine does not trigger discard-to-hand-limit
@@ -1012,4 +1012,61 @@ describe('Playing NINES', () => {
       });
     });
   }); // End empty deck describe
+
+  describe('Topdeck animation', () => {
+    const fixture = {
+      p0Hand: [ Card.NINE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [],
+    };
+
+    function topdeckTheAce() {
+      cy.get('[data-player-hand-card=9-3]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('[data-opponent-point-card=1-1]').click();
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.resolveOpponent();
+    }
+
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('Flips the target face down, then sends it left toward the deck', () => {
+      cy.viewport(1920, 1080);
+      cy.loadGameFixture(0, fixture);
+      topdeckTheAce();
+
+      // Stage one: still in place, but now showing its back
+      cy.get('[data-opponent-point-card=1-1] img.opponent-card-back').should('exist');
+      // Stage two: leaves toward the deck, which above xs sits to the left
+      cy.get('.to-deck-left-leave-active').should('exist');
+      // Stage three: gone, and the deck has grown
+      cy.get('[data-opponent-point-card=1-1]').should('not.exist');
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [ Card.TEN_OF_HEARTS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 50,
+      });
+    });
+
+    it('Sends the target downward toward the deck on xs', () => {
+      cy.viewport('iphone-x');
+      cy.loadGameFixture(0, fixture);
+      topdeckTheAce();
+
+      cy.get('[data-opponent-point-card=1-1] img.opponent-card-back').should('exist');
+      cy.get('.to-deck-down-leave-active').should('exist');
+      cy.get('[data-opponent-point-card=1-1]').should('not.exist');
+    });
+  }); // End topdeck animation describe
 });

@@ -222,35 +222,35 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="card.suit"
-                    :rank="card.rank"
+                    :suit="faceDownWhenTopdecked(card).suit"
+                    :rank="faceDownWhenTopdecked(card).rank"
                     :is-valid-target="validMoves.includes(card.id)"
                     :data-opponent-point-card="`${card.rank}-${card.suit}`"
                     controlled-by="opponent"
                     :scuttled-by="card.scuttledBy"
                     @click="targetOpponentPointCard(index)"
                   />
-                  <div class="jacks-container">
+                  <TransitionGroup :name="opponentPointsTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="jack.suit"
-                      :rank="jack.rank"
+                      :suit="faceDownWhenTopdecked(jack).suit"
+                      :rank="faceDownWhenTopdecked(jack).rank"
                       :is-jack="true"
                       :is-valid-target="validMoves.includes(jack.id)"
                       :data-opponent-face-card="`${jack.rank}-${jack.suit}`"
                       @click="targetOpponentFaceCard(-index - 1)"
                     />
-                  </div>
+                  </TransitionGroup>
                 </div>
               </TransitionGroup>
               <TransitionGroup :name="opponentFaceCardsTransition" tag="div" class="field-effects">
                 <GameCard
                   v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  :is-glasses="card.rank === 8"
+                  :suit="faceDownWhenTopdecked(card).suit"
+                  :rank="faceDownWhenTopdecked(card).rank"
+                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
                   :is-valid-target="validMoves.includes(card.id)"
                   :data-opponent-face-card="`${card.rank}-${card.suit}`"
                   @click="targetOpponentFaceCard(index)"
@@ -266,32 +266,32 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="card.suit"
-                    :rank="card.rank"
+                    :suit="faceDownWhenTopdecked(card).suit"
+                    :rank="faceDownWhenTopdecked(card).rank"
                     :jacks="card.attachments"
                     :data-player-point-card="`${card.rank}-${card.suit}`"
                     :scuttled-by="card.scuttledBy"
                     controlled-by="player"
                   />
-                  <div class="jacks-container">
+                  <TransitionGroup :name="playerPointsTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="jack.suit"
-                      :rank="jack.rank"
+                      :suit="faceDownWhenTopdecked(jack).suit"
+                      :rank="faceDownWhenTopdecked(jack).rank"
                       :is-jack="true"
                       :data-player-face-card="`${jack.rank}-${jack.suit}`"
                     />
-                  </div>
+                  </TransitionGroup>
                 </div>
               </TransitionGroup>
               <TransitionGroup :name="playerFaceCardsTransition" tag="div" class="field-effects">
                 <GameCard
                   v-for="card in gameStore.player.faceCards"
                   :key="card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  :is-glasses="card.rank === 8"
+                  :suit="faceDownWhenTopdecked(card).suit"
+                  :rank="faceDownWhenTopdecked(card).rank"
+                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
                   :data-player-face-card="`${card.rank}-${card.suit}`"
                 />
               </TransitionGroup>
@@ -542,7 +542,30 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
+    /**
+     * Which way "toward the deck" is, for a card leaving the field during a nine's topdeck.
+     * At xs the deck sits below the field; above xs it sits to the upper left, so a card on
+     * the player's half travels up and left while one on the opponent's half goes straight
+     * across. Jacks follow their own point row.
+     */
+    toDeckTransition() {
+      return (side, area) => {
+        if (this.$vuetify.display.xs) {
+          return area === 'points' ? Transitions.TO_DECK_DOWN : Transitions.TO_DECK_DOWN_LEFT;
+        }
+        return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
+      };
+    },
+    isTopdecking() {
+      return this.gameStore.topdeckedCard !== null;
+    },
+    topdeckedCardId() {
+      return this.gameStore.topdeckedCard?.id ?? null;
+    },
     playerPointsTransition() {
+      if (this.isTopdecking) {
+        return this.toDeckTransition('player', 'points');
+      }
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
@@ -568,6 +591,9 @@ export default {
       }
     },
     playerFaceCardsTransition() {
+      if (this.isTopdecking) {
+        return this.toDeckTransition('player', 'faceCards');
+      }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
@@ -577,6 +603,9 @@ export default {
       return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
+      if (this.isTopdecking) {
+        return this.toDeckTransition('opponent', 'points');
+      }
       switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
@@ -604,6 +633,9 @@ export default {
       }
     },
     opponentFaceCardsTransition() {
+      if (this.isTopdecking) {
+        return this.toDeckTransition('opponent', 'faceCards');
+      }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_LEFT;
@@ -737,6 +769,17 @@ export default {
     handleError(messageKey) {
       this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
+    },
+    isTopdeckedCard(card) {
+      return card.id === this.topdeckedCardId;
+    },
+    /**
+     * Withholds suit and rank from the card a nine is topdecking, which is all GameCard needs
+     * to render its back (see its isBack check) and flips it via the existing CARD_FLIP
+     * transition. Data attributes keep using the real card so selectors stay stable.
+     */
+    faceDownWhenTopdecked(card) {
+      return this.isTopdeckedCard(card) ? { suit: undefined, rank: undefined } : card;
     },
     showCustomSnackbarMessage(messageKey) {
       this.snackbarStore.alert(this.t(messageKey), 'base-dark');
