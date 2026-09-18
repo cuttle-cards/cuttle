@@ -666,23 +666,38 @@ describe('Video Playground', () => {
       p1Points: [ Card.TEN_OF_CLUBS ],
       p1FaceCards: [],
     });
+    markClipStart();
+    cy.wait(1500);
+
+    // START RECORDING //
+    // Player puts the Ten of Spades out for points
     cy.get('[data-player-hand-card]').should('have.length', 3);
     cy.get('[data-player-hand-card=10-3]').click();
+    cy.wait(1000);
     cy.get('[data-move-choice=points]').click();
     cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+    cy.wait(1500);
+
+    // Opponent steals it with a Jack
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
-    cy.wait(2000);
     cy.get('#turn-indicator').contains('YOUR TURN');
-    
-    // START RECORDING HERE //
+    cy.wait(2500);
+
+    // Player answers with a Nine on the Jack
     cy.get('[data-player-hand-card=9-0]').click();
-    cy.wait(1000);
+    cy.wait(1200);
     cy.get('[data-move-choice=targetedOneOff]').click();
-    cy.wait(1000);
+    cy.wait(1200);
     cy.get('[data-opponent-face-card=11-1]').click();
     cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
+
+    // The topdeck animation: the Jack flips face down and travels to the deck, and the
+    // Ten it was stealing returns to the player's points
+    cy.get('[data-opponent-face-card=11-1]').should('not.exist');
+    cy.get('[data-player-point-card=10-3]').should('exist');
+    cy.wait(3000);
   });
 
   it('Loses to a jack steal then points for the win', () => {

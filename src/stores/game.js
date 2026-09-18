@@ -391,6 +391,11 @@ export const useGameStore = defineStore('game', () => {
       return;
     }
 
+    // Drop out of the countering phase up front, the way processThrees and processFives do.
+    // The authoritative state does not land until stage 3, so without this the "waiting for
+    // opponent to counter" scrim covers the whole animation.
+    phase.value = GamePhase.MAIN;
+
     // Stage 1: the target flips face down where it sits. Matches CARD_FLIP's --duration-slow
     // so the flip finishes before the card starts moving.
     topdeckedCard.value = targetCard;
