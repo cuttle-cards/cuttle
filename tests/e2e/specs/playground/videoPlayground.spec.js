@@ -700,6 +700,42 @@ describe('Video Playground', () => {
     cy.wait(3000);
   });
 
+  it('Plays a Nine to break check', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_SPADES, Card.FIVE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_CLUBS ],
+      p1FaceCards: [],
+    });
+    markClipStart();
+    cy.wait(1500);
+
+    // START RECORDING //
+    // Player adds a point of their own
+    playerPointsWithDelay(Card.ACE_OF_SPADES);
+
+    // Opponent goes to 20 of the 21 they need -- any point card now wins for them
+    opponentPointsWithDelay(Card.TEN_OF_SPADES);
+    cy.get('#turn-indicator').contains('YOUR TURN');
+    cy.wait(2500);
+
+    // Player answers with a Nine on the point card that put them in check
+    cy.get('[data-player-hand-card=9-0]').click();
+    cy.wait(1200);
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.wait(1200);
+    cy.get('[data-opponent-point-card=10-3]').click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.resolveOpponent();
+
+    // The Ten flips face down and travels to the deck, dropping the opponent back to 10
+    cy.get('[data-opponent-point-card=10-3]').should('not.exist');
+    cy.wait(3000);
+  });
+
   it('Loses to a jack steal then points for the win', () => {
     cy.loadGameFixture(0, {
       p0Hand: [ Card.TEN_OF_SPADES, Card.FIVE_OF_HEARTS ],
