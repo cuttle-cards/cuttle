@@ -773,6 +773,39 @@ describe('Video Playground', () => {
     cy.wait(3000);
   });
 
+  it('Opponent plays a Nine on the player\'s glasses eight', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [ Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.EIGHT_OF_HEARTS ],
+      p1Hand: [ Card.NINE_OF_CLUBS, Card.FIVE_OF_HEARTS, Card.KING_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_CLUBS ],
+      p1FaceCards: [],
+    });
+    markClipStart();
+
+    // The glasses eight has the opponent's hand face up
+    cy.get('[data-opponent-hand-card=9-0]').should('be.visible');
+    cy.wait(2000);
+
+    // START RECORDING //
+    // Player adds a point, handing over the turn
+    playerPointsWithDelay(Card.ACE_OF_SPADES);
+
+    // Opponent answers by topdecking the glasses
+    cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.EIGHT_OF_HEARTS, 'faceCard');
+    cy.get('#cannot-counter-dialog').should('be.visible');
+    cy.wait(2000);
+    cy.get('[data-cy=cannot-counter-resolve]').click();
+
+    // The glasses flip face down, travel up and left to the deck, and the opponent's
+    // hand goes back to card backs
+    cy.get('[data-player-face-card=8-2]').should('not.exist');
+    cy.get('[data-opponent-hand-card=9-0]').should('not.exist');
+    cy.get('[data-opponent-hand-card]').should('have.length', 2);
+    cy.wait(3000);
+  });
+
   it('Loses to a jack steal then points for the win', () => {
     cy.loadGameFixture(0, {
       p0Hand: [ Card.TEN_OF_SPADES, Card.FIVE_OF_HEARTS ],
