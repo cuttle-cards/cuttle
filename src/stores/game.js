@@ -496,27 +496,27 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
-    return new Promise((resolve, reject) => {
-      io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
-        switch (jwres.statusCode) {
-          case 200:
-            if (resetStateBeforeUpdate) {
-              resetState();
-              updateGame(res.game);
-            }
-            return handleInGameEvents(res, route).then(() => {
-              return resolve(res);
-            });
-          case 401:
-            authStore.mustReauthenticate = true;
-            // Resolve without a game state; ReauthenticateDialog handles recovery
-            return resolve(null);
-          default:
-            return reject(jwres.body.message);
-        }
-      });
-    });
+  async function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
+  const slug = `${gameId}?gameStateIndex=${gameStateIndex}`;
+
+  try {
+    if (resetStateBeforeUpdate) {
+      resetState();
+    }
+
+    const res = await makeSocketRequest(slug, {}, 'GET', true);
+
+    updateGame(res.body.game);
+    return await handleInGameEvents(res.body, route);
+  } catch (err) {
+    if (authStore.mustReauthenticate) {
+      id.value = gameId;
+      return null;
+    }
+
+    const message = err?.message ?? err ?? `Unable to get game state for game ${gameId}`;
+    throw new Error(message);
+  }
   }
   async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
