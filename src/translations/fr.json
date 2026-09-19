@@ -236,7 +236,7 @@
         "1": "Élimine tous les points.",
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez une carte autre qu'un 3 dans la défausse et mettez-la dans votre main.",
-        "4": "Votre adversaire défausse deux cartes de son choix.",
+        "4": "Votre adversaire défausse deux cartes au hasard de sa main.",
         "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes de la pioche et jouez en une.",
@@ -338,12 +338,6 @@
           "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
           "mustPickFromScrap": "Vous devez choisir une carte de la défausse",
           "cannotTargetThree": "Vous ne pouvez pas cibler un 3 avec un 3"
-        },
-        "four": {
-          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
-          "notYourTurn": "Ce n'est pas à vous de défausser",
-          "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
-          "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Vous ne pouvez vous défausser jusqu'à la limite de main que pendant la phase de défausse",
@@ -454,7 +448,7 @@
       "three": "Trois",
       "threeDescription": "Vous permet de récupérer de la défausse une carte (non-trois) de votre choix.",
       "four": "Quatre",
-      "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
+      "fourDescription": "Votre adversaire défausse deux cartes au hasard.",
       "five": "Cinq",
       "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu.",
       "six": "Six",
@@ -587,12 +581,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Les Neufs sont renforcés !",
-    "title": "Bêta des règles : Neufs sur la pioche",
-    "heading": "Les Neufs placent désormais les cartes sur la pioche",
-    "paragraph": "Le Neuf est l'une des plus fortes cartes du jeu, mais son effet unique a toujours été le plus limité. Désormais, au lieu de renvoyer une carte dans la main de son contrôleur, un Neuf place une carte du terrain de votre adversaire sur le dessus de la pioche : une carte de points, une figure ou le Valet du dessus d'une pile. Sa prochaine pioche lui rendra sa propre carte, le Neuf lui coûte donc un tour entier. Plus rien n'est gelé, et les Dames protègent toujours comme avant.",
-    "heading2": "La première de quatre expérimentations de la saison des Piques",
-    "paragraph2": "Il s'agit d'une bêta, et de la première de quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
+    "activatorText": "Le Quatre est amélioré !",
+    "title": "Bêta de règles : Quatre aléatoire",
+    "heading": "Le Quatre défausse désormais au hasard",
+    "paragraph": "Le Quatre est la carte la plus faible du jeu : un effet peu puissant sur un rang bas, avec peu de points et une faible valeur de sabordage. Et comme votre adversaire choisissait les deux cartes à défausser, il se séparait toujours de ses deux plus mauvaises. Désormais les deux cartes sont tirées au hasard, et un Quatre peut donc emporter quelque chose qui compte vraiment. Si votre adversaire a moins de deux cartes, il défausse ce qu'il a.",
+    "heading2": "L'une des quatre expérimentations de la saison des Piques",
+    "paragraph2": "Il s'agit d'une bêta, et de l'une des quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
     "patreonLink": "Aidez-nous à affiner le 4 et le 9"
   },
   "profile": {

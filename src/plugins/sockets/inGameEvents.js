@@ -63,6 +63,15 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.RESOLVE:
       switch (evData.game.lastEvent?.oneOff?.rank) {
+        // playedBy on a resolve is the player who resolved it -- the one whose hand was
+        // discarded -- so anyone else watching is the caster, who needs the reveal
+        case 4:
+          if (evData.playedBy !== gameStore.myPNum) {
+            await gameStore.processFours(evData.discardedCards, evData.game);
+          } else {
+            gameStore.updateGame(evData.game);
+          }
+          break;
         case 7:
           await gameStore.processSevens(evData.game);
           break;
@@ -80,6 +89,8 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE_THREE:
       await gameStore.processThrees(evData.chosenCard, evData.game);
       break;
+    // Legacy: fours resolve immediately as of rules 3.0.0, but stored games still step
+    // through a separate resolveFour frame, and this switch has no default to fall back on
     case SocketEvent.RESOLVE_FOUR:
       if (evData.playedBy !== gameStore.myPNum) {
         await gameStore.processFours(evData.discardedCards, evData.game);

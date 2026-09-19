@@ -236,7 +236,7 @@
         "1": "Alle Punktkarten abwerfen",
         "2": "Ziel-König oder Gläser Acht abwerfen",
         "3": "Wähle 1 Karte, die keine 3 ist, aus dem Abwurfstapel und nimm sie auf die Hand",
-        "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
+        "4": "Dein Gegner wirft zwei zufällige Karten von seiner Hand ab",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
@@ -338,12 +338,6 @@
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
           "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
           "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
-        },
-        "four": {
-          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
-          "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
-          "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
-          "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
@@ -454,7 +448,7 @@
       "three": "Drei",
       "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
-      "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
+      "fourDescription": "Dein Gegner wirft zwei zufällige Karten ab.",
       "five": "Fünf",
       "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel.",
       "six": "Sechs",
@@ -587,12 +581,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Neuner werden gestärkt!",
-    "title": "Regel-Beta: Neuner legen obenauf",
-    "heading": "Neuner legen Karten jetzt oben auf den Nachziehstapel",
-    "paragraph": "Ein Neuner ist eine der höchsten Karten im Spiel, doch sein Einmal-Effekt war schon immer der speziellste. Statt eine Karte auf die Hand ihres Besitzers zurückzugeben, legt ein Neuner jetzt eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel — eine Punktekarte, eine Royal oder den obersten Buben eines Stapels. Ihr nächster Zug bringt ihnen die eigene Karte zurück, der Neuner kostet sie also einen ganzen Zug. Nichts wird mehr eingefroren, und Damen schützen weiterhin wie bisher.",
-    "heading2": "Die erste von vier Testregeln der Pik-Saison",
-    "paragraph2": "Das ist eine Beta und die erste von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
+    "activatorText": "Vierer werden verbessert!",
+    "title": "Regel-Beta: Zufällige Vierer",
+    "heading": "Vierer werfen jetzt zufällig ab",
+    "paragraph": "Der Vierer ist die schwächste Karte im Spiel: ein schwacher Effekt auf einem niedrigen Rang mit wenig Punkten und kaum Versenkungswert. Und weil dein Gegner die beiden Karten aussuchte, verlor er immer nur seine zwei schlechtesten. Jetzt werden die beiden Karten zufällig gewählt, sodass ein Vierer auch wirklich wehtun kann. Hat dein Gegner weniger als zwei Karten, wirft er ab, was er hat.",
+    "heading2": "Eine von vier Testregeln der Pik-Saison",
+    "paragraph2": "Das ist eine Beta und eine von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
     "patreonLink": "Die 4 und die 9 verbessern"
   },
   "profile": {

@@ -661,7 +661,7 @@ describe('Playing SEVENS', () => {
       assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
     });
 
-    it('Cannot play 4 from seven when opponent has no cards in hand', () => {
+    it('Plays a 4 from a seven against an empty hand, discarding nothing', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -676,16 +676,27 @@ describe('Playing SEVENS', () => {
       // Play seven of clubs
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-      // Play Four of hearts
+      // Play Four of hearts -- a random discard against no cards is legal and does nothing
       cy.get('[data-top-card=4-2]').should('exist')
         .and('be.visible')
         .click();
       cy.get('[data-move-choice=oneOff]').click();
-
-      // Should not allow playing 4 as one-off
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      // Opponent does not counter (resolves stack)
+      cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      cy.get('#four-discard-dialog').should('not.exist');
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.SEVEN_OF_SPADES, Card.TEN_OF_SPADES ],
+        p1FaceCards: [],
+        scrap: [ Card.SEVEN_OF_CLUBS, Card.FOUR_OF_HEARTS ],
+      });
     });
   }); // End player seven one-off describe
 

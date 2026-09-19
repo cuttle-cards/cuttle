@@ -22,6 +22,12 @@ module.exports = async function (req, res) {
       secondCard = null,
       scrap = [],
       deck,
+      // Overrides so tests can stage states no live move can produce anymore -- notably the
+      // legacy RESOLVING_FOUR phase, which stored games still hold and replay.
+      phase = GamePhase.MAIN,
+      turn = 0,
+      resolved = null,
+      oneOff = null,
     } = req.body;
 
     const allFixtureCards = new Set(Object.values(req.body).flat()
@@ -58,15 +64,15 @@ module.exports = async function (req, res) {
       scrap: populatedScrap,
       twos: [],
       discardedCards: [],
-      oneOff: null,
+      oneOff,
       oneOffTarget: null,
-      resolved: null,
+      resolved,
       playedCard: null,
       gameId: game.id,
       playedBy: 0,
       moveType: MoveType.LOADFIXTURE,
-      turn: 0,
-      phase: GamePhase.MAIN,
+      turn,
+      phase,
       targetCard: null,
     };
 

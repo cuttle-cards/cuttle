@@ -1,14 +1,14 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'topdeckNines2026Announcement',
+  id: 'randomFours2026Announcement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [
-    { suit: 3, rank: 9 },
-    { suit: 2, rank: 9 },
+    { suit: 3, rank: 4 },
+    { suit: 1, rank: 4 },
   ],
-  startTime: '2026-09-16',
+  startTime: '2026-09-19',
   endTime: '2027-01-05',
   announcementText: [
     {
