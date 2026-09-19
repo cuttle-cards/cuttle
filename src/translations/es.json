@@ -236,7 +236,7 @@
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta que no sea un 3 del mazo de descarte y ponla en tu mano",
-        "4": "Tu rival descarta dos cartas de su mano a su elección",
+        "4": "Tu rival descarta dos cartas al azar de su mano",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
@@ -338,12 +338,6 @@
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes",
           "cannotTargetThree": "No puedes apuntar a un 3 con un 3"
-        },
-        "four": {
-          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
-          "notYourTurn": "No es tu turno para descartar",
-          "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
-          "mustSelectCards": "Debes seleccionar dos cartas para descartar"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Solo puedes descartar hasta el límite de la mano durante la fase de descarte",
@@ -454,7 +448,7 @@
       "three": "Tres",
       "threeDescription": "Elige una carta (no-tres) del mazo de descarte y ponla en tu mano.",
       "four": "Cuatro",
-      "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
+      "fourDescription": "Tu rival descarta dos cartas al azar.",
       "five": "Cinco",
       "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja.",
       "six": "Seis",
@@ -587,12 +581,12 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Los Nueves reciben una mejora!",
-    "title": "Beta de reglas: Nueves al mazo",
-    "heading": "Los Nueves ahora ponen cartas encima del mazo",
-    "paragraph": "El Nueve es una de las cartas más altas de la baraja, pero su efecto único siempre ha sido el más específico. Ahora, en lugar de devolver una carta a la mano de su controlador, un Nueve pone una carta del campo de tu rival encima del mazo: una carta de puntos, una Figura o la Jota superior de una pila. Su siguiente robo será su propia carta, así que el Nueve les cuesta un turno entero. Ya no se congela nada, y las Damas siguen protegiendo igual que antes.",
-    "heading2": "La primera de cuatro pruebas de la temporada de Picas",
-    "paragraph2": "Esto es una beta, y la primera de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
+    "activatorText": "¡Los Cuatros reciben una mejora!",
+    "title": "Beta de reglas: Cuatros al azar",
+    "heading": "Los Cuatros ahora descartan al azar",
+    "paragraph": "El Cuatro es la carta más débil del juego: un efecto flojo en un rango bajo, con pocos puntos y escaso valor para hundir. Y como tu rival elegía las dos cartas a descartar, siempre se deshacía de sus dos peores. Ahora las dos cartas se eligen al azar, así que un Cuatro puede llevarse algo que de verdad duela. Si tu rival tiene menos de dos cartas, descarta las que tenga.",
+    "heading2": "Una de cuatro pruebas de la temporada de Picas",
+    "paragraph2": "Esto es una beta, y una de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
     "patreonLink": "Ayuda a refinar el 4 y el 9"
   },
   "profile": {

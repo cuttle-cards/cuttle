@@ -79,8 +79,10 @@ module.exports = {
       case 6:
         result = sails.helpers.gameStates.moves.resolve.six(result);
         break;
-      case 3:
       case 4:
+        result = sails.helpers.gameStates.moves.resolve.four(result, playedBy);
+        break;
+      case 3:
       case 5:
       case 7:
         // These one-offs require an additional user input after resolving

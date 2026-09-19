@@ -466,7 +466,6 @@ export default {
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
-      showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
       showHistoryDrawer: false,

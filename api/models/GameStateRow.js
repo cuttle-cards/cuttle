@@ -66,7 +66,7 @@ module.exports = {
      * 1 - MAIN
      * 2 - COUNTERING
      * 3 - RESOLVING_THREE
-     * 4 - RESOLVING_FOUR
+     * 4 - RESOLVING_FOUR (legacy; rules < 3.0.0 only -- fours resolve immediately now)
      * 5 - RESOLVING_FIVE
      * 7 - RESOLVING_SEVEN
      */

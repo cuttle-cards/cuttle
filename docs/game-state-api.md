@@ -27,7 +27,7 @@ Enum describing the phase of a turn the game is currently in. Used to validate w
    * counter  
    * resolve  
 * resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-* resolvingFour \- Choosing cards to discard due to opponent four. Only legal move is resolveFour  
+* resolvingFour \- **Legacy (rules \< 3.0.0).** Choosing cards to discard due to opponent four; the only legal move was resolveFour. As of rules 3.0.0 a four discards two cards at random the moment it resolves, so no new game enters this phase. The value is retained because stored games still hold it and are re-rendered on replay.  
 * resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
 * resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
    * sevenPoints  
@@ -54,7 +54,7 @@ Enum designating which kind of move was made.
 * counter  
 * resolve  
 * resolveThree (picking a card from the scrap)  
-* resolveFour (discarding from hand)  
+* resolveFour (discarding from hand) \- **Legacy (rules \< 3.0.0);** no longer accepted, retained so stored games still render  
 * sevenPoints  
 * sevenScuttle  
 * sevenFaceCard  

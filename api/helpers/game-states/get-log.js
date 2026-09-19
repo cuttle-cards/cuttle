@@ -90,8 +90,17 @@ module.exports = {
               return `The ${resolvedCardName} resolves; the ${targetCardName} is scrapped.`;
             case 3:
               return `The ${resolvedCardName} one-off resolves; ${opponent} will draw one card of their choice from the Scrap pile.`;
-            case 4:
-              return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
+            case 4: {
+              // Legacy rows (rules < 3.0.0) deferred the discard to a separate resolveFour
+              // move, so the cards are named on that row and this one carries none.
+              if (!discardedCards?.length) {
+                return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
+              }
+              const discardNames = discardedCards.map(getFullCardName);
+              const discardList =
+                discardNames.length > 1 ? `the ${discardNames[0]} and the ${discardNames[1]}` : `the ${discardNames[0]}`;
+              return `The ${resolvedCardName} one-off resolves, discarding ${discardList} at random from ${player}'s hand.`;
+            }
             case 5:
               return `The ${resolvedCardName} one-off resolves; ${opponent} must discard 1 card, and will draw up to 3.`;
             case 6:

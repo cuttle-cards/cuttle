@@ -236,7 +236,7 @@
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
-        "4": "Your opponent discards two cards of their choice from their hand",
+        "4": "Your opponent discards two cards at random from their hand",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
@@ -339,12 +339,6 @@
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
           "mustPickFromScrap": "You must pick a card from the scrap",
           "cannotTargetThree": "You cannot target a three with a three"
-        },
-        "four": {
-          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
-          "notYourTurn": "It's not your turn to discard",
-          "notResolvingFourPhase": "Can't discard unless your opponent played a four",
-          "mustSelectCards": "You must select two cards to discard"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
@@ -455,7 +449,7 @@
       "three": "Three",
       "threeDescription": "Choose a (non-three) card from the scrap pile and put it in your hand.",
       "four": "Four",
-      "fourDescription": "Your opponent discards two cards of their choice.",
+      "fourDescription": "Your opponent discards two cards at random.",
       "five": "Five",
       "fiveDescription": "Discard one card then draw up to three cards from the deck.",
       "six": "Six",
@@ -588,12 +582,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Nines are getting a buff!",
-    "title": "Rules Beta: Topdeck Nines",
-    "heading": "Nines now put cards on top of the deck",
-    "paragraph": "A Nine is one of the highest cards in the deck, but its one-off has always been the most niche. Now, instead of returning a card to its controller's hand, a Nine one-off puts a card from your opponent's board on top of the deck — a point card, a Royal, or the top Jack of a stack. Their next draw is their own card coming back, so the Nine costs them a whole turn. Nothing is frozen any more, and Queens still protect as before.",
-    "heading2": "The first of four Spades season trials",
-    "paragraph2": "This is a beta, and the first of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",
+    "activatorText": "Fours are getting a buff!",
+    "title": "Rules Beta: Random Fours",
+    "heading": "Fours now discard at random",
+    "paragraph": "The Four is the weakest card in the game: a weak effect on a low rank with poor points and scuttling value. And because your opponent picked the two cards to discard, it always stripped their two worst ones. Now the two cards are chosen at random, so a Four can take something that actually hurts. If your opponent holds fewer than two cards, they discard whatever they have.",
+    "heading2": "One of four Spades season trials",
+    "paragraph2": "This is a beta, and one of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",
     "patreonLink": "Help refine the 4 and the 9"
   },
   "profile": {
