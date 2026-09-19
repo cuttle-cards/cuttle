@@ -61,6 +61,9 @@ module.exports = {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
       result.oneOff = null;
+      // Nothing is pending anymore, so the target slots have to clear too
+      result.oneOffTarget = null;
+      result.oneOffTargetType = null;
       result.phase = playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN;
       result.turn = playerMustDiscard ? result.turn : result.turn + 1;
       return exits.success(result);

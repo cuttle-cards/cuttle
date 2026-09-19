@@ -85,12 +85,35 @@ module.exports = {
         const twosAndNines = playerHand.filter((card) => [ 2, 9 ].includes(card.rank));
         for (let twoOrNine of twosAndNines) {
           for (let potentialTarget of opponentFaceCards) {
-            res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: potentialTarget.id, targetType: 'faceCard' });
+            res.push({
+              moveType,
+              playedBy,
+              cardId: twoOrNine.id,
+              targetId: potentialTarget.id,
+              targetType: TargetType.faceCard,
+            });
           }
 
           for (let pointCard of opponentPoints) {
+            // Only nines can target the point card itself
+            if (twoOrNine.rank === 9) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId: twoOrNine.id,
+                targetId: pointCard.id,
+                targetType: TargetType.point,
+              });
+            }
+
             if (pointCard.attachments.length) {
-              res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: pointCard.attachments.at(-1).id });
+              res.push({
+                moveType,
+                playedBy,
+                cardId: twoOrNine.id,
+                targetId: pointCard.attachments.at(-1).id,
+                targetType: TargetType.jack,
+              });
             }
           }
         }
@@ -224,6 +247,17 @@ module.exports = {
           }
 
           for (let opponentPoint of opponentPoints) {
+            // Only nines can target the point card itself
+            if (targetedOneOff.rank === 9) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId: targetedOneOff.id,
+                targetId: opponentPoint.id,
+                targetType: TargetType.point,
+              });
+            }
+
             if (opponentPoint.attachments.length) {
               res.push({
                 moveType,

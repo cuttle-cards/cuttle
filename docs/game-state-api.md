@@ -155,7 +155,7 @@ Represents a single card, in its object format.
 * id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
 * suit: `0 | 1 | 2 | 3`  
 * rank: `[1- 13]`  
-* isFrozen: `Boolean` \- whether the card is currently frozen due to a 9 and can’t be played this turn
+* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. No effect currently freezes a card; retained pending the outcome of the topdeck-nines beta
 
 ## Player
 

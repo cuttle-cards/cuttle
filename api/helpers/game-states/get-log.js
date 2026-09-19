@@ -108,7 +108,7 @@ module.exports = {
               )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${player}'s hand. It cannot be played next turn.`;
+              return `The ${resolvedCardName} one-off resolves, putting the ${targetCardName} on top of the deck.`;
           }
           break;
 

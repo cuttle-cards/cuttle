@@ -847,11 +847,12 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      // The queen went to the top of the deck, not back to the opponent's hand
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.QUEEN_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
@@ -902,11 +903,12 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      // The jack went to the top of the deck, and the ace it was stealing reverts to its owner
       assertGameState(0, {
         p0Hand: [],
         p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],

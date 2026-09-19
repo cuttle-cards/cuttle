@@ -222,35 +222,35 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="card.suit"
-                    :rank="card.rank"
+                    :suit="faceDownWhenTopdecked(card).suit"
+                    :rank="faceDownWhenTopdecked(card).rank"
                     :is-valid-target="validMoves.includes(card.id)"
                     :data-opponent-point-card="`${card.rank}-${card.suit}`"
                     controlled-by="opponent"
                     :scuttled-by="card.scuttledBy"
                     @click="targetOpponentPointCard(index)"
                   />
-                  <div class="jacks-container">
+                  <TransitionGroup :name="opponentJacksTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="jack.suit"
-                      :rank="jack.rank"
+                      :suit="faceDownWhenTopdecked(jack).suit"
+                      :rank="faceDownWhenTopdecked(jack).rank"
                       :is-jack="true"
                       :is-valid-target="validMoves.includes(jack.id)"
                       :data-opponent-face-card="`${jack.rank}-${jack.suit}`"
                       @click="targetOpponentFaceCard(-index - 1)"
                     />
-                  </div>
+                  </TransitionGroup>
                 </div>
               </TransitionGroup>
               <TransitionGroup :name="opponentFaceCardsTransition" tag="div" class="field-effects">
                 <GameCard
                   v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  :is-glasses="card.rank === 8"
+                  :suit="faceDownWhenTopdecked(card).suit"
+                  :rank="faceDownWhenTopdecked(card).rank"
+                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
                   :is-valid-target="validMoves.includes(card.id)"
                   :data-opponent-face-card="`${card.rank}-${card.suit}`"
                   @click="targetOpponentFaceCard(index)"
@@ -266,32 +266,32 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="card.suit"
-                    :rank="card.rank"
+                    :suit="faceDownWhenTopdecked(card).suit"
+                    :rank="faceDownWhenTopdecked(card).rank"
                     :jacks="card.attachments"
                     :data-player-point-card="`${card.rank}-${card.suit}`"
                     :scuttled-by="card.scuttledBy"
                     controlled-by="player"
                   />
-                  <div class="jacks-container">
+                  <TransitionGroup :name="playerJacksTransition" tag="div" class="jacks-container">
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="jack.suit"
-                      :rank="jack.rank"
+                      :suit="faceDownWhenTopdecked(jack).suit"
+                      :rank="faceDownWhenTopdecked(jack).rank"
                       :is-jack="true"
                       :data-player-face-card="`${jack.rank}-${jack.suit}`"
                     />
-                  </div>
+                  </TransitionGroup>
                 </div>
               </TransitionGroup>
               <TransitionGroup :name="playerFaceCardsTransition" tag="div" class="field-effects">
                 <GameCard
                   v-for="card in gameStore.player.faceCards"
                   :key="card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  :is-glasses="card.rank === 8"
+                  :suit="faceDownWhenTopdecked(card).suit"
+                  :rank="faceDownWhenTopdecked(card).rank"
+                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
                   :data-player-face-card="`${card.rank}-${card.suit}`"
                 />
               </TransitionGroup>
@@ -466,8 +466,6 @@ export default {
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
-      targetType: null,
-      nineTargetIndex: null,
       showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
@@ -544,7 +542,18 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
+    /**
+     * True for the one list a topdecked card is leaving from. Every other list keeps its
+     * usual direction, so a topdecked jack can head for the deck while the point card it was
+     * stealing goes back to its owner in the same render.
+     */
+    topdeckZone() {
+      return this.gameStore.topdeckedCardZone;
+    },
     playerPointsTransition() {
+      if (this.topdeckZone === 'playerPoints') {
+        return this.toDeckTransition('player', 'points');
+      }
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
@@ -553,18 +562,10 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_UP;
-            // For nines, transition direction depends on target type
+            // Nines put the target on the deck; the only point card entering here is a
+            // jacked card whose control reverts when its jack is topdecked
             case 9:
-              switch (this.gameStore.lastEventTargetType) {
-                // Nine on jack causes points to swap control
-                case 'jack':
-                  return Transitions.SLIDE_UP;
-                // Everything else expect cards to move back to hand
-                case 'point':
-                case 'faceCard':
-                default:
-                  return Transitions.SLIDE_DOWN;
-              }
+              return Transitions.SLIDE_UP;
             default:
               return Transitions.SLIDE_DOWN_LEFT;
           }
@@ -578,15 +579,9 @@ export default {
       }
     },
     playerFaceCardsTransition() {
-      // If a face card is bounced by a nine, slide down to player hand
-      if (
-        this.gameStore.lastEventChange === 'resolve' &&
-        this.gameStore.lastEventOneOffRank === 9 &&
-        this.gameStore.lastEventTargetType === 'faceCard'
-      ) {
-        return Transitions.SLIDE_DOWN;
+      if (this.topdeckZone === 'playerFaceCards') {
+        return this.toDeckTransition('player', 'faceCards');
       }
-
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
@@ -596,6 +591,9 @@ export default {
       return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
+      if (this.topdeckZone === 'opponentPoints') {
+        return this.toDeckTransition('opponent', 'points');
+      }
       switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
@@ -610,16 +608,10 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_DOWN;
-            // Nine transitions depend on the target type
+            // Nines move the target off the board entirely (to the deck), or hand a
+            // jacked point card back down to the player
             case 9:
-              switch (this.gameStore.lastEventTargetType) {
-                // Nine on a jack switches point card control
-                case 'jack':
-                  return Transitions.SLIDE_DOWN;
-                // Everything else returns cards to hand
-                default:
-                  return Transitions.SLIDE_UP;
-              }
+              return Transitions.SLIDE_DOWN;
             default:
               return Transitions.SLIDE_UP_DOWN;
           }
@@ -629,13 +621,8 @@ export default {
       }
     },
     opponentFaceCardsTransition() {
-      // If a face card is bounced by a nine, slide up to opponent's hand
-      if (
-        this.gameStore.lastEventChange === 'resolve' &&
-        this.gameStore.lastEventOneOffRank === 9 &&
-        this.gameStore.lastEventTargetType === 'faceCard'
-      ) {
-        return Transitions.SLIDE_UP;
+      if (this.topdeckZone === 'opponentFaceCards') {
+        return this.toDeckTransition('opponent', 'faceCards');
       }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
@@ -644,6 +631,20 @@ export default {
 
       // Otherwise in from opponent hand, out towards scrap
       return Transitions.SLIDE_UP_DOWN;
+    },
+    /**
+     * Jacks ride along with the point row they sit on, except when the jack itself is the
+     * card being topdecked -- then it leaves for the deck while its point card goes home.
+     */
+    playerJacksTransition() {
+      return this.topdeckZone === 'playerJacks'
+        ? this.toDeckTransition('player', 'points')
+        : this.playerPointsTransition;
+    },
+    opponentJacksTransition() {
+      return this.topdeckZone === 'opponentJacks'
+        ? this.toDeckTransition('opponent', 'points')
+        : this.opponentPointsTransition;
     },
     //////////////////
     // Interactions //
@@ -712,18 +713,6 @@ export default {
           return [];
       }
     },
-    nineTarget() {
-      switch (this.targetType) {
-        case 'point':
-          return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
-        case 'faceCard':
-          return this.nineTargetIndex !== null
-            ? this.gameStore.opponent.faceCards[this.nineTargetIndex]
-            : null;
-        default:
-          return null;
-      }
-    },
     // Sevens
     playingFromDeck() {
       return this.gameStore.playingFromDeck;
@@ -783,12 +772,33 @@ export default {
       this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
     },
+    /**
+     * Which way "toward the deck" is, for a card leaving the field during a nine's topdeck.
+     * At xs the deck sits below the field; above xs it sits to the upper left, so a card on
+     * the player's half travels up and left while one on the opponent's half goes straight
+     * across. Jacks follow their own point row.
+     */
+    toDeckTransition(side, area) {
+      if (this.$vuetify.display.xs) {
+        return area === 'points' ? Transitions.TO_DECK_DOWN : Transitions.TO_DECK_DOWN_LEFT;
+      }
+      return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
+    },
+    isTopdeckedCard(card) {
+      return card.id === (this.gameStore.topdeckedCard?.id ?? null);
+    },
+    /**
+     * Withholds suit and rank from the card a nine is topdecking, which is all GameCard needs
+     * to render its back (see its isBack check) and flips it via the existing CARD_FLIP
+     * transition. Data attributes keep using the real card so selectors stay stable.
+     */
+    faceDownWhenTopdecked(card) {
+      return this.isTopdeckedCard(card) ? { suit: undefined, rank: undefined } : card;
+    },
     showCustomSnackbarMessage(messageKey) {
       this.snackbarStore.alert(this.t(messageKey), 'base-dark');
     },
     clearOverlays() {
-      this.nineTargetIndex = null;
-      this.targetType = null;
       this.targeting = false;
     },
     clearSelection() {

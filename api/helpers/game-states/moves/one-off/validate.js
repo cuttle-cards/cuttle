@@ -86,6 +86,16 @@ module.exports = {
             throw new BadRequestError('Twos can only target royals or glasses');
           }
 
+          // Only the top attachment can be targeted. Each jack's owner is derived from its
+          // position in the stack, so removing a buried one silently reassigns the jacks above
+          // it -- and with them, control of the point card.
+          if (
+            requestedMove.targetType === 'jack' &&
+            !sails.helpers.gameStates.isTopJack(requestedMove.targetId, opponent)
+          ) {
+            throw new BadRequestError('game.snackbar.oneOffs.onlyTopJack');
+          }
+
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
 
           // Legal if not blocked by opponent's queen(s)

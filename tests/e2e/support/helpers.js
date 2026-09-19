@@ -303,6 +303,13 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
   if (fixture.scrap) {
     cy.get('#scrap').contains(`(${fixture.scrap.length})`);
   }
+
+  // Test deck size (if provided)
+  if (typeof fixture.deckLength === 'number') {
+    cy.get('#deck .c-deck-count').invoke('text')
+      .invoke('trim')
+      .should('eq', `(${fixture.deckLength})`);
+  }
 }
 
 export function setupSeasons() {
@@ -432,6 +439,16 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
           `Scrap should match fixture, but actual ${printCardList(
             game.scrap,
           )} did not contain: ${printCardList(fixture.scrap)}`,
+        );
+      }
+
+      // Deck size if specified. Only the size is assertable from a player's perspective:
+      // create-socket-events' hideDeck() replaces every deck card with { isHidden: true }
+      // except while resolving a seven, so the cards themselves are unknowable here.
+      if (typeof fixture.deckLength === 'number') {
+        expect(game.deck.length).to.eq(
+          fixture.deckLength,
+          `Expected deck to hold ${fixture.deckLength} cards, but it held ${game.deck.length}`,
         );
       }
 
@@ -702,6 +719,7 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
  *   p1Hand: {suit: number, rank: number}[],
  *   p1Points: {suit: number, rank: number}[],
  *   p1FaceCards: {suit: number, rank: number}[],
+ *   deckLength?: number - asserts how many cards remain in the deck
  * }
  * @param pNum: int [0, 1]
  */

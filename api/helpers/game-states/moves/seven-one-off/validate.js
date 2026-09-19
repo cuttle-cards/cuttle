@@ -76,6 +76,14 @@ module.exports = {
             throw new BadRequestError('Twos can only target royals or glasses');
           }
 
+          // Only the top attachment can be targeted
+          if (
+            requestedMove.targetType === 'jack' &&
+            !sails.helpers.gameStates.isTopJack(requestedMove.targetId, opponent)
+          ) {
+            throw new BadRequestError('game.snackbar.oneOffs.onlyTopJack');
+          }
+
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
 
           // Legal if not blocked by opponent's queen(s)

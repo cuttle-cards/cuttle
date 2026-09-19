@@ -104,7 +104,13 @@ export const useGameStore = defineStore('game', () => {
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
-  const lastEventTargetType = ref(null);
+  // Set only while a nine's topdeck animation is in flight. Drives both the face-down flip
+  // (GameCard renders its back when suit/rank are withheld) and the toward-the-deck exit.
+  const topdeckedCard = ref(null);
+  // Which list the topdecked card sat in, captured before the server state lands so the row
+  // it leaves from animates toward the deck while the others keep their usual direction:
+  // 'playerPoints' | 'playerFaceCards' | 'playerJacks' | 'opponent...' equivalents.
+  const topdeckedCardZone = ref(null);
   const lastEventPlayedBy = ref(null);
   // GameOver
   const gameIsOver = ref(false);
@@ -249,7 +255,6 @@ export const useGameStore = defineStore('game', () => {
   function updateGame(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
-    lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
@@ -310,7 +315,8 @@ export const useGameStore = defineStore('game', () => {
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
-    lastEventTargetType.value = null;
+    topdeckedCard.value = null;
+    topdeckedCardZone.value = null;
     lastEventPlayedBy.value = null;
     lastEventThreeTarget.value = null;
     gameIsOver.value = false;
@@ -374,6 +380,95 @@ export const useGameStore = defineStore('game', () => {
     await sleep(1000);
     updateGame(game);
   }
+  /**
+   * Finds which list a card currently sits in, so the row it leaves from can animate toward
+   * the deck while every other row keeps its usual direction.
+   */
+  function findFieldZone(cardId) {
+    const sides = [ [ 'player', player.value ], [ 'opponent', opponent.value ] ];
+    for (const [ side, fieldPlayer ] of sides) {
+      if (!fieldPlayer) {
+        continue;
+      }
+      if (fieldPlayer.faceCards?.some(({ id }) => id === cardId)) {
+        return `${side}FaceCards`;
+      }
+      if (fieldPlayer.points?.some(({ id }) => id === cardId)) {
+        return `${side}Points`;
+      }
+      if (fieldPlayer.points?.some(({ attachments }) => attachments?.some(({ id }) => id === cardId))) {
+        return `${side}Jacks`;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Removes a card from either player's points or face cards, including jacks attached to a
+   * point card. Lets a card play its exit before the server state is applied.
+   */
+  function removeCardFromField(cardId) {
+    players.value.forEach((fieldPlayer) => {
+      if (!fieldPlayer) {
+        return;
+      }
+      const faceCardIndex = fieldPlayer.faceCards?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (faceCardIndex > -1) {
+        fieldPlayer.faceCards.splice(faceCardIndex, 1);
+      }
+
+      const pointIndex = fieldPlayer.points?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (pointIndex > -1) {
+        fieldPlayer.points.splice(pointIndex, 1);
+        return;
+      }
+
+      fieldPlayer.points?.forEach((pointCard) => {
+        const jackIndex = pointCard.attachments?.findIndex(({ id }) => id === cardId) ?? -1;
+        if (jackIndex > -1) {
+          pointCard.attachments.splice(jackIndex, 1);
+        }
+      });
+    });
+  }
+
+  /**
+   * Animates a nine putting its target on top of the deck, in three stages.
+   *
+   * The exit and the knock-on move could share a render -- a topdecked jack leaves through
+   * the jacks list while its point card goes home through the points list, and those are
+   * separate TransitionGroups, so the directions do not compete. They are kept apart on
+   * purpose: giving the card its own beat to reach the deck before the point card comes
+   * home reads better than both moving at once.
+   */
+  async function processNines(targetCard, game) {
+    if (!targetCard || !player.value) {
+      updateGame(game);
+      return;
+    }
+
+    // Drop out of the countering phase up front, the way processThrees and processFives do.
+    // The authoritative state does not land until stage 3, so without this the "waiting for
+    // opponent to counter" scrim covers the whole animation.
+    phase.value = GamePhase.MAIN;
+
+    // Stage 1: the target flips face down where it sits. Matches CARD_FLIP's --duration-slow
+    // so the flip finishes before the card starts moving.
+    topdeckedCardZone.value = findFieldZone(targetCard.id);
+    topdeckedCard.value = targetCard;
+    await sleep(1000);
+
+    // Stage 2: the card leaves for the deck on its own, and the deck grows to match
+    removeCardFromField(targetCard.id);
+    deck.value.unshift({ isHidden: true });
+    await sleep(1000);
+
+    // Stage 3: the server state lands, bringing a topdecked jack's point card home
+    topdeckedCard.value = null;
+    topdeckedCardZone.value = null;
+    updateGame(game);
+  }
+
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
     const three = game.resolved;
@@ -737,7 +832,8 @@ export const useGameStore = defineStore('game', () => {
     lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
-    lastEventTargetType,
+    topdeckedCard,
+    topdeckedCardZone,
     lastEventPlayedBy,
     gameIsOver,
     winnerPNum,
@@ -791,6 +887,7 @@ export const useGameStore = defineStore('game', () => {
     setGameOver,
     setRematch,
     processScuttle,
+    processNines,
     processThrees,
     processFours,
     processFives,

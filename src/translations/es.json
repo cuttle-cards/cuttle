@@ -241,7 +241,7 @@
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
-        "9": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno.",
+        "9": "Pon la carta objetivo encima del mazo",
         "10": "Sin efecto",
         "11": "Juega sobre una carta de puntos objetivo para robarla",
         "12": "Tus otras cartas no pueden ser objetivo de habilidades Únicas (pero sí pueden ser hundidas por cartas de puntos más altas)",
@@ -362,7 +362,8 @@
           "wrongPhase": "No puedes jugar desde el mazo en este momento",
           "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
           "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
-        }
+        },
+        "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila"
       }
     }
   },
@@ -461,7 +462,7 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
+      "nineDescription": "Pon una carta del campo de tu rival encima del mazo.",
       "ten": "Diez",
       "tenDescription": "Sin efecto."
     },
@@ -490,7 +491,7 @@
       "rule2": "Baraja dos comodines (Jokers) en el mazo. Los comodines cuentan como Figuras con el efecto \"Roba una Figura objetivo\", similar a la Sota. Al igual que las Sotas, pueden transferir el control de una Figura de cualquier jugador a cualquier otro jugador.",
       "rule3": "El límite de cartas en la mano se reduce a 7 (de 8).",
       "rule4": "Se pueden jugar Sotas para transferir el control de cualquier carta de puntos a cualquier otro jugador. Por lo tanto, puedes \"robarte\" puntos a ti mismo (o a cualquier otra persona) para dárselos a tu compañero, potencialmente ganando en tu turno con sus puntos (su objetivo aún está determinado por la cantidad de Reyes en su propio campo).",
-      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para devolver una carta a la mano de su controlador y evitar que juegue esa carta en su próximo turno."
+      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para poner una carta del campo de tu rival encima del mazo."
     },
     "faq": {
       "title": "FAQ",
@@ -586,13 +587,13 @@
     }
   },
   "announcement": {
-    "activatorText": "¡En directo ahora: Campeonato de la temporada Diamonds 2026!",
-    "title": "Campeonato Diamonds 2026",
-    "heading": "En directo ahora: Campeonato de temporada de Cuttle",
-    "paragraph": "¡El Campeonato de la Temporada Diamonds 2026 de Cuttle está en directo ahora mismo! Los 8 mejores jugadores de la última temporada de partidas clasificatorias se enfrentan en un torneo de doble eliminación por el título de Campeón de la Temporada Diamonds 2026 de Cuttle. Míralo en directo en",
-    "twitchLink": "Twitch",
-    "linkSeparator": "o",
-    "youtubeLink": "YouTube"
+    "activatorText": "¡Los Nueves reciben una mejora!",
+    "title": "Beta de reglas: Nueves al mazo",
+    "heading": "Los Nueves ahora ponen cartas encima del mazo",
+    "paragraph": "El Nueve es una de las cartas más altas de la baraja, pero su efecto único siempre ha sido el más específico. Ahora, en lugar de devolver una carta a la mano de su controlador, un Nueve pone una carta del campo de tu rival encima del mazo: una carta de puntos, una Figura o la Jota superior de una pila. Su siguiente robo será su propia carta, así que el Nueve les cuesta un turno entero. Ya no se congela nada, y las Damas siguen protegiendo igual que antes.",
+    "heading2": "La primera de cuatro pruebas de la temporada de Picas",
+    "paragraph2": "Esto es una beta, y la primera de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
+    "patreonLink": "Ayuda a refinar el 4 y el 9"
   },
   "profile": {
     "myGames": "Mis juegos",
