@@ -159,7 +159,7 @@ Represents a single card, in its object format.
 * id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
 * suit: `0 | 1 | 2 | 3`  
 * rank: `[1- 13]`  
-* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. Nothing freezes cards as of rules version 3.0.0 (9's used to, but no longer do), so this is always false; the field is retained so the mechanic can be restored if the rules change back
+* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. Nothing freezes cards as of rules version 4.0.0 (9's used to, but no longer do), so this is always false; the field is retained so the mechanic can be restored if the rules change back
 
 ## Player
 
