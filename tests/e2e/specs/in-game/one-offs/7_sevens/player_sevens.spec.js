@@ -681,10 +681,10 @@ describe('Playing SEVENS', () => {
         .and('be.visible')
         .click();
       cy.get('[data-move-choice=oneOff]').click();
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      // Opponent does not counter (resolves stack)
+      cy.resolveOpponent();
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
       cy.get('#four-discard-dialog').should('not.exist');
