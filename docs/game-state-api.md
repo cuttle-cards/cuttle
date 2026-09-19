@@ -51,6 +51,7 @@ Enum designating which kind of move was made.
 * jack  
 * untargetedOneOff  
 * targetedOneOff  
+   * A 2 takes exactly one target (a royal or glasses eight). A 9 takes exactly **two** distinct targets, which may be any mix of point cards, royals/glasses, and top jacks; it returns both to the hand of whoever controlled them, unfrozen. Only the top jack of a stack is targetable. Any queen at all blocks a 9 (a queen protects everything else, leaving itself the only legal target, so two legal targets are impossible), whereas a 2 is only blocked by two or more queens. See `api/helpers/game-states/validate-nine-targets.js`.  
 * counter  
 * resolve  
 * resolveThree (picking a card from the scrap)  
@@ -100,6 +101,7 @@ A GameState record represents one move made by a player and the resulting game s
 * phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
 * playedCard: `String | null` the card that was played  
 * targetCard: `String | null` the card that was targeted  
+* targetCardTwo: `String | null` the second card that was targeted. Only used by 9's, which return two cards  
 * discardedCards: `Array<String>`  
 * p0Hand: `Array<String>`  
    * Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
@@ -115,6 +117,8 @@ A GameState record represents one move made by a player and the resulting game s
 * scrap: `Array<String>`: list of cards currently in the scrap
 * oneOff: `String | null`: the one-off currently in play, before resolution. Unset once resolved
 * oneOffTarget: `String | null`: target of the currently resolving one-off. Unset once one-off resolves 
+* oneOffTargetTwo: `String | null`: second target of the currently resolving one-off. Only set for 9's, which require two targets. Unset once one-off resolves 
+* oneOffTargetTwoType: `'point' | 'jack' | 'faceCard' | null`: where the second target is located 
 * twos: `Array<String>`: array of twos played as counters, currently on the stack, awaiting resolution
 * resolving: `String`: one-off being resolved in a secondary step e.g. a three while awaiting player selection from the scrap
 * gameId: ID \- FK to the games table  
@@ -155,7 +159,7 @@ Represents a single card, in its object format.
 * id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
 * suit: `0 | 1 | 2 | 3`  
 * rank: `[1- 13]`  
-* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. No effect currently freezes a card; retained pending the outcome of the topdeck-nines beta
+* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. Nothing freezes cards as of rules version 4.0.0 (9's used to, but no longer do), so this is always false; the field is retained so the mechanic can be restored if the rules change back
 
 ## Player
 
@@ -183,9 +187,12 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
 * deck: `Array<Card>`: Cards in the deck, in order (this removes the need for topCard and secondCard)  
 * scrap: `Array<Card>` \- the cards currently in the scrap  
 * oneOff: `Card | null` \- the current one-off that is waiting to resolve or be countered. Playing a oneOff removes the card from the player’s hand and puts it here while players counter back and forth until someone resolves, at which point the oneOff and all twos are scrapped and the effect resolves or fizzles base on the number of twos played   
-* oneOffTarget: `Card | null` \- when a 2 or 9 one-off is played, this describes which card is targeted by its effect  
+* oneOffTarget: `Card | null` \- when a 2 or 9 one-off is played, this describes which card is targeted by its effect. For a 9 this is the first of its two targets  
 * oneOffTargetType `‘point’ | ‘faceCard’ | ‘jack’`  
     * When the current oneOff is a 2/9, this describes where the target is located e.g. if the target is the 8 of hearts, is that a point card or face card (glasses)  
+* oneOffTargetTwo: `Card | null` \- a 9 returns two cards, so this describes its second target. Always null for every other one-off  
+* oneOffTargetTwoType `‘point’ | ‘faceCard’ | ‘jack’ | null`  
+    * Where the 9's second target is located  
 * twos: `Array<Card>` \- array of twos that have been played to counter the current oneOff  
 * resolved: `Card | null` \- for a MoveType.RESOLVE move, this describes which oneOff just resolved or fizzled. This is not considered a “place” the cards can exist as the card is in the scrap at that point. Instead it’s just a description of which oneOff just resolved/fizzled.  
 * gameId: ID \- FK to the games table  
@@ -199,6 +206,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
 * playerId: int  
 * playedCard?: Object (the card that was played)  
 * targetCard?: Object (the card that was targeted)  
+* targetCardTwo?: Object (the second card that was targeted, for 9's)  
 * attachedToTarget?: Object (the point card that the target was attached to if the target was a jack)  
 * gameOver: boolean  
 * game: Object (full game state)  
@@ -217,6 +225,9 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
    * oneOffTarget  
       * nullable, card object | player  
    * oneOffTargetType: enum  
+   * oneOffTargetTwo  
+      * nullable, card object. The 9's second target  
+   * oneOffTargetTwoType: enum  
        * PLAYER  
        * POINT\_CARD  
        * FACE\_CARD  

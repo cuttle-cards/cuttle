@@ -720,20 +720,24 @@ describe('Video Playground', () => {
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.wait(2500);
 
-    // Player answers with a Nine on the Jack
+    // Player answers with a Nine, taking both the Jack and the point card under it
     cy.get('[data-player-hand-card=9-0]').click();
     cy.wait(1200);
     cy.get('[data-move-choice=targetedOneOff]').click();
     cy.wait(1200);
     cy.get('[data-opponent-face-card=11-1]').click();
     cy.wait(1000);
+    cy.get('[data-opponent-point-card=10-3]').click();
+    cy.wait(1000);
+    cy.get('[data-cy=confirm-targets]').click();
+    cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
 
-    // The topdeck animation: the Jack flips face down and travels to the deck, and the
-    // Ten it was stealing returns to the player's points
+    // Both cards head for the opponent's hand: the Jack and the Ten it was stealing were
+    // theirs to control, so they go back together
     cy.get('[data-opponent-face-card=11-1]').should('not.exist');
-    cy.get('[data-player-point-card=10-3]').should('exist');
+    cy.get('[data-opponent-point-card=10-3]').should('not.exist');
     cy.wait(3000);
   });
 
@@ -758,18 +762,23 @@ describe('Video Playground', () => {
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.wait(2500);
 
-    // Player answers with a Nine on the point card that put them in check
+    // Player answers with a Nine, taking back both of the opponent's point cards
     cy.get('[data-player-hand-card=9-0]').click();
     cy.wait(1200);
     cy.get('[data-move-choice=targetedOneOff]').click();
     cy.wait(1200);
     cy.get('[data-opponent-point-card=10-3]').click();
     cy.wait(1000);
+    cy.get('[data-opponent-point-card=10-0]').click();
+    cy.wait(1000);
+    cy.get('[data-cy=confirm-targets]').click();
+    cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
 
-    // The Ten flips face down and travels to the deck, dropping the opponent back to 10
+    // Both Tens slide up to the opponent's hand, dropping them from 20 points to 0
     cy.get('[data-opponent-point-card=10-3]').should('not.exist');
+    cy.get('[data-opponent-point-card=10-0]').should('not.exist');
     cy.wait(3000);
   });
 
@@ -792,15 +801,22 @@ describe('Video Playground', () => {
     // Player adds a point, handing over the turn
     playerPointsWithDelay(Card.ACE_OF_SPADES);
 
-    // Opponent answers by topdecking the glasses
-    cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.EIGHT_OF_HEARTS, 'faceCard');
+    // Opponent answers by returning the glasses and the point card under them
+    cy.playTargetedOneOffOpponent(
+      Card.NINE_OF_CLUBS,
+      Card.EIGHT_OF_HEARTS,
+      'faceCard',
+      Card.TEN_OF_HEARTS,
+      'point',
+    );
     cy.get('#cannot-counter-dialog').should('be.visible');
     cy.wait(2000);
     cy.get('[data-cy=cannot-counter-resolve]').click();
 
-    // The glasses flip face down, travel up and left to the deck, and the opponent's
-    // hand goes back to card backs
+    // Both cards slide down to the player's hand, and with the glasses gone the
+    // opponent's hand goes back to card backs
     cy.get('[data-player-face-card=8-2]').should('not.exist');
+    cy.get('[data-player-point-card=10-2]').should('not.exist');
     cy.get('[data-opponent-hand-card=9-0]').should('not.exist');
     cy.get('[data-opponent-hand-card]').should('have.length', 2);
     cy.wait(3000);

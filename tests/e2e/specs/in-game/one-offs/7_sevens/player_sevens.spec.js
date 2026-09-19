@@ -827,7 +827,7 @@ describe('Playing SEVENS', () => {
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS, Card.KING_OF_CLUBS ],
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
@@ -839,22 +839,25 @@ describe('Playing SEVENS', () => {
         .and('be.visible')
         .click();
       cy.get('[data-move-choice=targetedOneOff]').click();
-      // target queen of clubs
-      cy.get('[data-opponent-face-card=12-0]').find('.valid-move')
+      // A nine needs two targets, and any queen would block it entirely, so take both kings
+      cy.get('[data-opponent-face-card=13-2]').find('.valid-move')
         .click({ force: true }); // force because overlay itself is not techincally clickable
+      cy.get('[data-opponent-face-card=13-0]').find('.valid-move')
+        .click({ force: true });
+      cy.get('[data-cy=confirm-targets]').should('not.be.disabled')
+        .click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
-      // The queen went to the top of the deck, not back to the opponent's hand
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.KING_OF_HEARTS, Card.KING_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        p1FaceCards: [],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
       });
     }); // End playing NINE from seven
@@ -895,22 +898,26 @@ describe('Playing SEVENS', () => {
         .and('be.visible')
         .click();
       cy.get('[data-move-choice=targetedOneOff]').click();
-      // target jack of clubs
+      // Target the jack and the king. The jacked point card is not a target, so it
+      // reverts to its owner's points.
       cy.get('[data-opponent-face-card=11-0]').find('.valid-move')
         .click({ force: true }); // force b/c overlay itself is not technically clickable
+      cy.get('[data-opponent-face-card=13-2]').find('.valid-move')
+        .click({ force: true });
+      cy.get('[data-cy=confirm-targets]').should('not.be.disabled')
+        .click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
-      // The jack went to the top of the deck, and the ace it was stealing reverts to its owner
       assertGameState(0, {
         p0Hand: [],
         p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.JACK_OF_CLUBS, Card.KING_OF_HEARTS ],
         p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        p1FaceCards: [],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
       });
     }); // End playing NINE on jacks from a seven

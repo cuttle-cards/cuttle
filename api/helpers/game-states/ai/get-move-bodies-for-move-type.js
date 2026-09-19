@@ -1,6 +1,70 @@
 const MoveType = require('../../../../utils/MoveType');
 const TargetType = require('../../../../utils/TargetType');
 
+/**
+ * Legal targets for a two: royals, glasses eights, and the top jack of each point card.
+ * Point cards themselves are never legal targets for a two.
+ */
+function getTwoTargets(opponentPoints, opponentFaceCards) {
+  const faceCardTargets = opponentFaceCards.map(({ id }) => ({
+    targetId: id,
+    targetType: TargetType.faceCard,
+  }));
+  const jackTargets = opponentPoints
+    .filter(({ attachments }) => attachments.length)
+    .map(({ attachments }) => ({ targetId: attachments.at(-1).id, targetType: TargetType.jack }));
+
+  return [ ...faceCardTargets, ...jackTargets ];
+}
+
+/**
+ * Every legal pair of targets for a nine. Nines return two cards, so they need two distinct
+ * targets, and any queen blocks them outright (a queen leaves itself the only legal target).
+ * Only the top jack of each point card is targetable.
+ */
+function getNineTargetPairs(opponentPoints, opponentFaceCards) {
+  if (opponentFaceCards.some(({ rank }) => rank === 12)) {
+    return [];
+  }
+
+  const targets = [
+    ...opponentPoints.map(({ id }) => ({ targetId: id, targetType: TargetType.point })),
+    ...getTwoTargets(opponentPoints, opponentFaceCards),
+  ];
+
+  const pairs = [];
+  for (let i = 0; i < targets.length; i++) {
+    for (let j = i + 1; j < targets.length; j++) {
+      pairs.push([ targets[i], targets[j] ]);
+    }
+  }
+
+  return pairs;
+}
+
+/** Builds the move bodies for playing one targeted one-off card, given its rank's targeting rules */
+function getTargetedOneOffBodies({ moveType, playedBy, card, opponentPoints, opponentFaceCards }) {
+  if (card.rank === 9) {
+    return getNineTargetPairs(opponentPoints, opponentFaceCards).map(([ targetOne, targetTwo ]) => ({
+      moveType,
+      playedBy,
+      cardId: card.id,
+      targetId: targetOne.targetId,
+      targetType: targetOne.targetType,
+      targetIdTwo: targetTwo.targetId,
+      targetTypeTwo: targetTwo.targetType,
+    }));
+  }
+
+  return getTwoTargets(opponentPoints, opponentFaceCards).map(({ targetId, targetType }) => ({
+    moveType,
+    playedBy,
+    cardId: card.id,
+    targetId,
+    targetType,
+  }));
+}
+
 module.exports = {
   friendlyName: 'Get move bodies for move type',
 
@@ -84,38 +148,13 @@ module.exports = {
 
         const twosAndNines = playerHand.filter((card) => [ 2, 9 ].includes(card.rank));
         for (let twoOrNine of twosAndNines) {
-          for (let potentialTarget of opponentFaceCards) {
-            res.push({
-              moveType,
-              playedBy,
-              cardId: twoOrNine.id,
-              targetId: potentialTarget.id,
-              targetType: TargetType.faceCard,
-            });
-          }
-
-          for (let pointCard of opponentPoints) {
-            // Only nines can target the point card itself
-            if (twoOrNine.rank === 9) {
-              res.push({
-                moveType,
-                playedBy,
-                cardId: twoOrNine.id,
-                targetId: pointCard.id,
-                targetType: TargetType.point,
-              });
-            }
-
-            if (pointCard.attachments.length) {
-              res.push({
-                moveType,
-                playedBy,
-                cardId: twoOrNine.id,
-                targetId: pointCard.attachments.at(-1).id,
-                targetType: TargetType.jack,
-              });
-            }
-          }
+          res.push(...getTargetedOneOffBodies({
+            moveType,
+            playedBy,
+            card: twoOrNine,
+            opponentPoints,
+            opponentFaceCards,
+          }));
         }
         break;
       }
@@ -236,38 +275,13 @@ module.exports = {
         }
 
         for (let targetedOneOff of targetedOneOffs) {
-          for (let opponentFaceCard of opponentFaceCards) {
-            res.push({
-              moveType,
-              playedBy,
-              cardId: targetedOneOff.id,
-              targetId: opponentFaceCard.id,
-              targetType: TargetType.faceCard,
-            });
-          }
-
-          for (let opponentPoint of opponentPoints) {
-            // Only nines can target the point card itself
-            if (targetedOneOff.rank === 9) {
-              res.push({
-                moveType,
-                playedBy,
-                cardId: targetedOneOff.id,
-                targetId: opponentPoint.id,
-                targetType: TargetType.point,
-              });
-            }
-
-            if (opponentPoint.attachments.length) {
-              res.push({
-                moveType,
-                playedBy,
-                cardId: targetedOneOff.id,
-                targetId: opponentPoint.attachments.at(-1).id,
-                targetType: TargetType.jack
-              });
-            }
-          }
+          res.push(...getTargetedOneOffBodies({
+            moveType,
+            playedBy,
+            card: targetedOneOff,
+            opponentPoints,
+            opponentFaceCards,
+          }));
         }
 
         break;

@@ -3,12 +3,15 @@ const TargetType = require('../../../../../utils/TargetType.json');
 module.exports = {
   friendlyName: 'Resolve Nine One-Off',
 
-  description: 'Returns new GameState resulting from resolving a nine, which puts the target card on top of the deck',
+  description:
+    'Returns new GameState resulting from resolving a nine, which returns two target cards to the hand of ' +
+    'whoever controlled them. Both targets resolve simultaneously: each card goes to its controller as of ' +
+    'the board state before the nine resolved, and neither is frozen.',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the nine puts the target card on top of the deck',
+      description: 'The latest GameState before the nine returns its two target cards to hand',
       required: true,
     },
     playedBy: {
@@ -20,50 +23,62 @@ module.exports = {
   fn: ({ currentState, playedBy }, exits) => {
     const result = _.cloneDeep(currentState);
 
-    // the user who played the one off is the opposite of the one who is resolving it. 
-    const opponent = playedBy ? result.p1 : result.p0;
-    const player = playedBy ? result.p0 : result.p1;
+    // The player resolving the one-off is the opposite of the one who played it, so `playedBy`
+    // identifies the player whose board holds both targets -- not the nine's caster.
+    const victim = playedBy ? result.p1 : result.p0;
+    const caster = playedBy ? result.p0 : result.p1;
 
-    // Cards go onto the deck face down, and the deck is drawn from the front
-    const topDeck = (card) => result.deck.unshift({ ...card, attachments: [] });
+    const targets = [
+      { card: result.oneOffTarget, targetType: result.oneOffTargetType },
+      { card: result.oneOffTargetTwo, targetType: result.oneOffTargetTwoType },
+    ].filter(({ card, targetType }) => card && targetType);
 
-    if ([ TargetType.point, TargetType.faceCard ].includes(result.oneOffTargetType)) {
-      const targetIndex = opponent[`${result.oneOffTargetType}s`].findIndex(({ id }) => id === result.oneOffTarget.id);
-      // Sanity check: targets can't disappear mid-resolution, but no-op rather than splice(-1)
-      if (targetIndex < 0) {
-        return exits.success(result);
+    // Point cards that are themselves targets must not be handed back to the caster when a jack
+    // on top of them is also targeted -- they belong to whoever controlled them, i.e. the victim.
+    const targetedPointIds = targets
+      .filter(({ targetType }) => targetType === TargetType.point)
+      .map(({ card }) => card.id);
+
+    const returnToVictim = (card) => victim.hand.push({ ...card, isFrozen: false, attachments: [] });
+
+    // Jacks first: removing one hands its point card back before we look for point targets
+    for (const { card } of targets.filter(({ targetType }) => targetType === TargetType.jack)) {
+      const hostIndex = victim.points.findIndex(({ attachments }) =>
+        attachments.some(({ id }) => id === card.id));
+
+      // Sanity check -- targets can't disappear mid-resolution, so just skip if one is missing
+      if (hostIndex === -1) {
+        continue;
       }
-      const [ targetCard ] = opponent[`${result.oneOffTargetType}s`].splice(targetIndex, 1);
 
-      // scrap all attachments
+      const host = victim.points[hostIndex];
+      const jackIndex = host.attachments.findIndex(({ id }) => id === card.id);
+      const [ jack ] = host.attachments.splice(jackIndex, 1);
+      returnToVictim(jack);
+
+      // Only the top jack can be targeted, so removing it always reverts control to the caster.
+      // When the point card is a target too it stays put and goes to hand with the jack instead.
+      if (!targetedPointIds.includes(host.id)) {
+        victim.points.splice(hostIndex, 1);
+        caster.points.push(host);
+      }
+    }
+
+    for (const { card, targetType } of targets.filter(({ targetType }) => targetType !== TargetType.jack)) {
+      const collection = victim[`${targetType}s`];
+      const targetIndex = collection.findIndex(({ id }) => id === card.id);
+
+      if (targetIndex === -1) {
+        continue;
+      }
+
+      const [ targetCard ] = collection.splice(targetIndex, 1);
+      returnToVictim(targetCard);
+
+      // Any jack still riding this card wasn't targeted, so it's scrapped
       result.scrap.push(...targetCard.attachments);
-
-      topDeck(targetCard);
-
-      return exits.success(result);
     }
 
-    // TargetType = jack
-    // Find card that the jack is attached to
-    const targetIndex = opponent.points.findIndex(({ attachments }) =>
-      attachments.some(({ id }) => id === result.oneOffTarget.id));
-    if (targetIndex < 0) {
-      return exits.success(result);
-    }
-    const [ targetCard ] = opponent.points.splice(targetIndex, 1);
-
-    // Both one-off validators reject any jack target that isn't the top of its stack,
-    // so the targeted jack is the last attachment
-    const jack = targetCard.attachments.pop();
-
-    // Card the jack was stealing goes back to other player
-    player.points.push(
-      {
-        ...targetCard,
-      });
-
-    // Put the jack on top of the deck
-    topDeck(jack);
     return exits.success(result);
   },
 };

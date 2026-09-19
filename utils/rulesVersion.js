@@ -24,7 +24,9 @@
  * 1.0.1 (#1320) => Cannot Three for a Three
  * 1.0.2 (#1359) => Hand limit rework: discard down to 8 at end of your turn
  * 2.0.0 (#1379) => Nine rework: put target card on top of the deck instead of returning it frozen to hand
+ * 3.0.0 (#1384) => Four rework: opponent discards two cards at random instead of choosing
+ * 4.0.0 (#1378) => Nine rework: return TWO cards to their controller's hand, neither frozen; any Queen blocks nines
  */
 module.exports = {
-  CURRENT_RULES_VERSION: '2.0.0',
+  CURRENT_RULES_VERSION: '4.0.0',
 };

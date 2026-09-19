@@ -222,9 +222,10 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="faceDownWhenTopdecked(card).suit"
-                    :rank="faceDownWhenTopdecked(card).rank"
-                    :is-valid-target="validMoves.includes(card.id)"
+                    :suit="card.suit"
+                    :rank="card.rank"
+                    :is-valid-target="validMoves.includes(card.id) && !selectedNineTargetIds.includes(card.id)"
+                    :is-selected-target="selectedNineTargetIds.includes(card.id)"
                     :data-opponent-point-card="`${card.rank}-${card.suit}`"
                     controlled-by="opponent"
                     :scuttled-by="card.scuttledBy"
@@ -234,10 +235,11 @@
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="faceDownWhenTopdecked(jack).suit"
-                      :rank="faceDownWhenTopdecked(jack).rank"
+                      :suit="jack.suit"
+                      :rank="jack.rank"
                       :is-jack="true"
-                      :is-valid-target="validMoves.includes(jack.id)"
+                      :is-valid-target="validMoves.includes(jack.id) && !selectedNineTargetIds.includes(jack.id)"
+                      :is-selected-target="selectedNineTargetIds.includes(jack.id)"
                       :data-opponent-face-card="`${jack.rank}-${jack.suit}`"
                       @click="targetOpponentFaceCard(-index - 1)"
                     />
@@ -248,10 +250,11 @@
                 <GameCard
                   v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
-                  :suit="faceDownWhenTopdecked(card).suit"
-                  :rank="faceDownWhenTopdecked(card).rank"
-                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
-                  :is-valid-target="validMoves.includes(card.id)"
+                  :suit="card.suit"
+                  :rank="card.rank"
+                  :is-glasses="card.rank === 8"
+                  :is-valid-target="validMoves.includes(card.id) && !selectedNineTargetIds.includes(card.id)"
+                  :is-selected-target="selectedNineTargetIds.includes(card.id)"
                   :data-opponent-face-card="`${card.rank}-${card.suit}`"
                   @click="targetOpponentFaceCard(index)"
                 />
@@ -266,8 +269,8 @@
                   class="field-point-container"
                 >
                   <GameCard
-                    :suit="faceDownWhenTopdecked(card).suit"
-                    :rank="faceDownWhenTopdecked(card).rank"
+                    :suit="card.suit"
+                    :rank="card.rank"
                     :jacks="card.attachments"
                     :data-player-point-card="`${card.rank}-${card.suit}`"
                     :scuttled-by="card.scuttledBy"
@@ -277,8 +280,8 @@
                     <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
-                      :suit="faceDownWhenTopdecked(jack).suit"
-                      :rank="faceDownWhenTopdecked(jack).rank"
+                      :suit="jack.suit"
+                      :rank="jack.rank"
                       :is-jack="true"
                       :data-player-face-card="`${jack.rank}-${jack.suit}`"
                     />
@@ -289,9 +292,9 @@
                 <GameCard
                   v-for="card in gameStore.player.faceCards"
                   :key="card.id"
-                  :suit="faceDownWhenTopdecked(card).suit"
-                  :rank="faceDownWhenTopdecked(card).rank"
-                  :is-glasses="card.rank === 8 && !isTopdeckedCard(card)"
+                  :suit="card.suit"
+                  :rank="card.rank"
+                  :is-glasses="card.rank === 8"
                   :data-player-face-card="`${card.rank}-${card.suit}`"
                 />
               </TransitionGroup>
@@ -400,7 +403,10 @@
             :selected-card="selectedCard || cardSelectedFromDeck"
             :is-players-turn="gameStore.isPlayersTurn"
             :move-display-name="targetingMoveDisplayName"
+            :required-target-count="requiredTargetCount"
+            :selected-target-count="selectedNineTargets.length"
             @cancel="clearSelection"
+            @confirm="submitNineOneOff"
           />
         </div>
       </div>
@@ -466,6 +472,8 @@ export default {
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
+      // Targets chosen so far for a multi-target one-off (nines): { id, targetType, pointId }
+      selectedNineTargets: [],
       showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
@@ -542,18 +550,7 @@ export default {
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
-    /**
-     * True for the one list a topdecked card is leaving from. Every other list keeps its
-     * usual direction, so a topdecked jack can head for the deck while the point card it was
-     * stealing goes back to its owner in the same render.
-     */
-    topdeckZone() {
-      return this.gameStore.topdeckedCardZone;
-    },
     playerPointsTransition() {
-      if (this.topdeckZone === 'playerPoints') {
-        return this.toDeckTransition('player', 'points');
-      }
       switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
@@ -562,10 +559,9 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_UP;
-            // Nines put the target on the deck; the only point card entering here is a
-            // jacked card whose control reverts when its jack is topdecked
+            // Nines return their targets to the hand of whoever controlled them
             case 9:
-              return Transitions.SLIDE_UP;
+              return Transitions.SLIDE_DOWN;
             default:
               return Transitions.SLIDE_DOWN_LEFT;
           }
@@ -579,9 +575,11 @@ export default {
       }
     },
     playerFaceCardsTransition() {
-      if (this.topdeckZone === 'playerFaceCards') {
-        return this.toDeckTransition('player', 'faceCards');
+      // A face card returned by a nine slides down to the player's hand
+      if (this.gameStore.lastEventChange === 'resolve' && this.gameStore.lastEventOneOffRank === 9) {
+        return Transitions.SLIDE_DOWN;
       }
+
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
         return this.$vuetify.display.xs ? Transitions.SLIDE_DOWN : Transitions.ENTER_FROM_UPPER_LEFT;
@@ -591,9 +589,6 @@ export default {
       return Transitions.SLIDE_DOWN_LEFT;
     },
     opponentPointsTransition() {
-      if (this.topdeckZone === 'opponentPoints') {
-        return this.toDeckTransition('opponent', 'points');
-      }
       switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
@@ -608,10 +603,9 @@ export default {
             case 2:
             case 6:
               return Transitions.SLIDE_DOWN;
-            // Nines move the target off the board entirely (to the deck), or hand a
-            // jacked point card back down to the player
+            // Nines return their targets to the hand of whoever controlled them
             case 9:
-              return Transitions.SLIDE_DOWN;
+              return Transitions.SLIDE_UP;
             default:
               return Transitions.SLIDE_UP_DOWN;
           }
@@ -621,8 +615,9 @@ export default {
       }
     },
     opponentFaceCardsTransition() {
-      if (this.topdeckZone === 'opponentFaceCards') {
-        return this.toDeckTransition('opponent', 'faceCards');
+      // A face card returned by a nine slides up to the opponent's hand
+      if (this.gameStore.lastEventChange === 'resolve' && this.gameStore.lastEventOneOffRank === 9) {
+        return Transitions.SLIDE_UP;
       }
       // Playing from the deck
       if (this.gameStore.lastEventChange === 'sevenFaceCard') {
@@ -633,17 +628,18 @@ export default {
       return Transitions.SLIDE_UP_DOWN;
     },
     /**
-     * Jacks ride along with the point row they sit on, except when the jack itself is the
-     * card being topdecked -- then it leaves for the deck while its point card goes home.
+     * Jacks ride along with the point row they sit on, except when a nine returns the jack
+     * itself -- then it heads for its controller's hand while the point card it was stealing
+     * goes back to the other player in the same render.
      */
     playerJacksTransition() {
-      return this.topdeckZone === 'playerJacks'
-        ? this.toDeckTransition('player', 'points')
+      return this.gameStore.lastEventChange === 'resolve' && this.gameStore.lastEventOneOffRank === 9
+        ? Transitions.SLIDE_DOWN
         : this.playerPointsTransition;
     },
     opponentJacksTransition() {
-      return this.topdeckZone === 'opponentJacks'
-        ? this.toDeckTransition('opponent', 'points')
+      return this.gameStore.lastEventChange === 'resolve' && this.gameStore.lastEventOneOffRank === 9
+        ? Transitions.SLIDE_UP
         : this.opponentPointsTransition;
     },
     //////////////////
@@ -656,7 +652,7 @@ export default {
       return this.t(this.gameStore.isPlayersTurn ? 'game.turn.yourTurn' : 'game.turn.opponentTurn');
     },
     validScuttleIds() {
-      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      const selectedCard = this.cardBeingPlayed;
       if (!selectedCard) {
         return [];
       }
@@ -691,7 +687,7 @@ export default {
       if (!this.gameStore.isPlayersTurn) {
         return [];
       }
-      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      const selectedCard = this.cardBeingPlayed;
       if (!selectedCard) {
         return [];
       }
@@ -701,17 +697,37 @@ export default {
         case 'jack':
           return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
-          // Twos and nines can target face cards
-          let res = [ ...this.validFaceCardTargetIds ];
-          // Nines can additionally target points if opponent has no queens
-          if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [ ...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id) ];
+          // A nine needs two targets, and any queen leaves itself as the only legal one,
+          // so a single queen blocks nines entirely
+          if (selectedCard.rank === 9) {
+            if (this.gameStore.opponentQueenCount > 0) {
+              return [];
+            }
+            return [
+              ...this.validFaceCardTargetIds,
+              ...this.gameStore.opponent.points.map((validTarget) => validTarget.id),
+            ];
           }
-          return res;
+          // Twos can only target face cards
+          return [ ...this.validFaceCardTargetIds ];
         }
         default:
           return [];
       }
+    },
+    // The card being played, whether it came from hand or off the top of the deck via a seven
+    cardBeingPlayed() {
+      return this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+    },
+    // Nines return two cards, so they need two targets chosen before the move is sent
+    isTargetingNineOneOff() {
+      return this.targetingMoveName === 'targetedOneOff' && this.cardBeingPlayed?.rank === 9;
+    },
+    requiredTargetCount() {
+      return this.isTargetingNineOneOff ? 2 : 1;
+    },
+    selectedNineTargetIds() {
+      return this.selectedNineTargets.map(({ id }) => id);
     },
     // Sevens
     playingFromDeck() {
@@ -772,33 +788,11 @@ export default {
       this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
     },
-    /**
-     * Which way "toward the deck" is, for a card leaving the field during a nine's topdeck.
-     * At xs the deck sits below the field; above xs it sits to the upper left, so a card on
-     * the player's half travels up and left while one on the opponent's half goes straight
-     * across. Jacks follow their own point row.
-     */
-    toDeckTransition(side, area) {
-      if (this.$vuetify.display.xs) {
-        return area === 'points' ? Transitions.TO_DECK_DOWN : Transitions.TO_DECK_DOWN_LEFT;
-      }
-      return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
-    },
-    isTopdeckedCard(card) {
-      return card.id === (this.gameStore.topdeckedCard?.id ?? null);
-    },
-    /**
-     * Withholds suit and rank from the card a nine is topdecking, which is all GameCard needs
-     * to render its back (see its isBack check) and flips it via the existing CARD_FLIP
-     * transition. Data attributes keep using the real card so selectors stay stable.
-     */
-    faceDownWhenTopdecked(card) {
-      return this.isTopdeckedCard(card) ? { suit: undefined, rank: undefined } : card;
-    },
     showCustomSnackbarMessage(messageKey) {
       this.snackbarStore.alert(this.t(messageKey), 'base-dark');
     },
     clearOverlays() {
+      this.selectedNineTargets = [];
       this.targeting = false;
     },
     clearSelection() {
@@ -951,7 +945,11 @@ export default {
           .catch(this.handleError);
       }
     },
-    playTargetedOneOff(targetIndex, targetType) {
+    /**
+     * Resolves a clicked board position into a target descriptor, or null if nothing is there.
+     * Negative indices address the top jack attached to opponent.points[-targetIndex - 1].
+     */
+    resolveTargetDescriptor(targetIndex, targetType) {
       let target;
       let jackedPointId;
       switch (targetType) {
@@ -970,18 +968,57 @@ export default {
           }
           break;
       }
-      if (!target) {
+      return target ? { id: target.id, targetType, pointId: jackedPointId } : null;
+    },
+    playTargetedOneOff(targetIndex, targetType) {
+      const descriptor = this.resolveTargetDescriptor(targetIndex, targetType);
+      if (!descriptor) {
         this.handleError('lobby.error.fallback');
         return;
       }
+
+      // Nines accumulate two targets and are sent by the confirm button; every other
+      // targeted one-off still fires on the first click
+      if (this.isTargetingNineOneOff) {
+        this.toggleNineTarget(descriptor);
+        return;
+      }
+
+      this.requestTargetedOneOff([ descriptor ]);
+    },
+    /** Adds a target, or removes it when it was already chosen. Ignores clicks past the limit. */
+    toggleNineTarget(descriptor) {
+      const existingIndex = this.selectedNineTargets.findIndex(({ id }) => id === descriptor.id);
+      if (existingIndex !== -1) {
+        this.selectedNineTargets.splice(existingIndex, 1);
+        return;
+      }
+      if (this.selectedNineTargets.length >= this.requiredTargetCount) {
+        return;
+      }
+      this.selectedNineTargets.push(descriptor);
+    },
+    submitNineOneOff() {
+      if (this.selectedNineTargets.length !== this.requiredTargetCount) {
+        return;
+      }
+      this.requestTargetedOneOff(this.selectedNineTargets);
+    },
+    /** Sends a targeted one-off with one target (2's) or two (9's) */
+    requestTargetedOneOff([ target, targetTwo ]) {
+      const targets = {
+        targetId: target.id,
+        pointId: target.pointId,
+        targetType: target.targetType,
+        ...(targetTwo && { targetIdTwo: targetTwo.id, targetTypeTwo: targetTwo.targetType }),
+      };
+
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore
           .requestPlayTargetedOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
-            targetId: target.id,
-            pointId: jackedPointId,
-            targetType,
+            ...targets,
             index: deckIndex,
           })
           .then(this.clearSelection)
@@ -990,9 +1027,7 @@ export default {
         this.gameStore
           .requestPlayTargetedOneOff({
             cardId: this.selectedCard.id,
-            targetId: target.id,
-            pointId: jackedPointId,
-            targetType,
+            ...targets,
           })
           .then(this.clearSelection)
           .catch(this.handleError);

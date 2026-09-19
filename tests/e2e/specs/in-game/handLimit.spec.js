@@ -410,16 +410,58 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
     });
   });
 
-  describe('Passing and Hand Limit', () => {
+  describe('Nines and Hand Limit', () => {
     describe('P1 perspective', () => {
       beforeEach(() => {
         cy.setupGameAsP1();
       });
 
-      it('Forces player to discard down to hand limit after passing while over the limit with an empty deck', () => {
-        // The over-limit hand is seeded directly: the hand limit is only enforced at the end of
-        // the active player's turn, and no effect hands a card to the inactive player.
+      it('Skips discarding when opponent nines player at the hand limit and player then plays points', () => {
         cy.loadGameFixture(1, {
+          p0Hand: [ Card.NINE_OF_SPADES ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p1Points: [ Card.TEN_OF_CLUBS, Card.EIGHT_OF_CLUBS ],
+          p1FaceCards: [],
+          topCard: Card.TWO_OF_HEARTS,
+        });
+
+        // Opponent (P0) plays nine targeting both of the player's (P1's) point cards
+        cy.playTargetedOneOffOpponent(
+          Card.NINE_OF_SPADES,
+          Card.TEN_OF_CLUBS,
+          'point',
+          Card.EIGHT_OF_CLUBS,
+          'point',
+        );
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
+
+        // Player now has 9 cards (7 in hand + both returned point cards) — no immediate discard
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Player plays NINE_OF_CLUBS for points — hand drops to 8, no discard triggered
+        cy.get('[data-player-hand-card=9-0]').click();
+        cy.get('[data-move-choice=points]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Turn indicator shows it is now the opponent's turn
+        cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+
+        assertGameState(1, {
           p0Hand: [],
           p0Points: [],
           p0FaceCards: [],
@@ -431,19 +473,123 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
             Card.SIX_OF_CLUBS,
             Card.SEVEN_OF_CLUBS,
             Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
             Card.TEN_OF_CLUBS,
           ],
+          p1Points: [ Card.NINE_OF_CLUBS ],
+          p1FaceCards: [],
+          scrap: [ Card.NINE_OF_SPADES ],
+        });
+      });
+
+      it('Forces player to discard down to hand limit after opponent nines and player draws', () => {
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.NINE_OF_SPADES ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p1Points: [ Card.TEN_OF_CLUBS, Card.EIGHT_OF_CLUBS ],
+          p1FaceCards: [],
+          topCard: Card.TWO_OF_HEARTS,
+        });
+
+        // Opponent (P0) plays nine targeting both of the player's (P1's) point cards
+        cy.playTargetedOneOffOpponent(
+          Card.NINE_OF_SPADES,
+          Card.TEN_OF_CLUBS,
+          'point',
+          Card.EIGHT_OF_CLUBS,
+          'point',
+        );
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
+
+        // Player now has 9 cards (7 in hand + both returned point cards) — no immediate discard
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Player draws, bringing hand to 10 cards
+        cy.get('#deck').click();
+        cy.get('[data-player-hand-card]').should('have.length', 10);
+
+        // Discard-to-hand-limit dialog appears — player must discard 2 cards
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-discard-hand-limit-card=9-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(1, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+            Card.TWO_OF_HEARTS,
+          ],
           p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.NINE_OF_SPADES, Card.ACE_OF_CLUBS, Card.NINE_OF_CLUBS ],
+        });
+      });
+    });
+  });
+
+  describe('Passing and Hand Limit', () => {
+    describe('P1 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP1();
+      });
+
+      it('Forces player to discard down to hand limit after passing while over the limit with an empty deck', () => {
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.NINE_OF_SPADES ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p1Points: [ Card.TEN_OF_CLUBS, Card.EIGHT_OF_CLUBS ],
           p1FaceCards: [],
           // Empty deck so the player can pass (rather than draw) on their turn
           deck: [],
         });
 
-        // Opponent passes, handing the turn to the player who is over the limit
-        cy.passOpponent();
+        // Opponent (P0) plays nine targeting both of the player's (P1's) point cards
+        cy.playTargetedOneOffOpponent(
+          Card.NINE_OF_SPADES,
+          Card.TEN_OF_CLUBS,
+          'point',
+          Card.EIGHT_OF_CLUBS,
+          'point',
+        );
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
 
-        // Player has 9 cards and has not been asked to discard yet
+        // Player now has 9 cards (7 in hand + both returned point cards) — no immediate discard
         cy.get('[data-player-hand-card]').should('have.length', 9);
         cy.get('#discard-to-hand-limit-dialog').should('not.exist');
 
@@ -485,11 +631,10 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
           p1FaceCards: [],
           deck: [],
           scrap: [
-            // Discarded down to the hand limit
+            Card.NINE_OF_SPADES,
             Card.ACE_OF_CLUBS,
             // Cards put into scrap by loadGameFixture (empty deck sends all unused cards to scrap)
             Card.TWO_OF_CLUBS,
-            Card.NINE_OF_SPADES,
             Card.JACK_OF_CLUBS,
             Card.QUEEN_OF_CLUBS,
             Card.KING_OF_CLUBS,

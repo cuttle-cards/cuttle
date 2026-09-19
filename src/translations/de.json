@@ -221,7 +221,9 @@
         "emptyDeck": "Kann nicht mit leerem Deck gespielt werden",
         "multipleQueens": "Du kannst keine {rank} spielen, während dein Gegner zwei oder mehr Damen hat",
         "noRoyals": "Es gibt keine Könige oder Damen als Ziel",
-        "noRoyalsOrPoints": "Es gibt keine Punktkarten oder Könige als Ziel"
+        "noRoyalsOrPoints": "Es gibt keine Punktkarten oder Könige als Ziel",
+        "queenBlocksNine": "Du kannst keine Neun spielen, während dein Gegner eine Dame hat",
+        "nineNeedsTwoTargets": "Eine Neun braucht zwei Karten als Ziel"
       },
       "points": {
         "displayName": "Punkte",
@@ -241,7 +243,7 @@
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
         "8": "Dein Gegner spielt mit offener Hand (seine Karten sind für dich sichtbar)",
-        "9": "Lege die Zielkarte oben auf den Nachziehstapel",
+        "9": "Gib zwei Zielkarten zurück in die Hand ihres Besitzers",
         "10": "Kein Effekt",
         "11": "Spiele auf eine Ziel-Punktkarte, um sie zu stehlen",
         "12": "Deine anderen Karten können nur durch Abwerfaktionen angegriffen werden",
@@ -295,7 +297,7 @@
         "cardFrozen": "Diese Karte ist eingefroren! Du musst einen Zug warten, um sie zu spielen.",
         "playFromHand": "Du kannst nur eine Karte spielen, die in deiner Hand ist",
         "blockedByQueen": "Die Dame deines Gegners verhindert, dass du seine anderen Karten anvisierst",
-        "blockedByMultipleQueens": "Du kannst kein Ziel-One-Off (Zwei, Neun) spielen, wenn dein Gegner mehr als eine Dame hat",
+        "blockedByMultipleQueens": "Du kannst keine Zwei als Ziel-One-Off spielen, wenn dein Gegner mehr als eine Dame hat",
         "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
@@ -363,7 +365,13 @@
           "mustBeDoubleJacks": "Du kannst keine Karten von einer Sieben abwerfen, es sei denn, beide Karten sind Buben",
           "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
         },
-        "onlyTopJack": "Du kannst nur den obersten Buben eines Stapels als Ziel wählen"
+        "onlyTopJack": "Du kannst nur den obersten Buben eines Stapels als Ziel wählen",
+        "nine": {
+          "blockedByAnyQueen": "Du kannst keine Neun als One-Off spielen, während dein Gegner eine Dame hat",
+          "needTwoTargets": "Dein Gegner braucht mindestens zwei Karten, die du mit einer Neun anvisieren kannst",
+          "mustSelectTwoTargets": "Eine Neun muss genau zwei Karten anvisieren",
+          "duplicateTarget": "Eine Neun muss zwei verschiedene Karten anvisieren"
+        }
       }
     }
   },
@@ -462,7 +470,7 @@
       "seven": "Sieben",
       "sevenDescription": "Zeige die obersten zwei Karten des Stapels beiden Spielern und wähle eine, die du nach Belieben spielst.",
       "nine": "Neun",
-      "nineDescription": "Lege eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel.",
+      "nineDescription": "Gib zwei Karten vom Spielfeld deines Gegners auf dessen Hand zurück. Sie dürfen sofort wieder gespielt werden. Du kannst eine Neun nicht als One-Off spielen, während dein Gegner eine Dame hat.",
       "ten": "Zehn",
       "tenDescription": "Kein Effekt."
     },
@@ -491,7 +499,7 @@
       "rule2": "Mische zwei Joker in das Deck. Joker zählen als Royals mit dem Effekt 'Stehle eine Royal-Karte'. Ähnlich wie Buben können sie eine Royal von einem Spieler zu einem anderen transferieren.",
       "rule3": "Das Handkartenlimit ist auf 7 (statt 8) reduziert.",
       "rule4": "Buben können gespielt werden, um eine Punktekarte von einem beliebigen Spieler zu einem anderen zu übertragen. Du kannst daher Punkte von dir selbst (oder anderen) 'stehlen', um sie deinem Partner zu geben und möglicherweise mit deren Punkten in deinem Zug zu gewinnen (ihr Ziel wird weiterhin durch die Anzahl ihrer eigenen Könige auf dem Spielfeld bestimmt).",
-      "rule5": "Neuner können für einen alternativen ähnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zurückzugeben und ihren Effekt zu verhindern. Dies kann außerhalb des Zuges erfolgen, kostet keinen Zug, verhindert jedoch nicht, dass der Besitzer die Karte in seinem nächsten Zug erneut spielt. Alternativ kannst du weiterhin einen Neuner für seinen ursprünglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird dafür genutzt), um eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel zu legen."
+      "rule5": "Neuner können für einen alternativen ähnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zurückzugeben und ihren Effekt zu verhindern. Dies kann außerhalb des Zuges erfolgen und kostet keinen Zug. Alternativ kannst du weiterhin einen Neuner für seinen ursprünglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird dafür genutzt), um zwei Karten auf die Hand ihres Besitzers zurückzugeben. In beiden Fällen dürfen die zurückgegebenen Karten im nächsten Zug ihres Besitzers erneut gespielt werden."
     },
     "faq": {
       "title": "FAQ",
@@ -587,13 +595,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Neuner werden gestärkt!",
-    "title": "Regel-Beta: Neuner legen obenauf",
-    "heading": "Neuner legen Karten jetzt oben auf den Nachziehstapel",
-    "paragraph": "Ein Neuner ist eine der höchsten Karten im Spiel, doch sein Einmal-Effekt war schon immer der speziellste. Statt eine Karte auf die Hand ihres Besitzers zurückzugeben, legt ein Neuner jetzt eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel — eine Punktekarte, eine Royal oder den obersten Buben eines Stapels. Ihr nächster Zug bringt ihnen die eigene Karte zurück, der Neuner kostet sie also einen ganzen Zug. Nichts wird mehr eingefroren, und Damen schützen weiterhin wie bisher.",
-    "heading2": "Die erste von vier Testregeln der Pik-Saison",
-    "paragraph2": "Das ist eine Beta und die erste von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
-    "patreonLink": "Die 4 und die 9 verbessern"
+    "activatorText": "Neunen werden gestärkt!",
+    "title": "Regel-Beta: Neunen geben zwei Karten zurück",
+    "heading": "Neunen geben jetzt zwei Karten zurück",
+    "paragraph": "Eine Neun ist eine der höchsten Karten im Deck, aber ihr One-Off war immer das nischigste und schwächste. Deshalb stärken wir es: Ein Neun-One-Off gibt jetzt zwei Karten vom Spielfeld deines Gegners auf die Hand ihres Besitzers zurück — in beliebiger Mischung aus Punktkarten, Royals und Buben — und die zurückgegebenen Karten sind nicht mehr eingefroren, können also sofort wieder gespielt werden. Da eine Dame alles andere schützt, was dein Gegner kontrolliert, kann ein Neun-One-Off überhaupt nicht gespielt werden, solange er eine Dame hat.",
+    "heading2": "Test während der Spades-Saison",
+    "paragraph2": "Das ist eine Beta. Wir lassen sie die ganze Spades-Saison laufen, damit alle sie in echten Spielen ausprobieren können, und stellen sie dann gegen Ende des Jahres in einer Community-Abstimmung zur Wahl, ob sie bleibt."
   },
   "profile": {
     "myGames": "Meine Spiele",
