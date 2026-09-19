@@ -655,7 +655,7 @@ describe('Playing NINES', () => {
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
-      // The seven did not come back to the player's hand
+      // The seven is back on top of the deck
       assertGameState(1, {
         p0Hand: [],
         p0Points: [ Card.THREE_OF_CLUBS ],

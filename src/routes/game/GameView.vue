@@ -543,20 +543,6 @@ export default {
     // Transition Directions //
     ///////////////////////////
     /**
-     * Which way "toward the deck" is, for a card leaving the field during a nine's topdeck.
-     * At xs the deck sits below the field; above xs it sits to the upper left, so a card on
-     * the player's half travels up and left while one on the opponent's half goes straight
-     * across. Jacks follow their own point row.
-     */
-    toDeckTransition() {
-      return (side, area) => {
-        if (this.$vuetify.display.xs) {
-          return area === 'points' ? Transitions.TO_DECK_DOWN : Transitions.TO_DECK_DOWN_LEFT;
-        }
-        return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
-      };
-    },
-    /**
      * True for the one list a topdecked card is leaving from. Every other list keeps its
      * usual direction, so a topdecked jack can head for the deck while the point card it was
      * stealing goes back to its owner in the same render.
@@ -785,6 +771,18 @@ export default {
     handleError(messageKey) {
       this.snackbarStore.alert(this.t(messageKey));
       this.clearSelection();
+    },
+    /**
+     * Which way "toward the deck" is, for a card leaving the field during a nine's topdeck.
+     * At xs the deck sits below the field; above xs it sits to the upper left, so a card on
+     * the player's half travels up and left while one on the opponent's half goes straight
+     * across. Jacks follow their own point row.
+     */
+    toDeckTransition(side, area) {
+      if (this.$vuetify.display.xs) {
+        return area === 'points' ? Transitions.TO_DECK_DOWN : Transitions.TO_DECK_DOWN_LEFT;
+      }
+      return side === 'player' ? Transitions.TO_DECK_UP_LEFT : Transitions.TO_DECK_LEFT;
     },
     isTopdeckedCard(card) {
       return card.id === (this.gameStore.topdeckedCard?.id ?? null);

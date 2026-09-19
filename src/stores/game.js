@@ -404,6 +404,35 @@ export const useGameStore = defineStore('game', () => {
   }
 
   /**
+   * Removes a card from either player's points or face cards, including jacks attached to a
+   * point card. Lets a card play its exit before the server state is applied.
+   */
+  function removeCardFromField(cardId) {
+    players.value.forEach((fieldPlayer) => {
+      if (!fieldPlayer) {
+        return;
+      }
+      const faceCardIndex = fieldPlayer.faceCards?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (faceCardIndex > -1) {
+        fieldPlayer.faceCards.splice(faceCardIndex, 1);
+      }
+
+      const pointIndex = fieldPlayer.points?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (pointIndex > -1) {
+        fieldPlayer.points.splice(pointIndex, 1);
+        return;
+      }
+
+      fieldPlayer.points?.forEach((pointCard) => {
+        const jackIndex = pointCard.attachments?.findIndex(({ id }) => id === cardId) ?? -1;
+        if (jackIndex > -1) {
+          pointCard.attachments.splice(jackIndex, 1);
+        }
+      });
+    });
+  }
+
+  /**
    * Animates a nine putting its target on top of the deck, in three stages.
    *
    * The exit and the knock-on move could share a render -- a topdecked jack leaves through
@@ -438,35 +467,6 @@ export const useGameStore = defineStore('game', () => {
     topdeckedCard.value = null;
     topdeckedCardZone.value = null;
     updateGame(game);
-  }
-
-  /**
-   * Removes a card from either player's points or face cards, including jacks attached to a
-   * point card. Lets a card play its exit before the server state is applied.
-   */
-  function removeCardFromField(cardId) {
-    players.value.forEach((fieldPlayer) => {
-      if (!fieldPlayer) {
-        return;
-      }
-      const faceCardIndex = fieldPlayer.faceCards?.findIndex(({ id }) => id === cardId) ?? -1;
-      if (faceCardIndex > -1) {
-        fieldPlayer.faceCards.splice(faceCardIndex, 1);
-      }
-
-      const pointIndex = fieldPlayer.points?.findIndex(({ id }) => id === cardId) ?? -1;
-      if (pointIndex > -1) {
-        fieldPlayer.points.splice(pointIndex, 1);
-        return;
-      }
-
-      fieldPlayer.points?.forEach((pointCard) => {
-        const jackIndex = pointCard.attachments?.findIndex(({ id }) => id === cardId) ?? -1;
-        if (jackIndex > -1) {
-          pointCard.attachments.splice(jackIndex, 1);
-        }
-      });
-    });
   }
 
   async function processThrees(chosenCard, game) {
