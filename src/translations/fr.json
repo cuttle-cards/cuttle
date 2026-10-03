@@ -296,7 +296,8 @@
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
-        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
+        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale",
+        "gameArchived": "Votre adversaire a archivé cette partie."
       },
       "draw": {
         "handLimit": "Votre limite de carte en main est atteinte !",
@@ -389,7 +390,19 @@
     "gameName": "Nom de la partie",
       "join": "Rejoindre",
       "playVsAi": "Jouer contre l'IA",
-      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard."
+      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
+    "myCurrentGames": "Mes Parties En Cours",
+    "continue": "Continuer",
+    "archive": "Archiver",
+    "versus": "contre",
+    "archiveBlockedActive": "Cette partie est encore active et ne peut pas encore être archivée.",
+    "archiveBlockedRanked": "Les parties classées de cette semaine ne peuvent pas être archivées.",
+    "failedToArchiveGame": "Impossible d'archiver la partie. Veuillez réessayer plus tard.",
+    "error": {
+      "forbidden": "Vous n'êtes pas un joueur de cette partie !",
+      "notArchivable": "Cette partie ne peut pas être archivée.",
+      "notFound": "Cette partie n'existe plus."
+    }
   },
   "rules": {
     "introduction": "Introduction",

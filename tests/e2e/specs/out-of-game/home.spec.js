@@ -92,6 +92,171 @@ describe('Home - Game List', () => {
     });
   });
 
+  describe('My Current Games', () => {
+    /**
+     * Signs up myUser over the test socket first so we capture their id (signupPlayer doesn't
+     * return one), then logs the browser in as them. The test socket is left as opponentOne so it
+     * can be used to make requests as a non-player.
+     */
+    function setupWithIds() {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupOpponent(myUser).as('myUserId');
+      cy.signupOpponent(opponentOne).as('opponentId');
+      cy.loginPlayer(myUser);
+      cy.vueRoute('/');
+    }
+
+    /** Older than the dormancy threshold, so the game is archivable */
+    const dormant = () => dayjs.utc().subtract(1, 'hour')
+      .toDate();
+
+    beforeEach(setupWithIds);
+
+    it('Does not show the header when the user has no current games', () => {
+      cy.get('[data-cy=my-current-games-header]').should('not.exist');
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+    });
+
+    it('Shows an in-progress game, continues into it, and disables archiving while it is active', function () {
+      // A real game, so /game/:id has gamestates to load
+      cy.setupGameAsP0(true);
+      cy.get('@gameId').then((gameId) => {
+        cy.vueRoute('/');
+        cy.get('[data-cy=my-current-games-header]').should('contain', 'My Current Games');
+        cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+        cy.get('[data-cy=current-game-list-item-name]').should('contain', 'Test Game');
+        // Just-played games are not archivable
+        cy.get(`[data-cy-archive-game=${gameId}]`).should('be.disabled');
+        cy.get(`[data-cy-continue-game=${gameId}]`).click();
+        cy.url().should('include', `/game/${gameId}`);
+        cy.get('#player-hand-cards .player-card').should('have.length', 5);
+      });
+    });
+
+    it('Shows the opponent and archives a dormant casual game', function () {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Abandoned Game',
+          status: GameStatus.STARTED,
+          isRanked: false,
+          p0: this.myUserId,
+          p1: this.opponentId,
+          updatedAt: dormant(),
+        },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+      cy.get('[data-cy=current-game-list-item-opponent]').should('contain', opponentOne.username);
+      cy.get('[data-cy-archive-game]').should('not.be.disabled')
+        .click();
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('[data-cy=my-current-games-header]').should('not.exist');
+      // Still gone after a reload
+      cy.visit('/');
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+    });
+
+    it('Excludes archived games from the spectate list', function () {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Abandoned Game',
+          status: GameStatus.STARTED,
+          isRanked: false,
+          p0: this.myUserId,
+          p1: this.opponentId,
+          updatedAt: dormant(),
+        },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy-archive-game]').click();
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get('[data-cy=no-spectate-game-text]').should('be.visible');
+    });
+
+    describe('Ranked games', () => {
+      /**
+       * Season started 10 days ago, so the current week began 3 days ago: a game created an hour
+       * ago falls inside it, while one created 5 days ago belongs to the previous week.
+       */
+      function loadCurrentSeason() {
+        cy.loadSeasonFixture([
+          {
+            name: 'Current Season',
+            startTime: dayjs.utc().subtract(10, 'day')
+              .toDate(),
+            endTime: dayjs.utc().add(20, 'day')
+              .toDate(),
+          },
+        ]);
+      }
+
+      it('Cannot archive a ranked game from the current season week', function () {
+        loadCurrentSeason();
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'This Week Ranked',
+            status: GameStatus.STARTED,
+            isRanked: true,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            createdAt: dayjs.utc().subtract(1, 'hour')
+              .toDate(),
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+        cy.get('[data-cy-archive-game]').should('be.disabled');
+      });
+
+      it('Can archive a ranked game from a previous season week', function () {
+        loadCurrentSeason();
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Last Week Ranked',
+            status: GameStatus.STARTED,
+            isRanked: true,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            createdAt: dayjs.utc().subtract(5, 'day')
+              .toDate(),
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        cy.get('[data-cy-archive-game]').should('not.be.disabled')
+          .click();
+        cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      });
+    });
+
+    it('Forbids archiving a game the requester is not playing in', function () {
+      // A started game between two other players; the helper expects them to already exist
+      cy.signupOpponent(playerOne);
+      cy.signupOpponent(playerTwo);
+      setupGameBetweenTwoUnseenPlayers('notMine', false);
+      cy.vueRoute('/');
+      // Never listed for a user who isn't in it
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('@notMineGameId').then((gameId) => {
+        cy.window()
+          .its('cuttle.gameListStore')
+          .then((store) =>
+            store.requestArchiveGame(gameId).then(
+              () => {
+                throw new Error('Expected archiving another players game to be rejected');
+              },
+              (message) => {
+                expect(message).to.eq('home.error.forbidden');
+              },
+            ),
+          );
+      });
+    });
+  });
+
   it('Joins a game that already has one player', () => {
     /**
      * Set up:

@@ -297,7 +297,8 @@
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
-        "notInMainPhase": "You can only do that in the main phase"
+        "notInMainPhase": "You can only do that in the main phase",
+        "gameArchived": "Your opponent archived this game."
       },
       "draw": {
         "handLimit": "You are at the hand limit; you cannot draw.",
@@ -390,7 +391,19 @@
     "gameName": "Game Name",
       "join": "Join",
       "playVsAi": "Play VS AI",
-      "failedToLoadGameList": "Failed to load game list. Please try again later."
+      "failedToLoadGameList": "Failed to load game list. Please try again later.",
+    "myCurrentGames": "My Current Games",
+    "continue": "Continue",
+    "archive": "Archive",
+    "versus": "vs",
+    "archiveBlockedActive": "This game is still active and cannot be archived yet.",
+    "archiveBlockedRanked": "Ranked games from this week's season cannot be archived.",
+    "failedToArchiveGame": "Failed to archive game. Please try again later.",
+    "error": {
+      "forbidden": "You are not a player in this game!",
+      "notArchivable": "This game cannot be archived.",
+      "notFound": "That game no longer exists."
+    }
   },
   "rules": {
     "introduction": "Introduction",

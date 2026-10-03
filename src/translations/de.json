@@ -296,7 +296,8 @@
         "playFromHand": "Du kannst nur eine Karte spielen, die in deiner Hand ist",
         "blockedByQueen": "Die Dame deines Gegners verhindert, dass du seine anderen Karten anvisierst",
         "blockedByMultipleQueens": "Du kannst kein Ziel-One-Off (Zwei, Neun) spielen, wenn dein Gegner mehr als eine Dame hat",
-        "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
+        "notInMainPhase": "Du kannst das nur in der Hauptphase tun",
+        "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
       },
       "draw": {
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
@@ -389,7 +390,19 @@
     "gameName": "Spielname",
       "join": "Beitreten",
       "playVsAi": "Gegen die KI spielen",
-      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut."
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
+    "myCurrentGames": "Meine Aktuellen Spiele",
+    "continue": "Fortsetzen",
+    "archive": "Archivieren",
+    "versus": "gegen",
+    "archiveBlockedActive": "Dieses Spiel ist noch aktiv und kann noch nicht archiviert werden.",
+    "archiveBlockedRanked": "Gewertete Spiele aus dieser Woche können nicht archiviert werden.",
+    "failedToArchiveGame": "Spiel konnte nicht archiviert werden. Bitte versuche es später erneut.",
+    "error": {
+      "forbidden": "Du bist kein Spieler in diesem Spiel!",
+      "notArchivable": "Dieses Spiel kann nicht archiviert werden.",
+      "notFound": "Dieses Spiel existiert nicht mehr."
+    }
   },
   "rules": {
     "introduction": "Einleitung",

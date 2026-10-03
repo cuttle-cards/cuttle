@@ -1,0 +1,179 @@
+<template>
+  <div>
+    <v-row class="list-item" data-cy="current-game-list-item">
+      <v-col lg="6" class="list-item__inner-text">
+        <p class="game-name text-base-dark" data-cy="current-game-list-item-name">
+          {{ name }}
+        </p>
+        <p v-if="opponent" class="text-base-dark" data-cy="current-game-list-item-opponent">
+          {{ t('home.versus') }} {{ opponent.username }}
+        </p>
+      </v-col>
+      <v-col lg="6" class="list-item__button pr-md-0">
+        <!-- Archive Button -->
+        <v-tooltip :disabled="canArchive" location="top" :text="archiveBlockedText">
+          <template #activator="{ props: tooltipProps }">
+            <!-- span wrapper so the tooltip still fires while the button is disabled -->
+            <span v-bind="tooltipProps">
+              <v-btn
+                class="mr-2"
+                color="base-dark"
+                variant="text"
+                :disabled="!canArchive"
+                :loading="archiving"
+                :data-cy-archive-game="gameId"
+                @click="archive"
+              >
+                <v-icon class="mr-2" size="medium" icon="mdi-archive-arrow-down-outline" />
+                {{ t('home.archive') }}
+              </v-btn>
+            </span>
+          </template>
+        </v-tooltip>
+        <!-- Continue Button -->
+        <v-btn
+          color="base-dark"
+          variant="outlined"
+          min-width="200"
+          :loading="continuing"
+          :data-cy-continue-game="gameId"
+          @click="continueGame"
+        >
+          <v-icon
+            class="mr-4"
+            size="medium"
+            :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
+            aria-hidden="true"
+          />
+          {{ t('home.continue') }}
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-divider color="base-dark" class="mb-4 mx-2 border-opacity-100 px-5" />
+  </div>
+</template>
+
+<script setup>
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import dayjs from 'dayjs';
+import { useGameListStore } from '@/stores/gameList';
+import gameActivity from '_/utils/gameActivity.json';
+
+const props = defineProps({
+  gameId: {
+    type: Number,
+    required: true,
+  },
+  name: {
+    type: String,
+    default: '',
+  },
+  isRanked: {
+    type: Boolean,
+    default: false,
+  },
+  canArchive: {
+    type: Boolean,
+    default: false,
+  },
+  updatedAt: {
+    type: String,
+    default: null,
+  },
+  opponent: {
+    type: Object,
+    default: null,
+  },
+});
+
+const emit = defineEmits([ 'error' ]);
+
+const { t, te } = useI18n();
+const router = useRouter();
+const gameListStore = useGameListStore();
+
+const continuing = ref(false);
+const archiving = ref(false);
+
+/**
+ * The backend is the authority on whether a game can be archived, but it doesn't say why.
+ * Staleness is the half we can recompute client-side, so check it first -- otherwise a
+ * ranked game from a PREVIOUS week that is merely too recent would claim the wrong reason.
+ */
+const archiveBlockedText = computed(() => {
+  const isDormant = dayjs(props.updatedAt).isBefore(dayjs().subtract(gameActivity.RECENT_ACTIVITY_MINUTES, 'minute'));
+  return isDormant ? t('home.archiveBlockedRanked') : t('home.archiveBlockedActive');
+});
+
+function continueGame() {
+  continuing.value = true;
+  router.push(`/game/${props.gameId}`).catch(() => {
+    continuing.value = false;
+  });
+}
+
+async function archive() {
+  archiving.value = true;
+  try {
+    await gameListStore.requestArchiveGame(props.gameId);
+  } catch (err) {
+    // The API rejects with an i18n key (eg home.error.forbidden) so the message can be localized
+    const key = err?.message ?? err;
+    emit('error', te(key) ? t(key) : t('home.failedToArchiveGame'));
+  } finally {
+    archiving.value = false;
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.list-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.5rem;
+  overflow-wrap: anywhere;
+  & .game-name {
+    font-weight: 600;
+    font-size: 1.5em;
+    text-align: left;
+    padding-right: 1rem;
+  }
+  & p {
+    line-height: 1;
+    margin: 3px auto;
+  }
+  &__inner-text {
+    align-items: center;
+    padding-bottom: 1rem;
+    padding-top: 0.25rem;
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-top: 0;
+    padding-top: 0.5rem;
+  }
+}
+
+@media (min-width: 1264px) {
+  .list-item {
+    max-width: 100%;
+    flex-direction: row;
+    padding: 10px 10px;
+    & .game-name {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    &__inner-text {
+      display: block;
+      padding: 0;
+    }
+  }
+}
+</style>

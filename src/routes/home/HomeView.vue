@@ -53,6 +53,22 @@
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
+                <template v-if="myCurrentGameList.length > 0">
+                  <h2 class="text-base-dark mb-2" data-cy="my-current-games-header">
+                    {{ t('home.myCurrentGames') }}
+                  </h2>
+                  <div v-for="game in myCurrentGameList" :key="`current-${game.id}`">
+                    <CurrentGameListItem
+                      :game-id="game.id"
+                      :name="game.name"
+                      :is-ranked="game.isRanked"
+                      :can-archive="game.canArchive"
+                      :updated-at="game.updatedAt"
+                      :opponent="game.opponent"
+                      @error="handleError"
+                    />
+                  </div>
+                </template>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
                   {{ t('home.noGameslist') }}
                 </p>
@@ -148,6 +164,7 @@ import { useGameListStore } from '@/stores/gameList';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import GameListItem from '@/routes/home/components/GameListItem.vue';
+import CurrentGameListItem from '@/routes/home/components/CurrentGameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
@@ -162,6 +179,7 @@ export default {
   name: 'HomeView',
   components: {
     GameListItem,
+    CurrentGameListItem,
     CreateGameDialog,
     AnnouncementDialog,
     OauthSignupDialog,
@@ -189,6 +207,9 @@ export default {
     },
     spectateGameList() {
       return this.gameListStore.spectateGames;
+    },
+    myCurrentGameList() {
+      return this.gameListStore.myCurrentGames;
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';

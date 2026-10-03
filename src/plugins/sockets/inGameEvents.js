@@ -6,6 +6,7 @@ import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
+import i18n from '../i18n';
 
 // Handles socket updates of game data
 export async function handleInGameEvents(evData, newRoute = null) {
@@ -138,6 +139,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = null;
       break;
     }
+    // Our opponent archived this game out from under us; it can no longer be played
+    case SocketEvent.GAME_ARCHIVED:
+      snackbarStore.alert(i18n.global.t('game.snackbar.global.gameArchived'));
+      router.push('/');
+      return;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);
