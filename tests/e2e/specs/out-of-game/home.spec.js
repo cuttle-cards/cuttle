@@ -49,7 +49,7 @@ describe('Home - Game List', () => {
 
     it('Displays placeholder text when no games are available', () => {
       cy.get('[data-cy=text-if-no-game]').should(($el) =>
-        expect($el.text().trim()).to.equal('No Active Games'),
+        expect($el.text().trim()).to.equal('No Games to Join'),
       );
     });
 
@@ -116,6 +116,8 @@ describe('Home - Game List', () => {
     it('Does not show the header when the user has no current games', () => {
       cy.get('[data-cy=my-current-games-header]').should('not.exist');
       cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      // The open games section stays labelled either way
+      cy.get('[data-cy=open-games-header]').should('contain', 'Open Games');
     });
 
     it('Shows an in-progress game, continues into it, and disables archiving while it is active', function () {

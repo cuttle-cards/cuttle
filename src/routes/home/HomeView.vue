@@ -69,8 +69,11 @@
                     />
                   </div>
                 </template>
+                <h2 class="text-base-dark mb-2" data-cy="open-games-header">
+                  {{ t('home.openGames') }}
+                </h2>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
-                  {{ t('home.noGameslist') }}
+                  {{ t('home.noOpenGames') }}
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
                   <GameListItem

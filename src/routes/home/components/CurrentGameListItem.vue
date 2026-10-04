@@ -10,26 +10,6 @@
         </p>
       </v-col>
       <v-col lg="6" class="list-item__button pr-md-0">
-        <!-- Archive Button -->
-        <v-tooltip :disabled="canArchive" location="top" :text="archiveBlockedText">
-          <template #activator="{ props: tooltipProps }">
-            <!-- span wrapper so the tooltip still fires while the button is disabled -->
-            <span v-bind="tooltipProps">
-              <v-btn
-                class="mr-2"
-                color="base-dark"
-                variant="text"
-                :disabled="!canArchive"
-                :loading="archiving"
-                :data-cy-archive-game="gameId"
-                @click="archive"
-              >
-                <v-icon class="mr-2" size="medium" icon="mdi-archive-arrow-down-outline" />
-                {{ t('home.archive') }}
-              </v-btn>
-            </span>
-          </template>
-        </v-tooltip>
         <!-- Continue Button -->
         <v-btn
           color="base-dark"
@@ -47,6 +27,26 @@
           />
           {{ t('home.continue') }}
         </v-btn>
+        <!-- Archive Button: icon only, so the tooltip carries the label in both states -->
+        <v-tooltip location="top" :text="archiveTooltipText">
+          <template #activator="{ props: tooltipProps }">
+            <!-- span wrapper so the tooltip still fires while the button is disabled -->
+            <span v-bind="tooltipProps">
+              <v-btn
+                class="ml-2"
+                color="base-dark"
+                variant="text"
+                icon="mdi-close"
+                size="small"
+                :disabled="!canArchive"
+                :loading="archiving"
+                :aria-label="t('home.archive')"
+                :data-cy-archive-game="gameId"
+                @click="archive"
+              />
+            </span>
+          </template>
+        </v-tooltip>
       </v-col>
     </v-row>
     <v-divider color="base-dark" class="mb-4 mx-2 border-opacity-100 px-5" />
@@ -98,11 +98,17 @@ const continuing = ref(false);
 const archiving = ref(false);
 
 /**
+ * With no text label on the button, the tooltip names the action when archiving is available
+ * and explains the block when it isn't.
+ *
  * The backend is the authority on whether a game can be archived, but it doesn't say why.
  * Staleness is the half we can recompute client-side, so check it first -- otherwise a
  * ranked game from a PREVIOUS week that is merely too recent would claim the wrong reason.
  */
-const archiveBlockedText = computed(() => {
+const archiveTooltipText = computed(() => {
+  if (props.canArchive) {
+    return t('home.archive');
+  }
   const isDormant = dayjs(props.updatedAt).isBefore(dayjs().subtract(gameActivity.RECENT_ACTIVITY_MINUTES, 'minute'));
   return isDormant ? t('home.archiveBlockedRanked') : t('home.archiveBlockedActive');
 });
