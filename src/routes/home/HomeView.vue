@@ -54,7 +54,7 @@
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
                 <template v-if="myCurrentGameList.length > 0">
-                  <h2 class="text-base-dark mb-2" data-cy="my-current-games-header">
+                  <h2 class="text-base-dark text-label-lg mb-2" data-cy="my-current-games-header">
                     {{ t('home.myCurrentGames') }}
                   </h2>
                   <div v-for="game in myCurrentGameList" :key="`current-${game.id}`">
@@ -69,7 +69,7 @@
                     />
                   </div>
                 </template>
-                <h2 class="text-base-dark mb-2" data-cy="open-games-header">
+                <h2 class="text-base-dark text-label-lg mb-2" data-cy="open-games-header">
                   {{ t('home.openGames') }}
                 </h2>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
@@ -302,10 +302,6 @@ export default {
 .discord {
   max-height: 30px;
   margin-right: 18px;
-}
-
-h2 {
-  font-size: 1.25rem;
 }
 
 ul {
