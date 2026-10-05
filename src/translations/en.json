@@ -297,8 +297,7 @@
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
-        "notInMainPhase": "You can only do that in the main phase",
-        "gameArchived": "Your opponent archived this game."
+        "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
         "handLimit": "You are at the hand limit; you cannot draw.",
@@ -376,7 +375,8 @@
       "cantFindGame": "Can't find game",
       "invalidLobbyNumber": "Invalid Lobby Number",
       "cannotSpectate": "Cannot spectate game because you are playing",
-      "spectateNoGamestates": "Cannot spectate: game is too old"
+      "spectateNoGamestates": "Cannot spectate: game is too old",
+      "gameArchived": "Your opponent archived this game."
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",

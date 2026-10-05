@@ -296,8 +296,7 @@
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
         "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
-        "notInMainPhase": "Solo puedes hacer eso en la fase principal",
-        "gameArchived": "Tu oponente archivó esta partida."
+        "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
@@ -375,7 +374,8 @@
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
       "cannotSpectate": "No puede ver el juego porque estás jugando.",
-      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua",
+      "gameArchived": "Tu oponente archivó esta partida."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",

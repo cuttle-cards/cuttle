@@ -234,6 +234,17 @@ describe('Home - Game List', () => {
       });
     });
 
+    /**
+     * inGameEvents.js can't translate (no component, so no useI18n) -- it hands Home the i18n key
+     * via query.error and Home's $route watcher translates it. This pins that contract, so renaming
+     * the key can't silently reduce the message to a raw dotted string.
+     */
+    it('Translates the archived-game message handed over by the socket handler', () => {
+      cy.vueRoute('/?gameId=1&error=home.snackbar.gameArchived');
+      assertSnackbar('Your opponent archived this game.');
+      cy.url().should('not.contain', 'error=');
+    });
+
     it('Forbids archiving a game the requester is not playing in', function () {
       // A started game between two other players; the helper expects them to already exist
       cy.signupOpponent(playerOne);

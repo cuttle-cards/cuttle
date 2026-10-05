@@ -296,8 +296,7 @@
         "playFromHand": "Du kannst nur eine Karte spielen, die in deiner Hand ist",
         "blockedByQueen": "Die Dame deines Gegners verhindert, dass du seine anderen Karten anvisierst",
         "blockedByMultipleQueens": "Du kannst kein Ziel-One-Off (Zwei, Neun) spielen, wenn dein Gegner mehr als eine Dame hat",
-        "notInMainPhase": "Du kannst das nur in der Hauptphase tun",
-        "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
+        "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
@@ -375,7 +374,8 @@
       "cantFindGame": "Spiel nicht gefunden",
       "invalidLobbyNumber": "Ungültige Lobby-Nummer",
       "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst",
-      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt"
+      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt",
+      "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",

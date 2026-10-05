@@ -296,8 +296,7 @@
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
-        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale",
-        "gameArchived": "Votre adversaire a archivé cette partie."
+        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
         "handLimit": "Votre limite de carte en main est atteinte !",
@@ -375,7 +374,8 @@
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
       "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
-      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne",
+      "gameArchived": "Votre adversaire a archivé cette partie."
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",

@@ -22,12 +22,9 @@ module.exports = async function (req, res) {
     }
 
     // Must be a player in this game
-    switch (req.session.usr) {
-      case existingGame.p0:
-      case existingGame.p1:
-        break;
-      default:
-        throw new ForbiddenError('home.error.forbidden');
+    const playerIds = [ existingGame.p0, existingGame.p1 ].filter((val) => !!val);
+    if (!playerIds.includes(req.session.usr)) {
+      throw new ForbiddenError('home.error.forbidden');
     }
 
     if (!sails.helpers.canArchiveGame(existingGame, currentWeek)) {
