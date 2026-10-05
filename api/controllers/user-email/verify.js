@@ -1,4 +1,7 @@
 const crypto = require('crypto');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 const MAX_ATTEMPTS = 5;
 
@@ -14,7 +17,7 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'emailPreference.error.noPendingEmail' });
     }
 
-    if (new Date(userEmail.codeExpiresAt).getTime() < Date.now() || userEmail.attempts >= MAX_ATTEMPTS) {
+    if (dayjs.utc().isAfter(dayjs.utc(userEmail.codeExpiresAt)) || userEmail.attempts >= MAX_ATTEMPTS) {
       return res.badRequest({ message: 'emailPreference.error.codeExpired' });
     }
 

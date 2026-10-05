@@ -1,5 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 const signup = async (username) => {
   const agent = request.agent(globalThis.sailsApp);
@@ -67,7 +70,8 @@ describe('User preferred email', () => {
   it('Keeps one row per user', async () => {
     const { agent, userId } = await signup('myUser');
     await agent.post('/api/user/email/request-code').send({ email: 'first@example.com' });
-    await UserEmail.updateOne({ user: userId }).set({ codeSentAt: new Date(0) });
+    await UserEmail.updateOne({ user: userId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
     await agent.post('/api/user/email/request-code').send({ email: 'second@example.com' });
 
     const rows = await UserEmail.find({ user: userId });
@@ -100,7 +104,8 @@ describe('User preferred email', () => {
     const { agent, userId } = await signup('myUser');
     await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
     const code = await setKnownCode(userId);
-    await UserEmail.updateOne({ user: userId }).set({ codeExpiresAt: new Date(Date.now() - 1000) });
+    await UserEmail.updateOne({ user: userId }).set({ codeExpiresAt: dayjs.utc().subtract(1, 'second')
+      .toDate() });
 
     const res = await agent.post('/api/user/email/verify').send({ code });
     expect(res.body.message).toBe('emailPreference.error.codeExpired');

@@ -1,7 +1,10 @@
 const crypto = require('crypto');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
-const CODE_TTL_MS = 10 * 60 * 1000;
-const RESEND_COOLDOWN_MS = 60 * 1000;
+const CODE_TTL_MINUTES = 10;
+const RESEND_COOLDOWN_SECONDS = 60;
 
 module.exports = async function (req, res) {
   try {
@@ -18,8 +21,8 @@ module.exports = async function (req, res) {
     const userEmail = await UserEmail.findOne({ user: userId });
 
     // Limit how often a user can request a code
-    const now = Date.now();
-    if (userEmail?.codeSentAt && now - new Date(userEmail.codeSentAt).getTime() < RESEND_COOLDOWN_MS) {
+    const now = dayjs.utc();
+    if (userEmail?.codeSentAt && now.diff(dayjs.utc(userEmail.codeSentAt), 'second') < RESEND_COOLDOWN_SECONDS) {
       return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
     }
 
@@ -28,8 +31,8 @@ module.exports = async function (req, res) {
     const updates = {
       pendingEmail: email,
       verificationCode: sails.helpers.email.hashVerificationCode(code),
-      codeExpiresAt: new Date(now + CODE_TTL_MS),
-      codeSentAt: new Date(now),
+      codeExpiresAt: now.add(CODE_TTL_MINUTES, 'minute').toDate(),
+      codeSentAt: now.toDate(),
       attempts: 0,
       promotional,
     };
