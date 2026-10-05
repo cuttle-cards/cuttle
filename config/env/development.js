@@ -10,9 +10,22 @@
  *
  */
 
+const { resolveDevPorts } = require('../../utils/dev-ports');
+
+const { serverPort } = resolveDevPorts();
+
 module.exports = {
   log: {
     level: 'debug'
+  },
+  // Resolved from `CUTTLE_PORT_OFFSET` / `PORT` so several dev stacks can run in parallel
+  // (see utils/dev-ports.js)
+  port: serverPort,
+  session: {
+    // Cookies are not scoped by port, so every localhost stack would otherwise share (and clobber)
+    // the same session. Naming the cookie after the port keeps parallel stacks logged in
+    // independently.
+    name: `cuttle.sid.${serverPort}`,
   },
   // Disable default endpoints for each model e.g. GET /game/:id
   blueprints: {
