@@ -1,18 +1,21 @@
 <template>
   <div>
-    <v-row class="list-item" data-cy="game-list-item">
+    <v-row class="list-item" :data-cy="rootDataCy">
       <v-col lg="6" class="list-item__inner-text">
-        <p class="game-name text-base-dark" data-cy="game-list-item-name">
+        <p class="game-name text-base-dark" :data-cy="`${rootDataCy}-name`">
           {{ name }}
         </p>
-        <p v-if="!isSpectatable" class="text-base-dark">
+        <p v-if="isCurrent && opponent" class="text-base-dark" data-cy="current-game-list-item-opponent">
+          {{ t('home.versus') }} {{ opponent.username }}
+        </p>
+        <p v-else-if="isJoinable" class="text-base-dark">
           {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
       <v-col lg="6" class="list-item__button pr-md-0">
         <!-- Join Button -->
         <v-btn
-          v-if="!isSpectatable"
+          v-if="isJoinable"
           class="w-100"
           v-bind="buttonAttrs"
           :disabled="gameIsFull"
@@ -22,14 +25,14 @@
           <v-icon
             class="mr-4"
             size="medium"
-            :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
+            :icon="modeIcon"
             aria-hidden="true"
           />
           {{ joinButtonText }}
         </v-btn>
         <!-- Spectate Button -->
         <v-btn
-          v-else
+          v-else-if="isSpectatable"
           class="w-100"
           v-bind="buttonAttrs"
           :data-cy-spectate-game="gameId"
@@ -40,6 +43,39 @@
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
           {{ t('home.spectate') }}
         </v-btn>
+        <!-- Continue Button -->
+        <v-btn
+          v-else
+          v-bind="buttonAttrs"
+          :data-cy-continue-game="gameId"
+          @click="continueGame"
+        >
+          <v-icon
+            class="mr-4"
+            size="medium"
+            :icon="modeIcon"
+            aria-hidden="true"
+          />
+          {{ t('home.continue') }}
+        </v-btn>
+        <!-- Archive Button: icon only, so the tooltip carries the label in both states.
+             The directive binds to the span, not the button: a disabled v-btn renders as
+             <button disabled> with pointer-events:none, so a real hover never reaches it and the
+             blocked-state tooltip would silently never appear. -->
+        <span v-if="isCurrent" v-tooltip:top="archiveTooltipText">
+          <v-btn
+            class="ml-2"
+            color="base-dark"
+            variant="text"
+            icon="mdi-close"
+            size="small"
+            :disabled="!canArchive"
+            :loading="archiving"
+            :aria-label="t('home.archive')"
+            :data-cy-archive-game="gameId"
+            @click="archive"
+          />
+        </span>
       </v-col>
     </v-row>
     <v-divider color="base-dark" class="mb-4 mx-2 border-opacity-100 px-5" />
@@ -47,102 +83,160 @@
 </template>
 
 <script>
-import GameStatus from '_/utils/GameStatus.json';
-import { mapStores } from 'pinia';
-import { useGameStore } from '@/stores/game';
-import { useGameListStore } from '@/stores/gameList';
-import { useAuthStore } from '@/stores/auth';
-import { useI18n } from 'vue-i18n';
-
-export default {
-  name: 'GameListItem',
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-    p0ready: {
-      type: Number,
-      default: 0,
-    },
-    p1ready: {
-      type: Number,
-      default: 0,
-    },
-    gameId: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: Number,
-      required: true,
-    },
-    numPlayers: {
-      type: Number,
-      required: true,
-    },
-    isRanked: {
-      type: Boolean,
-      default: false,
-    },
-    isSpectatable: {
-      type: Boolean,
-      default: false,
-    },
-    disableSpectate: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: [ 'error' ],
-  setup() {
-    const { t } = useI18n();
-    return { t };
-  },
-  data() {
-    return {
-      joiningGame: false,
-    };
-  },
-  computed: {
-    ...mapStores(useGameStore, useAuthStore, useGameListStore),
-    numPlayersReady() {
-      return this.p0ready + this.p1ready;
-    },
-    readyText() {
-      return `${this.numPlayers} / 2`;
-    },
-    joinButtonText() {
-      return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
-    },
-    buttonAttrs() {
-      return {
-        color: 'base-dark',
-        variant: 'outlined',
-        minWidth: '200',
-        loading: this.joiningGame,
-      };
-    },
-    gameIsFull() {
-      return this.numPlayers >= 2 || this.status !== GameStatus.CREATED;
-    },
-  },
-  methods: {
-    subscribeToGame() {
-      this.joiningGame = true;
-      this.$router.push(`/lobby/${this.gameId}`).then(() => {
-        this.joiningGame = false;
-      })
-        .catch(() => {
-          this.joiningGame = false;
-        });
-    },
-    spectateGame() {
-      this.joiningGame = true;
-      this.$router.push(`/spectate/${this.gameId}?gameStateIndex=-1`);
-    },
-  },
+/**
+ * One row of the home page game lists. Three mutually exclusive modes:
+ *  - join     an open lobby waiting for a second player  -> /lobby/:id
+ *  - spectate a game in progress between two others      -> /spectate/:id
+ *  - current  a game you are in yourself                 -> /game/:id, plus Archive
+ *
+ * Each mode uses its own subset of the props below; the shared ones are gameId, name and isRanked.
+ * Lives in a companion block because <script setup> cannot carry named exports.
+ */
+export const GAME_LIST_ITEM_MODE = {
+  JOIN: 'join',
+  SPECTATE: 'spectate',
+  CURRENT: 'current',
 };
+</script>
+
+<script setup>
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import dayjs from 'dayjs';
+import GameStatus from '_/utils/GameStatus.json';
+import gameActivity from '_/utils/gameActivity.json';
+import { useGameListStore } from '@/stores/gameList';
+
+const props = defineProps({
+  mode: {
+    type: String,
+    default: GAME_LIST_ITEM_MODE.JOIN,
+    validator: (value) => Object.values(GAME_LIST_ITEM_MODE).includes(value),
+  },
+  gameId: {
+    type: Number,
+    required: true,
+  },
+  name: {
+    type: String,
+    default: '',
+  },
+  isRanked: {
+    type: Boolean,
+    default: false,
+  },
+  // join
+  status: {
+    type: Number,
+    default: GameStatus.CREATED,
+  },
+  numPlayers: {
+    type: Number,
+    default: 0,
+  },
+  // spectate
+  disableSpectate: {
+    type: Boolean,
+    default: false,
+  },
+  // current
+  canArchive: {
+    type: Boolean,
+    default: false,
+  },
+  updatedAt: {
+    type: String,
+    default: null,
+  },
+  opponent: {
+    type: Object,
+    default: null,
+  },
+});
+
+const emit = defineEmits([ 'error' ]);
+
+const { t, te } = useI18n();
+const router = useRouter();
+const gameListStore = useGameListStore();
+
+const navigating = ref(false);
+const archiving = ref(false);
+
+const isJoinable = computed(() => props.mode === GAME_LIST_ITEM_MODE.JOIN);
+const isSpectatable = computed(() => props.mode === GAME_LIST_ITEM_MODE.SPECTATE);
+const isCurrent = computed(() => props.mode === GAME_LIST_ITEM_MODE.CURRENT);
+
+// Join and spectate rows share a data-cy; current games need their own so tests counting one list
+// don't pick up the other.
+const rootDataCy = computed(() => (isCurrent.value ? 'current-game-list-item' : 'game-list-item'));
+
+const modeIcon = computed(() => (props.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'));
+const readyText = computed(() => `${props.numPlayers} / 2`);
+const joinButtonText = computed(
+  () => `${t('home.join')} ${props.isRanked ? t('global.ranked') : t('global.casual')}`,
+);
+const gameIsFull = computed(() => props.numPlayers >= 2 || props.status !== GameStatus.CREATED);
+
+const buttonAttrs = computed(() => ({
+  color: 'base-dark',
+  variant: 'outlined',
+  minWidth: '200',
+  loading: navigating.value,
+}));
+
+/**
+ * With no text label on the archive button, the tooltip names the action when archiving is
+ * available and explains the block when it isn't.
+ *
+ * The backend is the authority on whether a game can be archived, but it doesn't say why.
+ * Staleness is the half we can recompute client-side, so check it first -- otherwise a
+ * ranked game from a PREVIOUS week that is merely too recent would claim the wrong reason.
+ */
+const archiveTooltipText = computed(() => {
+  if (props.canArchive) {
+    return t('home.archive');
+  }
+  const isDormant = dayjs(props.updatedAt).isBefore(dayjs().subtract(gameActivity.RECENT_ACTIVITY_MINUTES, 'minute'));
+  return isDormant ? t('home.archiveBlockedRanked') : t('home.archiveBlockedActive');
+});
+
+function subscribeToGame() {
+  navigating.value = true;
+  router.push(`/lobby/${props.gameId}`)
+    .then(() => {
+      navigating.value = false;
+    })
+    .catch(() => {
+      navigating.value = false;
+    });
+}
+
+function spectateGame() {
+  navigating.value = true;
+  router.push(`/spectate/${props.gameId}?gameStateIndex=-1`);
+}
+
+function continueGame() {
+  navigating.value = true;
+  router.push(`/game/${props.gameId}`).catch(() => {
+    navigating.value = false;
+  });
+}
+
+async function archive() {
+  archiving.value = true;
+  try {
+    await gameListStore.requestArchiveGame(props.gameId);
+  } catch (err) {
+    // The API rejects with an i18n key (eg home.error.forbidden) so the message can be localized
+    const key = err?.message ?? err;
+    emit('error', te(key) ? t(key) : t('home.failedToArchiveGame'));
+  } finally {
+    archiving.value = false;
+  }
+}
 </script>
 <style scoped lang="scss">
 .list-item {
@@ -151,12 +245,11 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 0.5rem;
-  word-break: break-all;
+  overflow-wrap: anywhere;
   & .game-name {
     font-weight: 600;
     font-size: 1.5em;
     text-align: left;
-    // width: 60%;
     padding-right: 1rem;
   }
   & p {
@@ -164,7 +257,6 @@ export default {
     margin: 3px auto;
   }
   &__inner-text {
-    // display: flex;
     align-items: center;
     padding-bottom: 1rem;
     padding-top: 0.25rem;

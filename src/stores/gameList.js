@@ -145,7 +145,7 @@ export const useGameListStore = defineStore('gameList', {
            * The API always fails with { message: '<i18n key>' }. Anything else is unexpected, so
            * normalise both paths to an Error carrying a string -- the shape here previously varied
            * between a bare string, an Error, and whatever non-string `message` the body held.
-           * CurrentGameListItem reads err.message and falls back to a generic string when it isn't
+           * GameListItem reads err.message and falls back to a generic string when it isn't
            * a key it recognises.
            */
           const message = typeof resData?.message === 'string' ?

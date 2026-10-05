@@ -58,7 +58,8 @@
                     {{ t('home.myCurrentGames') }}
                   </h2>
                   <div v-for="game in myCurrentGameList" :key="`current-${game.id}`">
-                    <CurrentGameListItem
+                    <GameListItem
+                      :mode="GAME_LIST_ITEM_MODE.CURRENT"
                       :game-id="game.id"
                       :name="game.name"
                       :is-ranked="game.isRanked"
@@ -77,9 +78,8 @@
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
                   <GameListItem
+                    :mode="GAME_LIST_ITEM_MODE.JOIN"
                     :name="game.name"
-                    :p0ready="game.p0Ready ? 1 : 0"
-                    :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
                     :num-players="game.numPlayers"
@@ -98,14 +98,12 @@
                 </p>
                 <div v-for="game in spectateGameList" :key="game.id">
                   <GameListItem
+                    :mode="GAME_LIST_ITEM_MODE.SPECTATE"
                     :name="game.name"
-                    :p0ready="game.p0Ready ? 1 : 0"
-                    :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
                     :num-players="game.numPlayers"
                     :is-ranked="game.isRanked"
-                    :is-spectatable="true"
                     :disable-spectate="game.isOver"
                     @error="handleError"
                   />
@@ -166,8 +164,7 @@ import { mapStores } from 'pinia';
 import { useGameListStore } from '@/stores/gameList';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
-import GameListItem from '@/routes/home/components/GameListItem.vue';
-import CurrentGameListItem from '@/routes/home/components/CurrentGameListItem.vue';
+import GameListItem, { GAME_LIST_ITEM_MODE } from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
@@ -182,7 +179,6 @@ export default {
   name: 'HomeView',
   components: {
     GameListItem,
-    CurrentGameListItem,
     CreateGameDialog,
     AnnouncementDialog,
     OauthSignupDialog,
@@ -198,6 +194,7 @@ export default {
   data() {
     return {
       TABS,
+      GAME_LIST_ITEM_MODE,
       tab: TABS.PLAY,
       loadingData: true,
       oAuthSignup: false,
