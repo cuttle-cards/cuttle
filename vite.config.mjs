@@ -7,17 +7,32 @@ import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 import vueDevTools from 'vite-plugin-vue-devtools';
+import { resolveDevPorts } from './utils/dev-ports.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   // See https://vitejs.dev/config/#using-environment-variables-in-config
   const env = loadEnv(mode, process.cwd(), '');
-  let HOST_SERVER_URL = 'http://localhost:1337';
+
+  // Ports are derived from `CUTTLE_PORT_OFFSET` so several stacks can run in parallel
+  // (see utils/dev-ports.js)
+  const { clientPort, apiUrl, frontendUrl } = resolveDevPorts(env);
+
+  if (command === 'serve') {
+    // Point the dev client at this stack's server rather than at the url committed in `.env`.
+    // Vite reads `VITE_*` out of process.env ahead of the env files, and `??=` leaves an
+    // explicitly exported url alone. Builds are untouched: there the urls come from the
+    // deploy environment.
+    process.env.VITE_API_URL ??= apiUrl;
+    process.env.VITE_FRONTEND_URL ??= frontendUrl;
+  }
+
+  let HOST_SERVER_URL = apiUrl;
   if (env.CUTTLE_DOCKERIZED === 'true') {
     // This needs to be the hostname of the docker container, not localhost since it happens
     // on the server side as a proxy from vite server to the sailsjs container
@@ -42,7 +57,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: '0.0.0.0',
-      port: 8080,
+      port: clientPort,
       strictPort: true,
       cors: false,
       proxy: {
