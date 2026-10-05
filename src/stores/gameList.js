@@ -141,15 +141,17 @@ export const useGameListStore = defineStore('gameList', {
             return resolve(resData);
           }
 
-          let message;
-          if (Object.prototype.hasOwnProperty.call(resData, 'message')) {
-            ({ message } = resData);
-          } else if (typeof resData === 'string') {
-            message = resData;
-          } else {
-            message = new Error('Unknown error archiving game');
-          }
-          return reject(message);
+          /**
+           * The API always fails with { message: '<i18n key>' }. Anything else is unexpected, so
+           * normalise both paths to an Error carrying a string -- the shape here previously varied
+           * between a bare string, an Error, and whatever non-string `message` the body held.
+           * CurrentGameListItem reads err.message and falls back to a generic string when it isn't
+           * a key it recognises.
+           */
+          const message = typeof resData?.message === 'string' ?
+            resData.message :
+            'Unknown error archiving game';
+          return reject(new Error(message));
         });
       });
     },

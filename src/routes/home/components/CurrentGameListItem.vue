@@ -27,26 +27,24 @@
           />
           {{ t('home.continue') }}
         </v-btn>
-        <!-- Archive Button: icon only, so the tooltip carries the label in both states -->
-        <v-tooltip location="top" :text="archiveTooltipText">
-          <template #activator="{ props: tooltipProps }">
-            <!-- span wrapper so the tooltip still fires while the button is disabled -->
-            <span v-bind="tooltipProps">
-              <v-btn
-                class="ml-2"
-                color="base-dark"
-                variant="text"
-                icon="mdi-close"
-                size="small"
-                :disabled="!canArchive"
-                :loading="archiving"
-                :aria-label="t('home.archive')"
-                :data-cy-archive-game="gameId"
-                @click="archive"
-              />
-            </span>
-          </template>
-        </v-tooltip>
+        <!-- Archive Button: icon only, so the tooltip carries the label in both states.
+             The directive binds to the span, not the button: a disabled v-btn renders as
+             <button disabled> with pointer-events:none, so a real hover never reaches it and the
+             blocked-state tooltip would silently never appear. -->
+        <span v-tooltip:top="archiveTooltipText">
+          <v-btn
+            class="ml-2"
+            color="base-dark"
+            variant="text"
+            icon="mdi-close"
+            size="small"
+            :disabled="!canArchive"
+            :loading="archiving"
+            :aria-label="t('home.archive')"
+            :data-cy-archive-game="gameId"
+            @click="archive"
+          />
+        </span>
       </v-col>
     </v-row>
     <v-divider color="base-dark" class="mb-4 mx-2 border-opacity-100 px-5" />

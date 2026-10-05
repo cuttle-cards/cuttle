@@ -8,7 +8,7 @@ module.exports = async function (req, res) {
   let game;
   try {
     /**
-     * Validate against the UNLOCKED record. lockGame writes `lock`/`lockedAt` to the Game row,
+     * Validate against the UNLOCKED record. This calls lockGame, which writes `lock`/`lockedAt` to the Game row,
      * which bumps `updatedAt` — the very signal canArchiveGame uses to decide whether the game is
      * dormant. Reading it first keeps that check honest.
      */
@@ -21,9 +21,12 @@ module.exports = async function (req, res) {
       throw new NotFoundError('home.error.notFound');
     }
 
-    // Must be a player in this game
-    const playerIds = [ existingGame.p0, existingGame.p1 ].filter((val) => !!val);
-    if (!playerIds.includes(req.session.usr)) {
+    // Must be a player in this game. The filter matters: an unset p0/p1 would otherwise let an
+    // undefined req.session.usr match, so it is a sanity check rather than tidying.
+    const isPlayerInGame = [ existingGame.p0, existingGame.p1 ]
+      .filter((val) => !!val)
+      .includes(req.session.usr);
+    if (!isPlayerInGame) {
       throw new ForbiddenError('home.error.forbidden');
     }
 

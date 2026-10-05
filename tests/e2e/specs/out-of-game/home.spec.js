@@ -177,6 +177,57 @@ describe('Home - Game List', () => {
       cy.get('[data-cy=no-spectate-game-text]').should('be.visible');
     });
 
+    describe('Archive tooltip', () => {
+      /**
+       * The tooltip directive binds to the span wrapping the archive button, not the button itself:
+       * a disabled v-btn is <button disabled> with pointer-events:none, so a real pointer never
+       * reaches it. Hover the wrapper here rather than the button -- triggering the button directly
+       * would pass even if the tooltip were mis-bound and users could never see it.
+       */
+      const hoverArchive = (gameName) =>
+        cy.contains('[data-cy=current-game-list-item]', gameName)
+          .find('[data-cy-archive-game]')
+          .parent()
+          .trigger('mouseenter');
+
+      it('Names the action when archiving is available', function () {
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Dormant Casual',
+            status: GameStatus.STARTED,
+            isRanked: false,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        hoverArchive('Dormant Casual');
+        cy.get('.v-tooltip').should('be.visible')
+          .and('contain', 'Archive');
+      });
+
+      it('Explains the block when archiving is disabled', function () {
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Still Active',
+            status: GameStatus.STARTED,
+            isRanked: false,
+            p0: this.myUserId,
+            p1: this.opponentId,
+          },
+        ]);
+        cy.visit('/');
+        cy.contains('[data-cy=current-game-list-item]', 'Still Active')
+          .find('[data-cy-archive-game]')
+          .should('be.disabled')
+          .should('have.css', 'pointer-events', 'none');
+        hoverArchive('Still Active');
+        cy.get('.v-tooltip').should('be.visible')
+          .and('contain', 'This game is still active and cannot be archived yet.');
+      });
+    });
+
     describe('Ranked games', () => {
       /**
        * Season started 10 days ago, so the current week began 3 days ago: a game created an hour
@@ -261,8 +312,8 @@ describe('Home - Game List', () => {
               () => {
                 throw new Error('Expected archiving another players game to be rejected');
               },
-              (message) => {
-                expect(message).to.eq('home.error.forbidden');
+              (err) => {
+                expect(err.message).to.eq('home.error.forbidden');
               },
             ),
           );
