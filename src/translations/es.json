@@ -601,13 +601,12 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Los Nueves reciben una mejora!",
-    "title": "Beta de reglas: Nueves al mazo",
-    "heading": "Los Nueves ahora ponen cartas encima del mazo",
-    "paragraph": "El Nueve es una de las cartas más altas de la baraja, pero su efecto único siempre ha sido el más específico. Ahora, en lugar de devolver una carta a la mano de su controlador, un Nueve pone una carta del campo de tu rival encima del mazo: una carta de puntos, una Figura o la Jota superior de una pila. Su siguiente robo será su propia carta, así que el Nueve les cuesta un turno entero. Ya no se congela nada, y las Damas siguen protegiendo igual que antes.",
-    "heading2": "La primera de cuatro pruebas de la temporada de Picas",
-    "paragraph2": "Esto es una beta, y la primera de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
-    "patreonLink": "Ayuda a refinar el 4 y el 9"
+    "activatorText": "¡Encuentra tus partidas en curso!",
+    "title": "Tus Partidas Actuales",
+    "heading": "Retoma donde lo dejaste",
+    "paragraph": "¿Cerraste la pestaña de una partida? Las partidas que tienes en curso ahora aparecen al principio de la pestaña Jugar, bajo Mis Partidas Actuales. Pulsa Continuar para volver directamente a la partida, justo donde la dejaste.",
+    "heading2": "Despejar partidas abandonadas",
+    "paragraph2": "¿Terminaste con una partida a la que nadie va a volver? La × junto a Continuar la archiva y la quita de la lista de ambos jugadores. Las partidas que se siguen jugando no se pueden archivar, ni tampoco las partidas de Competitivo de la semana actual: esas todavía cuentan para tu enfrentamiento."
   },
   "profile": {
     "myGames": "Mis juegos",

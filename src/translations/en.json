@@ -602,13 +602,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Nines are getting a buff!",
-    "title": "Rules Beta: Topdeck Nines",
-    "heading": "Nines now put cards on top of the deck",
-    "paragraph": "A Nine is one of the highest cards in the deck, but its one-off has always been the most niche. Now, instead of returning a card to its controller's hand, a Nine one-off puts a card from your opponent's board on top of the deck — a point card, a Royal, or the top Jack of a stack. Their next draw is their own card coming back, so the Nine costs them a whole turn. Nothing is frozen any more, and Queens still protect as before.",
-    "heading2": "The first of four Spades season trials",
-    "paragraph2": "This is a beta, and the first of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",
-    "patreonLink": "Help refine the 4 and the 9"
+    "activatorText": "Find your games in progress!",
+    "title": "Your Current Games",
+    "heading": "Pick up where you left off",
+    "paragraph": "Closed the tab on a game? The games you have in progress now appear at the top of the Play tab, under My Current Games. Press Continue to drop straight back into the game, exactly where you left it.",
+    "heading2": "Clearing out abandoned games",
+    "paragraph2": "Done with a game nobody is coming back to? The × beside Continue archives it, taking it off both players' lists. Games that are still being played can't be archived, and neither can Ranked games from the current week — those still count toward your match."
   },
   "profile": {
     "myGames": "My Games",
