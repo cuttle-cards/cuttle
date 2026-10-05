@@ -608,5 +608,28 @@
     "replay": "Replay",
     "linkedAccounts": "Linked Accounts",
     "failedToLoadGames": "Failed to load game history. Please try again later."
+  },
+  "emailPreference": {
+    "title": "Add Your Email",
+    "explanation": "Add an email to your account so you can reset a forgotten password and manage your account settings in the future.",
+    "emailLabel": "Preferred Email",
+    "promotionalLabel": "Send me news and updates about Cuttle",
+    "sendCode": "Send Code",
+    "codeSent": "We sent a 6 digit code to {email}. Enter it below to confirm your email.",
+    "verify": "Verify",
+    "resend": "Resend Code",
+    "resendIn": "Resend in {seconds}s",
+    "back": "Back",
+    "noThanks": "No Thanks",
+    "verified": "Your email has been saved",
+    "error": {
+      "invalidEmail": "Please enter a valid email",
+      "emailTaken": "This email is already in use",
+      "tooManyRequests": "Please wait a minute before requesting another code",
+      "sendFailed": "We couldn't send your code. Please try again later.",
+      "invalidCode": "That code is incorrect",
+      "codeExpired": "That code has expired. Please request a new one.",
+      "noPendingEmail": "Please request a new code"
+    }
   }
 }

@@ -4,6 +4,7 @@ import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fi
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
 import dayjs from 'dayjs';
+import { LS_EMAIL_PROMPT_DISMISSED } from '../../../../utils/local-storage-utils';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
@@ -674,5 +675,73 @@ describe('Announcement Dialogs', () => {
 
     cy.reload();
     cy.get('[data-cy=announcement-dialog]').should('not.exist');
+  });
+});
+
+describe('Email Preference Dialog', () => {
+  beforeEach(() => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    // Undo the global pre-load seed (support/index.js) so the email prompt can appear.
+    // cy.vueRoute is SPA nav (no reload), so removing the flag here sticks until the dialog mounts
+    cy.window().then((win) => win.localStorage.removeItem(LS_EMAIL_PROMPT_DISMISSED));
+    cy.signupPlayer(myUser);
+  });
+
+  it('Explains the email prompt and stays dismissed after No Thanks', () => {
+    cy.vueRoute('/');
+    cy.get('[data-cy=email-preference-dialog]').should('be.visible');
+    cy.get('[data-cy=email-preference-explanation]').should('contain', 'forgotten password');
+
+    cy.get('[data-cy=email-preference-dismiss]').click();
+    cy.get('[data-cy=email-preference-dialog]').should('not.exist');
+    cy.window().then((win) => {
+      expect(win.localStorage.getItem(LS_EMAIL_PROMPT_DISMISSED)).to.eq('true');
+    });
+
+    cy.vueRoute('/rules');
+    cy.vueRoute('/');
+    cy.contains('h1', 'Game Finder');
+    cy.get('[data-cy=email-preference-dialog]').should('not.exist');
+  });
+
+  it('Sends a code and verifies the email', () => {
+    cy.intercept('POST', '/api/user/email/request-code', { statusCode: 200, body: {} }).as('requestCode');
+    cy.intercept('POST', '/api/user/email/verify', {
+      statusCode: 200,
+      body: { email: 'me@example.com', promotional: true },
+    }).as('verify');
+    cy.vueRoute('/');
+
+    cy.get('[data-cy=email-preference-send-code]').should('be.disabled');
+    cy.get('[data-cy=email-preference-input] input').type('Me@Example.com');
+    cy.get('[data-cy=email-preference-promotional] input').check();
+    cy.get('[data-cy=email-preference-send-code]').click();
+    cy.wait('@requestCode').its('request.body')
+      .should('deep.equal', { email: 'Me@Example.com', promotional: true });
+
+    cy.get('[data-cy=email-preference-verify]').should('be.disabled');
+    cy.get('[data-cy=email-preference-resend]').should('be.disabled');
+    cy.get('[data-cy=email-preference-code] input').each(($input, i) => {
+      cy.wrap($input).type(`${i + 1}`);
+    });
+    cy.get('[data-cy=email-preference-verify]').click();
+    cy.wait('@verify').its('request.body')
+      .should('deep.equal', { code: '123456' });
+
+    cy.get('[data-cy=email-preference-dialog]').should('not.exist');
+    assertSnackbar('Your email has been saved', 'success');
+  });
+
+  it('Shows an error when the email is already in use', () => {
+    cy.intercept('POST', '/api/user/email/request-code', {
+      statusCode: 409,
+      body: { message: 'emailPreference.error.emailTaken' },
+    });
+    cy.vueRoute('/');
+
+    cy.get('[data-cy=email-preference-input] input').type('taken@example.com');
+    cy.get('[data-cy=email-preference-send-code]').click();
+    cy.get('[data-cy=email-preference-input]').should('contain', 'This email is already in use');
   });
 });
