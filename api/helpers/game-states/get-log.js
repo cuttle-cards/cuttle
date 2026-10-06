@@ -162,15 +162,14 @@ module.exports = {
         case MoveType.SEVEN_DISCARD:
           return `${player} discarded the ${playedCardName} since neither of the top two cards could be played.`;
 
-        case MoveType.SEVEN_UNTARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${
-            gameText.moves.effects[playedCard.rank]
-          }.`;
-
-        case MoveType.SEVEN_TARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${
-            gameText.moves.effects[playedCard.rank]
-          }, targeting the ${targetCardName}.`;
+        case MoveType.SEVEN_ONE_OFF: {
+          const playedCardObj = convertStrToCard(playedCard);
+          const effect = gameText.moves.effects[playedCardObj.rank];
+          if (targetCardName) {
+            return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}, targeting the ${targetCardName}.`;
+          }
+          return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}.`;
+        }
 
         case MoveType.PASS:
           return `${player} passed.`;
