@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import Transitions from '_/utils/Transitions';
+import Transitions from '_/utils/Transitions.json';
 
 export default {
   name: 'GameCard',
