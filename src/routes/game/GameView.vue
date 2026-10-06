@@ -425,7 +425,7 @@
 import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
-import Transitions from '_/utils/Transitions';
+import Transitions from '_/utils/Transitions.json';
 import { useAuthStore } from '@/stores/auth';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useSnackbarStore } from '@/stores/snackbar';
