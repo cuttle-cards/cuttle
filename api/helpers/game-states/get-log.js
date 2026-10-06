@@ -30,6 +30,7 @@ module.exports = {
       const opponent = game[`p${(row.playedBy + 1) % 2}`]?.username;
 
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
+      const playedCardObj = playedCard ? convertStrToCard(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
       const resolvedCardName = resolved ? getFullCardName(resolved) : null;
 
@@ -56,14 +57,14 @@ module.exports = {
         with the ${playedCardName}.`;
 
         case MoveType.FACE_CARD:
-          return `${player} played the ${playedCardName}
-        ${playedCard.rank === 8 ? ' as a glasses eight.' : '.'}`;
+          return `${player} played the ${playedCardName}${
+            playedCardObj.rank === 8 ? ' as a glasses eight.' : '.'
+          }`;
 
         case MoveType.JACK:
           return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName}.`;
 
         case MoveType.ONE_OFF: {
-          const playedCardObj = convertStrToCard(playedCard);
           let log = `${player} played the ${playedCardName} as a one-off to 
         ${gameText.moves.effects[playedCardObj.rank]}`;
           if (targetCardName) {
@@ -149,8 +150,8 @@ module.exports = {
           return `${player} scuttled ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
         case MoveType.SEVEN_FACE_CARD:
-          return `${player} played the ${playedCardName} from the top of the deck ${
-            playedCard.rank === 8 ? ' as a Glasses eight.' : '.'
+          return `${player} played the ${playedCardName} from the top of the deck${
+            playedCardObj.rank === 8 ? ' as a Glasses eight.' : '.'
           }`;
 
         case MoveType.SEVEN_JACK:
@@ -163,7 +164,6 @@ module.exports = {
           return `${player} discarded the ${playedCardName} since neither of the top two cards could be played.`;
 
         case MoveType.SEVEN_ONE_OFF: {
-          const playedCardObj = convertStrToCard(playedCard);
           const effect = gameText.moves.effects[playedCardObj.rank];
           if (targetCardName) {
             return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}, targeting the ${targetCardName}.`;

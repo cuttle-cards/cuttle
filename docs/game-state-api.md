@@ -19,9 +19,9 @@ Enum describing the phase of a turn the game is currently in. Used to validate w
    * faceCard  
    * jack  
    * scuttle  
-   * untargetedOneOff  
-   * targetedOneOff  
-   * requestStalemate
+   * oneOff  
+   * pass  
+   * stalemateRequest
    
 * countering \- phase where players play counters. Only legal moves are   
    * counter  
@@ -33,39 +33,44 @@ Enum describing the phase of a turn the game is currently in. Used to validate w
    * sevenPoints  
    * sevenFaceCard  
    * sevenScuttle  
-   * sevenUntargetedOneOff  
-   * sevenTargetedOneOff  
+   * sevenOneOff  
    * sevenJack  
+   * sevenDiscard  
 * discardingToHandLimit \- discarding due to hand limit at end of turn. Only legal move is discardToHandLimit  
 * consideringStalemate \- deciding whether to accept opponent's stalemate request. Only legal moves are stalemateAccept and stalemateReject
+
+`concede` is not phase-gated and is legal at any point in the game.
 
 ## MoveType
 
 Enum designating which kind of move was made.
 
-* initialize  
+* deal  
 * draw  
 * points  
 * scuttle  
 * faceCard (king, queen, or glasses eight)  
 * jack  
-* untargetedOneOff  
-* targetedOneOff  
+* oneOff \- a one-off played from hand. Covers both targeted and untargeted one-offs; targeting is expressed by `targetCard`/`targetType` on the move body rather than by a separate MoveType  
 * counter  
 * resolve  
+* fizzle \- a one-off was countered, so it and everything played on it are scrapped  
 * resolveThree (picking a card from the scrap)  
 * resolveFour (discarding from hand)  
+* resolveFive (discarding before drawing)  
+* discardToHandLimit  
 * sevenPoints  
 * sevenScuttle  
 * sevenFaceCard  
 * sevenJack  
-* sevenUntargetedOneOff  
-* sevenTargetedOneOff  
+* sevenDiscard \- neither of the top two cards could be played, so the revealed card is discarded  
+* sevenOneOff \- the seven equivalent of `oneOff`; likewise covers both targeted and untargeted  
 * pass  
-* discardToHandLimit  
 * stalemateRequest  
 * stalemateReject  
-* stalemateAccept
+* stalemateAccept  
+* concede  
+* loadFixture (test/dev only \- sets the game to an arbitrary state)
 
 # Database Layer
 

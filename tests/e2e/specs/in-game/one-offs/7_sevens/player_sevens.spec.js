@@ -429,6 +429,11 @@ describe('Playing SEVENS', () => {
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
       });
+
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the 8♣️ from the top of the deck as a Glasses eight.',
+      );
     }); // End seven glasses test
   }); // End seven face card describe
 
