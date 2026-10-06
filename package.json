@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "18.0.0",
+  "version": "18.0.1",
   "dependencies": {
     "@unhead/vue": "^1.11.14",
     "@vueuse/core": "^14.1.0",
@@ -80,8 +80,8 @@
     "build": "vite build",
     "e2e:client": "cypress run",
     "e2e:gui": "cypress open",
-    "e2e:server": "cross-env VITE_API_URL=http://localhost:1337 cypress run",
-    "e2e:server:gui": "cross-env VITE_API_URL=http://localhost:1337 cypress open",
+    "e2e:server": "cross-env CUTTLE_E2E_TARGET=server cypress run",
+    "e2e:server:gui": "cross-env CUTTLE_E2E_TARGET=server cypress open",
     "lint": "eslint --ext .js,.vue .",
     "lint:fix": "eslint --fix --ext .js,.vue .",
     "storybook": "storybook dev -p 6006",
