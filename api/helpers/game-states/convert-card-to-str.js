@@ -29,7 +29,7 @@ function concatAttachtToId(card, cardOwner) {
 /**
  * Validate card id
  *
- * @param {string  } card,
+ * @param {string} id
  */
 function validateCardId(id) {
   if (!id || id.length !== 2) {
