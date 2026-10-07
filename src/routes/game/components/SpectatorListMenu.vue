@@ -42,26 +42,18 @@
   </BaseMenu>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseMenu from '@/components/BaseMenu.vue';
 
-export default {
-  components: {
-    BaseMenu,
+defineProps({
+  spectatingUsers: {
+    type: Array,
+    required: true,
   },
-  props: {
-    spectatingUsers: {
-      type: Array,
-      required: true,
-    },
-  },
-  setup() {
-    const { t } = useI18n();
-    return { t };
-  },
-  data() {
-    return { spectatingMenu: false };
-  },
-};
+});
+
+const { t } = useI18n();
+const spectatingMenu = ref(false);
 </script>
