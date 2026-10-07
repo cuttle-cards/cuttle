@@ -429,6 +429,11 @@ describe('Playing SEVENS', () => {
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
       });
+
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the 8♣️ from the top of the deck as a Glasses eight.',
+      );
     }); // End seven glasses test
   }); // End seven face card describe
 
@@ -623,6 +628,11 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the A♦️ from the top of the deck as a one-off to Scrap all points.',
+      );
+
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
@@ -716,6 +726,11 @@ describe('Playing SEVENS', () => {
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the 2♠️ from the top of the deck as a one-off to Scrap target Royal or Glasses eight, targeting the Q♣️.',
+      );
 
       assertGameState(0, {
         p0Hand: [],
