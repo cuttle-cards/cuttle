@@ -36,127 +36,135 @@
   </BaseMenu>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useTheme } from 'vuetify';
 import BaseMenu from '@/components/BaseMenu.vue';
 
-export default {
+defineOptions({
   name: 'StatsLeaderboardCell',
-  components: {
-    BaseMenu,
+});
+
+const props = defineProps({
+  playerRow: {
+    type: Object,
+    required: true,
   },
-  props: {
-    playerRow: {
-      type: Object,
-      required: true,
-    },
-    week: {
-      type: [ Number, String ],
-      required: true,
-      validator: (val) => [ 'total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ].includes(val),
-    },
-    playersBeaten: {
-      type: String,
-      default: '',
-    },
-    playersLostTo: {
-      type: String,
-      default: '',
-    },
-    topTotalScores: {
-      type: Object,
-      required: true,
-    },
-    seasonName: {
-      type: String,
-      default: '',
-    },
+  week: {
+    type: [ Number, String ],
+    required: true,
+    validator: (val) => [ 'total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ].includes(val),
   },
-  setup() {
-    const { t } = useI18n();
-    return { t };
+  playersBeaten: {
+    type: String,
+    default: '',
   },
-  data() {
-    return {
-      showMenu: false,
-    };
+  playersLostTo: {
+    type: String,
+    default: '',
   },
-  computed: {
-    theme() {
-      return this.$vuetify.theme.themes.cuttleTheme.colors;
-    },
-    username() {
-      return this.playerRow.username;
-    },
-    wins() {
-      return this.playerRow[`week_${this.week}_wins`];
-    },
-    points() {
-      return this.playerRow[`week_${this.week}_points`];
-    },
-    weekCount() {
-      return this.playerRow[`week_${this.week}_count`];
-    },
-    colorForScore() {
-      return this.week === 'total' ? this.colorForTotalScore : this.colorForWeeklyScore;
-    },
-    colorForTotalScore() {
-      if (this.points === this.topTotalScores.first) {
-        return this.theme.firstPlace;
-      }
-      if (this.points === this.topTotalScores.second) {
-        return this.theme.secondPlace;
-      }
-      if (this.points === this.topTotalScores.third) {
-        return 'base-light';
-      }
+  topTotalScores: {
+    type: Object,
+    required: true,
+  },
+  seasonName: {
+    type: String,
+    default: '',
+  },
+});
+
+const { t } = useI18n();
+const vuetifyTheme = useTheme();
+const showMenu = ref(false);
+
+const theme = computed(() => {
+  return vuetifyTheme.themes.value.cuttleTheme.colors;
+});
+
+const username = computed(() => {
+  return props.playerRow.username;
+});
+
+const wins = computed(() => {
+  return props.playerRow[`week_${props.week}_wins`];
+});
+
+const points = computed(() => {
+  return props.playerRow[`week_${props.week}_points`];
+});
+
+const weekCount = computed(() => {
+  return props.playerRow[`week_${props.week}_count`];
+});
+
+const colorForScore = computed(() => {
+  return props.week === 'total' ? colorForTotalScore.value : colorForWeeklyScore.value;
+});
+
+const colorForTotalScore = computed(() => {
+  if (points.value === props.topTotalScores.first) {
+    return theme.value.firstPlace;
+  }
+  if (points.value === props.topTotalScores.second) {
+    return theme.value.secondPlace;
+  }
+  if (points.value === props.topTotalScores.third) {
+    return 'base-light';
+  }
+  return '#000';
+});
+
+const colorForWeeklyScore = computed(() => {
+  switch (points.value) {
+    case 5:
+      return theme.value.firstPlace;
+    case 4:
+      return theme.value.secondPlace;
+    case 3:
+      return 'base-light';
+    case 2:
+    case 1:
+    default:
       return '#000';
-    },
-    colorForWeeklyScore() {
-      switch (this.points) {
-        case 5:
-          return this.theme.firstPlace;
-        case 4:
-          return this.theme.secondPlace;
-        case 3:
-          return 'base-light';
-        case 2:
-        case 1:
-        default:
-          return '#000';
-      }
-    },
-    variant() {
-      switch (this.colorForScore) {
-        case this.theme.firstPlace:
-        case this.theme.secondPlace:
-        case 'base-light':
-          return 'flat';
-        default:
-          return 'outlined';
-      }
-    },
-    winRatePercentage() {
-      const winRate = Math.floor((this.wins / this.weekCount) * 100);
-      return `${winRate}%`;
-    },
-    losses() {
-      return this.weekCount - this.wins;
-    },
-    winRateText() {
-      return `${this.winRatePercentage} (${this.wins} Won, ${this.losses} Lost, ${this.weekCount} Total)`;
-    },
-    menuHeader() {
-      return this.week === 'total' ? this.seasonName : `Week ${this.week}`;
-    },
-    playersBeatenText() {
-      return this.playersBeaten !== '' ? this.playersBeaten : 'None';
-    },
-    playersLostToText() {
-      return this.playersLostTo !== '' ? this.playersLostTo : 'None';
-    },
-  },
-};
+  }
+});
+
+const variant = computed(() => {
+  switch (colorForScore.value) {
+    case theme.value.firstPlace:
+    case theme.value.secondPlace:
+    case 'base-light':
+      return 'flat';
+    default:
+      return 'outlined';
+  }
+});
+
+const winRatePercentage = computed(() => {
+  const winRate = Math.floor((wins.value / weekCount.value) * 100);
+  return `${winRate}%`;
+});
+
+const losses = computed(() => {
+  return weekCount.value - wins.value;
+});
+
+const winRateText = computed(() => {
+  return `${winRatePercentage.value} (${wins.value} Won, ${losses.value} Lost, ${weekCount.value} Total)`;
+});
+
+const menuHeader = computed(() => {
+  return props.week === 'total' ? props.seasonName : `Week ${props.week}`;
+});
+
+const playersBeatenText = computed(() => {
+  return props.playersBeaten !== '' ? props.playersBeaten : 'None';
+});
+
+const playersLostToText = computed(() => {
+  return props.playersLostTo !== '' ? props.playersLostTo : 'None';
+});
 </script>
 
 <style scoped>
