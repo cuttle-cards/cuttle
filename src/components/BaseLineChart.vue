@@ -9,88 +9,91 @@
 </template>
 
 <script>
-import { Line as LineChart } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale } from 'chart.js';
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale);
+</script>
 
-export default {
+<script setup>
+import { computed } from 'vue';
+import { useTheme } from 'vuetify';
+import { Line as LineChart } from 'vue-chartjs';
+
+defineOptions({
   name: 'BarChart',
-  components: { LineChart },
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    // Array of string labels for the X axis
-    labels: {
-      type: Array,
-      required: true,
-    },
-    // Array of dataset objects for chartjs
-    // https://www.chartjs.org/docs/latest/general/data-structures.html#primitive
-    dataSets: {
-      type: Array,
-      required: true,
-    },
+});
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
   },
-  computed: {
-    theme() {
-      return this.$vuetify.theme.themes.cuttleTheme.colors;
-    },
-    backgroundColor() {
-      const hex = this.theme['table-row'];
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      return `rgba(${r}, ${g}, ${b}, 0.7)`;
-    },
-    chartData() {
-      return {
-        labels: this.labels,
-        datasets: this.dataSets,
-      };
-    },
-    chartOptions() {
-      return {
-        responsive: true,
-        scales: {
-          x: {
-            grid: {
-              color: this.theme['base-light'],           // color of the grid lines
-              borderColor: this.theme['base-light'],     // color of the outer axis line
-            },
-            ticks: {
-              color: this.theme['base-light'],           // color of tick labels on the x-axis
-            },
-          },
-          y: {
-            grid: {
-              color: this.theme['base-light'],
-              borderColor: this.theme['base-light'],
-            },
-            ticks: {
-              color: this.theme['base-light'],
-            },
-          },
-        },
-        plugins: {
-          title: {
-            text: this.title,
-            display: !!this.title,
-            color: this.theme['base-light'],
-          },
-        },
-        color: this.theme['base-light'],
-        backgroundColor: this.backgroundColor,
-      };
-    },
+  title: {
+    type: String,
+    default: '',
   },
-};
+  // Array of string labels for the X axis
+  labels: {
+    type: Array,
+    required: true,
+  },
+  // Array of dataset objects for chartjs
+  // https://www.chartjs.org/docs/latest/general/data-structures.html#primitive
+  dataSets: {
+    type: Array,
+    required: true,
+  },
+});
+
+const vuetifyTheme = useTheme();
+const theme = computed(() => vuetifyTheme.themes.value.cuttleTheme.colors);
+const backgroundColor = computed(() => {
+  const hex = theme.value['table-row'];
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, 0.7)`;
+});
+const chartData = computed(() => {
+  return {
+    labels: props.labels,
+    datasets: props.dataSets,
+  };
+});
+const chartOptions = computed(() => {
+  return {
+    responsive: true,
+    scales: {
+      x: {
+        grid: {
+          color: theme.value['base-light'],           // color of the grid lines
+          borderColor: theme.value['base-light'],     // color of the outer axis line
+        },
+        ticks: {
+          color: theme.value['base-light'],           // color of tick labels on the x-axis
+        },
+      },
+      y: {
+        grid: {
+          color: theme.value['base-light'],
+          borderColor: theme.value['base-light'],
+        },
+        ticks: {
+          color: theme.value['base-light'],
+        },
+      },
+    },
+    plugins: {
+      title: {
+        text: props.title,
+        display: !!props.title,
+        color: theme.value['base-light'],
+      },
+    },
+    color: theme.value['base-light'],
+    backgroundColor: backgroundColor.value,
+  };
+});
 </script>
 
 <style scoped>
