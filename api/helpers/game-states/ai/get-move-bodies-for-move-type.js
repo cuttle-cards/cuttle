@@ -1,5 +1,5 @@
-const MoveType = require('../../../../utils/MoveType');
-const TargetType = require('../../../../utils/TargetType');
+const MoveType = require('../../../../utils/MoveType.json');
+const TargetType = require('../../../../utils/TargetType.json');
 
 module.exports = {
   friendlyName: 'Get move bodies for move type',
