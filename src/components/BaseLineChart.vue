@@ -46,20 +46,25 @@ const props = defineProps({
 });
 
 const vuetifyTheme = useTheme();
+
 const theme = computed(() => vuetifyTheme.themes.value.cuttleTheme.colors);
+
 const backgroundColor = computed(() => {
   const hex = theme.value['table-row'];
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
+
   return `rgba(${r}, ${g}, ${b}, 0.7)`;
 });
+
 const chartData = computed(() => {
   return {
     labels: props.labels,
     datasets: props.dataSets,
   };
 });
+
 const chartOptions = computed(() => {
   return {
     responsive: true,
