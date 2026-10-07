@@ -49,6 +49,7 @@ import BaseMenu from '@/components/BaseMenu.vue';
 
 defineProps({
   spectatingUsers: {
+    /** @type {import('vue').PropType<string[]>} */
     type: Array,
     required: true,
   },
