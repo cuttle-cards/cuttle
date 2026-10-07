@@ -39,6 +39,7 @@ const props = defineProps({
 
 const vuetifyTheme = useTheme();
 const theme = computed(() => vuetifyTheme.themes.value.cuttleTheme.colors);
+
 const _medalColor = computed(() => {
   switch (props.place) {
     case 1:
@@ -51,6 +52,7 @@ const _medalColor = computed(() => {
       return '#000';
   }
 });
+
 const suffix = computed(() => {
   switch (props.place) {
     case 1:
@@ -63,6 +65,7 @@ const suffix = computed(() => {
       return 'th';
   }
 });
+
 const placeWithSuffix = computed(() => `${props.place}${suffix.value}`);
 </script>
 
