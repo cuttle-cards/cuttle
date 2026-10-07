@@ -1,12 +1,21 @@
 const { defineConfig } = require('cypress');
+const { loadLocalEnv, resolveDevPorts } = require('./utils/dev-ports');
 
 const isRunMode = !!process.env.CYPRESS_RUN_BINARY;
+
+// Target the same stack the developer is running -- see utils/dev-ports.js
+loadLocalEnv();
+const { apiUrl, frontendUrl } = resolveDevPorts();
+
+// The `e2e:server` scripts (and CI) test the built client as served by the sails server; every
+// other mode tests the vite dev server. `CYPRESS_BASE_URL` overrides both.
+const baseUrl = process.env.CUTTLE_E2E_TARGET === 'server' ? apiUrl : frontendUrl;
 
 const cypressConfig = {
   projectId: 'i8bxr8',
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
-    baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
+    baseUrl,
     specPattern: [ 'tests/e2e/specs/**/*.spec.js' ],
     // Exclude playground specs from headless mode
     excludeSpecPattern: isRunMode ? [] : [ 'tests/e2e/specs/playground/**/*.js' ],
@@ -27,6 +36,10 @@ const cypressConfig = {
   fixturesFolder: 'tests/e2e/fixtures',
   screenshotsFolder: 'tests/e2e/screenshots',
   videosFolder: 'tests/e2e/videos',
+  // Available to specs as `Cypress.env('apiUrl')` for requests made straight to the server
+  env: {
+    apiUrl,
+  },
 };
 
 module.exports = defineConfig(cypressConfig);

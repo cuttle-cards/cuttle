@@ -1,4 +1,4 @@
-const MoveType = require('../../../../utils/MoveType');
+const MoveType = require('../../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Get legal moves',

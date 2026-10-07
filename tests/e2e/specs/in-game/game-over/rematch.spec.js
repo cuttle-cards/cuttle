@@ -121,7 +121,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     });
 
     // Match should be incomplete with one game
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -139,7 +139,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertLoss({ wins: 1, losses: 1, stalemates: 0 });
 
     // Match should be incomplete with two games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -168,7 +168,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertStalemate({ wins: 1, losses: 1, stalemates: 1 });
 
     // Match should be incomplete with three games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -197,7 +197,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-cy=opponent-match-result]').find('[data-cy-result-img=lost]');
 
     // Match should be completed with 4 games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);

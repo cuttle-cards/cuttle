@@ -32,80 +32,69 @@
   </BaseDialog>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 
-export default {
-  name: 'ThreeDialog',
-  components: {
-    BaseDialog,
-    CardListSortable,
+defineOptions({ name: 'ThreeDialog' });
+
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-    oneOff: {
-      type: Object,
-      default: null,
-    },
-    // list of card objects for available twos
-    scrap: {
-      type: Array,
-      required: true,
-    },
+  oneOff: {
+    type: Object,
+    default: null,
   },
-  emits: [ 'resolveThree' ],
-  setup() {
-    const { t } = useI18n();
-    return { t };
+  // list of card objects for available twos
+  scrap: {
+    type: Array,
+    required: true,
   },
-  data() {
-    return {
-      choseToCounter: false,
-      selectedCard: null,
-    };
+});
+const emit = defineEmits([ 'resolveThree' ]);
+const { t } = useI18n();
+
+// eslint-disable-next-line no-unused-vars -- Preserve the existing inactive state.
+const choseToCounter = ref(false);
+const selectedCard = ref(null);
+
+const show = computed({
+  get() {
+    return props.modelValue;
   },
-  computed: {
-    show: {
-      get() {
-        return this.modelValue;
-      },
-      set() {
-        // do nothing - parent controls whether dialog is open
-      },
-    },
-    scrapWithoutThrees() {
-      return this.scrap.filter((card) => card.rank !== 3);
-    },
-    selectedIds() {
-      const res = [];
-      if (this.selectedCard) {
-        res.push(this.selectedCard.id);
-      }
-      return res;
-    },
+  set() {
+    // do nothing - parent controls whether dialog is open
   },
-  methods: {
-    moveToHand() {
-      this.$emit('resolveThree', this.selectedCard.id);
-      this.clearSelection();
-    },
-    selectCard(card) {
-      if (this.selectedCard && card.id === this.selectedCard.id) {
-        this.clearSelection();
-      } else {
-        this.selectedCard = card;
-      }
-    },
-    clearSelection() {
-      this.selectedCard = null;
-    },
-  },
-};
+});
+const scrapWithoutThrees = computed(() => props.scrap.filter((card) => card.rank !== 3));
+const selectedIds = computed(() => {
+  const res = [];
+  if (selectedCard.value) {
+    res.push(selectedCard.value.id);
+  }
+  return res;
+});
+
+function moveToHand() {
+  emit('resolveThree', selectedCard.value.id);
+  clearSelection();
+}
+
+function selectCard(card) {
+  if (selectedCard.value && card.id === selectedCard.value.id) {
+    clearSelection();
+  } else {
+    selectedCard.value = card;
+  }
+}
+
+function clearSelection() {
+  selectedCard.value = null;
+}
 </script>
 
 <style lang="scss" scoped></style>
