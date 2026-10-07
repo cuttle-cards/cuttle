@@ -1,5 +1,5 @@
-const MoveType = require('../../../../utils/MoveType');
-const TargetType = require('../../../../utils/TargetType');
+const MoveType = require('../../../../utils/MoveType.json');
+const TargetType = require('../../../../utils/TargetType.json');
 
 /**
  * Legal targets for a two: royals, glasses eights, and the top jack of each point card.

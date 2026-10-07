@@ -6,7 +6,8 @@ import MoveType from '../../../utils/MoveType.json';
  * Require & configure socket connection to server
  */
 const io = require('sails.io.js')(require('socket.io-client'));
-io.sails.url = 'localhost:1337';
+// Resolved in cypress.config.js so the tests follow whichever stack is running
+io.sails.url = Cypress.env('apiUrl');
 io.sails.useCORSRouteToGetCookie = false;
 
 // TODO #1198: clean this up to remove the unused slugs
@@ -86,7 +87,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gam
 Cypress.Commands.add('wipeDatabase', () => {
   cy.request({
     method: 'DELETE',
-    url: 'localhost:1337/api/test/wipe-database'
+    url: `${Cypress.env('apiUrl')}/api/test/wipe-database`
   });
   cy.log('Wiped database');
 });
