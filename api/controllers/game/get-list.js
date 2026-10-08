@@ -1,9 +1,10 @@
 module.exports = async function (req, res) {
   sails.sockets.join(req, 'GameList');
   try {
-    const [ openGames, spectatableGames ] = await Promise.all([
+    const [ openGames, spectatableGames, myCurrentGames ] = await Promise.all([
       sails.helpers.findOpenGames(),
       sails.helpers.findSpectatableGames(),
+      sails.helpers.findCurrentGamesForUser(req.session.usr),
     ]);
 
     const response = {
@@ -11,6 +12,7 @@ module.exports = async function (req, res) {
       userId: req.session.usr,
       openGames,
       spectatableGames,
+      myCurrentGames,
     };
   
     return res.ok(response);
