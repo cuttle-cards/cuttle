@@ -40,6 +40,7 @@ const sailsGlobals = {
 const clientFiles = '**/client/**/*.{j,t}s?(x)';
 const storybookFiles = '**/(.storybook|stories)/**/*.{j,t}s?(x)';
 const apiFiles = '**/api/**/*.{j,t}s?(x)';
+const jsonUtils = 'DeckIds|gameActivity|GamePhase|GameStatus|MoveType|TargetType|ThemeColors|Transitions';
 const unitTestFiles = '**/tests/unit/**/*.{j,t}s?(x)';
 const e2eTestFiles = '**/tests/e2e/**/*.{j,t}s?(x)';
 const browserFiles = [
@@ -195,6 +196,13 @@ module.exports = [
     rules: {
       'no-undef': 'error',
       'no-prototype-builtins': 'error',
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: `CallExpression[callee.name='require'] > Literal[value=/utils\\u002f(${jsonUtils})$/]`,
+          message: 'Require JSON utils with an explicit .json extension so the editor can resolve them (see #1397).',
+        },
+      ],
     },
   },
   {
