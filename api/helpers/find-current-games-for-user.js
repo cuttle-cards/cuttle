@@ -36,13 +36,7 @@ module.exports = {
       const currentGames = games.map((game) => {
         const opponent = game.p0?.id === userId ? game.p1 : game.p0;
         return {
-          id: game.id,
-          name: game.name,
-          status: game.status,
-          isRanked: game.isRanked,
-          isVsAi: game.isVsAi,
-          createdAt: game.createdAt,
-          updatedAt: game.updatedAt,
+          ...game,
           opponent: opponent ? { id: opponent.id, username: opponent.username } : null,
           canArchive: sails.helpers.canArchiveGame(game, currentWeek),
         };
