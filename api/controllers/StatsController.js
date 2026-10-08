@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 const Result = require('../../types/Result.es5');
-const GameStatus = require('../../utils/GameStatus');
+const GameStatus = require('../../utils/GameStatus.json');
 
 /////////////
 // Helpers //
@@ -38,28 +38,26 @@ function updateRankingsFromMatches(users, matches, season) {
 
 /**
  * Adds a match to a player's season rankings in the appropriate week
- * @param {
- *  name: string
- *  startTime: int
- *  endTime: int
- *  firstPlace: int (playerId)
- *  secondPlace: int (playerId)
- *  thirdPlace: int (playerId)
- *  fourthPlace: int (playerId)
- *  rankings: Map<int: playerId, {
- *    username: string
- *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
- *  }>
- * gameCounts: Array<int>
- * uniquePlayersPerWeek: Array<Set<int: playerIds>>
- * } season The season in which the match took place
- * @param {
- *  player1: int,
- *  player2: int,
- *  winner: int | null,
- *  startTime: int,
- *  endTime: int
- * } match the match to add
+ * @param {Object} season The season in which the match took place
+ * @param {string} season.name
+ * @param {number} season.startTime
+ * @param {number} season.endTime
+ * @param {number} season.firstPlace playerId
+ * @param {number} season.secondPlace playerId
+ * @param {number} season.thirdPlace playerId
+ * @param {number} season.fourthPlace playerId
+ * @param {Map<number, {
+ *  username: string,
+ *  matches: Map<number, Array<{opponent: string, result: number}>>
+ * }>} season.rankings keyed by playerId; each player's matches are keyed by weekNum, and result is a Result value
+ * @param {Array<number>} season.gameCounts
+ * @param {Array<Set<number>>} season.uniquePlayersPerWeek playerIds seen each week
+ * @param {Object} match the match to add
+ * @param {number} match.player1
+ * @param {number} match.player2
+ * @param {number | null} match.winner
+ * @param {number} match.startTime
+ * @param {number} match.endTime
  * @param {User} player which player's record to update
  * @param {User} opponent // The opponent in the match
  */
@@ -90,36 +88,33 @@ function addMatchToRankings(season, match, player, opponent) {
 
 /**
  * Converts season to DTO for client consumption
- * @param {
- *  name: string
- *  startTime: int
- *  endTime: int
- *  firstPlace: int (playerId)
- *  secondPlace: int (playerId)
- *  thirdPlace: int (playerId)
- *  fourthPlace: int (playerId)
- *  rankings: Map<int: playerId, {
- *    username: string
- *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
- *  }>
- * gameCounts: Array<int>
- * uniquePlayersPerWeek: Array<Set<int: playerIds>>
- * } season
- * @returns {
- *  name: string
- *  startTime: int
- *  endTime: int
- *  firstPlace: int (playerId)
- *  secondPlace: int (playerId)
- *  thirdPlace: int (playerId)
- *  fourthPlace: int (playerId)
- *  rankings: Array<{
- *    username: string
- *    matches: {weekNum: int, matches: Array<{opponent: string, result: Result}>}
- *  }>
- * gameCounts: Array<int>
- * uniquePlayersPerWeek: Array<int>
- * }
+ * @param {Object} season
+ * @param {string} season.name
+ * @param {number} season.startTime
+ * @param {number} season.endTime
+ * @param {number} season.firstPlace playerId
+ * @param {number} season.secondPlace playerId
+ * @param {number} season.thirdPlace playerId
+ * @param {number} season.fourthPlace playerId
+ * @param {Map<number, {
+ *  username: string,
+ *  matches: Map<number, Array<{opponent: string, result: number}>>
+ * }>} season.rankings keyed by playerId; each player's matches are keyed by weekNum, and result is a Result value
+ * @param {Array<number>} season.gameCounts
+ * @param {Array<Set<number>>} season.uniquePlayersPerWeek playerIds seen each week
+ * @returns {{
+ *  name: string,
+ *  startTime: number,
+ *  endTime: number,
+ *  firstPlace: number,
+ *  secondPlace: number,
+ *  thirdPlace: number,
+ *  fourthPlace: number,
+ *  rankings: Array<{username: string, matches: Object<number, Array<{opponent: string, result: number}>>}>,
+ *  gameCounts: Array<number>,
+ *  uniquePlayersPerWeek: Array<number>
+ * }} The season with rankings as an array (matches keyed by weekNum), trailing zero weeks
+ *  trimmed, and uniquePlayersPerWeek as player counts
  */
 function transformSeasonToDTO(season) {
   const {
