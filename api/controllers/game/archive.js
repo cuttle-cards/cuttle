@@ -1,7 +1,7 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 const NotFoundError = require('../../errors/notFoundError');
-const GameStatus = require('../../../utils/GameStatus');
+const GameStatus = require('../../../utils/GameStatus.json');
 
 module.exports = async function (req, res) {
   const { gameId } = req.params;

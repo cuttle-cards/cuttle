@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
-const GameStatus = require('../../utils/GameStatus');
+const GameStatus = require('../../utils/GameStatus.json');
 const { RECENT_ACTIVITY_MINUTES } = require('../../utils/gameActivity.json');
 
 module.exports = {
