@@ -602,7 +602,7 @@
     "activatorText": "¡Encuentra tus partidas en curso!",
     "title": "Tus Partidas Actuales",
     "heading": "Retoma donde lo dejaste",
-    "paragraph": "¿Cerraste la pestaña de una partida? Las partidas que tienes en curso ahora aparecen al principio de la pestaña Jugar, bajo Mis Partidas Actuales. Pulsa Continuar para volver directamente a la partida, justo donde la dejaste.",
+    "paragraph": "¿Cerraste la pestaña de una partida? Las partidas que tienes en curso ahora aparecen al principio de la pestaña Jugar. Pulsa Continuar para volver directamente a la partida, justo donde la dejaste.",
     "heading2": "Despejar partidas abandonadas",
     "paragraph2": "¿Terminaste con una partida a la que nadie va a volver? La × junto a Continuar la archiva y la quita de la lista de ambos jugadores. Las partidas que se siguen jugando no se pueden archivar, ni tampoco las partidas de Competitivo de la semana actual: esas todavía cuentan para tu enfrentamiento."
   },
