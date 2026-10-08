@@ -33,7 +33,7 @@ module.exports = {
     currentWeek: {
       type: 'ref',
       description:
-        'Result of sails.helpers.getCurrentSeasonWeek(), or undefined when no season is running. Passed in so callers mapping many games resolve the season only once.',
+        'The running season plus its current week\'s start and end times, from sails.helpers.getCurrentSeasonWeek() — used to block archiving a ranked game created in that week. Undefined when no season is running. Passed in so callers mapping many games resolve it once.',
     },
   },
 
