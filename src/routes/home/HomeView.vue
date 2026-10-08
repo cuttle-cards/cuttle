@@ -53,10 +53,9 @@
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
+                <!-- Your in-progress games lead the list; the Continue button's filled variant
+                     distinguishes them from the joinable games below, so no heading is needed -->
                 <template v-if="myCurrentGameList.length > 0">
-                  <h2 class="text-base-dark text-label-lg mb-2" data-cy="my-current-games-header">
-                    {{ t('home.myCurrentGames') }}
-                  </h2>
                   <div v-for="game in myCurrentGameList" :key="`current-${game.id}`">
                     <GameListItem
                       :mode="GAME_LIST_ITEM_MODE.CURRENT"
@@ -70,9 +69,6 @@
                     />
                   </div>
                 </template>
-                <h2 class="text-base-dark text-label-lg mb-2" data-cy="open-games-header">
-                  {{ t('home.openGames') }}
-                </h2>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
                   {{ t('home.noOpenGames') }}
                 </p>

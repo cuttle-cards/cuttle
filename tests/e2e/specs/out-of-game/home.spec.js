@@ -113,11 +113,9 @@ describe('Home - Game List', () => {
 
     beforeEach(setupWithIds);
 
-    it('Does not show the header when the user has no current games', () => {
-      cy.get('[data-cy=my-current-games-header]').should('not.exist');
+    it('Shows no current-game rows when the user has none', () => {
       cy.get('[data-cy=current-game-list-item]').should('not.exist');
-      // The open games section stays labelled either way
-      cy.get('[data-cy=open-games-header]').should('contain', 'Open Games');
+      cy.get('[data-cy=text-if-no-game]').should('contain', 'No Games to Join');
     });
 
     it('Shows an in-progress game, continues into it, and disables archiving while it is active', function () {
@@ -125,7 +123,6 @@ describe('Home - Game List', () => {
       cy.setupGameAsP0(true);
       cy.get('@gameId').then((gameId) => {
         cy.vueRoute('/');
-        cy.get('[data-cy=my-current-games-header]').should('contain', 'My Current Games');
         cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
         cy.get('[data-cy=current-game-list-item-name]').should('contain', 'Test Game');
         // Just-played games are not archivable
@@ -153,7 +150,6 @@ describe('Home - Game List', () => {
       cy.get('[data-cy-archive-game]').should('not.be.disabled')
         .click();
       cy.get('[data-cy=current-game-list-item]').should('not.exist');
-      cy.get('[data-cy=my-current-games-header]').should('not.exist');
       // Still gone after a reload
       cy.visit('/');
       cy.get('[data-cy=current-game-list-item]').should('not.exist');

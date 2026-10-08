@@ -44,9 +44,12 @@
           {{ t('home.spectate') }}
         </v-btn>
         <!-- Continue Button -->
+        <!-- Filled rather than outlined: with no section headings, this is what separates your
+             own games from the joinable ones below, and resuming outranks browsing -->
         <v-btn
           v-else
           v-bind="buttonAttrs"
+          variant="flat"
           :data-cy-continue-game="gameId"
           @click="continueGame"
         >
