@@ -34,9 +34,17 @@ module.exports = {
       ]);
 
       const currentGames = games.map((game) => {
+        /**
+         * p0/p1 are populated User records, and User has no customToJSON -- spreading the game
+         * wholesale would put both players' encryptedPassword in the response. Drop them along
+         * with the internal lock fields; `opponent` below carries the only user data the client
+         * needs.
+         */
+        // eslint-disable-next-line no-unused-vars
+        const { p0, p1, lock, lockedAt, ...publicGame } = game;
         const opponent = game.p0?.id === userId ? game.p1 : game.p0;
         return {
-          ...game,
+          ...publicGame,
           opponent: opponent ? { id: opponent.id, username: opponent.username } : null,
           canArchive: sails.helpers.canArchiveGame(game, currentWeek),
         };
