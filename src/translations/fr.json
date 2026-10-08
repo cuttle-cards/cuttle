@@ -374,11 +374,12 @@
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
       "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
-      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne",
+      "gameArchived": "Votre adversaire a archivé cette partie."
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
-    "noGameslist": "Aucune partie active",
+    "noOpenGames": "Aucune partie à rejoindre",
     "noSpectatelist": "Aucune partie disponible à regarder",
     "openCreateGame": "Créer une partie",
     "submitCreateGame": "Créer la partie",
@@ -389,7 +390,18 @@
     "gameName": "Nom de la partie",
       "join": "Rejoindre",
       "playVsAi": "Jouer contre l'IA",
-      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard."
+      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
+    "continue": "Continuer",
+    "archive": "Archiver",
+    "versus": "contre",
+    "archiveBlockedActive": "Cette partie est encore active et ne peut pas encore être archivée.",
+    "archiveBlockedRanked": "Les parties classées de cette semaine ne peuvent pas être archivées.",
+    "failedToArchiveGame": "Impossible d'archiver la partie. Veuillez réessayer plus tard.",
+    "error": {
+      "forbidden": "Vous n'êtes pas un joueur de cette partie !",
+      "notArchivable": "Cette partie ne peut pas être archivée.",
+      "notFound": "Cette partie n'existe plus."
+    }
   },
   "rules": {
     "introduction": "Introduction",
@@ -587,13 +599,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Les Neufs sont renforcés !",
-    "title": "Bêta des règles : Neufs sur la pioche",
-    "heading": "Les Neufs placent désormais les cartes sur la pioche",
-    "paragraph": "Le Neuf est l'une des plus fortes cartes du jeu, mais son effet unique a toujours été le plus limité. Désormais, au lieu de renvoyer une carte dans la main de son contrôleur, un Neuf place une carte du terrain de votre adversaire sur le dessus de la pioche : une carte de points, une figure ou le Valet du dessus d'une pile. Sa prochaine pioche lui rendra sa propre carte, le Neuf lui coûte donc un tour entier. Plus rien n'est gelé, et les Dames protègent toujours comme avant.",
-    "heading2": "La première de quatre expérimentations de la saison des Piques",
-    "paragraph2": "Il s'agit d'une bêta, et de la première de quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
-    "patreonLink": "Aidez-nous à affiner le 4 et le 9"
+    "activatorText": "Retrouvez vos parties en cours !",
+    "title": "Vos Parties En Cours",
+    "heading": "Reprenez là où vous en étiez",
+    "paragraph": "Vous avez fermé l'onglet d'une partie ? Les parties que vous avez en cours apparaissent désormais en haut de l'onglet Jouer. Appuyez sur Continuer pour revenir directement dans la partie, exactement où vous l'aviez laissée.",
+    "heading2": "Faire le ménage dans les parties abandonnées",
+    "paragraph2": "Vous en avez fini avec une partie que personne ne reprendra ? Le × à côté de Continuer l'archive et la retire de la liste des deux joueurs. Les parties encore en cours de jeu ne peuvent pas être archivées, ni les parties classées de la semaine en cours : celles-ci comptent toujours pour votre match."
   },
   "profile": {
     "myGames": "Mes jeux",

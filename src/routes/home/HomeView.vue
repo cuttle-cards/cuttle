@@ -54,14 +54,29 @@
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
+                <!-- Your in-progress games lead the list; the Continue button's filled variant
+                     distinguishes them from the joinable games below, so no heading is needed -->
+                <template v-if="myCurrentGameList.length > 0">
+                  <div v-for="game in myCurrentGameList" :key="`current-${game.id}`">
+                    <GameListItem
+                      :mode="GAME_LIST_ITEM_MODE.CURRENT"
+                      :game-id="game.id"
+                      :name="game.name"
+                      :is-ranked="game.isRanked"
+                      :can-archive="game.canArchive"
+                      :updated-at="game.updatedAt"
+                      :opponent="game.opponent"
+                      @error="handleError"
+                    />
+                  </div>
+                </template>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-base-dark">
-                  {{ t('home.noGameslist') }}
+                  {{ t('home.noOpenGames') }}
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
                   <GameListItem
+                    :mode="GAME_LIST_ITEM_MODE.JOIN"
                     :name="game.name"
-                    :p0ready="game.p0Ready ? 1 : 0"
-                    :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
                     :num-players="game.numPlayers"
@@ -80,14 +95,12 @@
                 </p>
                 <div v-for="game in spectateGameList" :key="game.id">
                   <GameListItem
+                    :mode="GAME_LIST_ITEM_MODE.SPECTATE"
                     :name="game.name"
-                    :p0ready="game.p0Ready ? 1 : 0"
-                    :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
                     :num-players="game.numPlayers"
                     :is-ranked="game.isRanked"
-                    :is-spectatable="true"
                     :disable-spectate="game.isOver"
                     @error="handleError"
                   />
@@ -148,7 +161,7 @@ import { mapStores } from 'pinia';
 import { useGameListStore } from '@/stores/gameList';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
-import GameListItem from '@/routes/home/components/GameListItem.vue';
+import GameListItem, { GAME_LIST_ITEM_MODE } from '@/routes/home/components/GameListItem.vue';
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
@@ -180,6 +193,7 @@ export default {
   data() {
     return {
       TABS,
+      GAME_LIST_ITEM_MODE,
       tab: TABS.PLAY,
       loadingData: true,
       oAuthSignup: false,
@@ -193,6 +207,9 @@ export default {
     },
     spectateGameList() {
       return this.gameListStore.spectateGames;
+    },
+    myCurrentGameList() {
+      return this.gameListStore.myCurrentGames;
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
@@ -282,10 +299,6 @@ export default {
 .discord {
   max-height: 30px;
   margin-right: 18px;
-}
-
-h2 {
-  font-size: 1.25rem;
 }
 
 ul {

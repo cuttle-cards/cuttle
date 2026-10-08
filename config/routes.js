@@ -47,6 +47,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/move/ai': 'game/ai/ai-move',
   'POST /api/game/:gameId/rematch': 'game/rematch',
   'GET /api/game/history': 'game/get-history',
+  'DELETE /api/game/:gameId': 'game/archive',
 
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
