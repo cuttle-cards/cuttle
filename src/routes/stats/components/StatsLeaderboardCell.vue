@@ -5,7 +5,7 @@
     :title="`${username} ${menuHeader} ${t('stats.results')}`"
     :data-cy="`player-${playerRow.username}-week-${week}-results`"
   >
-    <template #activator="{ props }">
+    <template #activator="{ props: menuProps }">
       <v-chip
         :color="colorForScore"
         :variant="variant"
@@ -14,7 +14,7 @@
         rounded="sm"
         :data-cy="`week-${week}-points-${playerRow.username}`"
         v-bind="{
-          ...props,
+          ...menuProps,
         }"
       >
         {{ points }}
