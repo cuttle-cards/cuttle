@@ -368,11 +368,12 @@
       "cantFindGame": "Не можу знайти гру",
       "invalidLobbyNumber": "Невірний номер лобі",
       "cannotSpectate": "Не можна спостерігати за грою, оскільки ви зараз граєте",
-      "spectateNoGamestates": "Не можна спостерігати: гра занадто стара"
+      "spectateNoGamestates": "Не можна спостерігати: гра занадто стара",
+      "gameArchived": "Ваш суперник архівував цю гру."
     },
     "gameFinder": "Пошук гри",
     "spectate": "СПОСТЕРІГАТИ",
-    "noGameslist": "Немає активних ігор",
+    "noOpenGames": "Немає ігор для приєднання",
     "noSpectatelist": "Немає ігор для спостереження",
     "openCreateGame": "Створити гру",
     "submitCreateGame": "Створити гру",
@@ -383,7 +384,18 @@
     "gameName": "Назва гри",
       "join": "Приєднатися",
       "playVsAi": "Грати проти ІІ",
-      "failedToLoadGameList": "Не вдалося завантажити ігри. Спробуйте пізніше."
+      "failedToLoadGameList": "Не вдалося завантажити ігри. Спробуйте пізніше.",
+    "continue": "Продовжити",
+    "archive": "Архівувати",
+    "versus": "проти",
+    "archiveBlockedActive": "Ця гра ще активна, її поки не можна архівувати.",
+    "archiveBlockedRanked": "Рейтингові ігри цього тижня не можна архівувати.",
+    "failedToArchiveGame": "Не вдалося архівувати гру. Спробуйте пізніше.",
+    "error": {
+      "forbidden": "Ви не є гравцем у цій грі!",
+      "notArchivable": "Цю гру не можна архівувати.",
+      "notFound": "Цієї гри більше не існує."
+    }
   },
   "rules": {
     "introduction": "Вступ",

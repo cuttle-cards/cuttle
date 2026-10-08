@@ -368,11 +368,12 @@
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
       "cannotSpectate": "No puede ver el juego porque estás jugando.",
-      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua",
+      "gameArchived": "Tu oponente archivó esta partida."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
-    "noGameslist": "No hay partidas activas",
+    "noOpenGames": "No hay partidas para unirse",
     "noSpectatelist": "No hay partidas disponibles para ver",
     "openCreateGame": "Crear una partida",
     "submitCreateGame": "Crear partida",
@@ -383,7 +384,18 @@
     "gameName": "Nombre de la partida",
       "join": "Unirse",
       "playVsAi": "Jugar contra la IA",
-      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde."
+      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde.",
+    "continue": "Continuar",
+    "archive": "Archivar",
+    "versus": "vs",
+    "archiveBlockedActive": "Esta partida sigue activa y aún no se puede archivar.",
+    "archiveBlockedRanked": "Las partidas clasificatorias de esta semana no se pueden archivar.",
+    "failedToArchiveGame": "No se pudo archivar la partida. Inténtalo de nuevo más tarde.",
+    "error": {
+      "forbidden": "¡No eres jugador de esta partida!",
+      "notArchivable": "Esta partida no se puede archivar.",
+      "notFound": "Esa partida ya no existe."
+    }
   },
   "rules": {
     "introduction": "Introducción",

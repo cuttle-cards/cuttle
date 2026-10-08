@@ -368,11 +368,12 @@
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
       "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
-      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne",
+      "gameArchived": "Votre adversaire a archivé cette partie."
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
-    "noGameslist": "Aucune partie active",
+    "noOpenGames": "Aucune partie à rejoindre",
     "noSpectatelist": "Aucune partie disponible à regarder",
     "openCreateGame": "Créer une partie",
     "submitCreateGame": "Créer la partie",
@@ -383,7 +384,18 @@
     "gameName": "Nom de la partie",
       "join": "Rejoindre",
       "playVsAi": "Jouer contre l'IA",
-      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard."
+      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
+    "continue": "Continuer",
+    "archive": "Archiver",
+    "versus": "contre",
+    "archiveBlockedActive": "Cette partie est encore active et ne peut pas encore être archivée.",
+    "archiveBlockedRanked": "Les parties classées de cette semaine ne peuvent pas être archivées.",
+    "failedToArchiveGame": "Impossible d'archiver la partie. Veuillez réessayer plus tard.",
+    "error": {
+      "forbidden": "Vous n'êtes pas un joueur de cette partie !",
+      "notArchivable": "Cette partie ne peut pas être archivée.",
+      "notFound": "Cette partie n'existe plus."
+    }
   },
   "rules": {
     "introduction": "Introduction",

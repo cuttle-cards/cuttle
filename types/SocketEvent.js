@@ -35,4 +35,5 @@ export default {
   UPDATED: 'updated',
   REMATCH: 'rematch',
   NEW_GAME_FOR_REMATCH: 'newGameForRematch',
+  GAME_ARCHIVED: 'gameArchived',
 };

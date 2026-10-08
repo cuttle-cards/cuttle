@@ -368,11 +368,12 @@
       "cantFindGame": "Spiel nicht gefunden",
       "invalidLobbyNumber": "Ungültige Lobby-Nummer",
       "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst",
-      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt"
+      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt",
+      "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",
-    "noGameslist": "Keine aktiven Spiele",
+    "noOpenGames": "Keine Spiele zum Beitreten",
     "noSpectatelist": "Keine Spiele zum Beobachten verfügbar",
     "openCreateGame": "Spiel erstellen",
     "submitCreateGame": "Spiel erstellen",
@@ -383,7 +384,18 @@
     "gameName": "Spielname",
       "join": "Beitreten",
       "playVsAi": "Gegen die KI spielen",
-      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut."
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
+    "continue": "Fortsetzen",
+    "archive": "Archivieren",
+    "versus": "gegen",
+    "archiveBlockedActive": "Dieses Spiel ist noch aktiv und kann noch nicht archiviert werden.",
+    "archiveBlockedRanked": "Gewertete Spiele aus dieser Woche können nicht archiviert werden.",
+    "failedToArchiveGame": "Spiel konnte nicht archiviert werden. Bitte versuche es später erneut.",
+    "error": {
+      "forbidden": "Du bist kein Spieler in diesem Spiel!",
+      "notArchivable": "Dieses Spiel kann nicht archiviert werden.",
+      "notFound": "Dieses Spiel existiert nicht mehr."
+    }
   },
   "rules": {
     "introduction": "Einleitung",
