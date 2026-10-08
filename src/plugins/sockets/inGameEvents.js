@@ -138,6 +138,16 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = null;
       break;
     }
+    /**
+     * Our opponent archived this game out from under us; it can no longer be played.
+     * Hand the message to Home as an i18n key rather than translating here -- this module runs
+     * outside any component, so useI18n() is unavailable to it. HomeView's $route watcher already
+     * reads `query.error`, runs it through the composable's t(), and snackbars it; router.js
+     * bounces failed game loads the same way.
+     */
+    case SocketEvent.GAME_ARCHIVED:
+      router.push({ path: '/', query: { gameId: eventGameId, error: 'home.snackbar.gameArchived' } });
+      return;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);

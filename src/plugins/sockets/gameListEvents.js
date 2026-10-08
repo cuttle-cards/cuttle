@@ -54,3 +54,8 @@ export function handleIsRanked(evData) {
   }
   gameListStore.setIsRanked({ gameId: evData.gameId,isRanked: evData.isRanked });
 }
+
+export function handleGameArchived({ gameId }) {
+  const gameListStore = useGameListStore();
+  gameListStore.removeCurrentGame(gameId);
+}

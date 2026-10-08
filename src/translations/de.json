@@ -374,11 +374,12 @@
       "cantFindGame": "Spiel nicht gefunden",
       "invalidLobbyNumber": "Ungültige Lobby-Nummer",
       "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst",
-      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt"
+      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt",
+      "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",
-    "noGameslist": "Keine aktiven Spiele",
+    "noOpenGames": "Keine Spiele zum Beitreten",
     "noSpectatelist": "Keine Spiele zum Beobachten verfügbar",
     "openCreateGame": "Spiel erstellen",
     "submitCreateGame": "Spiel erstellen",
@@ -389,7 +390,18 @@
     "gameName": "Spielname",
       "join": "Beitreten",
       "playVsAi": "Gegen die KI spielen",
-      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut."
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
+    "continue": "Fortsetzen",
+    "archive": "Archivieren",
+    "versus": "gegen",
+    "archiveBlockedActive": "Dieses Spiel ist noch aktiv und kann noch nicht archiviert werden.",
+    "archiveBlockedRanked": "Gewertete Spiele aus dieser Woche können nicht archiviert werden.",
+    "failedToArchiveGame": "Spiel konnte nicht archiviert werden. Bitte versuche es später erneut.",
+    "error": {
+      "forbidden": "Du bist kein Spieler in diesem Spiel!",
+      "notArchivable": "Dieses Spiel kann nicht archiviert werden.",
+      "notFound": "Dieses Spiel existiert nicht mehr."
+    }
   },
   "rules": {
     "introduction": "Einleitung",
@@ -587,13 +599,12 @@
     }
   },
   "announcement": {
-    "activatorText": "Neuner werden gestärkt!",
-    "title": "Regel-Beta: Neuner legen obenauf",
-    "heading": "Neuner legen Karten jetzt oben auf den Nachziehstapel",
-    "paragraph": "Ein Neuner ist eine der höchsten Karten im Spiel, doch sein Einmal-Effekt war schon immer der speziellste. Statt eine Karte auf die Hand ihres Besitzers zurückzugeben, legt ein Neuner jetzt eine Karte vom Spielfeld deines Gegners oben auf den Nachziehstapel — eine Punktekarte, eine Royal oder den obersten Buben eines Stapels. Ihr nächster Zug bringt ihnen die eigene Karte zurück, der Neuner kostet sie also einen ganzen Zug. Nichts wird mehr eingefroren, und Damen schützen weiterhin wie bisher.",
-    "heading2": "Die erste von vier Testregeln der Pik-Saison",
-    "paragraph2": "Das ist eine Beta und die erste von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
-    "patreonLink": "Die 4 und die 9 verbessern"
+    "activatorText": "Finde deine laufenden Spiele!",
+    "title": "Deine Aktuellen Spiele",
+    "heading": "Mach da weiter, wo du aufgehört hast",
+    "paragraph": "Tab zu einem Spiel geschlossen? Deine laufenden Spiele erscheinen jetzt ganz oben im Tab Spielen. Drücke auf Fortsetzen, um direkt wieder ins Spiel zu kommen – genau da, wo du aufgehört hast.",
+    "heading2": "Aufgegebene Spiele aufräumen",
+    "paragraph2": "Fertig mit einem Spiel, zu dem niemand zurückkehrt? Das × neben Fortsetzen archiviert es und entfernt es aus den Listen beider Spieler. Spiele, die gerade gespielt werden, lassen sich nicht archivieren – und Spiele aus der Rangliste der aktuellen Woche ebenso wenig, denn die zählen noch für dein Match."
   },
   "profile": {
     "myGames": "Meine Spiele",
