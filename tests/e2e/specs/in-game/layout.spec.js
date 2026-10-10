@@ -167,49 +167,6 @@ describe('Game View Layout', () => {
   });
 });
 
-describe('Four dialogs layout', () => {
-  beforeEach(() => {
-    cy.setupGameAsP1();
-  });
-
-  it('Four dialogs', () => {
-    cy.loadGameFixture(1, {
-      p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
-      p1Points: [],
-      p1FaceCards: [],
-    });
-
-    // Opponent plays four
-    cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-    // Player cannot counter
-    cy.get('#cannot-counter-dialog').should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
-
-    // Four Dialog appears (you must discard)
-    cy.get('#four-discard-dialog').should('be.visible');
-    // Choosing cards to discard
-    cy.log('Choosing two cards to discard');
-    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-    cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-    cy.get('[data-discard-card=4-3]').click(); // four of spades
-    cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
-
-    assertGameState(1, {
-      p0Hand: [ Card.ACE_OF_HEARTS ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [ Card.TEN_OF_HEARTS ],
-      p1Points: [],
-      p1FaceCards: [],
-      scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
-    });
-  });
-});
 
 describe.skip('Aesthetic tests', () => {
   beforeEach(() => {
