@@ -15,27 +15,23 @@ module.exports = async function(req, res) {
       throw new NotFoundError(`Can't find Game ${ gameId }`);
     }
 
-    let userRelationship;
-    
-    // Check if user is p0, p1, or a spectator
+    // Room membership follows identity even when a finished game reveals cards.
+    let userRelationship = 'spectator';
     const gameIsFinished = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status);
 
-    if (!gameIsFinished && req.session.usr === game.p0.id) {
+    if (req.session.usr === game.p0?.id) {
       userRelationship = 'p0';
-    } else if (!gameIsFinished && req.session.usr === game.p1.id) {
+    } else if (req.session.usr === game.p1?.id) {
       userRelationship = 'p1';
     } else {
       // Check if user is already spectating this game
       const existingSpectator = game.spectatingUsers?.find(usg => usg.spectator === req.session.usr);
-      if (existingSpectator) {
-        userRelationship = 'spectator';
-      } else {
+      if (!existingSpectator) {
         // Make user a spectator by creating spectatingUsers row
         await UserSpectatingGame.create({ 
           gameSpectated: game.id, 
           spectator: req.session.usr 
         });
-        userRelationship = 'spectator';
       }
     }
 
@@ -55,9 +51,7 @@ module.exports = async function(req, res) {
 
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
-    gameStateIndex = isValidGameStateIndex ? gameStateIndex :
-      [ GameStatus.FINISHED, GameStatus.ARCHIVED ]
-        .includes(game.status) ? 0 : -1;
+    gameStateIndex = isValidGameStateIndex ? gameStateIndex : gameIsFinished ? 0 : -1;
     const packedGameState = game.gameStates.at(gameStateIndex);
 
     if (!packedGameState) {
@@ -67,8 +61,10 @@ module.exports = async function(req, res) {
     const gameState = unpackGamestate(packedGameState);
     const socketEvents = await createSocketEvents(game, gameState);
 
-    // Return the appropriate state based on user relationship
-    const response = socketEvents[`${userRelationship}State`];
+    // Finished games reveal all cards, but players must stay in their player
+    // rooms so a rematch sends them only their own perspective of the new game.
+    const statePerspective = gameIsFinished ? 'spectator' : userRelationship;
+    const response = socketEvents[`${statePerspective}State`];
 
     return res.ok(response);
 
