@@ -238,7 +238,7 @@
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
-        "4": "Your opponent discards two cards of their choice from their hand",
+        "4": "Your opponent discards two cards at random from their hand",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
@@ -342,12 +342,6 @@
           "mustPickFromScrap": "You must pick a card from the scrap",
           "cannotTargetThree": "You cannot target a three with a three"
         },
-        "four": {
-          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
-          "notYourTurn": "It's not your turn to discard",
-          "notResolvingFourPhase": "Can't discard unless your opponent played a four",
-          "mustSelectCards": "You must select two cards to discard"
-        },
         "discardToHandLimit": {
           "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
           "handNotOverLimit": "Your hand is not over the limit",
@@ -383,11 +377,12 @@
       "cantFindGame": "Can't find game",
       "invalidLobbyNumber": "Invalid Lobby Number",
       "cannotSpectate": "Cannot spectate game because you are playing",
-      "spectateNoGamestates": "Cannot spectate: game is too old"
+      "spectateNoGamestates": "Cannot spectate: game is too old",
+      "gameArchived": "Your opponent archived this game."
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",
-    "noGameslist": "No Active Games",
+    "noOpenGames": "No Games to Join",
     "noSpectatelist": "No Games Available to Spectate",
     "openCreateGame": "Create a game",
     "submitCreateGame": "Create game",
@@ -398,7 +393,18 @@
     "gameName": "Game Name",
       "join": "Join",
       "playVsAi": "Play VS AI",
-      "failedToLoadGameList": "Failed to load game list. Please try again later."
+      "failedToLoadGameList": "Failed to load game list. Please try again later.",
+    "continue": "Continue",
+    "archive": "Archive",
+    "versus": "vs",
+    "archiveBlockedActive": "This game is still active and cannot be archived yet.",
+    "archiveBlockedRanked": "Ranked games from this week's season cannot be archived.",
+    "failedToArchiveGame": "Failed to archive game. Please try again later.",
+    "error": {
+      "forbidden": "You are not a player in this game!",
+      "notArchivable": "This game cannot be archived.",
+      "notFound": "That game no longer exists."
+    }
   },
   "rules": {
     "introduction": "Introduction",
@@ -463,7 +469,7 @@
       "three": "Three",
       "threeDescription": "Choose a (non-three) card from the scrap pile and put it in your hand.",
       "four": "Four",
-      "fourDescription": "Your opponent discards two cards of their choice.",
+      "fourDescription": "Your opponent discards two cards at random.",
       "five": "Five",
       "fiveDescription": "Discard one card then draw up to three cards from the deck.",
       "six": "Six",

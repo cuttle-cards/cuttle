@@ -33,9 +33,11 @@ Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues
 This repo automatically increments the package version based on version labels that the core team applies to pull requests. **You do not need to update the `version` fields in package files** because it is handled automatically. Cuttle uses semantic versioning (semver), which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions.
 
 
-* `patch-version`, the automation will increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
-* `minor-version`, the automation will reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
-* `major-version`, the automation will set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
+* `version-patch`, the automation will increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
+* `version-minor`, the automation will reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
+* `version-major`, the automation will set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
+
+Exactly one of these labels is required before a pull request can be merged — the `Check Version Label` status check enforces it. Only the core team can apply labels, so if your PR is otherwise ready and this check is red, a maintainer still needs to label it.
 
 ### Test-Driven Development
 

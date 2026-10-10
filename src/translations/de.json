@@ -238,7 +238,7 @@
         "1": "Alle Punktkarten abwerfen",
         "2": "Ziel-König oder Gläser Acht abwerfen",
         "3": "Wähle 1 Karte, die keine 3 ist, aus dem Abwurfstapel und nimm sie auf die Hand",
-        "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
+        "4": "Dein Gegner wirft zwei zufällige Karten von seiner Hand ab",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
@@ -341,12 +341,6 @@
           "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
           "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
         },
-        "four": {
-          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
-          "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
-          "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
-          "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
-        },
         "discardToHandLimit": {
           "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
           "handNotOverLimit": "Deine Hand ist nicht über der Obergrenze",
@@ -382,11 +376,12 @@
       "cantFindGame": "Spiel nicht gefunden",
       "invalidLobbyNumber": "Ungültige Lobby-Nummer",
       "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst",
-      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt"
+      "spectateNoGamestates": "Beobachtung nicht möglich: Spiel ist zu alt",
+      "gameArchived": "Dein Gegner hat dieses Spiel archiviert."
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",
-    "noGameslist": "Keine aktiven Spiele",
+    "noOpenGames": "Keine Spiele zum Beitreten",
     "noSpectatelist": "Keine Spiele zum Beobachten verfügbar",
     "openCreateGame": "Spiel erstellen",
     "submitCreateGame": "Spiel erstellen",
@@ -397,7 +392,18 @@
     "gameName": "Spielname",
       "join": "Beitreten",
       "playVsAi": "Gegen die KI spielen",
-      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut."
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
+    "continue": "Fortsetzen",
+    "archive": "Archivieren",
+    "versus": "gegen",
+    "archiveBlockedActive": "Dieses Spiel ist noch aktiv und kann noch nicht archiviert werden.",
+    "archiveBlockedRanked": "Gewertete Spiele aus dieser Woche können nicht archiviert werden.",
+    "failedToArchiveGame": "Spiel konnte nicht archiviert werden. Bitte versuche es später erneut.",
+    "error": {
+      "forbidden": "Du bist kein Spieler in diesem Spiel!",
+      "notArchivable": "Dieses Spiel kann nicht archiviert werden.",
+      "notFound": "Dieses Spiel existiert nicht mehr."
+    }
   },
   "rules": {
     "introduction": "Einleitung",
@@ -462,7 +468,7 @@
       "three": "Drei",
       "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
-      "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
+      "fourDescription": "Dein Gegner wirft zwei zufällige Karten ab.",
       "five": "Fünf",
       "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel.",
       "six": "Sechs",

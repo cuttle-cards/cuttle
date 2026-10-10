@@ -1,0 +1,56 @@
+name: Version Label
+
+on:
+  pull_request:
+    branches:
+      - main
+    # Defaults + ready_for_review, plus labeled/unlabeled so the check re-runs the moment
+    # a maintainer applies the label and the PR unblocks without needing a push
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+# See: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions:
+  contents: read
+  pull-requests: read
+
+# Deliberately scoped to its own group rather than sharing `PR Checks`'s `head_ref` group,
+# so that adding or removing a label doesn't cancel an in-progress lint/unit/e2e run
+concurrency:
+  group: version-label-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Mirrors the post-merge `get-labels` check in prepare-version-bump.yml, run early enough
+  # to block the merge instead of failing after the commit has already landed on main.
+  # This job is a required status check on the `main` ruleset.
+  version-label:
+    name: 'Check Version Label'
+    runs-on: ubuntu-latest
+    steps:
+      # This step requires that the repo has 3 types of version bump labels. Make any adjustments as
+      # needed to ensure that this step accurately parses the bump type.
+      #     - version-patch
+      #     - version-minor
+      #     - version-major
+      - name: Check version label
+        # Passed via env rather than interpolated into the script directly
+        # See: https://docs.github.com/en/actions/security-for-github-actions/security-guidelines/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+        run: |
+          VERSION_LABELS=$(echo "$LABELS" | tr ' ' '\n' | grep -E '^version-(patch|minor|major)$' || true)
+          LABELS_COUNT=$(echo "$VERSION_LABELS" | wc -w)
+
+          if [[ "$LABELS_COUNT" -ne 1 ]]; then
+            echo "### ❌ Version Label Error" >> $GITHUB_STEP_SUMMARY
+            echo "Exactly one version label is required (\`version-patch\`, \`version-minor\`, or \`version-major\`); found $LABELS_COUNT." >> $GITHUB_STEP_SUMMARY
+            echo "Exactly one version label is required, found $LABELS_COUNT. Exiting."
+            exit 1
+          fi
+
+          VERSION_TYPE=$(echo "$VERSION_LABELS" | sed 's/^version-//')
+
+          echo "### ✅ Valid Version Label" >> $GITHUB_STEP_SUMMARY
+          echo "Version label is valid. Version type: \`$VERSION_TYPE\`." >> $GITHUB_STEP_SUMMARY
+          echo "Version label is valid. Version type: $VERSION_TYPE."
+        shell: bash

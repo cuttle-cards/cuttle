@@ -474,7 +474,6 @@ export default {
       targetingMoveDisplayName: null,
       // Targets chosen so far for a multi-target one-off (nines): { id, targetType, pointId }
       selectedNineTargets: [],
-      showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
       showHistoryDrawer: false,

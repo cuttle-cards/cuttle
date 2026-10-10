@@ -52,7 +52,9 @@ const browserFiles = [
 
 module.exports = [
   {
-    ignores: [ 'node_modules/*', 'assets/*' ],
+    // The worktree dirs are git-ignored, but that doesn't stop eslint walking into them: each
+    // holds a full checkout, so linting them reports errors for code that isn't this stack's.
+    ignores: [ 'node_modules/*', 'assets/*', 'worktrees/*', '.claude/worktrees/*' ],
   },
   js.configs.recommended,
   ...vue.configs['flat/recommended'],

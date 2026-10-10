@@ -238,7 +238,7 @@
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta que no sea un 3 del mazo de descarte y ponla en tu mano",
-        "4": "Tu rival descarta dos cartas de su mano a su elección",
+        "4": "Tu rival descarta dos cartas al azar de su mano",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
@@ -341,12 +341,6 @@
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes",
           "cannotTargetThree": "No puedes apuntar a un 3 con un 3"
         },
-        "four": {
-          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
-          "notYourTurn": "No es tu turno para descartar",
-          "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
-          "mustSelectCards": "Debes seleccionar dos cartas para descartar"
-        },
         "discardToHandLimit": {
           "notDiscardingPhase": "Solo puedes descartar hasta el límite de la mano durante la fase de descarte",
           "handNotOverLimit": "Tu mano no supera el límite",
@@ -382,11 +376,12 @@
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
       "cannotSpectate": "No puede ver el juego porque estás jugando.",
-      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua",
+      "gameArchived": "Tu oponente archivó esta partida."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
-    "noGameslist": "No hay partidas activas",
+    "noOpenGames": "No hay partidas para unirse",
     "noSpectatelist": "No hay partidas disponibles para ver",
     "openCreateGame": "Crear una partida",
     "submitCreateGame": "Crear partida",
@@ -397,7 +392,18 @@
     "gameName": "Nombre de la partida",
       "join": "Unirse",
       "playVsAi": "Jugar contra la IA",
-      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde."
+      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde.",
+    "continue": "Continuar",
+    "archive": "Archivar",
+    "versus": "vs",
+    "archiveBlockedActive": "Esta partida sigue activa y aún no se puede archivar.",
+    "archiveBlockedRanked": "Las partidas clasificatorias de esta semana no se pueden archivar.",
+    "failedToArchiveGame": "No se pudo archivar la partida. Inténtalo de nuevo más tarde.",
+    "error": {
+      "forbidden": "¡No eres jugador de esta partida!",
+      "notArchivable": "Esta partida no se puede archivar.",
+      "notFound": "Esa partida ya no existe."
+    }
   },
   "rules": {
     "introduction": "Introducción",
@@ -462,7 +468,7 @@
       "three": "Tres",
       "threeDescription": "Elige una carta (no-tres) del mazo de descarte y ponla en tu mano.",
       "four": "Cuatro",
-      "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
+      "fourDescription": "Tu rival descarta dos cartas al azar.",
       "five": "Cinco",
       "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja.",
       "six": "Seis",

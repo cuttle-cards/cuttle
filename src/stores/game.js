@@ -213,6 +213,8 @@ export const useGameStore = defineStore('game', () => {
     () => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value,
   );
   const pickingFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value);
+  // Legacy: no live game enters RESOLVING_FOUR as of rules 3.0.0 (fours discard at random the
+  // moment they resolve), but replaying a stored game that did still renders the dialog.
   const showResolveFour = computed(() => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value);
   const waitingForOpponentToDiscard = computed(() => {
     switch (phase.value) {
@@ -390,7 +392,9 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    if (!showOpponentHand.value) {
+    // A four against an empty hand discards nothing, and create-socket-events sends null
+    // rather than an empty array, so this has to guard the way processFives does
+    if (discardedCards?.length && !showOpponentHand.value) {
       opponent.value.hand = [
         ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
         ...discardedCards,
@@ -635,6 +639,8 @@ export const useGameStore = defineStore('game', () => {
     const moveType = MoveType.JACK;
     await makeSocketRequest('jack', { moveType, cardId, targetId });
   }
+  // Legacy: only reachable from the four-discard dialog, which only appears when replaying a
+  // pre-3.0.0 game. The server no longer accepts the move and answers 400.
   async function requestDiscard({ cardId1, cardId2 }) {
     const moveType = MoveType.RESOLVE_FOUR;
     const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
