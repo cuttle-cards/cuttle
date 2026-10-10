@@ -613,5 +613,28 @@
     "replay": "Erneut abspielen",
     "linkedAccounts": "Verknüpfte Konten",
     "failedToLoadGames": "Spielverlauf konnte nicht geladen werden. Bitte versuche es später erneut."
+  },
+  "emailPreference": {
+    "title": "Füge Deine E-Mail Hinzu",
+    "explanation": "Füge deinem Konto eine E-Mail hinzu, damit du in Zukunft ein vergessenes Passwort zurücksetzen und deine Kontoeinstellungen verwalten kannst.",
+    "emailLabel": "Bevorzugte E-Mail",
+    "promotionalLabel": "Schickt mir Neuigkeiten und Updates zu Cuttle",
+    "sendCode": "Code Senden",
+    "codeSent": "Wir haben einen 6-stelligen Code an {email} gesendet. Gib ihn unten ein, um deine E-Mail zu bestätigen.",
+    "verify": "Bestätigen",
+    "resend": "Code Erneut Senden",
+    "resendIn": "Erneut senden in {seconds}s",
+    "back": "Zurück",
+    "noThanks": "Nein Danke",
+    "verified": "Deine E-Mail wurde gespeichert",
+    "error": {
+      "invalidEmail": "Bitte gib eine gültige E-Mail ein",
+      "emailTaken": "Diese E-Mail wird bereits verwendet",
+      "tooManyRequests": "Bitte warte eine Minute, bevor du einen neuen Code anforderst",
+      "sendFailed": "Wir konnten deinen Code nicht senden. Bitte versuche es später erneut.",
+      "invalidCode": "Dieser Code ist falsch",
+      "codeExpired": "Dieser Code ist abgelaufen. Bitte fordere einen neuen an.",
+      "noPendingEmail": "Bitte fordere einen neuen Code an"
+    }
   }
 }

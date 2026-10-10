@@ -12,6 +12,7 @@
     "lodash": "4.17.21",
     "machinepack-passwords": "2.3.0",
     "marked": "^16.4.1",
+    "nodemailer": "^10.0.15",
     "pinia": "2.2.4",
     "rollbar": "^2.26.5",
     "sails": "^1.5.15",

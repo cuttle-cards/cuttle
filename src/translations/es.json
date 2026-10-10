@@ -613,5 +613,28 @@
     "replay": "Repetir",
     "linkedAccounts": "Cuentas vinculadas",
     "failedToLoadGames": "No se pudo cargar el historial de partidas. Inténtalo de nuevo más tarde."
+  },
+  "emailPreference": {
+    "title": "Agrega Tu Correo",
+    "explanation": "Agrega un correo a tu cuenta para poder restablecer una contraseña olvidada y administrar la configuración de tu cuenta en el futuro.",
+    "emailLabel": "Correo Preferido",
+    "promotionalLabel": "Envíenme noticias y novedades sobre Cuttle",
+    "sendCode": "Enviar Código",
+    "codeSent": "Enviamos un código de 6 dígitos a {email}. Ingrésalo abajo para confirmar tu correo.",
+    "verify": "Verificar",
+    "resend": "Reenviar Código",
+    "resendIn": "Reenviar en {seconds}s",
+    "back": "Atrás",
+    "noThanks": "No, Gracias",
+    "verified": "Tu correo ha sido guardado",
+    "error": {
+      "invalidEmail": "Ingresa un correo válido",
+      "emailTaken": "Este correo ya está en uso",
+      "tooManyRequests": "Espera un minuto antes de solicitar otro código",
+      "sendFailed": "No pudimos enviar tu código. Inténtalo de nuevo más tarde.",
+      "invalidCode": "El código es incorrecto",
+      "codeExpired": "El código ha expirado. Solicita uno nuevo.",
+      "noPendingEmail": "Solicita un nuevo código"
+    }
   }
 }

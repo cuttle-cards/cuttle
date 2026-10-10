@@ -613,5 +613,28 @@
     "replay": "Rejouer",
     "linkedAccounts": "Comptes liés",
     "failedToLoadGames": "Impossible de charger l'historique des parties. Veuillez réessayer plus tard."
+  },
+  "emailPreference": {
+    "title": "Ajoutez Votre E-mail",
+    "explanation": "Ajoutez un e-mail à votre compte pour pouvoir réinitialiser un mot de passe oublié et gérer les paramètres de votre compte à l'avenir.",
+    "emailLabel": "E-mail Préféré",
+    "promotionalLabel": "M'envoyer des nouvelles et des mises à jour sur Cuttle",
+    "sendCode": "Envoyer Le Code",
+    "codeSent": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le ci-dessous pour confirmer votre e-mail.",
+    "verify": "Vérifier",
+    "resend": "Renvoyer Le Code",
+    "resendIn": "Renvoyer dans {seconds}s",
+    "back": "Retour",
+    "noThanks": "Non Merci",
+    "verified": "Votre e-mail a été enregistré",
+    "error": {
+      "invalidEmail": "Veuillez saisir un e-mail valide",
+      "emailTaken": "Cet e-mail est déjà utilisé",
+      "tooManyRequests": "Veuillez patienter une minute avant de demander un autre code",
+      "sendFailed": "Nous n'avons pas pu envoyer votre code. Veuillez réessayer plus tard.",
+      "invalidCode": "Ce code est incorrect",
+      "codeExpired": "Ce code a expiré. Veuillez en demander un nouveau.",
+      "noPendingEmail": "Veuillez demander un nouveau code"
+    }
   }
 }
