@@ -75,9 +75,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
         case 7:
           await gameStore.processSevens(evData.game);
           break;
-        case 9:
-          await gameStore.processNines(evData.targetCard, evData.game);
-          break;
         default:
           gameStore.updateGame(evData.game);
       }

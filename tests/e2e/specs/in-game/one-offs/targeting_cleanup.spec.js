@@ -14,28 +14,40 @@ describe('Clean-up of One-Off Targets', () => {
       p0FaceCards: [],
       // player is p1
       p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
-      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
-    // Opponent plays NINE
-    cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
+    // Opponent plays NINE, which needs two targets
+    cy.playTargetedOneOffOpponent(
+      Card.NINE_OF_SPADES,
+      Card.ACE_OF_DIAMONDS,
+      'point',
+      Card.FOUR_OF_DIAMONDS,
+      'point',
+    );
 
     // Player resolves
     cy.get('#cannot-counter-dialog').should('be.visible')
       .get('[data-cy=cannot-counter-resolve]')
       .click();
 
-    // The nine put the ace on top of the deck rather than back into the player's hand
     assertGameState(1, {
       p0Hand: [ Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
       p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.NINE_OF_SPADES ],
     });
+
+    // Both target slots are cleared once the one-off resolves
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        expect(store.oneOffTarget).to.eq(null);
+        expect(store.oneOffTargetTwo).to.eq(null);
+      });
 
     // Player plays another point
     cy.get('[data-player-hand-card=6-2]').click();
@@ -61,11 +73,18 @@ describe('Clean-up of One-Off Targets', () => {
       // player is p1
       p1Hand: [ Card.SIX_OF_HEARTS ],
       p1Points: [ Card.ACE_OF_DIAMONDS ],
-      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS, Card.KING_OF_CLUBS ],
     });
 
-    // Opponent plays NINE
-    cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.QUEEN_OF_HEARTS, 'faceCard');
+    // Opponent plays NINE targeting both royals. A queen would block a nine outright,
+    // so this uses kings.
+    cy.playTargetedOneOffOpponent(
+      Card.NINE_OF_SPADES,
+      Card.KING_OF_HEARTS,
+      'faceCard',
+      Card.KING_OF_CLUBS,
+      'faceCard',
+    );
 
     // Player resolves
     cy.get('#cannot-counter-dialog')
@@ -78,11 +97,18 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [ Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
       p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.KING_OF_HEARTS, Card.KING_OF_CLUBS ],
       p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [ Card.NINE_OF_SPADES ],
     });
+
+    // Both target slots are cleared once the one-off resolves
+    cy.window().its('cuttle.gameStore')
+      .then((store) => {
+        expect(store.oneOffTarget).to.eq(null);
+        expect(store.oneOffTargetTwo).to.eq(null);
+      });
 
     // Player plays another point
     cy.get('[data-player-hand-card=6-2]').click();
@@ -173,12 +199,18 @@ describe('Clean-up of One-Off Targets', () => {
       p0FaceCards: [],
       // player is p1
       p1Hand: [ Card.SIX_OF_HEARTS, Card.TWO_OF_CLUBS ],
-      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
-    // Opponent plays NINE
-    cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
+    // Opponent plays NINE, which needs two targets
+    cy.playTargetedOneOffOpponent(
+      Card.NINE_OF_SPADES,
+      Card.ACE_OF_DIAMONDS,
+      'point',
+      Card.FOUR_OF_DIAMONDS,
+      'point',
+    );
 
     // Player counters
     cy.get('#counter-dialog').should('be.visible')
@@ -197,10 +229,18 @@ describe('Clean-up of One-Off Targets', () => {
       p0FaceCards: [],
       // player is p1
       p1Hand: [ Card.SIX_OF_HEARTS ],
-      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [ Card.NINE_OF_SPADES, Card.TWO_OF_CLUBS ],
     });
+
+    // Both target slots are cleared once the one-off is countered
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((store) => {
+        expect(store.oneOffTarget).to.eq(null);
+        expect(store.oneOffTargetTwo).to.eq(null);
+      });
 
     // Player plays another point
     cy.get('[data-player-hand-card=6-2]').click();
