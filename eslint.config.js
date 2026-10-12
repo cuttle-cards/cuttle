@@ -1,3 +1,4 @@
+const path = require('path');
 const js = require('@eslint/js');
 const globals = require('globals');
 const vue = require('eslint-plugin-vue');
@@ -40,7 +41,6 @@ const sailsGlobals = {
 const clientFiles = '**/client/**/*.{j,t}s?(x)';
 const storybookFiles = '**/(.storybook|stories)/**/*.{j,t}s?(x)';
 const apiFiles = '**/api/**/*.{j,t}s?(x)';
-const jsonUtils = 'DeckIds|gameActivity|GamePhase|GameStatus|MoveType|TargetType|ThemeColors|Transitions';
 const unitTestFiles = '**/tests/unit/**/*.{j,t}s?(x)';
 const e2eTestFiles = '**/tests/e2e/**/*.{j,t}s?(x)';
 const browserFiles = [
@@ -50,6 +50,72 @@ const browserFiles = [
   'utils/**/*.{js,ts}',
   'vitest.config.mjs',
 ];
+
+// Keep these aliases in sync with vite.config.mjs. ESLint's CommonJS config cannot import it.
+const aliases = { _: __dirname, '@': path.join(__dirname, 'src') };
+
+const resolveSpecifier = (fromDir, spec) => {
+  const alias = Object.keys(aliases).find((prefix) => spec === prefix || spec.startsWith(`${prefix}/`));
+  if (alias) {
+    return path.resolve(aliases[alias], spec.slice(alias.length + (spec === alias ? 0 : 1)));
+  }
+  return spec.startsWith('.') ? path.resolve(fromDir, spec) : null;
+};
+
+const resolvedJsonCache = new Map();
+const resolvesToJson = (target) => {
+  if (!resolvedJsonCache.has(target)) {
+    try {
+      resolvedJsonCache.set(target, require.resolve(target).endsWith('.json'));
+    } catch {
+      resolvedJsonCache.set(target, false);
+    }
+  }
+  return resolvedJsonCache.get(target);
+};
+
+const jsonExtensions = {
+  rules: {
+    'explicit-json-extension': {
+      meta: {
+        type: 'problem',
+        fixable: 'code',
+        schema: [],
+        messages: {
+          missing: `'{{spec}}' resolves to a JSON file; write '{{spec}}.json' so the editor can resolve it (see #1397).`,
+        },
+      },
+      create(context) {
+        const fromDir = path.dirname(context.filename);
+        const check = (node) => {
+          if (node?.type !== 'Literal' || typeof node.value !== 'string' || node.value.endsWith('.json')) {
+            return;
+          }
+          const target = resolveSpecifier(fromDir, node.value);
+          if (!target || !resolvesToJson(target)) {
+            return;
+          }
+          context.report({
+            node,
+            messageId: 'missing',
+            data: { spec: node.value },
+            fix: (fixer) => {
+              const raw = context.sourceCode.getText(node);
+              return fixer.replaceText(node, `${raw.slice(0, -1)}.json${raw.slice(-1)}`);
+            },
+          });
+        };
+        return {
+          'CallExpression[callee.name="require"]': (node) => check(node.arguments[0]),
+          ImportDeclaration: (node) => check(node.source),
+          ImportExpression: (node) => check(node.source),
+          ExportNamedDeclaration: (node) => check(node.source),
+          ExportAllDeclaration: (node) => check(node.source),
+        };
+      },
+    },
+  },
+};
 
 module.exports = [
   {
@@ -67,6 +133,7 @@ module.exports = [
       vuetify,
       prettier,
       'no-only-tests': noOnlyTests,
+      'json-extensions': jsonExtensions,
     },
     languageOptions: {
       ecmaVersion: 'latest',
@@ -74,6 +141,7 @@ module.exports = [
       globals: nodeGlobals,
     },
     rules: {
+      'json-extensions/explicit-json-extension': 'error',
       'eol-last': [ 'error', 'always' ],
       'max-len': [
         'warn',
@@ -196,13 +264,6 @@ module.exports = [
     rules: {
       'no-undef': 'error',
       'no-prototype-builtins': 'error',
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: `CallExpression[callee.name='require'] > Literal[value=/utils\\u002f(${jsonUtils})$/]`,
-          message: 'Require JSON utils with an explicit .json extension so the editor can resolve them (see #1397).',
-        },
-      ],
     },
   },
   {
