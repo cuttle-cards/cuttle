@@ -553,9 +553,10 @@ describe('Video Playground', () => {
     cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
-    cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-    cy.wait(1000);
-    cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES);
+
+    // Two of the opponent's three cards discard at random as the four resolves
+    cy.get('#scrap').contains('(3)');
+    cy.wait(3000);
   });
 
   it('Playing Fives', () => {

@@ -154,13 +154,17 @@ export default {
       this.gameStore.requestCounter(twoId).then(this.clearSelection)
         .catch(this.handleError);
     },
+    // Legacy: no live game can enter the four-discard phase as of rules 3.0.0, but the dialog
+    // is still rendered when replaying a stored game that did, so the handler stays wired.
     discard(cardIds) {
       const [ cardId1 ] = cardIds;
       const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
-      this.gameStore.requestDiscard({
-        cardId1,
-        cardId2,
-      });
+      this.gameStore
+        .requestDiscard({
+          cardId1,
+          cardId2,
+        })
+        .catch(this.handleError);
     },
     discardToHandLimit(cardIds) {
       this.gameStore.requestDiscardToHandLimit(cardIds);
