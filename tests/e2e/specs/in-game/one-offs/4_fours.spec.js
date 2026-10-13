@@ -3,9 +3,10 @@ import { Card } from '../../../fixtures/cards';
 
 /**
  * Fours discard at random as of rules 3.0.0, so there is no choice to make and no discard
- * dialog. Most cases below give the victim exactly two cards, which makes the outcome
- * deterministic and assertable; the randomness itself is covered by its own test, which
- * asserts counts and membership rather than identities.
+ * dialog. Most cases below give the victim exactly two cards, which fixes which cards are
+ * discarded -- but not the order `_.sampleSize` returns them in, so the log can name them
+ * either way round. The randomness itself is covered by its own test, which asserts counts
+ * and membership rather than identities.
  */
 describe('FOURS', () => {
   describe('Playing FOURS', () => {
@@ -29,11 +30,16 @@ describe('FOURS', () => {
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
       cy.get('#four-discard-dialog').should('not.exist');
 
-      // The log is the only channel naming what was lost
-      cy.get('[data-cy=history-log]').should(
-        'contain',
-        'The 4♠️ one-off resolves, discarding the A♥️ and the 10♥️ at random from definitelyNotTheGovernment6969\'s hand.',
+      // The log is the only channel naming what was lost. Both cards go, but the sample
+      // order is random, so accept either naming order.
+      const discardLog = new RegExp(
+        'The 4♠️ one-off resolves, discarding ' +
+          '(?:the A♥️ and the 10♥️|the 10♥️ and the A♥️)' +
+          ' at random from definitelyNotTheGovernment6969\'s hand\\.',
       );
+      cy.get('[data-cy=history-log]')
+        .invoke('text')
+        .should('match', discardLog);
 
       assertGameState(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
