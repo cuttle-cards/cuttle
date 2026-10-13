@@ -19,10 +19,6 @@ const nodeGlobals = {
 
 const browserGlobals = normalizeGlobals(globals.browser);
 
-const sharedTestRules = {
-  'import/no-unresolved': [ 'off' ],
-};
-
 const sailsGlobals = {
   _: true,
   sails: true,
@@ -274,9 +270,6 @@ module.exports = [
         ...browserGlobals,
       },
     },
-    rules: {
-      ...sharedTestRules,
-    },
   },
   {
     files: [ e2eTestFiles ],
@@ -306,7 +299,6 @@ module.exports = [
       },
     },
     rules: {
-      ...sharedTestRules,
       'no-only-tests/no-only-tests': 'error',
     },
   },
