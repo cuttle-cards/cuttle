@@ -669,7 +669,7 @@ describe('Reconnecting to a game', () => {
       });
     }); // End 3's reconnect
 
-    it('Resolve 4 after reconnect - Player discards', () => {
+    it('Resolve 4 after reconnect - random discard persists', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
@@ -680,24 +680,13 @@ describe('Reconnecting to a game', () => {
         p1FaceCards: [],
       });
 
-      // Opponent plays four of clubs, player resolves
+      // Opponent plays four of clubs, player resolves -- both cards discard immediately
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       cy.get('#cannot-counter-dialog').should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
-      // Disconnect & Reconnect
-      cy.reload();
-      // Four dialog appears, player discards as normal
-      // Choosing cards to discard
-      cy.log('Choosing two cards to discard');
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=3-1]').click(); // ace of diamonds
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=3-0]').click(); // four of spades
-      cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
-
-      assertGameState(1, {
+      const expectedState = {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
@@ -705,7 +694,13 @@ describe('Reconnecting to a game', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS ],
-      });
+      };
+      assertGameState(1, expectedState);
+
+      // Disconnect & Reconnect -- the resolved discard must survive the reload
+      cy.reload();
+      cy.get('#four-discard-dialog').should('not.exist');
+      assertGameState(1, expectedState);
     });
 
     it('Resolve 7 after reconnect - Player', () => {

@@ -236,7 +236,7 @@
         "1": "Alle Punktkarten abwerfen",
         "2": "Ziel-König oder Gläser Acht abwerfen",
         "3": "Wähle 1 Karte, die keine 3 ist, aus dem Abwurfstapel und nimm sie auf die Hand",
-        "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
+        "4": "Dein Gegner wirft zwei zufällige Karten von seiner Hand ab",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
@@ -338,12 +338,6 @@
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
           "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen",
           "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
-        },
-        "four": {
-          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
-          "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
-          "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
-          "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
@@ -466,7 +460,7 @@
       "three": "Drei",
       "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
-      "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
+      "fourDescription": "Dein Gegner wirft zwei zufällige Karten ab.",
       "five": "Fünf",
       "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel.",
       "six": "Sechs",
@@ -599,12 +593,13 @@
     }
   },
   "announcement": {
-    "activatorText": "Finde deine laufenden Spiele!",
-    "title": "Deine Aktuellen Spiele",
-    "heading": "Mach da weiter, wo du aufgehört hast",
-    "paragraph": "Tab zu einem Spiel geschlossen? Deine laufenden Spiele erscheinen jetzt ganz oben im Tab Spielen. Drücke auf Fortsetzen, um direkt wieder ins Spiel zu kommen – genau da, wo du aufgehört hast.",
-    "heading2": "Aufgegebene Spiele aufräumen",
-    "paragraph2": "Fertig mit einem Spiel, zu dem niemand zurückkehrt? Das × neben Fortsetzen archiviert es und entfernt es aus den Listen beider Spieler. Spiele, die gerade gespielt werden, lassen sich nicht archivieren – und Spiele aus der Rangliste der aktuellen Woche ebenso wenig, denn die zählen noch für dein Match."
+    "activatorText": "Vierer werden verbessert!",
+    "title": "Regel-Beta: Zufällige Vierer",
+    "heading": "Vierer werfen jetzt zufällig ab",
+    "paragraph": "Der Vierer ist die schwächste Karte im Spiel: ein schwacher Effekt auf einem niedrigen Rang mit wenig Punkten und kaum Versenkungswert. Und weil dein Gegner die beiden Karten aussuchte, verlor er immer nur seine zwei schlechtesten. Jetzt werden die beiden Karten zufällig gewählt, sodass ein Vierer auch wirklich wehtun kann. Hat dein Gegner weniger als zwei Karten, wirft er ab, was er hat.",
+    "heading2": "Eine von vier Testregeln der Pik-Saison",
+    "paragraph2": "Das ist eine Beta und eine von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
+    "patreonLink": "Die 4 und die 9 verbessern"
   },
   "profile": {
     "myGames": "Meine Spiele",
