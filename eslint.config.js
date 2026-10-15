@@ -47,8 +47,7 @@ const browserFiles = [
   'vitest.config.mjs',
 ];
 
-// Keep these aliases in sync with vite.config.mjs. ESLint's CommonJS config cannot import it.
-const aliases = { _: __dirname, '@': path.join(__dirname, 'src') };
+const { aliases } = require('./utils/path-aliases.js');
 
 const resolveSpecifier = (fromDir, spec) => {
   const alias = Object.keys(aliases).find((prefix) => spec === prefix || spec.startsWith(`${prefix}/`));

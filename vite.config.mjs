@@ -1,16 +1,10 @@
 import os from 'os';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-
-// vite.config.mjs
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import { resolveDevPorts } from './utils/dev-ports.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { aliases } from './utils/path-aliases.js';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -50,10 +44,7 @@ export default defineConfig(({ command, mode }) => {
       vueDevTools(),
     ],
     resolve: {
-      alias: {
-        _: resolve(__dirname),
-        '@': resolve(__dirname, './src'),
-      },
+      alias: aliases,
     },
     server: {
       host: '0.0.0.0',
