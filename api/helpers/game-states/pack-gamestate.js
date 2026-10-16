@@ -27,6 +27,7 @@ module.exports = {
         'twos',
         'resolved',
         'discardedCards',
+        'revealedCards',
       ];
 
       attributesToConvert.forEach((attribute) => {

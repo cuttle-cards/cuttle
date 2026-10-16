@@ -153,7 +153,7 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
           p1FaceCards: [],
         });
 
-        // Player plays four — the opponent's two cards discard at random on resolve
+        // Player plays four — the opponent holds only two cards, so both discard on resolve
         cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
         // Discard-to-hand-limit dialog appears — player (P0) still has 9 cards after playing the four

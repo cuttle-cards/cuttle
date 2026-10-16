@@ -1,6 +1,18 @@
 const MoveType = require('../../../../utils/MoveType.json');
 const TargetType = require('../../../../utils/TargetType.json');
 
+// Every k-sized subset of arr, preserving order
+const getCombinations = (arr, k) => {
+  if (k === 1) {return arr.map((item) => [ item ]);}
+  const result = [];
+  for (let i = 0; i <= arr.length - k; i++) {
+    for (const rest of getCombinations(arr.slice(i + 1), k - 1)) {
+      result.push([ arr[i], ...rest ]);
+    }
+  }
+  return result;
+};
+
 module.exports = {
   friendlyName: 'Get move bodies for move type',
 
@@ -146,17 +158,29 @@ module.exports = {
         // Bounded by game rules: hands start <= 8 and a turn is a single action, whose largest net
         // gain is a Five (discard 1, draw 3 = +2), so in normal play hand <= ~10 and overflow is 1-2
         // (C(9,1)=9, C(10,2)=45). Recursion depth = overflow (~2). No blow-up risk.
-        const getCombinations = (arr, k) => {
-          if (k === 1) {return arr.map((item) => [ item ]);}
-          const result = [];
-          for (let i = 0; i <= arr.length - k; i++) {
-            for (const rest of getCombinations(arr.slice(i + 1), k - 1)) {
-              result.push([ arr[i], ...rest ]);
-            }
-          }
-          return result;
-        };
         res = getCombinations(playerHand, overflowCount).map((combo) => ({
+          moveType,
+          playedBy,
+          discardedCards: combo.map((card) => card.id),
+        }));
+        break;
+      }
+
+      // Every set of three cards the four's victim could reveal: at most C(8,3)=56 move bodies
+      case MoveType.REVEAL_FOUR:
+        if (playerHand.length < 3) {break;}
+        res = getCombinations(playerHand, 3).map((combo) => ({
+          moveType,
+          playedBy,
+          revealedCards: combo.map((card) => card.id),
+        }));
+        break;
+
+      // Every pair of revealed cards the four's player could choose to discard
+      case MoveType.DISCARD_FOUR: {
+        const revealedCards = currentState.revealedCards ?? [];
+        if (revealedCards.length < 2) {break;}
+        res = getCombinations(revealedCards, 2).map((combo) => ({
           moveType,
           playedBy,
           discardedCards: combo.map((card) => card.id),

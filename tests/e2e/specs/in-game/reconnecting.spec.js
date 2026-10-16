@@ -669,38 +669,53 @@ describe('Reconnecting to a game', () => {
       });
     }); // End 3's reconnect
 
-    it('Resolve 4 after reconnect - random discard persists', () => {
+    it('Resolve 4 after reconnect - reveal and choice of discards persist', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
+        p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS, Card.SIX_OF_HEARTS, Card.TEN_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
 
-      // Opponent plays four of clubs, player resolves -- both cards discard immediately
+      // Opponent plays four of clubs, player resolves and must reveal three cards
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       cy.get('#cannot-counter-dialog').should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
+      cy.get('#four-reveal-dialog').should('be.visible');
 
-      const expectedState = {
+      // Disconnect & Reconnect -- still revealing
+      cy.reload();
+      cy.get('#four-reveal-dialog')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-four-reveal-card=3-1]').click();
+          cy.get('[data-four-reveal-card=3-0]').click();
+          cy.get('[data-four-reveal-card=10-3]').click();
+          cy.get('[data-cy=submit-four-reveal-dialog]').click();
+        });
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim').should('be.visible');
+
+      // Disconnect & Reconnect -- still waiting on the opponent's choice from the same cards
+      cy.reload();
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim')
+        .should('be.visible')
+        .find('[data-overlay-revealed-card]')
+        .should('have.length', 3);
+
+      cy.discardFourOpponent(Card.THREE_OF_DIAMONDS, Card.TEN_OF_SPADES);
+      assertGameState(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.THREE_OF_CLUBS, Card.SIX_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS ],
-      };
-      assertGameState(1, expectedState);
-
-      // Disconnect & Reconnect -- the resolved discard must survive the reload
-      cy.reload();
-      cy.get('#four-discard-dialog').should('not.exist');
-      assertGameState(1, expectedState);
+        scrap: [ Card.THREE_OF_DIAMONDS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ],
+      });
     });
 
     it('Resolve 7 after reconnect - Player', () => {

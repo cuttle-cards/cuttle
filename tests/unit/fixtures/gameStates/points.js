@@ -18,6 +18,7 @@ const gameStateRow = {
   scrap: [ '6C' ],
   twos: [],
   discardedCards: [],
+  revealedCards: [],
   playedCard: 'TS',
   oneOff: null,
   oneOffTarget: null,
@@ -65,6 +66,7 @@ export const points = {
     scrap: [ Card.SIX_OF_CLUBS ],
     twos: [],
     discardedCards: [],
+    revealedCards: [],
     oneOff: null,
     oneOffTarget: null,
     oneOffTargetType: null,
@@ -192,6 +194,7 @@ export const points = {
       oneOff: null,
       oneOffTarget: null,
       oneOffTargetType: null,
+      revealedCards: [],
       lastEvent: {
         change: MoveType.POINTS,
         happened: true,

@@ -25,6 +25,7 @@ module.exports = {
         'twos',
         'resolved',
         'discardedCards',
+        'revealedCards',
         'p0Hand',
         'p1Hand',
         'p0Points',
@@ -76,6 +77,7 @@ module.exports = {
         oneOffTargetType: gameStateRow.oneOffTargetType,
         resolved: convertedData.resolved ?? null,
         discardedCards: convertedData.discardedCards ?? null,
+        revealedCards: convertedData.revealedCards ?? null,
       };
 
       const convertedGameState = sails.helpers.gameStates.validateGamestate(data);

@@ -1,14 +1,17 @@
+const GamePhase = require('../../../../../utils/GamePhase.json');
+
 module.exports = {
   friendlyName: 'Resolve Four One-Off',
 
   description:
-    'Returns new GameState resulting from resolving a four, which discards two cards at random from the ' +
-    'hand of the player resolving it. A hand of fewer than two cards discards whatever it holds.',
+    'Returns new GameState resulting from resolving a four: the player resolving it reveals three cards from ' +
+    'their hand, of which the four\'s player chooses two for them to discard. Skips whichever of those steps ' +
+    'offers no choice: a hand of three is revealed whole, and a hand of two or fewer is discarded outright.',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the four discards its two cards',
+      description: 'The latest GameState before the four resolves',
       required: true,
     },
     playedBy: {
@@ -25,12 +28,19 @@ module.exports = {
     // identifies the player whose hand is discarded -- not the four's caster.
     const victim = playedBy ? result.p1 : result.p0;
 
-    // sampleSize returns *up to* two cards, so a short hand simply discards everything it has
-    const discardedCards = _.sampleSize(victim.hand, 2);
-    const discardedIds = new Set(discardedCards.map(({ id }) => id));
+    if (victim.hand.length > 3) {
+      result.phase = GamePhase.RESOLVING_FOUR_REVEAL;
+      return exits.success(result);
+    }
 
-    // Filter by id rather than splicing -- sampleSize returns the cards, not their positions
-    victim.hand = victim.hand.filter(({ id }) => !discardedIds.has(id));
+    if (victim.hand.length === 3) {
+      result.phase = GamePhase.RESOLVING_FOUR_DISCARD;
+      result.revealedCards = [ ...victim.hand ];
+      return exits.success(result);
+    }
+
+    // Two or fewer cards leaves nothing to choose, so they are all discarded
+    const discardedCards = victim.hand.splice(0);
     result.scrap.push(...discardedCards);
     result.discardedCards = discardedCards;
 

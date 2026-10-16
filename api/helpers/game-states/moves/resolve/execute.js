@@ -81,6 +81,11 @@ module.exports = {
         break;
       case 4:
         result = sails.helpers.gameStates.moves.resolve.four(result, playedBy);
+        // Unless the victim's hand is too small to choose from, the four awaits their reveal
+        // and its player's choice of discards, which complete it in later moves
+        if ([ GamePhase.RESOLVING_FOUR_REVEAL, GamePhase.RESOLVING_FOUR_DISCARD ].includes(result.phase)) {
+          return exits.success(result);
+        }
         break;
       case 3:
       case 5:

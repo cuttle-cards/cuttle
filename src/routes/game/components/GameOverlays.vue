@@ -62,6 +62,35 @@
     </BaseOverlay>
 
     <BaseOverlay
+      id="waiting-for-opponent-reveal-four-scrim"
+      v-model="gameStore.waitingForOpponentToRevealForFour"
+      persistent
+    >
+      <template #header>
+        {{ t('game.overlays.isRevealingForFour', { opponentUsername }) }}
+      </template>
+    </BaseOverlay>
+
+    <BaseOverlay
+      id="waiting-for-opponent-choose-four-discards-scrim"
+      v-model="gameStore.waitingForOpponentToChooseFourDiscards"
+      persistent
+    >
+      <template #header>
+        {{ t('game.overlays.isChoosingFourDiscards', { opponentUsername }) }}
+      </template>
+      <div id="four-revealed-scrim-cards">
+        <GameCard
+          v-for="card in gameStore.revealedCards"
+          :key="`overlay-revealed-${card.id}`"
+          :rank="card.rank"
+          :suit="card.suit"
+          :data-overlay-revealed-card="`${card.rank}-${card.suit}`"
+        />
+      </div>
+    </BaseOverlay>
+
+    <BaseOverlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="gameStore.waitingForOpponentToPickFromScrap"
       persistent
@@ -219,6 +248,13 @@ export default {
 <style scoped lang="scss">
 .game-overlays {
   contain: var(--contain-isolated);
+}
+
+#four-revealed-scrim-cards {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 #counter-scrim-cards {

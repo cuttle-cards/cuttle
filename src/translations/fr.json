@@ -102,6 +102,8 @@
       "mustResolve": "{opponentUsername} Doit Résoudre",
       "isDiscarding": "{opponentUsername} Est en Train de Défausser",
       "skipsDiscarding": "{opponentUsername} Passe la Défausse",
+      "isRevealingForFour": "{opponentUsername} Révèle Trois Cartes",
+      "isChoosingFourDiscards": "{opponentUsername} Choisit Deux Cartes Que Vous Devez Défausser",
       "choosingFromScrap": "{opponentUsername} Choisit une Carte de la Pile de Défausse",
       "playingFromDeck": "{opponentUsername} Joue Depuis le Paquet",
       "mustDiscardJack": "{opponentUsername} Doit Défausser un Valet",
@@ -135,6 +137,16 @@
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "fourReveal": {
+        "title": "Révélez trois cartes",
+        "body": "{opponentUsername} a joué un quatre en attaque. Choisissez trois cartes de votre main à révéler. {opponentUsername} en choisira deux que vous devrez défausser.",
+        "reveal": "Révéler"
+      },
+      "fourDiscard": {
+        "title": "Choisissez deux cartes à défausser",
+        "body": "{opponentUsername} a révélé ces trois cartes. Choisissez-en deux que {opponentUsername} devra défausser.",
+        "discard": "Défausser"
       },
       "discardToHandLimit": {
         "title": "Défaussez les cartes en trop",
@@ -236,7 +248,7 @@
         "1": "Élimine tous les points.",
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez une carte autre qu'un 3 dans la défausse et mettez-la dans votre main.",
-        "4": "Votre adversaire défausse deux cartes au hasard de sa main.",
+        "4": "Votre adversaire révèle trois cartes de sa main, et vous en choisissez deux qu'il doit défausser.",
         "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes de la pioche et jouez en une.",
@@ -338,6 +350,12 @@
           "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
           "mustPickFromScrap": "Vous devez choisir une carte de la défausse",
           "cannotTargetThree": "Vous ne pouvez pas cibler un 3 avec un 3"
+        },
+        "four": {
+          "notRevealingPhase": "Vous ne pouvez révéler des cartes que pendant la résolution d'un quatre",
+          "mustRevealThree": "Vous devez révéler trois cartes de votre main",
+          "notChoosingDiscardsPhase": "Vous ne pouvez choisir les défausses que pendant la résolution d'un quatre",
+          "mustChooseTwoRevealed": "Vous devez choisir deux des cartes révélées à défausser"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Vous ne pouvez vous défausser jusqu'à la limite de main que pendant la phase de défausse",
@@ -460,7 +478,7 @@
       "three": "Trois",
       "threeDescription": "Vous permet de récupérer de la défausse une carte (non-trois) de votre choix.",
       "four": "Quatre",
-      "fourDescription": "Votre adversaire défausse deux cartes au hasard.",
+      "fourDescription": "Votre adversaire révèle trois cartes de sa main, et vous en choisissez deux qu'il doit défausser.",
       "five": "Cinq",
       "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu.",
       "six": "Six",
@@ -593,10 +611,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Le Quatre est amélioré !",
-    "title": "Bêta de règles : Quatre aléatoire",
-    "heading": "Le Quatre défausse désormais au hasard",
-    "paragraph": "Le Quatre est la carte la plus faible du jeu : un effet peu puissant sur un rang bas, avec peu de points et une faible valeur de sabordage. Et comme votre adversaire choisissait les deux cartes à défausser, il se séparait toujours de ses deux plus mauvaises. Désormais les deux cartes sont tirées au hasard, et un Quatre peut donc emporter quelque chose qui compte vraiment. Si votre adversaire a moins de deux cartes, il défausse ce qu'il a.",
+    "activatorText": "Le Quatre reçoit une nouvelle amélioration !",
+    "title": "Bêta des règles : le Quatre qui révèle trois cartes",
+    "heading": "Le Quatre fait désormais révéler trois cartes",
+    "paragraph": "Le Quatre est la carte la plus faible du jeu : un effet peu puissant sur un rang bas, avec peu de points et une faible valeur de sabordage. Et comme votre adversaire choisissait les deux cartes à défausser, il se séparait toujours de ses deux plus mauvaises. Désormais votre adversaire révèle trois cartes de sa main et vous choisissez les deux qu'il défausse, et un Quatre peut donc emporter quelque chose qui compte vraiment. S'il a exactement trois cartes, les trois sont révélées ; s'il en a deux ou moins, il défausse ce qu'il a.",
     "heading2": "L'une des quatre expérimentations de la saison des Piques",
     "paragraph2": "Il s'agit d'une bêta, et de l'une des quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
     "patreonLink": "Aidez-nous à affiner le 4 et le 9"
