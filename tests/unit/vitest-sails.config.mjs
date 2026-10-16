@@ -1,16 +1,9 @@
 import { defineConfig } from 'vitest/config';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(resolve(__filename,'../..'));
+import { aliases } from '../../utils/path-aliases.js';
 
 export default defineConfig({
   resolve: {
-    alias: {
-      _: __dirname,
-      '@': resolve(__dirname, './src'),
-    },
+    alias: aliases,
   },
   test: {
     // vitest includes tests from the project root
