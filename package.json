@@ -93,5 +93,8 @@
     "version:minor": "npm version minor",
     "version:major": "npm version major",
     "build-storybook": "storybook build"
+  },
+  "overrides": {
+    "machinepack-urls": "6.0.1"
   }
 }
