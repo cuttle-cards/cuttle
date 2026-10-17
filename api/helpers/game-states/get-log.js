@@ -111,10 +111,13 @@ module.exports = {
                   row.revealedCards,
                 )}.`;
               }
-              // Legacy rows (rules < 3.0.0) deferred the discard to a separate resolveFour
-              // move, so the cards are named on that row and this one carries none.
-              if (!discardedCards?.length) {
+              // Legacy rows (rules < 3.0.0) always entered the RESOLVING_FOUR phase and deferred the
+              // discard to a separate resolveFour move, so the cards are named on that row instead
+              if (row.phase === GamePhase.RESOLVING_FOUR) {
                 return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
+              }
+              if (!discardedCards?.length) {
+                return `The ${resolvedCardName} one-off resolves; ${player} has no cards to discard.`;
               }
               // Rules 3.x discarded two cards at random; from 4.0.0 only a hand too small to choose
               // from is discarded on resolution, and it is discarded whole

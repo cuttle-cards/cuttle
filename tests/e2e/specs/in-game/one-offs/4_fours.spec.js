@@ -182,6 +182,11 @@ describe('FOURS', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♣️ one-off resolves; definitelyNotTheGovernment6969 has no cards to discard.',
+      );
+
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],

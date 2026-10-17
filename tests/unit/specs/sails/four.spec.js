@@ -194,5 +194,18 @@ describe('Four one-off', () => {
         'The 4♣️ one-off resolves, discarding the A♥️ and the 10♥️ at random from victim\'s hand.',
       ]);
     });
+
+    it('Narrates a four against an empty hand', () => {
+      expect(logFor([ row({ moveType: MoveType.RESOLVE }) ])).to.deep.eq([
+        'The 4♣️ one-off resolves; victim has no cards to discard.',
+      ]);
+    });
+
+    it('Narrates a legacy four awaiting its victim\'s discard', () => {
+      const legacyRow = row({ moveType: MoveType.RESOLVE, phase: GamePhase.RESOLVING_FOUR });
+      expect(logFor([ legacyRow ], '2.0.0')).to.deep.eq([
+        'The 4♣️ one-off resolves; victim must discard two cards.',
+      ]);
+    });
   });
 });
