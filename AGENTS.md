@@ -6,6 +6,7 @@
 - [Implementation Priority](#implementation-priority)
 - [Discovery Strategy](#discovery-strategy)
 - [Critical Safety Rules](#critical-safety-rules)
+- [Running the App](#running-the-app)
 - [Finding Information](#finding-information)
 - [Constraints and Escalation](#constraints-and-escalation)
 - [Communication Patterns](#communication-patterns)
@@ -56,6 +57,13 @@ In case of conflicting rules, the following hierarchy applies:
 - **No Commits Without Request**: Only create commits when explicitly requested.
 - **Validation**: Run `npm run lint` and `npm run test:unit` before finishing.
 - **Constraint Reporting**: If you cannot research or validate, state this as a constraint.
+
+## Running the App
+
+- **Dependencies**: If `node_modules` is missing or out of sync with `package-lock.json`, run `npm ci` in your worktree. Do not symlink `node_modules` from another checkout; a shared directory can be wiped or changed by another worktree.
+- **Ports**: 8080 (client) and 1337 (server) are often already in use by another stack. Do not kill it.
+- **Booting your own stack**: Set `CUTTLE_PORT_OFFSET=<n>` in a git-ignored `.env.local` (see `.env.local.example`) so the client, server, and Cypress all agree on ports. For example, `CUTTLE_PORT_OFFSET=1` gives client 8081 and server 1338. An inline `CUTTLE_PORT_OFFSET=<n>` overrides the file for a one-off run. Delete `.env.local` when you tear down the worktree.
+- **Source of truth**: All port resolution lives in `utils/dev-ports.js`. Read it before changing ports, URLs, or dev/test scripts.
 
 ## Finding Information
 
