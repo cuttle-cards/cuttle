@@ -9,6 +9,8 @@ import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSeve
 import { resolvingFivePhase1HasMultipleCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase1HasMultipleCardsInHand';
 import { resolvingFivePhase2HasOneCardInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase2HasOneCardInHand';
 import { resolvingFivePhase3HasNoCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase3HasNoCardsInHand';
+import { resolvingFourRevealPhase } from '../../fixtures/gameStates/ai/resolvingFourRevealPhase';
+import { resolvingFourDiscardPhase } from '../../fixtures/gameStates/ai/resolvingFourDiscardPhase';
 import { counteringPhase1AbleToCounter } from '../../fixtures/gameStates/ai/counteringPhase1AbleToCounter';
 import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/counteringPhase2CannotCounter';
 
@@ -20,6 +22,8 @@ const fixturesForLegalMoves = [
   resolvingFivePhase1HasMultipleCardsInHand,
   resolvingFivePhase2HasOneCardInHand,
   resolvingFivePhase3HasNoCardsInHand,
+  resolvingFourRevealPhase,
+  resolvingFourDiscardPhase,
   counteringPhase1AbleToCounter,
   counteringPhase2CannotCounter,
 ];

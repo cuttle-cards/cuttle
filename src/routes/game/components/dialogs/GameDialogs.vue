@@ -20,6 +20,8 @@
     />
 
     <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
+    <FourRevealDialog :model-value="gameStore.revealingForFour" @reveal="revealFour" />
+    <FourDiscardDialog :model-value="gameStore.choosingFourDiscards" @discard="discardFour" />
     <FiveDialog v-if="gameStore.showResolveFive" @resolve-five="resolveFive" />
     <DiscardToHandLimitDialog
       :model-value="gameStore.showDiscardToHandLimit"
@@ -56,6 +58,8 @@ import { useAuthStore } from '@/stores/auth';
 import CannotCounterDialog from './components/CannotCounterDialog.vue';
 import CounterDialog from './components/CounterDialog.vue';
 import FourDialog from './components/FourDialog.vue';
+import FourRevealDialog from './components/FourRevealDialog.vue';
+import FourDiscardDialog from './components/FourDiscardDialog.vue';
 import DiscardToHandLimitDialog from './components/DiscardToHandLimitDialog.vue';
 import GameOverDialog from './components/gameOver/GameOverDialog.vue';
 import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
@@ -72,6 +76,8 @@ export default {
     CounterDialog,
     DiscardToHandLimitDialog,
     FourDialog,
+    FourRevealDialog,
+    FourDiscardDialog,
     GameOverDialog,
     ReauthenticateDialog,
     SevenDoubleJacksDialog,
@@ -165,6 +171,12 @@ export default {
           cardId2,
         })
         .catch(this.handleError);
+    },
+    revealFour(cardIds) {
+      this.gameStore.requestRevealFour(cardIds).catch(this.handleError);
+    },
+    discardFour(cardIds) {
+      this.gameStore.requestDiscardFour(cardIds).catch(this.handleError);
     },
     discardToHandLimit(cardIds) {
       this.gameStore.requestDiscardToHandLimit(cardIds);

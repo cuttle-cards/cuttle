@@ -588,12 +588,14 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
       p0Hand: [ Card.FOUR_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
+      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.TWO_OF_SPADES, Card.TEN_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
     });
 
     cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
+    // Concede while the opponent is still revealing
+    cy.get('#waiting-for-opponent-reveal-four-scrim').should('be.visible');
 
     cy.get('#game-menu-activator').click({ force: true });
     cy.get('#game-menu').should('be.visible')
@@ -605,6 +607,6 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     assertLoss();
     goHomeJoinNewGame();
 
-    cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+    cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
   });
 });
