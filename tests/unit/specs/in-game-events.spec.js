@@ -49,7 +49,6 @@ vi.mock('@/router.js', () => ({
 describe('handleInGameEvents - SocketEvent.RESOLVE case 4', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGameStore.myPNum = 0;
   });
 
   afterEach(() => {
