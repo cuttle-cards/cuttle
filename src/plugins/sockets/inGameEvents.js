@@ -63,10 +63,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.RESOLVE:
       switch (evData.game.lastEvent?.oneOff?.rank) {
-        // playedBy on a resolve is the player who resolved it -- the one whose hand was
-        // discarded -- so anyone else watching is the caster, who needs the reveal
+        // evData.playedBy on a RESOLVE event is flipped by create-socket-events to the caster,
+        // so the caster (playedBy === myPNum) needs the reveal animation of what was discarded
+        // from the opponent's hand, while the victim just updates the game state directly.
         case 4:
-          if (evData.playedBy !== gameStore.myPNum) {
+          if (evData.playedBy === gameStore.myPNum) {
             await gameStore.processFours(evData.discardedCards, evData.game);
           } else {
             gameStore.updateGame(evData.game);
