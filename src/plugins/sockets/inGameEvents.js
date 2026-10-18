@@ -64,11 +64,11 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.RESOLVE:
       switch (evData.game.lastEvent?.oneOff?.rank) {
-        // playedBy on a resolve is the player who resolved it -- the one whose hand was
-        // discarded -- so anyone else watching is the caster, who needs the reveal. Only a
+        // create-socket-events flips playedBy on a resolve to the player who played the one-off,
+        // so the caster is the one who needs the reveal of their opponent's discards. Only a
         // hand of two or fewer is discarded here; larger hands go on to revealFour/discardFour
         case 4:
-          if (evData.playedBy !== gameStore.myPNum) {
+          if (evData.playedBy === gameStore.myPNum) {
             await gameStore.processFours(evData.discardedCards, evData.game);
           } else {
             gameStore.updateGame(evData.game);

@@ -123,6 +123,10 @@ describe('FOURS', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
 
+      // The opponent's discards are revealed in their hand before landing in the scrap (#1440)
+      cy.get('[data-opponent-hand-card=1-2]').should('be.visible');
+      cy.get('[data-opponent-hand-card=10-2]').should('be.visible');
+
       // Nothing to choose, so no further steps
       cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
       cy.get('#four-choose-discard-dialog').should('not.exist');
@@ -369,6 +373,13 @@ describe('FOURS', () => {
         topCard: Card.SIX_OF_DIAMONDS,
       });
 
+      // The victim's own discards must not be revealed in their opponent's hand (#1440)
+      cy.window()
+        .its('cuttle.gameStore')
+        .then((store) => {
+          cy.spy(store, 'processFours').as('processFours');
+        });
+
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       cy.get('#cannot-counter-dialog')
         .should('be.visible')
@@ -388,6 +399,7 @@ describe('FOURS', () => {
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
+      cy.get('@processFours').should('not.have.been.called');
 
       // A second four against the now-empty hand is still legal and discards nothing
       cy.get('#deck').click();
