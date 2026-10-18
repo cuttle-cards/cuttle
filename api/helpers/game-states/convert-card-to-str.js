@@ -5,17 +5,18 @@
  * @param { 'p0' | 'p1' } cardOwner - which player owns the card
  * @returns { String } string representation of the card atatchements attributs
  */
-function concatAttachtToId(card, cardOwner) {
+function concatAttachtToId(card, cardOwner = 'p0') {
   if (!card.attachments || !card.attachments.length) {
     return '';
   }
 
   // GameStateRow Format => (JH-p0,JC-p1,JD-p0)
 
-  let opponent = cardOwner === 'p0' ? 'p1' : 'p0';
+  const owner = cardOwner === 'p1' ? 'p1' : 'p0';
+  const opponent = owner === 'p0' ? 'p1' : 'p0';
   // First player on the string owns the main card
   // => if card.attachments length is an odd number, start string construction with the opponent
-  let playerNum = card.attachments.length % 2 === 0 ? cardOwner : opponent;
+  let playerNum = card.attachments.length % 2 === 0 ? owner : opponent;
 
   const convertedCards = card.attachments.map((card) => {
     const cardInString = validateCardId(card.id) + '-' + playerNum;
