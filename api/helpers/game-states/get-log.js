@@ -108,7 +108,7 @@ module.exports = {
               }
               if (row.phase === GamePhase.RESOLVING_FOUR_DISCARD) {
                 return `The ${resolvedCardName} one-off resolves, revealing ${player}'s whole hand: ${listCardNames(
-                  row.revealedCards,
+                  row.fourRevealedCards,
                 )}.`;
               }
               // Legacy rows (rules < 3.0.0) always entered the RESOLVING_FOUR phase and deferred the
@@ -155,7 +155,7 @@ module.exports = {
           }`;
 
         case MoveType.REVEAL_FOUR:
-          return `${player} revealed ${listCardNames(row.revealedCards)}.`;
+          return `${player} revealed ${listCardNames(row.fourRevealedCards)}.`;
 
         case MoveType.DISCARD_FOUR:
           return `${player} chose ${listCardNames(discardedCards)} for ${opponent} to discard.`;

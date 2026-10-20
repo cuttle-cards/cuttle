@@ -15,7 +15,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to reveal cards
-     * @param { string[] } requestedMove.revealedCards - IDs of the three cards from hand to reveal
+     * @param { string[] } requestedMove.fourRevealedCards - IDs of the three cards from hand to reveal
      * @param { MoveType.REVEAL_FOUR } requestedMove.moveType
      */
     requestedMove: {
@@ -34,12 +34,12 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
-    const { revealedCards: revealedIds } = requestedMove;
+    const { fourRevealedCards: revealedIds } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
-    // The cards stay in hand; revealedCards only records which ones the four's player may choose
-    const revealedCards = player.hand.filter(({ id }) => revealedIds.includes(id));
+    // The cards stay in hand; fourRevealedCards only records which ones the four's player may choose
+    const fourRevealedCards = player.hand.filter(({ id }) => revealedIds.includes(id));
 
     result = {
       ...result,
@@ -49,7 +49,7 @@ module.exports = {
       playedCard: null,
       targetCard: null,
       discardedCards: [],
-      revealedCards,
+      fourRevealedCards,
     };
 
     return exits.success(result);

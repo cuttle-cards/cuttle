@@ -110,7 +110,7 @@ A GameState record represents one move made by a player and the resulting game s
 * playedCard: `String | null` the card that was played  
 * targetCard: `String | null` the card that was targeted  
 * discardedCards: `Array<String>`  
-* revealedCards: `Array<String>` \- cards the victim of a four revealed, still in their hand, awaiting the four player's choice of two to discard. Empty outside the resolvingFourDiscard phase  
+* fourRevealedCards: `Array<String>` \- cards the victim of a four revealed, still in their hand, awaiting the four player's choice of two to discard. Empty outside the resolvingFourDiscard phase  
 * p0Hand: `Array<String>`  
    * Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
    * ex) `[‘AC’, ‘5H’, ‘8D(JS-p0,JD-p1,JH-p0)’]`  
@@ -185,7 +185,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
 * moveType: `MoveType` \- designates which kind of move was made  
 * playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
 * targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
-* revealedCards: `Array<Card>` \- during resolvingFourDiscard, the cards the victim of a four revealed from their hand. These cards are still in the victim's hand; this is a description of which of them the four's player may choose to discard  
+* fourRevealedCards: `Array<Card>` \- during resolvingFourDiscard, the cards the victim of a four revealed from their hand. These cards are still in the victim's hand; this is a description of which of them the four's player may choose to discard  
 * discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
 * turn: `int` \- which turn number the move was made on  
 * phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
@@ -234,7 +234,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
        * JACK  
    * attachedToTarget: Card | null  
    * twos : Array\<Card\>  
-   * revealedCards: Array\<Card\> (cards the victim of a four revealed; sent to both players even though they sit in a hidden hand)  
+   * fourRevealedCards: Array\<Card\> (cards the victim of a four revealed; sent to both players even though they sit in a hidden hand)  
    * turn: int  
    * phase: GamePhase  
    * log  

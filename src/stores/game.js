@@ -96,7 +96,7 @@ export const useGameStore = defineStore('game', () => {
   const oneOff = ref(null);
   const oneOffTarget = ref(null);
   // Cards the victim of a four revealed, from which the four's player chooses two to discard
-  const revealedCards = ref([]);
+  const fourRevealedCards = ref([]);
   const isRanked = ref(false);
 
   // Threes
@@ -293,7 +293,7 @@ export const useGameStore = defineStore('game', () => {
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
-    revealedCards.value = newGame.revealedCards?.map((card) => createGameCard(card)) ?? [];
+    fourRevealedCards.value = newGame.fourRevealedCards?.map((card) => createGameCard(card)) ?? [];
     isRanked.value = newGame.isRanked ?? isRanked.value;
     currentMatch.value = newGame.currentMatch ?? currentMatch.value;
     p0Rematch.value = newGame.p0Rematch ?? null;
@@ -331,7 +331,7 @@ export const useGameStore = defineStore('game', () => {
     twos.value = [];
     oneOff.value = null;
     oneOffTarget.value = null;
-    revealedCards.value = [];
+    fourRevealedCards.value = [];
     isRanked.value = false;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
@@ -755,7 +755,7 @@ export const useGameStore = defineStore('game', () => {
   async function requestRevealFour(cardIds) {
     await makeSocketRequest('revealFour', {
       moveType: MoveType.REVEAL_FOUR,
-      revealedCards: cardIds,
+      fourRevealedCards: cardIds,
     });
   }
   async function requestDiscardFour(cardIds) {
@@ -866,7 +866,7 @@ export const useGameStore = defineStore('game', () => {
     secondCard,
     oneOff,
     oneOffTarget,
-    revealedCards,
+    fourRevealedCards,
     isRanked,
     lastEventPlayerChoosing,
     lastEventThreeTarget,

@@ -63,7 +63,7 @@ module.exports = function (req, res, next) {
     case MoveType.DISCARD_FOUR:
       {
         const isReveal = moveType === MoveType.REVEAL_FOUR;
-        const cardIds = isReveal ? req.body.revealedCards : req.body.discardedCards;
+        const cardIds = isReveal ? req.body.fourRevealedCards : req.body.discardedCards;
         const requiredCount = isReveal ? 3 : 2;
         if (!Array.isArray(cardIds) || cardIds.length !== requiredCount) {
           return res.badRequest({ message: `Must specify ${requiredCount} cards` });

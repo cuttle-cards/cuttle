@@ -150,7 +150,7 @@ module.exports = {
         oneOffTargetType: gameState.oneOffTargetType,
         // Both players know which cards a four's victim revealed, so these sit outside the
         // hand-hiding of players[].hand
-        revealedCards: gameState.revealedCards ?? [],
+        fourRevealedCards: gameState.fourRevealedCards ?? [],
         lastEvent: {
           change: gameState.moveType,
           pNum,

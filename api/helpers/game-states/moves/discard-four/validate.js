@@ -53,7 +53,7 @@ module.exports = {
         throw new BadRequestError('game.snackbar.oneOffs.four.mustChooseTwoRevealed');
       }
 
-      const allRevealed = discardedCards.every((id) => currentState.revealedCards.some((card) => card.id === id));
+      const allRevealed = discardedCards.every((id) => currentState.fourRevealedCards.some((card) => card.id === id));
       if (!allRevealed) {
         throw new BadRequestError('game.snackbar.oneOffs.four.mustChooseTwoRevealed');
       }

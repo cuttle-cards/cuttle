@@ -35,7 +35,7 @@ module.exports = {
 
     if (victim.hand.length === 3) {
       result.phase = GamePhase.RESOLVING_FOUR_DISCARD;
-      result.revealedCards = [ ...victim.hand ];
+      result.fourRevealedCards = [ ...victim.hand ];
       return exits.success(result);
     }
 

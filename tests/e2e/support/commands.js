@@ -482,7 +482,7 @@ Cypress.Commands.add('discardToHandLimitOpponent', (...cards) => {
 Cypress.Commands.add('revealFourOpponent', (...cards) => {
   cy.makeSocketRequest('game', 'revealFour', {
     moveType: MoveType.REVEAL_FOUR,
-    revealedCards: cards.map((card) => card.id),
+    fourRevealedCards: cards.map((card) => card.id),
   });
 });
 

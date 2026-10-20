@@ -31,7 +31,7 @@ const gameState = {
   scrap: [ Card.SIX_OF_CLUBS ],
   twos: [],
   discardedCards: [],
-  revealedCards: [],
+  fourRevealedCards: [],
   oneOff: Card.FOUR_OF_HEARTS,
   oneOffTarget: null,
   oneOffTargetType: null,
@@ -47,10 +47,10 @@ const gameState = {
 
 // Every set of three of the four cards in hand: C(4,3)
 const revealFourMoveBodies = [
-  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, revealedCards: [ 'AH', '3H', '7D' ], isValid: true },
-  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, revealedCards: [ 'AH', '3H', 'KC' ], isValid: true },
-  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, revealedCards: [ 'AH', '7D', 'KC' ], isValid: true },
-  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, revealedCards: [ '3H', '7D', 'KC' ], isValid: true },
+  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, fourRevealedCards: [ 'AH', '3H', '7D' ], isValid: true },
+  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, fourRevealedCards: [ 'AH', '3H', 'KC' ], isValid: true },
+  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, fourRevealedCards: [ 'AH', '7D', 'KC' ], isValid: true },
+  { moveType: MoveType.REVEAL_FOUR, playedBy: 0, fourRevealedCards: [ '3H', '7D', 'KC' ], isValid: true },
 ];
 
 const validMoveBodies = [

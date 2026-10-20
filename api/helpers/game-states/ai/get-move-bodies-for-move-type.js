@@ -172,15 +172,15 @@ module.exports = {
         res = getCombinations(playerHand, 3).map((combo) => ({
           moveType,
           playedBy,
-          revealedCards: combo.map((card) => card.id),
+          fourRevealedCards: combo.map((card) => card.id),
         }));
         break;
 
       // Every pair of revealed cards the four's player could choose to discard
       case MoveType.DISCARD_FOUR: {
-        const revealedCards = currentState.revealedCards ?? [];
-        if (revealedCards.length < 2) {break;}
-        res = getCombinations(revealedCards, 2).map((combo) => ({
+        const fourRevealedCards = currentState.fourRevealedCards ?? [];
+        if (fourRevealedCards.length < 2) {break;}
+        res = getCombinations(fourRevealedCards, 2).map((combo) => ({
           moveType,
           playedBy,
           discardedCards: combo.map((card) => card.id),

@@ -29,7 +29,7 @@ module.exports = async function (req, res) {
       turn = 0,
       resolved = null,
       oneOff = null,
-      revealedCards = [],
+      fourRevealedCards = [],
     } = req.body;
 
     const allFixtureCards = new Set(Object.values(req.body).flat()
@@ -66,7 +66,7 @@ module.exports = async function (req, res) {
       scrap: populatedScrap,
       twos: [],
       discardedCards: [],
-      revealedCards,
+      fourRevealedCards,
       oneOff,
       oneOffTarget: null,
       resolved,

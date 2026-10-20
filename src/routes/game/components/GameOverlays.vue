@@ -81,7 +81,7 @@
       </template>
       <div id="four-revealed-scrim-cards">
         <GameCard
-          v-for="card in gameStore.revealedCards"
+          v-for="card in gameStore.fourRevealedCards"
           :key="`overlay-revealed-${card.id}`"
           :rank="card.rank"
           :suit="card.suit"

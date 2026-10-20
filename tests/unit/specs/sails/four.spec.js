@@ -12,7 +12,7 @@ function fourState(victimHand, overrides = {}) {
     scrap: [],
     twos: [],
     discardedCards: [],
-    revealedCards: [],
+    fourRevealedCards: [],
     oneOff: Card.FOUR_OF_CLUBS,
     oneOffTarget: null,
     oneOffTargetType: null,
@@ -45,14 +45,14 @@ describe('Four one-off', () => {
       expect(result.turn).to.eq(0);
       expect(result.oneOff).to.deep.eq(Card.FOUR_OF_CLUBS);
       expect(result.p1.hand).to.have.length(4);
-      expect(result.revealedCards).to.deep.eq([]);
+      expect(result.fourRevealedCards).to.deep.eq([]);
     });
 
     it('Reveals the victim\'s whole hand when they hold exactly three cards', () => {
       const hand = fourCardHand.slice(0, 3);
       const result = resolve(fourState(hand));
       expect(result.phase).to.eq(GamePhase.RESOLVING_FOUR_DISCARD);
-      expect(result.revealedCards).to.deep.eq(hand);
+      expect(result.fourRevealedCards).to.deep.eq(hand);
       expect(result.p1.hand).to.deep.eq(hand);
     });
 
@@ -70,22 +70,22 @@ describe('Four one-off', () => {
 
   describe('Revealing', () => {
     const state = fourState(fourCardHand, { phase: GamePhase.RESOLVING_FOUR_REVEAL, moveType: MoveType.RESOLVE });
-    const validReveal = { moveType: MoveType.REVEAL_FOUR, revealedCards: [ 'AH', 'TH', 'KS' ] };
+    const validReveal = { moveType: MoveType.REVEAL_FOUR, fourRevealedCards: [ 'AH', 'TH', 'KS' ] };
 
     it('Records the revealed cards, leaving them in hand', () => {
       moves.revealFour.validate(state, validReveal, 1, []);
       const result = moves.revealFour.execute(state, validReveal, 1, []);
       expect(result.phase).to.eq(GamePhase.RESOLVING_FOUR_DISCARD);
-      expect(result.revealedCards).to.deep.eq([ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ]);
+      expect(result.fourRevealedCards).to.deep.eq([ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ]);
       expect(result.p1.hand).to.deep.eq(fourCardHand);
       expect(result.turn).to.eq(0);
     });
 
     it.each([
       [ 'the four\'s player', validReveal, 0, 'game.snackbar.global.notYourTurn' ],
-      [ 'two cards', { ...validReveal, revealedCards: [ 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
-      [ 'a repeated card', { ...validReveal, revealedCards: [ 'AH', 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
-      [ 'a card not in hand', { ...validReveal, revealedCards: [ 'AH', 'TH', 'QS' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+      [ 'two cards', { ...validReveal, fourRevealedCards: [ 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+      [ 'a repeated card', { ...validReveal, fourRevealedCards: [ 'AH', 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+      [ 'a card not in hand', { ...validReveal, fourRevealedCards: [ 'AH', 'TH', 'QS' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
     ])('Rejects revealing by/with %s', (_description, move, playedBy, message) => {
       expect(() => moves.revealFour.validate(state, move, playedBy, [])).to.throw(message);
     });
@@ -97,12 +97,12 @@ describe('Four one-off', () => {
   });
 
   describe('Choosing discards', () => {
-    const revealedCards = [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ];
+    const fourRevealedCards = [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ];
     const state = fourState(fourCardHand, {
       phase: GamePhase.RESOLVING_FOUR_DISCARD,
       moveType: MoveType.REVEAL_FOUR,
       playedBy: 1,
-      revealedCards,
+      fourRevealedCards,
     });
     const validDiscard = { moveType: MoveType.DISCARD_FOUR, discardedCards: [ 'AH', 'KS' ] };
 
@@ -114,7 +114,7 @@ describe('Four one-off', () => {
       expect(result.p1.hand).to.deep.eq([ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ]);
       expect(result.discardedCards).to.deep.eq([ Card.ACE_OF_HEARTS, Card.KING_OF_SPADES ]);
       expect(result.scrap).to.deep.eq([ Card.ACE_OF_HEARTS, Card.KING_OF_SPADES, Card.FOUR_OF_CLUBS ]);
-      expect(result.revealedCards).to.deep.eq([]);
+      expect(result.fourRevealedCards).to.deep.eq([]);
       expect(result.oneOff).to.eq(null);
       expect(result.resolved).to.deep.eq(Card.FOUR_OF_CLUBS);
     });
@@ -151,7 +151,7 @@ describe('Four one-off', () => {
       resolved: '4C',
       deck: [],
       discardedCards: [],
-      revealedCards: [],
+      fourRevealedCards: [],
       phase: GamePhase.MAIN,
       ...overrides,
     });
@@ -166,7 +166,7 @@ describe('Four one-off', () => {
     it('Narrates each step of a four', () => {
       const log = logFor([
         row({ moveType: MoveType.RESOLVE, phase: GamePhase.RESOLVING_FOUR_REVEAL }),
-        row({ moveType: MoveType.REVEAL_FOUR, phase: GamePhase.RESOLVING_FOUR_DISCARD, revealedCards: [ 'AH', 'TH', 'KS' ] }),
+        row({ moveType: MoveType.REVEAL_FOUR, phase: GamePhase.RESOLVING_FOUR_DISCARD, fourRevealedCards: [ 'AH', 'TH', 'KS' ] }),
         row({ moveType: MoveType.DISCARD_FOUR, playedBy: 0, discardedCards: [ 'AH', 'KS' ] }),
       ]);
       expect(log).to.deep.eq([
@@ -178,7 +178,7 @@ describe('Four one-off', () => {
 
     it('Narrates a hand of three revealed as the four resolves', () => {
       const log = logFor([
-        row({ moveType: MoveType.RESOLVE, phase: GamePhase.RESOLVING_FOUR_DISCARD, revealedCards: [ 'AH', 'TH', 'KS' ] }),
+        row({ moveType: MoveType.RESOLVE, phase: GamePhase.RESOLVING_FOUR_DISCARD, fourRevealedCards: [ 'AH', 'TH', 'KS' ] }),
       ]);
       expect(log).to.deep.eq([
         'The 4♣️ one-off resolves, revealing victim\'s whole hand: the A♥️, the 10♥️, and the K♠️.',

@@ -16,7 +16,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to reveal cards
-     * @param { string[] } requestedMove.revealedCards - IDs of the three cards from hand to reveal
+     * @param { string[] } requestedMove.fourRevealedCards - IDs of the three cards from hand to reveal
      * @param { MoveType.REVEAL_FOUR } requestedMove.moveType
      */
     requestedMove: {
@@ -48,13 +48,13 @@ module.exports = {
       }
 
       const player = playedBy ? currentState.p1 : currentState.p0;
-      const { revealedCards } = requestedMove;
+      const { fourRevealedCards: revealedIds } = requestedMove;
 
-      if (!Array.isArray(revealedCards) || new Set(revealedCards).size !== 3 || revealedCards.length !== 3) {
+      if (!Array.isArray(revealedIds) || new Set(revealedIds).size !== 3 || revealedIds.length !== 3) {
         throw new BadRequestError('game.snackbar.oneOffs.four.mustRevealThree');
       }
 
-      const allInHand = revealedCards.every((id) => player.hand.some((card) => card.id === id));
+      const allInHand = revealedIds.every((id) => player.hand.some((card) => card.id === id));
       if (!allInHand) {
         throw new BadRequestError('game.snackbar.oneOffs.four.mustRevealThree');
       }

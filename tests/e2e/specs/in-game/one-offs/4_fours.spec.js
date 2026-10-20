@@ -246,7 +246,7 @@ describe('FOURS', () => {
         // GamePhase.RESOLVING_FOUR_DISCARD, as left by the opponent's reveal
         phase: 9,
         oneOff: Card.FOUR_OF_CLUBS,
-        revealedCards: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
+        fourRevealedCards: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
       });
 
       cy.get('#four-choose-discard-dialog')

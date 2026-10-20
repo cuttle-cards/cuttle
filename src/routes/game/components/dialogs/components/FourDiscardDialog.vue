@@ -12,7 +12,7 @@
       <!-- Cards the opponent revealed -->
       <div class="d-flex flex-wrap card-container">
         <GameCard
-          v-for="card in revealedCards"
+          v-for="card in fourRevealedCards"
           :key="card.id"
           :suit="card.suit"
           :rank="card.rank"
@@ -57,7 +57,7 @@ const emit = defineEmits([ 'discard' ]);
 
 const { t } = useI18n();
 const gameStore = useGameStore();
-const { revealedCards } = storeToRefs(gameStore);
+const { fourRevealedCards } = storeToRefs(gameStore);
 
 const selectedIds = ref([]);
 

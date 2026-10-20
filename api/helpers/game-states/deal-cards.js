@@ -60,7 +60,7 @@ module.exports = {
         playedCard: null,
         targetCard: null,
         discardedCards: [],
-        revealedCards: [],
+        fourRevealedCards: [],
         oneOff: null,
         oneOffTarget: null,
         resolving: null,

@@ -31,7 +31,7 @@ const gameState = {
   scrap: [ Card.SIX_OF_CLUBS ],
   twos: [],
   discardedCards: [],
-  revealedCards: [ Card.ACE_OF_SPADES, Card.SEVEN_OF_DIAMONDS, Card.KING_OF_CLUBS ],
+  fourRevealedCards: [ Card.ACE_OF_SPADES, Card.SEVEN_OF_DIAMONDS, Card.KING_OF_CLUBS ],
   oneOff: Card.FOUR_OF_HEARTS,
   oneOffTarget: null,
   oneOffTargetType: null,
