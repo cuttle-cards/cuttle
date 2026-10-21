@@ -575,7 +575,7 @@ describe('Hand Size Badge', () => {
           .and('contain', '7/8')
           .and('have.attr', 'aria-label', 'Hand: 7 of 8 cards');
         cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('exist');
-        cy.get('[data-cy=hand-size-badge] .mdi-alert').should('not.exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('not.exist');
       });
 
       it('Shows 8/8 with the alert icon at the hand limit, including with a selected card', () => {
@@ -588,7 +588,7 @@ describe('Hand Size Badge', () => {
           .should('be.visible')
           .and('contain', '8/8')
           .and('have.attr', 'aria-label', 'Hand: 8 of 8 cards');
-        cy.get('[data-cy=hand-size-badge] .mdi-alert').should('exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('exist');
         cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('not.exist');
 
         // Badge stays in place when a card is selected (the move overlay's scrim then covers the screen)

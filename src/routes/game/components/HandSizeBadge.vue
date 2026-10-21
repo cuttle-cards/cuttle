@@ -6,7 +6,7 @@
     data-cy="hand-size-badge"
     :aria-label="t('game.handSize', { handSize, handLimit: HAND_LIMIT })"
   >
-    <v-icon :icon="isAtLimit ? 'mdi-alert' : 'mdi-cards-outline'" size="small" aria-hidden="true" />
+    <v-icon :icon="isAtLimit ? 'mdi-alert-outline' : 'mdi-cards-outline'" size="small" aria-hidden="true" />
     <span aria-hidden="true">{{ handSize }}/{{ HAND_LIMIT }}</span>
   </div>
 </template>
