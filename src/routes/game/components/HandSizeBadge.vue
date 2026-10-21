@@ -26,7 +26,7 @@ const isAtLimit = computed(() => handSize.value >= HAND_LIMIT);
 <style lang="scss" scoped>
 .hand-size-badge {
   position: absolute;
-  right: 8px;
+  right: 24px; /* clear the page's horizontal overflow (~15px) */
   bottom: 8px;
   display: flex;
   align-items: center;
