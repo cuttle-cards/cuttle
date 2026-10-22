@@ -49,6 +49,12 @@ module.exports = {
       allowNull: true,
       columnType: 'text',
     },
+    // The second card that was targeted (nines return two cards)
+    targetCardTwo: {
+      type: 'string',
+      allowNull: true,
+      columnType: 'text',
+    },
     // Cards discarded for a 4 or 5
     discardedCards: {
       type: 'json',
@@ -134,6 +140,16 @@ module.exports = {
       allowNull: true,
     },
     oneOffTargetType: {
+      type: 'string',
+      allowNull: true,
+      isIn: [ 'point', 'jack', 'faceCard' ],
+    },
+    // Second one-off target card (nines return two cards; null for every other one-off)
+    oneOffTargetTwo: {
+      type: 'string',
+      allowNull: true,
+    },
+    oneOffTargetTwoType: {
       type: 'string',
       allowNull: true,
       isIn: [ 'point', 'jack', 'faceCard' ],

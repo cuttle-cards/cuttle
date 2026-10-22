@@ -18,6 +18,8 @@ module.exports = {
      * @param { String } requestedMove.cardId - Card Played for points
      * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off used for 2's and 9's
      * @param { 'point' | 'faceCard' | 'jack' } [ requestedMove.targetType ] - OPTIONAL where one-off target is located
+     * @param { String } [ requestedMove.targetIdTwo ] - OPTIONAL second target, required for 9's
+     * @param { 'point' | 'faceCard' | 'jack' } [ requestedMove.targetTypeTwo ] - OPTIONAL second target's location
      */
     requestedMove: {
       type: 'ref',
@@ -69,9 +71,8 @@ module.exports = {
         case 6:
           return exits.success();
 
-        // 2 and 9 require legal target
-        case 2:
-        case 9: {
+        // Two requires one legal target
+        case 2: {
           const targetCard = sails.helpers.gameStates.findTargetCard(
             requestedMove.targetId,
             requestedMove.targetType,
@@ -82,7 +83,7 @@ module.exports = {
             throw new BadRequestError(`Can't find the ${requestedMove.targetId} on opponent's board`);
           }
 
-          if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
+          if (![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
             throw new BadRequestError('Twos can only target royals or glasses');
           }
 
@@ -116,6 +117,15 @@ module.exports = {
             default:
               throw new BadRequestError('game.snackbar.global.blockedByMultipleQueens');
           }
+        }
+
+        // Nine requires two legal targets, and is blocked by any queen
+        case 9: {
+          const nineError = sails.helpers.gameStates.validateNineTargets(requestedMove, opponent);
+          if (nineError) {
+            throw new BadRequestError(nineError);
+          }
+          return exits.success();
         }
 
         // Three requires non-three card(s) in scrap

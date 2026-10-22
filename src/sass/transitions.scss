@@ -139,37 +139,3 @@
   to { rotate: 0deg; }
 }
 
-// Nine one-off: the targeted card flips face down (CARD_FLIP, via GameCard's isBack)
-// and then travels off toward the deck. Which way "toward the deck" is depends on the
-// breakpoint and which half of the field the card sits on -- see toDeckTransition() in
-// GameView.
-//
-// Only `-leave-active` is positioned absolutely, so the cards left behind reflow into the
-// gap; `-move` has to keep its place in the flow to slide there. That difference is the
-// reason the two cannot share one rule.
-$to-deck-offsets: (
-  // xs: the deck sits below the point rows
-  'down': translateY(96px),
-  // xs: and below/left of the face card rows
-  'down-left': translate(-96px, 96px),
-  // above xs: the deck is up and to the left of the player's half
-  'up-left': translate(-96px, -96px),
-  // above xs: and straight left of the opponent's half
-  'left': translateX(-96px),
-);
-
-@each $direction, $offset in $to-deck-offsets {
-  .to-deck-#{$direction}-leave-active {
-    position: absolute;
-    transition: opacity var(--duration-slow), transform var(--duration-slow);
-  }
-
-  .to-deck-#{$direction}-move {
-    transition: transform var(--duration-slow);
-  }
-
-  .to-deck-#{$direction}-leave-to {
-    opacity: 0;
-    transform: $offset;
-  }
-}

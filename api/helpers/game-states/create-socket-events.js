@@ -69,6 +69,7 @@ module.exports = {
           'playedBy',
           'playedCard',
           'targetCard',
+          'targetCardTwo',
           'discardedCards',
           'resolved',
         ]);
@@ -148,6 +149,8 @@ module.exports = {
         oneOff: gameState.oneOff,
         oneOffTarget: gameState.oneOffTarget,
         oneOffTargetType: gameState.oneOffTargetType,
+        oneOffTargetTwo: gameState.oneOffTargetTwo,
+        oneOffTargetTwoType: gameState.oneOffTargetTwoType,
         lastEvent: {
           change: gameState.moveType,
           pNum,
@@ -172,6 +175,7 @@ module.exports = {
         // Conditionally included properties if truthy
         ...(gameState.playedCard && { playedCard: gameState.playedCard }),
         ...(gameState.targetCard && { targetCard: gameState.targetCard }),
+        ...(gameState.targetCardTwo && { targetCardTwo: gameState.targetCardTwo }),
         ...(gameState.resolved && { oneOff: gameState.resolved }),
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),

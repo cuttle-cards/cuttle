@@ -18,7 +18,7 @@ module.exports = {
 
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
-      const { moveType, playedCard, targetCard, resolved, deck, discardedCards } = row;
+      const { moveType, playedCard, targetCard, targetCardTwo, resolved, deck, discardedCards } = row;
       const { convertStrToCard } = sails.helpers.gameStates;
 
       const getFullCardName = (card) => {
@@ -32,6 +32,7 @@ module.exports = {
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
       const playedCardObj = playedCard ? convertStrToCard(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
+      const targetCardTwoName = targetCardTwo ? getFullCardName(targetCardTwo) : null;
       const resolvedCardName = resolved ? getFullCardName(resolved) : null;
 
       const getResolveFiveMessage = () => {
@@ -68,7 +69,9 @@ module.exports = {
           let log = `${player} played the ${playedCardName} as a one-off to 
         ${gameText.moves.effects[playedCardObj.rank]}`;
           if (targetCardName) {
-            log += `, targeting the ${targetCardName}.`;
+            log += `, targeting the ${targetCardName}${
+              targetCardTwoName ? ` and the ${targetCardTwoName}` : ''
+            }.`;
           } else {
             log += '.';
           }
@@ -118,7 +121,9 @@ module.exports = {
               )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${resolvedCardName} one-off resolves, putting the ${targetCardName} on top of the deck.`;
+              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName}${
+                targetCardTwoName ? ` and the ${targetCardTwoName}` : ''
+              } to ${player}'s hand.`;
           }
           break;
 
@@ -175,7 +180,9 @@ module.exports = {
         case MoveType.SEVEN_ONE_OFF: {
           const effect = gameText.moves.effects[playedCardObj.rank];
           if (targetCardName) {
-            return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}, targeting the ${targetCardName}.`;
+            return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}, targeting the ${targetCardName}${
+              targetCardTwoName ? ` and the ${targetCardTwoName}` : ''
+            }.`;
           }
           return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${effect}.`;
         }

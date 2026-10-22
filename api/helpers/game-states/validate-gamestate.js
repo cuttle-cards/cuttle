@@ -81,9 +81,12 @@ module.exports = {
 
         playedCard: gameState.playedCard ?? null,
         targetCard: gameState.targetCard ?? null,
+        targetCardTwo: gameState.targetCardTwo ?? null,
         oneOff: gameState.oneOff ?? null,
         oneOffTarget: gameState.oneOffTarget ?? null,
         oneOffTargetType: gameState.oneOffTargetType ?? null,
+        oneOffTargetTwo: gameState.oneOffTargetTwo ?? null,
+        oneOffTargetTwoType: gameState.oneOffTargetTwoType ?? null,
         resolved: gameState.resolved ?? null,
       };
 
