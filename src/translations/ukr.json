@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Рука: {handSize} з {handLimit} карт",
     "resolve": "Вирішити",
     "scrap": "Скинути",
     "view": "Переглянути",

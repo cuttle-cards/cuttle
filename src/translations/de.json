@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Hand: {handSize} von {handLimit} Karten",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
