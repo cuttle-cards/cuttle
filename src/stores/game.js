@@ -12,6 +12,8 @@ import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 import { ROUTE_NAME_VS_AI } from '@/router';
 
+export const HAND_LIMIT = 8;
+
 /**
  * @returns number of queens a given player has
  * @param player is the player object

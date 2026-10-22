@@ -536,3 +536,73 @@ describe('Hand Limit — Discard to Hand Limit Phase', () => {
     });
   });
 });
+
+describe('Hand Size Badge', () => {
+  const baseFixture = {
+    p0Points: [],
+    p0FaceCards: [],
+    p1Hand: [ Card.ACE_OF_SPADES ],
+    p1Points: [],
+    p1FaceCards: [],
+  };
+  const sevenCards = [
+    Card.ACE_OF_CLUBS,
+    Card.TWO_OF_CLUBS,
+    Card.THREE_OF_CLUBS,
+    Card.FOUR_OF_CLUBS,
+    Card.SIX_OF_CLUBS,
+    Card.SEVEN_OF_CLUBS,
+    Card.EIGHT_OF_CLUBS,
+  ];
+  const viewports = [
+    { name: 'xs', width: 375, height: 667 },
+    { name: 'sm', width: 700, height: 800 },
+    { name: 'desktop', width: 1280, height: 800 },
+  ];
+
+  viewports.forEach(({ name, width, height }) => {
+    describe(`at ${name} width`, () => {
+      beforeEach(() => {
+        cy.viewport(width, height);
+        cy.setupGameAsP0();
+      });
+
+      it('Shows 7/8 with the cards icon when under the hand limit', () => {
+        cy.loadGameFixture(0, { ...baseFixture, p0Hand: sevenCards });
+        cy.get('[data-player-hand-card]').should('have.length', 7);
+        cy.get('[data-cy=hand-size-badge]')
+          .should('be.visible')
+          .and('contain', '7/8')
+          .and('have.attr', 'aria-label', 'Hand: 7 of 8 cards');
+        cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('not.exist');
+      });
+
+      it('Shows 8/8 with the alert icon at the hand limit, including with a selected card', () => {
+        cy.loadGameFixture(0, {
+          ...baseFixture,
+          p0Hand: [ ...sevenCards, Card.NINE_OF_CLUBS ],
+        });
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('[data-cy=hand-size-badge]')
+          .should('be.visible')
+          .and('contain', '8/8')
+          .and('have.attr', 'aria-label', 'Hand: 8 of 8 cards');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('not.exist');
+
+        // Badge stays in place when a card is selected (the move overlay's scrim then covers the screen)
+        cy.get('[data-player-hand-card=1-0]').click();
+        cy.get('[data-cy=hand-size-badge]')
+          .should('exist')
+          .and('contain', '8/8');
+      });
+    });
+  });
+
+  it('Does not show the badge to spectators', () => {
+    cy.setupGameAsSpectator();
+    cy.get('#player-hand-cards').should('exist');
+    cy.get('[data-cy=hand-size-badge]').should('not.exist');
+  });
+});
