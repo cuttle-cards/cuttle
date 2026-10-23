@@ -470,11 +470,10 @@ describe('FIVES', () => {
 
             try {
               const res = await gameStore.requestPlayOneOff(fiveId);
-              // If the promise resolves, this assertion will fail the test (as expected in your case)
-              expect(true).to.eq(
-                false,
-                `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
-              );
+              // Fail test if backend allows request
+              cy.then(() => {
+                assert.fail(`Expected request to resolve five without discarding to error, but instead came back 200: ${res}`);
+              });
             } catch (err) {
               // If the promise rejects, this will handle the error
               expect(err).to.eq('game.snackbar.oneOffs.emptyDeck');
@@ -502,11 +501,10 @@ describe('FIVES', () => {
             // Request to resolve five without discarding
             try {
               const res = await gameStore.requestResolveFive(undefined);
-              expect(true).to.eq(
-                false,
-                `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
-              );
-
+              // Fail test if backend allows request
+              cy.then(() => {
+                assert.fail(`Expected request to resolve five without discarding to error, but instead came back 200: ${res}`);
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.oneOffs.five.selectCardToDiscard');
             }

@@ -602,7 +602,9 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         .then(async (store) => {
           try {
             await store.requestDrawCard();
-            expect(true).to.eq(false, 'Expected request to draw card to error');
+            cy.then(() => {
+              assert.fail('Expected request to draw card to error');
+            });
           } catch (err) {
             const errors = [
               'Can\'t play while waiting for opponent to counter',
