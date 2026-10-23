@@ -407,7 +407,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.alreadyConsideringStalemate');
             }
@@ -435,7 +437,9 @@ describe('Stalemates', () => {
             try {
               await store.acceptStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.opponentConsideringStalemate');
             }
@@ -467,7 +471,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
             }
@@ -508,7 +514,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
             }
@@ -530,7 +538,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.alreadyConsideringStalemate');
             }

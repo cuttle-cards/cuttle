@@ -392,6 +392,7 @@
                 />
               </TransitionGroup>
             </div>
+            <HandSizeBadge v-if="!isSpectating" />
           </div>
           <TargetSelectionOverlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
@@ -440,6 +441,7 @@ import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOver
 import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
+import HandSizeBadge from '@/routes/game/components/HandSizeBadge.vue';
 
 export default {
   name: 'GameView',
@@ -455,6 +457,7 @@ export default {
     UsernameToolTip,
     SpectatorListMenu,
     PlaybackControls,
+    HandSizeBadge,
   },
   setup() {
     const { t } = useI18n();
@@ -1507,6 +1510,7 @@ export default {
 .player-cards-container {
   grid-column-start: 3;
   grid-column-end: span 8;
+  padding-bottom: 24px; /* room for the hand size badge */
 }
 
 #opponent-username-container {

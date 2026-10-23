@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Main : {handSize} cartes sur {handLimit}",
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",

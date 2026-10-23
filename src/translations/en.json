@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Hand: {handSize} of {handLimit} cards",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
