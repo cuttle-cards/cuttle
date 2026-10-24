@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Рука: {handSize} з {handLimit} карт",
+    "atHandLimit": "Ви досягли ліміту карт у руці",
     "resolve": "Вирішити",
     "scrap": "Скинути",
     "view": "Переглянути",

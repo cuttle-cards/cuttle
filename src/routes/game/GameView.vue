@@ -147,6 +147,7 @@
             @click="drawCard"
           >
             <template v-if="!gameStore.resolvingSeven">
+              <DeckHandLimitIcon v-if="!isSpectating" />
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -441,6 +442,7 @@ import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOver
 import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
+import DeckHandLimitIcon from '@/routes/game/components/DeckHandLimitIcon.vue';
 import HandSizeBadge from '@/routes/game/components/HandSizeBadge.vue';
 
 export default {
@@ -457,6 +459,7 @@ export default {
     UsernameToolTip,
     SpectatorListMenu,
     PlaybackControls,
+    DeckHandLimitIcon,
     HandSizeBadge,
   },
   setup() {

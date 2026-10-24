@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Main : {handSize} cartes sur {handLimit}",
+    "atHandLimit": "Vous avez atteint la limite de cartes en main",
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",

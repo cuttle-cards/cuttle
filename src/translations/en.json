@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Hand: {handSize} of {handLimit} cards",
+    "atHandLimit": "You are at the hand limit",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
