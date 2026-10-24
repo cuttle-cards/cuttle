@@ -1126,7 +1126,7 @@ export default {
 ////////////
 #game-view-wrapper {
   color: rgb(var(--v-theme-text-light));
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-image: url('/img/game/board-background.webp');
   background-size: cover;
