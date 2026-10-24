@@ -3,6 +3,31 @@ import { Card } from '../../fixtures/cards';
 
 const { _ } = Cypress;
 
+const overflowViewports = [
+  { name: 'mobile', width: 375, height: 667 },
+  { name: 'tablet', width: 700, height: 800 },
+  { name: 'desktop', width: 1280, height: 800 },
+];
+
+const fullHandFixture = {
+  p0Hand: [
+    Card.ACE_OF_CLUBS,
+    Card.TWO_OF_CLUBS,
+    Card.THREE_OF_CLUBS,
+    Card.FOUR_OF_CLUBS,
+    Card.FIVE_OF_CLUBS,
+    Card.SIX_OF_CLUBS,
+    Card.SEVEN_OF_CLUBS,
+    Card.EIGHT_OF_CLUBS,
+  ],
+  p0Points: [],
+  p0FaceCards: [],
+  p1Hand: [ Card.ACE_OF_SPADES ],
+  p1Points: [],
+  p1FaceCards: [],
+  scrap: [],
+};
+
 describe('Game View Layout', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -15,6 +40,24 @@ describe('Game View Layout', () => {
   it('Should display usernames of player and opponent', () => {
     cy.get('[data-cy=opponent-username]').should('be.visible');
     cy.get('[data-cy=player-username]').should('be.visible');
+  });
+
+  overflowViewports.forEach(({ name, width, height }) => {
+    it(`Does not overflow horizontally at ${name} width`, () => {
+      cy.viewport(width, height);
+      cy.loadGameFixture(0, fullHandFixture);
+
+      cy.document().then((document) => {
+        const visibleWidth = document.documentElement.clientWidth;
+
+        expect(document.documentElement.scrollWidth).to.equal(visibleWidth);
+        [ '#game-view-wrapper', '#player-hand-cards', '[data-cy=hand-size-badge]' ]
+          .forEach((selector) => {
+            const { right } = document.querySelector(selector).getBoundingClientRect();
+            expect(right, `${selector} right edge`).to.be.at.most(visibleWidth);
+          });
+      });
+    });
   });
 
   it('Three dialogs', () => {
