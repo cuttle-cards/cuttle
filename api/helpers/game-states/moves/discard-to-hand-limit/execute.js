@@ -13,7 +13,8 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to discard to hand limit
-     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard (exactly hand.length - 8)
+     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard
+     *   (exactly enough to reach the hand limit)
      * @param { MoveType.DISCARD_TO_HAND_LIMIT } requestedMove.moveType
      */
     requestedMove: {
