@@ -103,6 +103,8 @@
       "mustResolve": "{opponentUsername} Debe Resolver",
       "isDiscarding": "{opponentUsername} Está Descartando",
       "skipsDiscarding": "{opponentUsername} Omite el Descarte",
+      "isRevealingForFour": "{opponentUsername} Está Revelando Tres Cartas",
+      "isChoosingFourDiscards": "{opponentUsername} Está Eligiendo Dos Cartas Para Que Descartes",
       "choosingFromScrap": "{opponentUsername} Está Eligiendo una Carta del Montón de Descarte",
       "playingFromDeck": "{opponentUsername} Está Jugando Desde el Mazo",
       "mustDiscardJack": "{opponentUsername} Debe Descartar una Jota",
@@ -136,6 +138,16 @@
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
         "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+      },
+      "fourReveal": {
+        "title": "Revela tres cartas",
+        "body": "{opponentUsername} ha usado la habilidad Única del Cuatro. Elige tres cartas de tu mano para revelar. {opponentUsername} elegirá dos de ellas para que las descartes.",
+        "reveal": "Revelar"
+      },
+      "fourDiscard": {
+        "title": "Elige dos cartas para descartar",
+        "body": "{opponentUsername} ha revelado estas tres cartas. Elige dos de ellas para que {opponentUsername} las descarte.",
+        "discard": "Descartar"
       },
       "discardToHandLimit": {
         "title": "Descarta las cartas sobrantes",
@@ -237,7 +249,7 @@
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta que no sea un 3 del mazo de descarte y ponla en tu mano",
-        "4": "Tu rival descarta dos cartas al azar de su mano",
+        "4": "Tu rival revela tres cartas de su mano y tú eliges dos para que las descarte",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
@@ -339,6 +351,12 @@
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes",
           "cannotTargetThree": "No puedes apuntar a un 3 con un 3"
+        },
+        "four": {
+          "notRevealingPhase": "Solo puedes revelar cartas mientras se resuelve un cuatro",
+          "mustRevealThree": "Debes revelar tres cartas de tu mano",
+          "notChoosingDiscardsPhase": "Solo puedes elegir descartes mientras se resuelve un cuatro",
+          "mustChooseTwoRevealed": "Debes elegir dos de las cartas reveladas para descartar"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Solo puedes descartar hasta el límite de la mano durante la fase de descarte",
@@ -461,7 +479,7 @@
       "three": "Tres",
       "threeDescription": "Elige una carta (no-tres) del mazo de descarte y ponla en tu mano.",
       "four": "Cuatro",
-      "fourDescription": "Tu rival descarta dos cartas al azar.",
+      "fourDescription": "Tu rival revela tres cartas de su mano y tú eliges dos de ellas para que las descarte.",
       "five": "Cinco",
       "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja.",
       "six": "Seis",
@@ -594,10 +612,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Los Cuatros reciben una mejora!",
-    "title": "Beta de reglas: Cuatros al azar",
-    "heading": "Los Cuatros ahora descartan al azar",
-    "paragraph": "El Cuatro es la carta más débil del juego: un efecto flojo en un rango bajo, con pocos puntos y escaso valor para hundir. Y como tu rival elegía las dos cartas a descartar, siempre se deshacía de sus dos peores. Ahora las dos cartas se eligen al azar, así que un Cuatro puede llevarse algo que de verdad duela. Si tu rival tiene menos de dos cartas, descarta las que tenga.",
+    "activatorText": "¡Los Cuatros reciben una nueva mejora!",
+    "title": "Beta de reglas: Cuatros que revelan tres",
+    "heading": "Los Cuatros ahora revelan tres cartas",
+    "paragraph": "El Cuatro es la carta más débil del juego: un efecto flojo en un rango bajo, con pocos puntos y escaso valor para hundir. Y como tu rival elegía las dos cartas a descartar, siempre se deshacía de sus dos peores. Ahora tu rival revela tres cartas de su mano y tú eliges cuáles dos descarta, así que un Cuatro puede llevarse algo que de verdad duela. Si tiene exactamente tres cartas, se revelan las tres; con dos o menos, descarta las que tenga.",
     "heading2": "Una de cuatro pruebas de la temporada de Picas",
     "paragraph2": "Esto es una beta, y una de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
     "patreonLink": "Ayuda a refinar el 4 y el 9"

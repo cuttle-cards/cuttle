@@ -56,6 +56,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
     case SocketEvent.DISCARD_TO_HAND_LIMIT:
+    case SocketEvent.REVEAL_FOUR:
     case SocketEvent.STALEMATE_REQUEST:
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
@@ -63,9 +64,9 @@ export async function handleInGameEvents(evData, newRoute = null) {
       break;
     case SocketEvent.RESOLVE:
       switch (evData.game.lastEvent?.oneOff?.rank) {
-        // evData.playedBy on a RESOLVE event is flipped by create-socket-events to the caster,
-        // so the caster (playedBy === myPNum) needs the reveal animation of what was discarded
-        // from the opponent's hand, while the victim just updates the game state directly.
+        // create-socket-events flips playedBy on a resolve to the player who played the one-off,
+        // so the caster is the one who needs the reveal of their opponent's discards. Only a
+        // hand of two or fewer is discarded here; larger hands go on to revealFour/discardFour
         case 4:
           if (evData.playedBy === gameStore.myPNum) {
             await gameStore.processFours(evData.discardedCards, evData.game);
@@ -90,10 +91,18 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE_THREE:
       await gameStore.processThrees(evData.chosenCard, evData.game);
       break;
-    // Legacy: fours resolve immediately as of rules 3.0.0, but stored games still step
+    // Legacy: fours no longer use resolveFour as of rules 3.0.0, but stored games still step
     // through a separate resolveFour frame, and this switch has no default to fall back on
     case SocketEvent.RESOLVE_FOUR:
       if (evData.playedBy !== gameStore.myPNum) {
+        await gameStore.processFours(evData.discardedCards, evData.game);
+      } else {
+        gameStore.updateGame(evData.game);
+      }
+      break;
+    // playedBy is the four's player, who sees the discards leave their opponent's hidden hand
+    case SocketEvent.DISCARD_FOUR:
+      if (evData.playedBy === gameStore.myPNum) {
         await gameStore.processFours(evData.discardedCards, evData.game);
       } else {
         gameStore.updateGame(evData.game);
