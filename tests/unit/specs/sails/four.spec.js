@@ -37,7 +37,11 @@ describe('Four one-off', () => {
   });
 
   describe('Resolving', () => {
-    const resolve = (state) => moves.resolve.execute(state, { moveType: MoveType.RESOLVE }, 1, []);
+    const resolveMove = { moveType: MoveType.RESOLVE };
+    const resolve = (state) => {
+      expect(() => moves.resolve.validate(state, resolveMove, 1, [])).not.to.throw();
+      return moves.resolve.execute(state, resolveMove, 1, []);
+    };
 
     it('Awaits the victim\'s reveal when they hold more than three cards', () => {
       const result = resolve(fourState(fourCardHand));
@@ -73,7 +77,7 @@ describe('Four one-off', () => {
     const validReveal = { moveType: MoveType.REVEAL_FOUR, fourRevealedCards: [ 'AH', 'TH', 'KS' ] };
 
     it('Records the revealed cards, leaving them in hand', () => {
-      moves.revealFour.validate(state, validReveal, 1, []);
+      expect(() => moves.revealFour.validate(state, validReveal, 1, [])).not.to.throw();
       const result = moves.revealFour.execute(state, validReveal, 1, []);
       expect(result.phase).to.eq(GamePhase.RESOLVING_FOUR_DISCARD);
       expect(result.fourRevealedCards).to.deep.eq([ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ]);
@@ -109,7 +113,7 @@ describe('Four one-off', () => {
     const validDiscard = { moveType: MoveType.DISCARD_FOUR, discardedCards: [ 'AH', 'KS' ] };
 
     it('Discards the chosen cards and completes the four', () => {
-      moves.discardFour.validate(state, validDiscard, 0, []);
+      expect(() => moves.discardFour.validate(state, validDiscard, 0, [])).not.to.throw();
       const result = moves.discardFour.execute(state, validDiscard, 0, []);
       expect(result.phase).to.eq(GamePhase.MAIN);
       expect(result.turn).to.eq(1);

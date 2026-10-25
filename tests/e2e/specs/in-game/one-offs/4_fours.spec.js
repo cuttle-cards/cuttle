@@ -232,40 +232,6 @@ describe('FOURS', () => {
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
     });
-
-    it('Renders the choice of discards for a staged RESOLVING_FOUR_DISCARD state', () => {
-      cy.loadGameFixture(0, {
-        p0Hand: [],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
-        p1Points: [],
-        p1FaceCards: [],
-        // GamePhase.RESOLVING_FOUR_DISCARD, as left by the opponent's reveal
-        phase: 9,
-        oneOff: Card.FOUR_OF_CLUBS,
-        fourRevealedCards: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
-      });
-
-      cy.get('#four-choose-discard-dialog')
-        .should('be.visible')
-        .within(() => {
-          cy.get('[data-four-discard-card]').should('have.length', 3);
-          cy.get('[data-four-discard-card=1-1]').click();
-          cy.get('[data-four-discard-card=13-3]').click();
-          cy.get('[data-cy=submit-four-discard-dialog]').click();
-        });
-
-      assertGameState(0, {
-        p0Hand: [],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.KING_OF_SPADES ],
-      });
-    });
   });
 
   describe('Opponent playing FOURS', () => {

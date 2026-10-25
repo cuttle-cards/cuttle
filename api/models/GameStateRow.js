@@ -56,7 +56,7 @@ module.exports = {
       columnType: 'jsonb',
     },
     // Cards the victim of a 4 revealed from their hand, pending the caster's choice of two to discard.
-    // Nullable so rows saved before the column existed still load
+    // Prod/staging add it with DEFAULT '[]', which backfills rows saved before the column existed
     fourRevealedCards: {
       type: 'json',
       defaultsTo: [],
