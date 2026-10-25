@@ -55,7 +55,7 @@ class GameCard {
         12: 'Q',
         13: 'K',
       }[card.rank] ?? card.rank;
-    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
+    const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
     this.id = card.id;
@@ -142,7 +142,7 @@ export const useGameStore = defineStore('game', () => {
       }
 
       const userWasPlayer = userPNum !== -1;
-      const gameIsComplete = [GameStatus.FINISHED, GameStatus.ARCHIVED].includes(status.value);
+      const gameIsComplete = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(status.value);
 
       // Check if a completed game is viewed by a player
       if (userWasPlayer && gameIsComplete) {
@@ -237,7 +237,7 @@ export const useGameStore = defineStore('game', () => {
   });
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
   const showDiscardToHandLimit = computed(
-    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value,
+    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value
   );
   const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
@@ -390,11 +390,8 @@ export const useGameStore = defineStore('game', () => {
    * the deck while every other row keeps its usual direction.
    */
   function findFieldZone(cardId) {
-    const sides = [
-      ['player', player.value],
-      ['opponent', opponent.value],
-    ];
-    for (const [side, fieldPlayer] of sides) {
+    const sides = [ [ 'player', player.value ], [ 'opponent', opponent.value ] ];
+    for (const [ side, fieldPlayer ] of sides) {
       if (!fieldPlayer) {
         continue;
       }
@@ -619,7 +616,7 @@ export const useGameStore = defineStore('game', () => {
       const message = err?.message ?? err?.body?.message ?? err ?? `Can't join game ${gameId}`;
       throw new Error(message);
     }
-  }
+  }  
   async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
     try {
