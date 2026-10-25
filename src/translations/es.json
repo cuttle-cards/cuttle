@@ -612,9 +612,9 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Los Cuatros reciben una nueva mejora!",
+    "activatorText": "Cuatros que revelan tres",
     "title": "Beta de reglas: Cuatros que revelan tres",
-    "heading": "Los Cuatros ahora revelan tres cartas",
+    "heading": "Revela tres, descarta dos",
     "paragraph": "El Cuatro es la carta más débil del juego: un efecto flojo en un rango bajo, con pocos puntos y escaso valor para hundir. Y como tu rival elegía las dos cartas a descartar, siempre se deshacía de sus dos peores. Ahora tu rival revela tres cartas de su mano y tú eliges cuáles dos descarta, así que un Cuatro puede llevarse algo que de verdad duela. Si tiene exactamente tres cartas, se revelan las tres; con dos o menos, descarta las que tenga.",
     "heading2": "Una de cuatro pruebas de la temporada de Picas",
     "paragraph2": "Esto es una beta, y una de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",

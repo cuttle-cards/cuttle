@@ -612,9 +612,9 @@
     }
   },
   "announcement": {
-    "activatorText": "Vierer bekommen eine neue Verbesserung!",
+    "activatorText": "Vierer, die drei Karten aufdecken",
     "title": "Regel-Beta: Vierer decken drei Karten auf",
-    "heading": "Vierer decken jetzt drei Karten auf",
+    "heading": "Drei aufdecken, zwei abwerfen",
     "paragraph": "Der Vierer ist die schwächste Karte im Spiel: ein schwacher Effekt auf einem niedrigen Rang mit wenig Punkten und kaum Versenkungswert. Und weil dein Gegner die beiden Karten aussuchte, verlor er immer nur seine zwei schlechtesten. Jetzt deckt dein Gegner drei Karten aus seiner Hand auf und du wählst, welche zwei er abwirft, sodass ein Vierer auch wirklich wehtun kann. Hat er genau drei Karten, werden alle drei aufgedeckt; hat er zwei oder weniger, wirft er ab, was er hat.",
     "heading2": "Eine von vier Testregeln der Pik-Saison",
     "paragraph2": "Das ist eine Beta und eine von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",

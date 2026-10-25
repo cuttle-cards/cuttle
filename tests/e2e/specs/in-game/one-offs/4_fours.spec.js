@@ -68,9 +68,7 @@ describe('FOURS', () => {
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.KING_OF_SPADES ],
       });
       // The four completes the player's turn
-      cy.window()
-        .its('cuttle.gameStore.isPlayersTurn')
-        .should('eq', false);
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
     });
 
     it('Skips the reveal when the opponent holds exactly three cards', () => {

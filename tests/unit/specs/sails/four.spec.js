@@ -81,18 +81,20 @@ describe('Four one-off', () => {
       expect(result.turn).to.eq(0);
     });
 
-    it.each([
-      [ 'the four\'s player', validReveal, 0, 'game.snackbar.global.notYourTurn' ],
-      [ 'two cards', { ...validReveal, fourRevealedCards: [ 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
-      [ 'a repeated card', { ...validReveal, fourRevealedCards: [ 'AH', 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
-      [ 'a card not in hand', { ...validReveal, fourRevealedCards: [ 'AH', 'TH', 'QS' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
-    ])('Rejects revealing by/with %s', (_description, move, playedBy, message) => {
-      expect(() => moves.revealFour.validate(state, move, playedBy, [])).to.throw(message);
-    });
+    describe('Errors', () => {
+      it.each([
+        [ 'the four\'s player', validReveal, 0, 'game.snackbar.global.notYourTurn' ],
+        [ 'two cards', { ...validReveal, fourRevealedCards: [ 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+        [ 'a repeated card', { ...validReveal, fourRevealedCards: [ 'AH', 'AH', 'TH' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+        [ 'a card not in hand', { ...validReveal, fourRevealedCards: [ 'AH', 'TH', 'QS' ] }, 1, 'game.snackbar.oneOffs.four.mustRevealThree' ],
+      ])('Rejects revealing by/with %s', (_description, move, playedBy, message) => {
+        expect(() => moves.revealFour.validate(state, move, playedBy, [])).to.throw(message);
+      });
 
-    it('Rejects revealing outside the reveal phase', () => {
-      expect(() => moves.revealFour.validate({ ...state, phase: GamePhase.MAIN }, validReveal, 1, []))
-        .to.throw('game.snackbar.oneOffs.four.notRevealingPhase');
+      it('Rejects revealing outside the reveal phase', () => {
+        expect(() => moves.revealFour.validate({ ...state, phase: GamePhase.MAIN }, validReveal, 1, []))
+          .to.throw('game.snackbar.oneOffs.four.notRevealingPhase');
+      });
     });
   });
 
@@ -119,19 +121,21 @@ describe('Four one-off', () => {
       expect(result.resolved).to.deep.eq(Card.FOUR_OF_CLUBS);
     });
 
-    it.each([
-      [ 'the four\'s victim', validDiscard, 1, 'game.snackbar.global.notYourTurn' ],
-      [ 'one card', { ...validDiscard, discardedCards: [ 'AH' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
-      [ 'a repeated card', { ...validDiscard, discardedCards: [ 'AH', 'AH' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
-      [ 'an unrevealed card', { ...validDiscard, discardedCards: [ 'AH', 'AD' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
-    ])('Rejects choosing by/with %s', (_description, move, playedBy, message) => {
-      expect(() => moves.discardFour.validate(state, move, playedBy, [])).to.throw(message);
-    });
+    describe('Errors', () => {
+      it.each([
+        [ 'the four\'s victim', validDiscard, 1, 'game.snackbar.global.notYourTurn' ],
+        [ 'one card', { ...validDiscard, discardedCards: [ 'AH' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
+        [ 'a repeated card', { ...validDiscard, discardedCards: [ 'AH', 'AH' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
+        [ 'an unrevealed card', { ...validDiscard, discardedCards: [ 'AH', 'AD' ] }, 0, 'game.snackbar.oneOffs.four.mustChooseTwoRevealed' ],
+      ])('Rejects choosing by/with %s', (_description, move, playedBy, message) => {
+        expect(() => moves.discardFour.validate(state, move, playedBy, [])).to.throw(message);
+      });
 
-    it('Rejects choosing outside the discard phase', () => {
-      const revealingState = { ...state, phase: GamePhase.RESOLVING_FOUR_REVEAL };
-      expect(() => moves.discardFour.validate(revealingState, validDiscard, 0, []))
-        .to.throw('game.snackbar.oneOffs.four.notChoosingDiscardsPhase');
+      it('Rejects choosing outside the discard phase', () => {
+        const revealingState = { ...state, phase: GamePhase.RESOLVING_FOUR_REVEAL };
+        expect(() => moves.discardFour.validate(revealingState, validDiscard, 0, []))
+          .to.throw('game.snackbar.oneOffs.four.notChoosingDiscardsPhase');
+      });
     });
   });
 

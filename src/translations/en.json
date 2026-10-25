@@ -613,9 +613,9 @@
     }
   },
   "announcement": {
-    "activatorText": "Fours are getting a new buff!",
+    "activatorText": "Reveal-Three Fours",
     "title": "Rules Beta: Reveal-Three Fours",
-    "heading": "Fours now reveal three cards",
+    "heading": "Reveal three, discard two",
     "paragraph": "The Four is the weakest card in the game: a weak effect on a low rank with poor points and scuttling value. And because your opponent picked the two cards to discard, it always stripped their two worst ones. Now your opponent reveals three cards from their hand and you choose which two they discard, so a Four can take something that actually hurts. If they hold exactly three cards, all three are revealed; with two or fewer, they discard whatever they have.",
     "heading2": "One of four Spades season trials",
     "paragraph2": "This is a beta, and one of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",

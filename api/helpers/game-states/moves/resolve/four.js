@@ -28,11 +28,13 @@ module.exports = {
     // identifies the player whose hand is discarded -- not the four's caster.
     const victim = playedBy ? result.p1 : result.p0;
 
+    // standard case: victim must reveal three cards
     if (victim.hand.length > 3) {
       result.phase = GamePhase.RESOLVING_FOUR_REVEAL;
       return exits.success(result);
     }
 
+    // at exactly three cards, reveal them all and skip to discard phase
     if (victim.hand.length === 3) {
       result.phase = GamePhase.RESOLVING_FOUR_DISCARD;
       result.fourRevealedCards = [ ...victim.hand ];

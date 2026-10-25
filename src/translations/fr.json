@@ -612,9 +612,9 @@
     }
   },
   "announcement": {
-    "activatorText": "Le Quatre reçoit une nouvelle amélioration !",
+    "activatorText": "Le Quatre qui révèle trois cartes",
     "title": "Bêta des règles : le Quatre qui révèle trois cartes",
-    "heading": "Le Quatre fait désormais révéler trois cartes",
+    "heading": "Révéler trois, défausser deux",
     "paragraph": "Le Quatre est la carte la plus faible du jeu : un effet peu puissant sur un rang bas, avec peu de points et une faible valeur de sabordage. Et comme votre adversaire choisissait les deux cartes à défausser, il se séparait toujours de ses deux plus mauvaises. Désormais votre adversaire révèle trois cartes de sa main et vous choisissez les deux qu'il défausse, et un Quatre peut donc emporter quelque chose qui compte vraiment. S'il a exactement trois cartes, les trois sont révélées ; s'il en a deux ou moins, il défausse ce qu'il a.",
     "heading2": "L'une des quatre expérimentations de la saison des Piques",
     "paragraph2": "Il s'agit d'une bêta, et de l'une des quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
