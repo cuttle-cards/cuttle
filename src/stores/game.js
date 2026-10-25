@@ -55,7 +55,7 @@ class GameCard {
         12: 'Q',
         13: 'K',
       }[card.rank] ?? card.rank;
-    const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
+    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
     this.id = card.id;
@@ -142,7 +142,7 @@ export const useGameStore = defineStore('game', () => {
       }
 
       const userWasPlayer = userPNum !== -1;
-      const gameIsComplete = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(status.value);
+      const gameIsComplete = [GameStatus.FINISHED, GameStatus.ARCHIVED].includes(status.value);
 
       // Check if a completed game is viewed by a player
       if (userWasPlayer && gameIsComplete) {
@@ -237,7 +237,7 @@ export const useGameStore = defineStore('game', () => {
   });
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
   const showDiscardToHandLimit = computed(
-    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value
+    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value,
   );
   const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
@@ -390,8 +390,11 @@ export const useGameStore = defineStore('game', () => {
    * the deck while every other row keeps its usual direction.
    */
   function findFieldZone(cardId) {
-    const sides = [ [ 'player', player.value ], [ 'opponent', opponent.value ] ];
-    for (const [ side, fieldPlayer ] of sides) {
+    const sides = [
+      ['player', player.value],
+      ['opponent', opponent.value],
+    ];
+    for (const [side, fieldPlayer] of sides) {
       if (!fieldPlayer) {
         continue;
       }
@@ -598,27 +601,24 @@ export const useGameStore = defineStore('game', () => {
       });
     });
   }
-  function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
-    return new Promise((resolve, reject) => {
-      io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
-        switch (jwres.statusCode) {
-          case 200:
-            if (resetStateBeforeUpdate) {
-              resetState();
-              updateGame(res.game);
-            }
-            return handleInGameEvents(res, route).then(() => {
-              return resolve(res);
-            });
-          case 401:
-            authStore.mustReauthenticate = true;
-            // Resolve without a game state; ReauthenticateDialog handles recovery
-            return resolve(null);
-          default:
-            return reject(jwres.body.message);
-        }
-      });
-    });
+  async function requestGameState(gameId, gameStateIndex = -1, route = null, resetStateBeforeUpdate = false) {
+    const slug = `${gameId}?gameStateIndex=${gameStateIndex}`;
+    try {
+      const res = await makeSocketRequest(slug, {}, 'GET', true);
+      if (resetStateBeforeUpdate) {
+        resetState();
+        updateGame(res.body.game);
+      }
+      await handleInGameEvents(res.body, route);
+      return res.body;
+    } catch (err) {
+      if (authStore.mustReauthenticate) {
+        id.value = gameId;
+        return null;
+      }
+      const message = err?.message ?? err?.body?.message ?? err ?? `Can't join game ${gameId}`;
+      throw new Error(message);
+    }
   }
   async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
     const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
