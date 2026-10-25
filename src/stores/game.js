@@ -8,11 +8,12 @@ import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import GameStatus from '../../utils/GameStatus.json';
 import GamePhase from '../../utils/GamePhase.json';
+import GameConstants from '../../utils/GameConstants.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 import { ROUTE_NAME_VS_AI } from '@/router';
 
-export const HAND_LIMIT = 8;
+export const { HAND_LIMIT } = GameConstants;
 
 /**
  * @returns number of queens a given player has

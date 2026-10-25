@@ -1,5 +1,6 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 const MoveType = require('../../../../../utils/MoveType.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Resolve One-Off',
@@ -54,7 +55,7 @@ module.exports = {
     };
 
     const activePlayer = result.turn % 2 === 0 ? result.p0 : result.p1;
-    const playerMustDiscard = activePlayer.hand.length > 8;
+    const playerMustDiscard = activePlayer.hand.length > HAND_LIMIT;
 
     // If one-off fizzles, make no other changes
     if (fizzles) {
