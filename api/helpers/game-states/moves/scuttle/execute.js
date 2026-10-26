@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Scuttle',
@@ -52,7 +53,7 @@ module.exports = {
     result.scrap.push(playedCard, ...targetCard.attachments, targetCard);
     targetCard.attachments = [];
 
-    const playerMustDiscard = player.hand.length > 8;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,
