@@ -613,8 +613,7 @@ export const useGameStore = defineStore('game', () => {
         id.value = gameId;
         return null;
       }
-      const message = err?.message ?? err?.body?.message ?? err ?? `Can't join game ${gameId}`;
-      throw new Error(message);
+      throw err?.body?.message ?? `Could not load game ${gameId}`;
     }
   }  
   async function requestSpectate(gameId, gameStateIndex = 0, route = null) {
