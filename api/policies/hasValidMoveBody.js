@@ -58,6 +58,23 @@ module.exports = function (req, res, next) {
       }
       return next();
 
+    // Require an array of exactly two/three valid card IDs
+    case MoveType.REVEAL_FOUR:
+    case MoveType.DISCARD_FOUR:
+      {
+        const isReveal = moveType === MoveType.REVEAL_FOUR;
+        const cardIds = isReveal ? req.body.fourRevealedCards : req.body.discardedCards;
+        const requiredCount = isReveal ? 3 : 2;
+        if (!Array.isArray(cardIds) || cardIds.length !== requiredCount) {
+          return res.badRequest({ message: `Must specify ${requiredCount} cards` });
+        }
+        const invalidId = cardIds.find((id) => !DeckIds.includes(id));
+        if (invalidId) {
+          return res.badRequest({ message: `${invalidId} is not a valid cardId` });
+        }
+      }
+      return next();
+
     // These require `cardId` and `targetId`
     case MoveType.JACK:
     case MoveType.SCUTTLE:

@@ -55,6 +55,13 @@ module.exports = {
       defaultsTo: [],
       columnType: 'jsonb',
     },
+    // Cards the victim of a 4 revealed from their hand, pending the caster's choice of two to discard.
+    // Prod/staging add it with DEFAULT '[]', which backfills rows saved before the column existed
+    fourRevealedCards: {
+      type: 'json',
+      defaultsTo: [],
+      columnType: 'jsonb',
+    },
     // Which turn number the move was made on
     turn: {
       type: 'number',
@@ -68,7 +75,10 @@ module.exports = {
      * 3 - RESOLVING_THREE
      * 4 - RESOLVING_FOUR (legacy; rules < 3.0.0 only -- fours resolve immediately now)
      * 5 - RESOLVING_FIVE
+     * 6 - DISCARDING_TO_HAND_LIMIT
      * 7 - RESOLVING_SEVEN
+     * 8 - RESOLVING_FOUR_REVEAL (the four's victim reveals three cards from hand)
+     * 9 - RESOLVING_FOUR_DISCARD (the four's caster chooses two revealed cards to discard)
      */
     phase: {
       type: 'number',
