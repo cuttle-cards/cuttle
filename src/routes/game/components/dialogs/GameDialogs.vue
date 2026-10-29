@@ -4,6 +4,7 @@
       :model-value="showCounterDialog"
       :one-off="gameStore.oneOff"
       :target="gameStore.oneOffTarget"
+      :target-two="gameStore.oneOffTargetTwo"
       :twos-in-hand="twosInHand"
       :twos-played="twosPlayed"
       @resolve="resolve"
@@ -16,6 +17,7 @@
       :player-two-count="playerTwoCount"
       :twos-played="twosPlayed"
       :target="gameStore.oneOffTarget"
+      :target-two="gameStore.oneOffTargetTwo"
       @resolve="resolve"
     />
 

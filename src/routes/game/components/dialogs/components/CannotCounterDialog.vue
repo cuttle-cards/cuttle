@@ -14,6 +14,9 @@
         <span v-if="target">
           {{ t(`game.dialogs.counterDialogs.target`) + t(`global.your`) }} 
           <GameCardName :card-name="target.name" />
+          <template v-if="targetTwo">
+            <GameCardName :card-name="targetTwo.name" />
+          </template>
         </span>
       </div>
       <div v-else class="my-2">
@@ -41,6 +44,7 @@
             />
           </span>
           <GameCard :suit="target.suit" :rank="target.rank" />
+          <GameCard v-if="targetTwo" :suit="targetTwo.suit" :rank="targetTwo.rank" />
         </div>
       </div>
       {{ t(`game.dialogs.counterDialogs.cannotCounter`) + reason }}.
@@ -90,6 +94,11 @@ export default {
       default: null,
     },
     target: {
+      type: Object,
+      default: null,
+    },
+    // Nines return two cards, so a second target may be at stake
+    targetTwo: {
       type: Object,
       default: null,
     },

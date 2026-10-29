@@ -51,6 +51,13 @@ module.exports = {
       opponent,
     ) : null;
 
+    // Nines return two cards, so they carry a second target through countering
+    const targetCardTwo = requestedMove.targetIdTwo ? sails.helpers.gameStates.findTargetCard(
+      requestedMove.targetIdTwo,
+      requestedMove.targetTypeTwo,
+      opponent,
+    ) : null;
+
     result = {
       ...result,
       ...requestedMove,
@@ -63,6 +70,8 @@ module.exports = {
       resolved: null,
       oneOffTarget: targetCard,
       oneOffTargetType: requestedMove.targetType ?? null,
+      oneOffTargetTwo: targetCardTwo,
+      oneOffTargetTwoType: requestedMove.targetTypeTwo ?? null,
     };
 
     return exits.success(result);

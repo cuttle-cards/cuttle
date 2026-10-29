@@ -23,6 +23,8 @@ const gameStateRow = {
   oneOff: null,
   oneOffTarget: null,
   oneOffTargetType: null,
+  oneOffTargetTwo: null,
+  oneOffTargetTwoType: null,
   resolved: null,
   gameId: 1,
   playedBy: 0,
@@ -30,6 +32,7 @@ const gameStateRow = {
   turn: 3,
   phase: GamePhase.MAIN,
   targetCard: null,
+  targetCardTwo: null,
 };
 
 export const points = {
@@ -70,6 +73,8 @@ export const points = {
     oneOff: null,
     oneOffTarget: null,
     oneOffTargetType: null,
+    oneOffTargetTwo: null,
+    oneOffTargetTwoType: null,
     resolved: null,
     playedCard: Card.TEN_OF_SPADES,
     gameId: 1,
@@ -78,6 +83,7 @@ export const points = {
     turn: 3,
     phase: GamePhase.MAIN,
     targetCard: null,
+    targetCardTwo: null,
   },
 
   gameStateRow: gameStateRow,
@@ -194,6 +200,8 @@ export const points = {
       oneOff: null,
       oneOffTarget: null,
       oneOffTargetType: null,
+      oneOffTargetTwo: null,
+      oneOffTargetTwoType: null,
       fourRevealedCards: [],
       lastEvent: {
         change: MoveType.POINTS,
@@ -208,6 +216,7 @@ export const points = {
           playedCard: 'TS',
           resolved: null,
           targetCard: null,
+          targetCardTwo: null,
         },
       ],
     },
