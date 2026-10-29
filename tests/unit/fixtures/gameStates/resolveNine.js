@@ -10,6 +10,7 @@ const gameStateRow = {
   targetCard: 'JC',
   targetCardTwo: null,
   discardedCards: [],
+  fourRevealedCards: [],
   turn: 3,
   phase: GamePhase.MAIN,
   p0Hand: [],
@@ -45,6 +46,7 @@ export const resolveNine = {
     targetCard: Card.JACK_OF_CLUBS,
     targetCardTwo: null,
     discardedCards: [],
+    fourRevealedCards: [],
     turn: 3,
     phase: GamePhase.MAIN,
     p0: {
@@ -130,6 +132,7 @@ export const resolveNine = {
       oneOffTargetType: null,
       oneOffTargetTwo: null,
       oneOffTargetTwoType: null,
+      fourRevealedCards: [],
       p0Ready: true,
       p0Rematch: null,
       p1Ready: true,

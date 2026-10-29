@@ -8,9 +8,12 @@ import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import GameStatus from '../../utils/GameStatus.json';
 import GamePhase from '../../utils/GamePhase.json';
+import GameConstants from '../../utils/GameConstants.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 import { ROUTE_NAME_VS_AI } from '@/router';
+
+export const { HAND_LIMIT } = GameConstants;
 
 /**
  * @returns number of queens a given player has
@@ -97,6 +100,8 @@ export const useGameStore = defineStore('game', () => {
   const oneOffTarget = ref(null);
   // Nines return two cards, so they carry a second target through countering
   const oneOffTargetTwo = ref(null);
+  // Cards the victim of a four revealed, from which the four's player chooses two to discard
+  const fourRevealedCards = ref([]);
   const isRanked = ref(false);
 
   // Threes
@@ -213,8 +218,9 @@ export const useGameStore = defineStore('game', () => {
     () => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value,
   );
   const pickingFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value);
-  // Legacy: no live game enters RESOLVING_FOUR as of rules 3.0.0 (fours discard at random the
-  // moment they resolve), but replaying a stored game that did still renders the dialog.
+  // Legacy: no live game enters RESOLVING_FOUR as of rules 3.0.0 (fours resolve through
+  // RESOLVING_FOUR_REVEAL and RESOLVING_FOUR_DISCARD since 4.0.0), but replaying a stored game
+  // that did still renders the dialog.
   const showResolveFour = computed(() => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value);
   const waitingForOpponentToDiscard = computed(() => {
     switch (phase.value) {
@@ -227,6 +233,20 @@ export const useGameStore = defineStore('game', () => {
         return false;
     }
   });
+  // A four's victim reveals three cards on the four player's turn...
+  const revealingForFour = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_REVEAL && !isPlayersTurn.value,
+  );
+  const waitingForOpponentToRevealForFour = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_REVEAL && isPlayersTurn.value,
+  );
+  // ...then the four's player chooses two of them for the victim to discard
+  const choosingFourDiscards = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_DISCARD && isPlayersTurn.value,
+  );
+  const waitingForOpponentToChooseFourDiscards = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_DISCARD && !isPlayersTurn.value,
+  );
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
   const showDiscardToHandLimit = computed(
     () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value
@@ -272,6 +292,7 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
     oneOffTargetTwo.value = createGameCard(newGame.oneOffTargetTwo) ?? null;
+    fourRevealedCards.value = newGame.fourRevealedCards?.map((card) => createGameCard(card)) ?? [];
     isRanked.value = newGame.isRanked ?? isRanked.value;
     currentMatch.value = newGame.currentMatch ?? currentMatch.value;
     p0Rematch.value = newGame.p0Rematch ?? null;
@@ -310,6 +331,7 @@ export const useGameStore = defineStore('game', () => {
     oneOff.value = null;
     oneOffTarget.value = null;
     oneOffTargetTwo.value = null;
+    fourRevealedCards.value = [];
     isRanked.value = false;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
@@ -452,6 +474,8 @@ export const useGameStore = defineStore('game', () => {
       case 'resolveThree':
       case 'resolveFour':
       case 'resolveFive':
+      case 'revealFour':
+      case 'discardFour':
       case 'discardToHandLimit':
       case 'seven/points':
       case 'seven/scuttle':
@@ -646,6 +670,18 @@ export const useGameStore = defineStore('game', () => {
     const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
     await makeSocketRequest('resolveFour', reqData);
   }
+  async function requestRevealFour(cardIds) {
+    await makeSocketRequest('revealFour', {
+      moveType: MoveType.REVEAL_FOUR,
+      fourRevealedCards: cardIds,
+    });
+  }
+  async function requestDiscardFour(cardIds) {
+    await makeSocketRequest('discardFour', {
+      moveType: MoveType.DISCARD_FOUR,
+      discardedCards: cardIds,
+    });
+  }
   async function requestDiscardToHandLimit(cardIds) {
     await makeSocketRequest('discardToHandLimit', {
       moveType: MoveType.DISCARD_TO_HAND_LIMIT,
@@ -760,6 +796,7 @@ export const useGameStore = defineStore('game', () => {
     oneOff,
     oneOffTarget,
     oneOffTargetTwo,
+    fourRevealedCards,
     isRanked,
     lastEventPlayerChoosing,
     lastEventThreeTarget,
@@ -801,6 +838,10 @@ export const useGameStore = defineStore('game', () => {
     pickingFromScrap,
     showResolveFour,
     waitingForOpponentToDiscard,
+    revealingForFour,
+    waitingForOpponentToRevealForFour,
+    choosingFourDiscards,
+    waitingForOpponentToChooseFourDiscards,
     showResolveFive,
     showDiscardToHandLimit,
     playingFromDeck,
@@ -841,6 +882,8 @@ export const useGameStore = defineStore('game', () => {
     requestPlayTargetedOneOff,
     requestPlayJack,
     requestDiscard,
+    requestRevealFour,
+    requestDiscardFour,
     requestDiscardToHandLimit,
     requestResolve,
     requestResolveThree,

@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Hand: {handSize} of {handLimit} cards",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
@@ -102,6 +103,8 @@
       "mustResolve": "{opponentUsername} Must Resolve",
       "isDiscarding": "{opponentUsername} Is Discarding",
       "skipsDiscarding": "{opponentUsername} Skips Discarding",
+      "isRevealingForFour": "{opponentUsername} Is Revealing Three Cards",
+      "isChoosingFourDiscards": "{opponentUsername} Is Choosing Two Cards For You To Discard",
       "choosingFromScrap": "{opponentUsername} Is Choosing A Card From The Scrap Pile",
       "playingFromDeck": "{opponentUsername} Is Playing From The Deck",
       "mustDiscardJack": "{opponentUsername} Must Discard A Jack",
@@ -124,6 +127,16 @@
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
         "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+      },
+      "fourReveal": {
+        "title": "Reveal Three Cards",
+        "body": "{opponentUsername} has resolved a Four One-Off. Choose three cards from your hand to reveal. {opponentUsername} will choose two of them for you to discard.",
+        "reveal": "Reveal"
+      },
+      "fourDiscard": {
+        "title": "Choose Two Cards to Discard",
+        "body": "{opponentUsername} revealed these three cards. Choose two of them for {opponentUsername} to discard.",
+        "discard": "Discard"
       },
       "discardToHandLimit": {
         "title": "Discard Excess Cards",
@@ -238,7 +251,7 @@
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
-        "4": "Your opponent discards two cards at random from their hand",
+        "4": "Your opponent reveals three cards from their hand, and you choose two for them to discard",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
@@ -341,6 +354,12 @@
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
           "mustPickFromScrap": "You must pick a card from the scrap",
           "cannotTargetThree": "You cannot target a three with a three"
+        },
+        "four": {
+          "notRevealingPhase": "You can only reveal cards while resolving a four",
+          "mustRevealThree": "You must reveal three cards from your hand",
+          "notChoosingDiscardsPhase": "You can only choose discards while resolving a four",
+          "mustChooseTwoRevealed": "You must choose two of the revealed cards to discard"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
@@ -469,7 +488,7 @@
       "three": "Three",
       "threeDescription": "Choose a (non-three) card from the scrap pile and put it in your hand.",
       "four": "Four",
-      "fourDescription": "Your opponent discards two cards at random.",
+      "fourDescription": "Your opponent reveals three cards from their hand, and you choose two of them for your opponent to discard.",
       "five": "Five",
       "fiveDescription": "Discard one card then draw up to three cards from the deck.",
       "six": "Six",

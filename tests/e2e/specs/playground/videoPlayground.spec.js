@@ -554,7 +554,14 @@ describe('Video Playground', () => {
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
 
-    // Two of the opponent's three cards discard at random as the four resolves
+    // The opponent holds exactly three cards, so all three are revealed; choose two to discard
+    cy.get('#four-choose-discard-dialog').should('be.visible');
+    cy.wait(1000);
+    cy.get('[data-four-discard-card=1-1]').click();
+    cy.wait(500);
+    cy.get('[data-four-discard-card=11-3]').click();
+    cy.wait(1000);
+    cy.get('[data-cy=submit-four-discard-dialog]').click();
     cy.get('#scrap').contains('(3)');
     cy.wait(3000);
   });

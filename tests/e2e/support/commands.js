@@ -37,6 +37,8 @@ const transformGameUrl = (api, slug, gameId = null) => {
     case 'resolve':
     case 'resolveThree':
     case 'resolveFive':
+    case 'revealFour':
+    case 'discardFour':
     case 'discardToHandLimit':
     case 'seven/points':
     case 'seven/scuttle':
@@ -470,9 +472,8 @@ Cypress.Commands.add('resolveOpponent', (gameId = null) => {
 });
 
 /**
- * Discards 1-2 cards to resolve four
- * @param card1 {suit: number, rank: number} OPTIONAL
- * @param card2 {suit: number, rank: number} OPTIONAL
+ * Discards cards down to the hand limit of 8
+ * @param cards {suit: number, rank: number}[]
  */
 Cypress.Commands.add('discardToHandLimitOpponent', (...cards) => {
   cy.makeSocketRequest('game', 'discardToHandLimit', {
@@ -481,6 +482,28 @@ Cypress.Commands.add('discardToHandLimitOpponent', (...cards) => {
   });
 });
 
+
+/**
+ * Reveals three cards from the opponent's hand to resolve the player's four
+ * @param cards {suit: number, rank: number}[]
+ */
+Cypress.Commands.add('revealFourOpponent', (...cards) => {
+  cy.makeSocketRequest('game', 'revealFour', {
+    moveType: MoveType.REVEAL_FOUR,
+    fourRevealedCards: cards.map((card) => card.id),
+  });
+});
+
+/**
+ * Chooses two of the player's revealed cards for them to discard, completing the opponent's four
+ * @param cards {suit: number, rank: number}[]
+ */
+Cypress.Commands.add('discardFourOpponent', (...cards) => {
+  cy.makeSocketRequest('game', 'discardFour', {
+    moveType: MoveType.DISCARD_FOUR,
+    discardedCards: cards.map((card) => card.id),
+  });
+});
 
 /**
  * @param card {suit: number, rank: number}

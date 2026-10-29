@@ -80,7 +80,7 @@ silently dropped before packing — an easy way to lose the new fields.
 - **`get-log.js`** — names both returned cards, drops "It cannot be played next turn."
 - **`ai/get-move-bodies-for-move-type.js`** — enumerates two-target pairs for Nines, skips
   generation when blocked; also fixes a pre-existing bug where jack bodies omitted `targetType`.
-- **`utils/rulesVersion.js`** — `2.0.0` with a history line.
+- **`utils/rulesVersion.js`** — `5.0.0` with a history line.
 - **`docs/game-state-api.md`** — new columns, GameState fields, socket payload, and the Nine
   targeting/queen rules.
 
@@ -197,8 +197,9 @@ from aborted runs — it passes at HEAD and with the changes across repeated run
 
 1. `git revert` the PR. Because freeze is derived at unpack rather than stored, this restores the
    old behavior with **zero data migration**.
-2. Bump `CURRENT_RULES_VERSION` **forward** to `3.0.0` with a history line noting the revert —
-   never reuse or decrement, since games are stamped with it.
+2. Bump `CURRENT_RULES_VERSION` **forward** to `6.0.0` with a history line noting the revert —
+   never reuse or decrement, since games are stamped with it. (This change ships as `5.0.0`; the
+   two Four reworks took `3.0.0` (#1384) and `4.0.0` (#1443) ahead of it.)
 3. Leave the three columns in place (nullable, unused); trial-era games keep their data.
 4. Remove the announcement entry.
 5. Accept one cosmetic wrinkle: with the derivation restored, replaying a *trial-era* game

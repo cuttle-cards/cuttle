@@ -64,6 +64,7 @@ module.exports = async function (req, res) {
       scrap: populatedScrap,
       twos: [],
       discardedCards: [],
+      fourRevealedCards: [],
       oneOff,
       oneOffTarget: null,
       oneOffTargetTwo: null,

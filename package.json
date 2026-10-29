@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "dependencies": {
     "@unhead/vue": "^1.11.14",
     "@vueuse/core": "^14.1.0",
@@ -57,7 +57,7 @@
     "vue-eslint-parser": "^10.2.0"
   },
   "engines": {
-    "node": "22.21"
+    "node": "22.23.4"
   },
   "main": "app.js",
   "private": true,
