@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Hand: {handSize} von {handLimit} Karten",
+    "atHandLimit": "Du hast das Handlimit erreicht",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
