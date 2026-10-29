@@ -40,7 +40,7 @@ const badWordsEn = [
   'kawk', 'knob', 'kock', 'kondum', 'kum', 'kunilingus',
   
   // L
-  'l3i+ch', 'l3itch', 'labia', 'lmfao', 'lust',
+  'l3i+ch', 'l3itch', 'labia', 'lmfao', 'lolicon', 'lolita', 'lust',
   
   // M
   'm0f0', 'm0fo', 'm45terbate', 'ma5terb8', 'ma5terbate', 'masochist', 'master-bate', 'masterb8',
