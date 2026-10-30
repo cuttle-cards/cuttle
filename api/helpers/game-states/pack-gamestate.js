@@ -34,9 +34,13 @@ module.exports = {
         const value = gameState[attribute];
         if (value) {
           const { convertCardToStr } = sails.helpers.gameStates;
+          const targetOwner =
+            [ 'targetCard', 'oneOffTarget' ].includes(attribute) && gameState.playedBy !== undefined
+              ? (gameState.playedBy === 0 ? 'p1' : 'p0')
+              : undefined;
           convertedData[attribute] = Array.isArray(value)
-            ? value.map((card) => convertCardToStr(card))
-            : convertCardToStr(value);
+            ? value.map((card) => convertCardToStr(card, targetOwner))
+            : convertCardToStr(value, targetOwner);
         } else {
           convertedData[attribute] = null; // Handle null or undefined attributes
         }

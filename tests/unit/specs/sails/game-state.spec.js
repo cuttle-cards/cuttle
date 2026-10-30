@@ -3,6 +3,7 @@ import { points } from '../../fixtures/gameStates/points';
 import { resolveThree } from '../../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../../fixtures/gameStates/resolveNine';
 import { duplicateCard, missingCard, scrapAttachments, invalidCard } from '../../fixtures/gameStates/cardValidationErrors';
+import { Card } from '../../fixtures/Card';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
@@ -133,5 +134,46 @@ describe('Throwing Errors on card validations',() => {
   it('throws an error when a card in the scrap has an attachment', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(scrapAttachments))
       .toThrowError(/^6C is not a point card, and cannot have attachments$/);
+  });
+});
+
+describe('Packing targetCard with Jack attachments (#1210)', () => {
+  it('correctly serializes targetCard with an even number of jacks without undefined', () => {
+    const rawState = {
+      ...points.gameState,
+      playedBy: 0,
+      targetCard: {
+        ...Card.TEN_OF_SPADES,
+        attachments: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_HEARTS ],
+      },
+    };
+
+    const packed = sails.helpers.gameStates.packGamestate(rawState);
+    expect(packed.targetCard).toBe('TS(JD-p1,JH-p0)');
+  });
+
+  it('correctly serializes targetCard with an odd number of jacks', () => {
+    const rawState = {
+      ...points.gameState,
+      playedBy: 1,
+      targetCard: {
+        ...Card.TEN_OF_SPADES,
+        attachments: [ Card.JACK_OF_DIAMONDS ],
+      },
+    };
+
+    const packed = sails.helpers.gameStates.packGamestate(rawState);
+    expect(packed.targetCard).toBe('TS(JD-p1)');
+  });
+
+  it('safely handles convertCardToStr with multiple attachments when cardOwner is omitted', () => {
+    const card = {
+      ...Card.TEN_OF_SPADES,
+      attachments: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_HEARTS ],
+    };
+
+    const str = sails.helpers.gameStates.convertCardToStr(card);
+    expect(str).not.toContain('undefined');
+    expect(str).toBe('TS(JD-p0,JH-p1)');
   });
 });
