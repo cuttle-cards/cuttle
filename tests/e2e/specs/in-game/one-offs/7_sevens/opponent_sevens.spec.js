@@ -1,6 +1,5 @@
-import { assertGameState, assertSnackbar } from '../../../../support/helpers';
+import { assertGameState } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
-import { SnackBarError } from '../../../../fixtures/snackbarError';
 
 describe('Opponent playing SEVENS', () => {
   beforeEach(() => {
@@ -504,6 +503,20 @@ describe('Opponent playing SEVENS', () => {
       cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
         .click();
 
+      // The queen went to the top of the deck, not back to the player's hand
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
+      });
+
+      // Player draws their queen straight back off the top
+      cy.get('#deck').click();
+
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
@@ -559,6 +572,20 @@ describe('Opponent playing SEVENS', () => {
       cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
         .click();
 
+      // The jack went to the top of the deck, and the ace it was stealing reverts to its owner
+      assertGameState(1, {
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.ACE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
+      });
+
+      // Player draws, getting their own jack back rather than the fixture's top card
+      cy.get('#deck').click();
+
       assertGameState(1, {
         p0Hand: [ Card.TEN_OF_DIAMONDS ],
         p0Points: [ Card.ACE_OF_CLUBS ],
@@ -568,35 +595,13 @@ describe('Opponent playing SEVENS', () => {
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
-
-      // player plays the returned jack immediately
-      cy.get('[data-player-hand-card=11-0]').click();
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=jack]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      cy.get('[data-opponent-point-card=1-0]').click();
-      assertSnackbar(SnackBarError.FROZEN_CARD);
-      cy.log('Successfully prevented player from playing the jack while it is frozen');
-
-      // Player draws
-      cy.get('#deck').click();
-
-      assertGameState(1, {
-        p0Hand: [ Card.TEN_OF_DIAMONDS ],
-        p0Points: [ Card.ACE_OF_CLUBS ],
-        p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS, Card.FOUR_OF_CLUBS ],
-        p1Points: [],
-        p1FaceCards: [ Card.KING_OF_HEARTS ],
-        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
-      });
+      // The jack is playable right away; nothing is frozen any more
+      cy.get('[data-player-hand-card=11-0]').should('not.have.class', 'frozen');
 
       cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
-      cy.get('[data-player-hand-card]').should('have.length', 2);
+      cy.get('[data-player-hand-card]').should('have.length', 1);
 
-      // Player plays the returned jack
+      // Player replays the jack they just drew
       cy.get('[data-player-hand-card=11-0]').click();
       cy.get('[data-move-choice=jack]').click();
       cy.get('[data-opponent-point-card=1-0]').click();
@@ -605,7 +610,7 @@ describe('Opponent playing SEVENS', () => {
         p0Hand: [],
         p0Points: [ Card.TEN_OF_DIAMONDS ],
         p0FaceCards: [],
-        p1Hand: [ Card.FOUR_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [ Card.ACE_OF_CLUBS ],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],

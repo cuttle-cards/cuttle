@@ -1,22 +1,28 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'diamonds2026Announcement',
+  id: 'revealThreeFours2026Announcement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
-  displayCards: [],
-  imgSrc: '/img/announcement/diamonds_2026_cuttle_season_championship.svg',
-  imgHref: 'https://challonge.com/diamonds_2026_cuttle_season_championship',
-  startTime: '2026-08-25',
-  endTime: '2026-08-31',
+  displayCards: [
+    { suit: 3, rank: 4 },
+    { suit: 1, rank: 4 },
+  ],
+  startTime: '2026-09-19',
+  endTime: '2027-01-05',
   announcementText: [
     {
       heading: 'announcement.heading',
+      paragraph: [ { text: 'announcement.paragraph' } ],
+    },
+    {
+      heading: 'announcement.heading2',
       paragraph: [
-        { text: 'announcement.paragraph' },
-        { text: 'announcement.twitchLink', url: 'https://www.twitch.tv/cuttle_cards' },
-        { text: 'announcement.linkSeparator' },
-        { text: 'announcement.youtubeLink', url: 'https://www.youtube.com/live/mMYULGUXrfs' },
+        { text: 'announcement.paragraph2' },
+        {
+          text: 'announcement.patreonLink',
+          url: 'https://www.patreon.com/cuttle/posts/help-refine-4-9-169762967',
+        },
       ],
     },
   ],

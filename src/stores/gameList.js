@@ -17,12 +17,16 @@ export const useGameListStore = defineStore('gameList', {
   state: () => ({
     openGames: [],
     spectateGames: [],
+    // In-progress games the current user is playing in. Stored as returned by the API (rather than
+    // mapped through GameSummary) so the canArchive/opponent fields survive.
+    myCurrentGames: [],
   }),
   actions: {
     // Open/Playable Games
-    refreshGames({ openGames, spectateGames }) {
+    refreshGames({ openGames, spectateGames, myCurrentGames }) {
       this.openGames = openGames.map((game) => new GameSummary(game));
       this.spectateGames = spectateGames.map((game) => new GameSummary(game));
+      this.myCurrentGames = myCurrentGames;
     },
     addGameToList(newGame) {
       this.openGames.push(new GameSummary(newGame));
@@ -37,11 +41,19 @@ export const useGameListStore = defineStore('gameList', {
       this.spectateGames.push(startedGame);
     },
     gameFinished(gameId) {
+      this.removeCurrentGame(gameId);
       const game = this.spectateGames.find((game) => game.id === gameId);
       if (!game) {
         return;
       }
       game.isOver = true;
+    },
+    // My Current Games
+    removeCurrentGame(gameId) {
+      const gameIndex = this.myCurrentGames.findIndex((game) => game.id === gameId);
+      if (gameIndex >= 0) {
+        this.myCurrentGames.splice(gameIndex, 1);
+      }
     },
     updateGameStatus(data) {
       const updatedGame = this.openGames.find((game) => game.id === data.id);
@@ -77,7 +89,8 @@ export const useGameListStore = defineStore('gameList', {
           if (jwres.statusCode === 200) {
             const openGames = cloneDeep(resData.openGames);
             const spectateGames = cloneDeep(resData.spectatableGames);
-            this.refreshGames({ openGames, spectateGames });
+            const myCurrentGames = cloneDeep(resData.myCurrentGames ?? []);
+            this.refreshGames({ openGames, spectateGames, myCurrentGames });
             return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));
@@ -119,6 +132,28 @@ export const useGameListStore = defineStore('gameList', {
           return reject(new Error('Could not create new vs AI game'));
         });
       });
-    }
+    },
+    requestArchiveGame(gameId) {
+      return new Promise((resolve, reject) => {
+        io.socket.delete(`/api/game/${gameId}`, (resData, jwres) => {
+          if (jwres.statusCode === 200) {
+            this.removeCurrentGame(gameId);
+            return resolve(resData);
+          }
+
+          /**
+           * The API always fails with { message: '<i18n key>' }. Anything else is unexpected, so
+           * normalise both paths to an Error carrying a string -- the shape here previously varied
+           * between a bare string, an Error, and whatever non-string `message` the body held.
+           * GameListItem reads err.message and falls back to a generic string when it isn't
+           * a key it recognises.
+           */
+          const message = typeof resData?.message === 'string' ?
+            resData.message :
+            'Unknown error archiving game';
+          return reject(new Error(message));
+        });
+      });
+    },
   },
 });

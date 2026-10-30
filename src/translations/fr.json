@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Main : {handSize} cartes sur {handLimit}",
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",
@@ -102,6 +103,8 @@
       "mustResolve": "{opponentUsername} Doit Résoudre",
       "isDiscarding": "{opponentUsername} Est en Train de Défausser",
       "skipsDiscarding": "{opponentUsername} Passe la Défausse",
+      "isRevealingForFour": "{opponentUsername} Révèle Trois Cartes",
+      "isChoosingFourDiscards": "{opponentUsername} Choisit Deux Cartes Que Vous Devez Défausser",
       "choosingFromScrap": "{opponentUsername} Choisit une Carte de la Pile de Défausse",
       "playingFromDeck": "{opponentUsername} Joue Depuis le Paquet",
       "mustDiscardJack": "{opponentUsername} Doit Défausser un Valet",
@@ -135,6 +138,16 @@
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
         "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "fourReveal": {
+        "title": "Révélez trois cartes",
+        "body": "{opponentUsername} a joué un quatre en attaque. Choisissez trois cartes de votre main à révéler. {opponentUsername} en choisira deux que vous devrez défausser.",
+        "reveal": "Révéler"
+      },
+      "fourDiscard": {
+        "title": "Choisissez deux cartes à défausser",
+        "body": "{opponentUsername} a révélé ces trois cartes. Choisissez-en deux que {opponentUsername} devra défausser.",
+        "discard": "Défausser"
       },
       "discardToHandLimit": {
         "title": "Défaussez les cartes en trop",
@@ -236,12 +249,12 @@
         "1": "Élimine tous les points.",
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez une carte autre qu'un 3 dans la défausse et mettez-la dans votre main.",
-        "4": "Votre adversaire défausse deux cartes de son choix.",
+        "4": "Votre adversaire révèle trois cartes de sa main, et vous en choisissez deux qu'il doit défausser.",
         "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes de la pioche et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
-        "9": "L'adversaire reprend en main la carte ciblée qui est gelée pour un tour.",
+        "9": "Place la carte ciblée sur le dessus de la pioche",
         "10": "Aucune tactique.",
         "11": "Cible et vole une carte à points.",
         "12": "Protège vos cartes à points des attaques tactiques",
@@ -340,10 +353,10 @@
           "cannotTargetThree": "Vous ne pouvez pas cibler un 3 avec un 3"
         },
         "four": {
-          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
-          "notYourTurn": "Ce n'est pas à vous de défausser",
-          "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
-          "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
+          "notRevealingPhase": "Vous ne pouvez révéler des cartes que pendant la résolution d'un quatre",
+          "mustRevealThree": "Vous devez révéler trois cartes de votre main",
+          "notChoosingDiscardsPhase": "Vous ne pouvez choisir les défausses que pendant la résolution d'un quatre",
+          "mustChooseTwoRevealed": "Vous devez choisir deux des cartes révélées à défausser"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Vous ne pouvez vous défausser jusqu'à la limite de main que pendant la phase de défausse",
@@ -362,7 +375,8 @@
           "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment",
           "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
           "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
-        }
+        },
+        "onlyTopJack": "Vous ne pouvez cibler que le Valet du dessus d'une pile"
       }
     }
   },
@@ -373,11 +387,12 @@
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
       "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
-      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne",
+      "gameArchived": "Votre adversaire a archivé cette partie."
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
-    "noGameslist": "Aucune partie active",
+    "noOpenGames": "Aucune partie à rejoindre",
     "noSpectatelist": "Aucune partie disponible à regarder",
     "openCreateGame": "Créer une partie",
     "submitCreateGame": "Créer la partie",
@@ -388,7 +403,18 @@
     "gameName": "Nom de la partie",
       "join": "Rejoindre",
       "playVsAi": "Jouer contre l'IA",
-      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard."
+      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
+    "continue": "Continuer",
+    "archive": "Archiver",
+    "versus": "contre",
+    "archiveBlockedActive": "Cette partie est encore active et ne peut pas encore être archivée.",
+    "archiveBlockedRanked": "Les parties classées de cette semaine ne peuvent pas être archivées.",
+    "failedToArchiveGame": "Impossible d'archiver la partie. Veuillez réessayer plus tard.",
+    "error": {
+      "forbidden": "Vous n'êtes pas un joueur de cette partie !",
+      "notArchivable": "Cette partie ne peut pas être archivée.",
+      "notFound": "Cette partie n'existe plus."
+    }
   },
   "rules": {
     "introduction": "Introduction",
@@ -453,7 +479,7 @@
       "three": "Trois",
       "threeDescription": "Vous permet de récupérer de la défausse une carte (non-trois) de votre choix.",
       "four": "Quatre",
-      "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
+      "fourDescription": "Votre adversaire révèle trois cartes de sa main, et vous en choisissez deux qu'il doit défausser.",
       "five": "Cinq",
       "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu.",
       "six": "Six",
@@ -461,7 +487,7 @@
       "seven": "Sept",
       "sevenDescription": "Révélez les deux premières cartes du deck aux deux joueurs et choisissez-en une à jouer comme vous le souhaitez.",
       "nine": "Neuf",
-      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
+      "nineDescription": "Placez une carte du terrain de votre adversaire sur le dessus de la pioche.",
       "ten": "Dix",
       "tenDescription": "Aucun effet."
     },
@@ -490,7 +516,7 @@
       "rule2": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de transférer un carte Figure d'un joueur vers n'importe quel joueur.",
       "rule3": "Votre main est limitée à 7 cartes (au lien de 8).",
       "rule4": "Les valets peuvent être joués pour transférer n'importe quelle carte à points à n'importe quel autre joueur. Par conséquent, vous pouvez 'voler' des points à vous-même (ou à n'importe qui d'autre) pour les donner à votre partenaire, gagnant potentiellement à votre tour avec leurs points (leur objectif est toujours déterminé par le nombre de  rois sur le terrain).",
-      "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour (son effet habituel est appliqué. L'adversaire reprend en main la carte ciblée et n'a pas le droit de la jouer à son prochain tour."
+      "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour, son effet habituel est appliqué : la carte ciblée est placée sur le dessus de la pioche."
     },
     "faq": {
       "title": "FAQ",
@@ -586,13 +612,13 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat de saison Diamonds 2026 !",
-    "title": "Championnat Diamonds 2026",
-    "heading": "Championnat de saison Cuttle",
-    "paragraph": "Le Championnat de saison Diamonds 2026 de Cuttle a lieu ce dimanche 30 août à 12h30 ET ! Regardez les 8 meilleurs joueurs de la dernière saison classée s'affronter en double élimination pour le titre de Champion de la saison Diamonds 2026 de Cuttle. À suivre en direct sur",
-    "twitchLink": "Twitch",
-    "linkSeparator": "ou",
-    "youtubeLink": "YouTube"
+    "activatorText": "Le Quatre qui révèle trois cartes",
+    "title": "Bêta des règles : le Quatre qui révèle trois cartes",
+    "heading": "Révéler trois, défausser deux",
+    "paragraph": "Le Quatre est la carte la plus faible du jeu : un effet peu puissant sur un rang bas, avec peu de points et une faible valeur de sabordage. Et comme votre adversaire choisissait les deux cartes à défausser, il se séparait toujours de ses deux plus mauvaises. Désormais votre adversaire révèle trois cartes de sa main et vous choisissez les deux qu'il défausse, et un Quatre peut donc emporter quelque chose qui compte vraiment. S'il a exactement trois cartes, les trois sont révélées ; s'il en a deux ou moins, il défausse ce qu'il a.",
+    "heading2": "L'une des quatre expérimentations de la saison des Piques",
+    "paragraph2": "Il s'agit d'une bêta, et de l'une des quatre variantes de règles que nous testerons pendant la saison des Piques : deux améliorations du Neuf et deux du Quatre. Nous les soumettrons à un vote de la communauté vers la fin de l'année pour décider de ce qui reste. Pour le contexte complet et le raisonnement derrière les quatre, voir",
+    "patreonLink": "Aidez-nous à affiner le 4 et le 9"
   },
   "profile": {
     "myGames": "Mes jeux",

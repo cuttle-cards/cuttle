@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Mano: {handSize} de {handLimit} cartas",
     "resolve": "Resolver",
     "scrap": "Descartar",
     "view": "Ver",
@@ -102,6 +103,8 @@
       "mustResolve": "{opponentUsername} Debe Resolver",
       "isDiscarding": "{opponentUsername} Está Descartando",
       "skipsDiscarding": "{opponentUsername} Omite el Descarte",
+      "isRevealingForFour": "{opponentUsername} Está Revelando Tres Cartas",
+      "isChoosingFourDiscards": "{opponentUsername} Está Eligiendo Dos Cartas Para Que Descartes",
       "choosingFromScrap": "{opponentUsername} Está Eligiendo una Carta del Montón de Descarte",
       "playingFromDeck": "{opponentUsername} Está Jugando Desde el Mazo",
       "mustDiscardJack": "{opponentUsername} Debe Descartar una Jota",
@@ -135,6 +138,16 @@
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
         "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+      },
+      "fourReveal": {
+        "title": "Revela tres cartas",
+        "body": "{opponentUsername} ha usado la habilidad Única del Cuatro. Elige tres cartas de tu mano para revelar. {opponentUsername} elegirá dos de ellas para que las descartes.",
+        "reveal": "Revelar"
+      },
+      "fourDiscard": {
+        "title": "Elige dos cartas para descartar",
+        "body": "{opponentUsername} ha revelado estas tres cartas. Elige dos de ellas para que {opponentUsername} las descarte.",
+        "discard": "Descartar"
       },
       "discardToHandLimit": {
         "title": "Descarta las cartas sobrantes",
@@ -236,12 +249,12 @@
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta que no sea un 3 del mazo de descarte y ponla en tu mano",
-        "4": "Tu rival descarta dos cartas de su mano a su elección",
+        "4": "Tu rival revela tres cartas de su mano y tú eliges dos para que las descarte",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
-        "9": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno.",
+        "9": "Pon la carta objetivo encima del mazo",
         "10": "Sin efecto",
         "11": "Juega sobre una carta de puntos objetivo para robarla",
         "12": "Tus otras cartas no pueden ser objetivo de habilidades Únicas (pero sí pueden ser hundidas por cartas de puntos más altas)",
@@ -340,10 +353,10 @@
           "cannotTargetThree": "No puedes apuntar a un 3 con un 3"
         },
         "four": {
-          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
-          "notYourTurn": "No es tu turno para descartar",
-          "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
-          "mustSelectCards": "Debes seleccionar dos cartas para descartar"
+          "notRevealingPhase": "Solo puedes revelar cartas mientras se resuelve un cuatro",
+          "mustRevealThree": "Debes revelar tres cartas de tu mano",
+          "notChoosingDiscardsPhase": "Solo puedes elegir descartes mientras se resuelve un cuatro",
+          "mustChooseTwoRevealed": "Debes elegir dos de las cartas reveladas para descartar"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Solo puedes descartar hasta el límite de la mano durante la fase de descarte",
@@ -362,7 +375,8 @@
           "wrongPhase": "No puedes jugar desde el mazo en este momento",
           "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
           "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
-        }
+        },
+        "onlyTopJack": "Solo puedes seleccionar la Jota superior de una pila"
       }
     }
   },
@@ -373,11 +387,12 @@
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
       "cannotSpectate": "No puede ver el juego porque estás jugando.",
-      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua",
+      "gameArchived": "Tu oponente archivó esta partida."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
-    "noGameslist": "No hay partidas activas",
+    "noOpenGames": "No hay partidas para unirse",
     "noSpectatelist": "No hay partidas disponibles para ver",
     "openCreateGame": "Crear una partida",
     "submitCreateGame": "Crear partida",
@@ -388,7 +403,18 @@
     "gameName": "Nombre de la partida",
       "join": "Unirse",
       "playVsAi": "Jugar contra la IA",
-      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde."
+      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde.",
+    "continue": "Continuar",
+    "archive": "Archivar",
+    "versus": "vs",
+    "archiveBlockedActive": "Esta partida sigue activa y aún no se puede archivar.",
+    "archiveBlockedRanked": "Las partidas clasificatorias de esta semana no se pueden archivar.",
+    "failedToArchiveGame": "No se pudo archivar la partida. Inténtalo de nuevo más tarde.",
+    "error": {
+      "forbidden": "¡No eres jugador de esta partida!",
+      "notArchivable": "Esta partida no se puede archivar.",
+      "notFound": "Esa partida ya no existe."
+    }
   },
   "rules": {
     "introduction": "Introducción",
@@ -453,7 +479,7 @@
       "three": "Tres",
       "threeDescription": "Elige una carta (no-tres) del mazo de descarte y ponla en tu mano.",
       "four": "Cuatro",
-      "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
+      "fourDescription": "Tu rival revela tres cartas de su mano y tú eliges dos de ellas para que las descarte.",
       "five": "Cinco",
       "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja.",
       "six": "Seis",
@@ -461,7 +487,7 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
+      "nineDescription": "Pon una carta del campo de tu rival encima del mazo.",
       "ten": "Diez",
       "tenDescription": "Sin efecto."
     },
@@ -490,7 +516,7 @@
       "rule2": "Baraja dos comodines (Jokers) en el mazo. Los comodines cuentan como Figuras con el efecto \"Roba una Figura objetivo\", similar a la Sota. Al igual que las Sotas, pueden transferir el control de una Figura de cualquier jugador a cualquier otro jugador.",
       "rule3": "El límite de cartas en la mano se reduce a 7 (de 8).",
       "rule4": "Se pueden jugar Sotas para transferir el control de cualquier carta de puntos a cualquier otro jugador. Por lo tanto, puedes \"robarte\" puntos a ti mismo (o a cualquier otra persona) para dárselos a tu compañero, potencialmente ganando en tu turno con sus puntos (su objetivo aún está determinado por la cantidad de Reyes en su propio campo).",
-      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para devolver una carta a la mano de su controlador y evitar que juegue esa carta en su próximo turno."
+      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para poner una carta del campo de tu rival encima del mazo."
     },
     "faq": {
       "title": "FAQ",
@@ -586,13 +612,13 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato de la temporada Diamonds 2026!",
-    "title": "Campeonato Diamonds 2026",
-    "heading": "Campeonato de temporada de Cuttle",
-    "paragraph": "¡El Campeonato de la Temporada Diamonds 2026 de Cuttle es este domingo 30 de agosto a las 12:30 p. m. ET! Mira cómo los 8 mejores jugadores de la última temporada de partidas clasificatorias se enfrentan en un torneo de doble eliminación por el título de Campeón de la Temporada Diamonds 2026 de Cuttle. Míralo en directo en",
-    "twitchLink": "Twitch",
-    "linkSeparator": "o",
-    "youtubeLink": "YouTube"
+    "activatorText": "Cuatros que revelan tres",
+    "title": "Beta de reglas: Cuatros que revelan tres",
+    "heading": "Revela tres, descarta dos",
+    "paragraph": "El Cuatro es la carta más débil del juego: un efecto flojo en un rango bajo, con pocos puntos y escaso valor para hundir. Y como tu rival elegía las dos cartas a descartar, siempre se deshacía de sus dos peores. Ahora tu rival revela tres cartas de su mano y tú eliges cuáles dos descarta, así que un Cuatro puede llevarse algo que de verdad duela. Si tiene exactamente tres cartas, se revelan las tres; con dos o menos, descarta las que tenga.",
+    "heading2": "Una de cuatro pruebas de la temporada de Picas",
+    "paragraph2": "Esto es una beta, y una de cuatro variantes de reglas que probaremos durante la temporada de Picas: dos mejoras para el Nueve y dos para el Cuatro. Las someteremos a una votación de la comunidad hacia final de año para decidir qué se queda. Para conocer el contexto completo y el razonamiento de las cuatro, consulta",
+    "patreonLink": "Ayuda a refinar el 4 y el 9"
   },
   "profile": {
     "myGames": "Mis juegos",

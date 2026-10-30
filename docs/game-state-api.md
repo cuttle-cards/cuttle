@@ -19,53 +19,62 @@ Enum describing the phase of a turn the game is currently in. Used to validate w
    * faceCard  
    * jack  
    * scuttle  
-   * untargetedOneOff  
-   * targetedOneOff  
-   * requestStalemate
+   * oneOff  
+   * pass  
+   * stalemateRequest
    
 * countering \- phase where players play counters. Only legal moves are   
    * counter  
    * resolve  
 * resolvingThree \- Picking card from scrap. Only legal move is resolveThree  
-* resolvingFour \- Choosing cards to discard due to opponent four. Only legal move is resolveFour  
+* resolvingFour \- **Legacy (rules \< 3.0.0).** Choosing cards to discard due to opponent four; the only legal move was resolveFour. As of rules 3.0.0 no new game enters this phase (3.x discarded two cards at random; 4.0.0 uses resolvingFourReveal and resolvingFourDiscard). The value is retained because stored games still hold it and are re-rendered on replay.  
 * resolvingFive \- Choosing card to discard before drawing. Only legal move is resolveFive  
+* resolvingFourReveal \- The victim of a four chooses three cards from their hand to reveal. Only legal move is revealFour. Skipped when the victim holds three cards or fewer  
+* resolvingFourDiscard \- The player of a four chooses two of the revealed cards for their opponent to discard. Only legal move is discardFour. Skipped when the victim holds two cards or fewer, which are discarded as the four resolves  
 * resolvingSeven \- Picking one of the top cards from the deck. Must play a seven move next. Legal next moves:  
    * sevenPoints  
    * sevenFaceCard  
    * sevenScuttle  
-   * sevenUntargetedOneOff  
-   * sevenTargetedOneOff  
+   * sevenOneOff  
    * sevenJack  
+   * sevenDiscard  
 * discardingToHandLimit \- discarding due to hand limit at end of turn. Only legal move is discardToHandLimit  
 * consideringStalemate \- deciding whether to accept opponent's stalemate request. Only legal moves are stalemateAccept and stalemateReject
+
+`concede` is not phase-gated and is legal at any point in the game.
 
 ## MoveType
 
 Enum designating which kind of move was made.
 
-* initialize  
+* deal  
 * draw  
 * points  
 * scuttle  
 * faceCard (king, queen, or glasses eight)  
 * jack  
-* untargetedOneOff  
-* targetedOneOff  
+* oneOff \- a one-off played from hand. Covers both targeted and untargeted one-offs; targeting is expressed by `targetCard`/`targetType` on the move body rather than by a separate MoveType  
 * counter  
 * resolve  
+* fizzle \- a one-off was countered, so it and everything played on it are scrapped  
 * resolveThree (picking a card from the scrap)  
-* resolveFour (discarding from hand)  
+* resolveFour (discarding from hand) \- **Legacy (rules \< 3.0.0);** no longer accepted, retained so stored games still render  
+* resolveFive (discarding before drawing)  
+* revealFour (the victim of a four reveals three cards from hand)  
+* discardFour (the player of a four chooses two revealed cards for their opponent to discard)  
+* discardToHandLimit  
 * sevenPoints  
 * sevenScuttle  
 * sevenFaceCard  
 * sevenJack  
-* sevenUntargetedOneOff  
-* sevenTargetedOneOff  
+* sevenDiscard \- neither of the top two cards could be played, so the revealed card is discarded  
+* sevenOneOff \- the seven equivalent of `oneOff`; likewise covers both targeted and untargeted  
 * pass  
-* discardToHandLimit  
 * stalemateRequest  
 * stalemateReject  
-* stalemateAccept
+* stalemateAccept  
+* concede  
+* loadFixture (test/dev only \- sets the game to an arbitrary state)
 
 # Database Layer
 
@@ -101,6 +110,7 @@ A GameState record represents one move made by a player and the resulting game s
 * playedCard: `String | null` the card that was played  
 * targetCard: `String | null` the card that was targeted  
 * discardedCards: `Array<String>`  
+* fourRevealedCards: `Array<String>` \- cards the victim of a four revealed, still in their hand, awaiting the four player's choice of two to discard. Empty outside the resolvingFourDiscard phase  
 * p0Hand: `Array<String>`  
    * Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
    * ex) `[‘AC’, ‘5H’, ‘8D(JS-p0,JD-p1,JH-p0)’]`  
@@ -122,7 +132,7 @@ A GameState record represents one move made by a player and the resulting game s
 
 ## Game State Array\<String\> Lists {#game-state-array<string>-lists}
 
-Several columns on the `gamestate` table describe a list of cards in a specific place:   
+Several columns on the `GameStateRow` table describe a list of cards in a specific place:   
 `p0Hand`, `p0Points`, `p0FaceCards`, `p1Hand`, `p1Points`, `p1FaceCards`, `scrap`, and `deck`.   
 Each of these columns contains a list of strings that specify which cards appear in which order in that list, and which cards, if any, are attached to each of those cards. Each card is specified by a `String` id that describes the cards suit and rank, as follows:
 
@@ -155,7 +165,7 @@ Represents a single card, in its object format.
 * id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
 * suit: `0 | 1 | 2 | 3`  
 * rank: `[1- 13]`  
-* isFrozen: `Boolean` \- whether the card is currently frozen due to a 9 and can’t be played this turn
+* isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. No effect currently freezes a card; retained pending the outcome of the topdeck-nines beta
 
 ## Player
 
@@ -175,6 +185,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
 * moveType: `MoveType` \- designates which kind of move was made  
 * playedCard: `Card | null` \- which card was played if any in this latest move. This is not a “place” the card can be (as the card will be in the player’s points/wherever it was played), but is rather a description of which card was played for reference and logging  
 * targetCardId: `Card | null` \- which card was targeted by the current move. Used for 2’s, 9’s, jacks, and scuttling. This is not a “place” that cards can go, but rather a description of which card was targeted, for reference and logging   
+* fourRevealedCards: `Array<Card>` \- during resolvingFourDiscard, the cards the victim of a four revealed from their hand. These cards are still in the victim's hand; this is a description of which of them the four's player may choose to discard  
 * discardedCards: `Array<Card>` \- which cards, if any were discarded from this move via resolving a 4 or 5\. This is not a “place” cards can exist on the board (as these cards will actually be in the scrap), but rather a description of which cards were discarded for reference and logging  
 * turn: `int` \- which turn number the move was made on  
 * phase: `GamePhase` \- What phase of a turn the game is currently in. Used to validate which next-moves are legal  
@@ -223,6 +234,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
        * JACK  
    * attachedToTarget: Card | null  
    * twos : Array\<Card\>  
+   * fourRevealedCards: Array\<Card\> (cards the victim of a four revealed; sent to both players even though they sit in a hidden hand)  
    * turn: int  
    * phase: GamePhase  
    * log  
@@ -244,19 +256,19 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
 
 # Backend Control Flow
 
-Generally, requests to make moves on the game will lock the requested game to prevent other requests from updating it, retrieve the latest game state, validate the requested move, make the requested changes, persist the changes in the database, and emit a socket event with the resulting state. This is done via a single endpoint in `api/controllers/game/move`. It delegates to move-specific helpers based on the `moveType` specified in the request body. These `execute()` and `validate()` helpers for each move live in a folder named after the move inside `api/helpers/gamestate/moves` e.g. `api/helpers/gamestate/moves/draw/execute.js`
+Generally, requests to make moves on the game will lock the requested game to prevent other requests from updating it, retrieve the latest game state, validate the requested move, make the requested changes, persist the changes in the database, and emit a socket event with the resulting state. This is done via a single endpoint in `api/controllers/game/move`. It delegates to move-specific helpers based on the `moveType` specified in the request body. These `execute()` and `validate()` helpers for each move live in a folder named after the move inside `api/helpers/game-states/moves` e.g. `api/helpers/game-states/moves/draw/execute.js`
 
 ```javascript
-// api/controller/game/move  
+// api/controllers/game/move  
  // Request to make a move  
 // Which move is requested is determined by req.body.moveType  
 // Request to make a move  
 module.exports \= async function (req, res) {  
  let game;  
  try {  
-   const { saveGamestate, publishGameState, unpackGamestate } \= sails.helpers.gamestate;  
+   const { saveGamestate, publishGameState, unpackGamestate } \= sails.helpers.gameStates;  
    // Use the execute and validate helpers specific to the requested moveType  
-   const { execute, validate } \= sails.helpers.gamestate.moves\[req.body.moveType\];
+   const { execute, validate } \= sails.helpers.gameStates.moves\[req.body.moveType\];
 
    game \= await sails.helpers.lockGame(req.params.gameId);  
    const gameState \= unpackGamestate(game.gameStates.at(\-1));  
@@ -299,9 +311,9 @@ module.exports \= async function (req, res) {
 };
 ```
 
-The `validate` helper functions (e.g. `sails.helpers.gamestate.move.draw.validate()`) will be MoveType-specific utilities that throw errors if the move is illegal e.g. because it is not your turn or because another move e.g. countering is ongoing.  
+The `validate` helper functions (e.g. `sails.helpers.gameStates.moves.draw.validate()`) will be MoveType-specific utilities that throw errors if the move is illegal e.g. because it is not your turn or because another move e.g. countering is ongoing.  
 ```javascript
-// api/helpers/moves/draw/validate.js  
+// api/helpers/game-states/moves/draw/validate.js  
 const GameStatus \= require('../../utils/GameStatus.json');  
 module.exports \= {  
  friendlyName: 'Validate whether draw is legal',
@@ -350,7 +362,7 @@ module.exports \= {
 The `execute()` helpers return a new GameState object that reflects the changes of a given move, including moving cards around, updating the turn, setting the phase, and which player played the move.
 
 ```javascript
-// api/helpers/moves/draw/execute.js  
+// api/helpers/game-states/moves/draw/execute.js  
 const \_ \= require('lodash');
 
 module.exports \= {  

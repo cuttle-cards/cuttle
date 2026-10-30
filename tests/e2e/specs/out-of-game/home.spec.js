@@ -49,7 +49,7 @@ describe('Home - Game List', () => {
 
     it('Displays placeholder text when no games are available', () => {
       cy.get('[data-cy=text-if-no-game]').should(($el) =>
-        expect($el.text().trim()).to.equal('No Active Games'),
+        expect($el.text().trim()).to.equal('No Games to Join'),
       );
     });
 
@@ -89,6 +89,231 @@ describe('Home - Game List', () => {
       cy.visit('/');
       cy.get('[data-cy=game-list-item]').should('have.length', 1);
       cy.get('[data-cy=game-list-item]').should('contain', 'New Game');
+    });
+  });
+
+  describe('My Current Games', () => {
+    /**
+     * Signs up myUser over the test socket first so we capture their id (signupPlayer doesn't
+     * return one), then logs the browser in as them. The test socket is left as opponentOne so it
+     * can be used to make requests as a non-player.
+     */
+    function setupWithIds() {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupOpponent(myUser).as('myUserId');
+      cy.signupOpponent(opponentOne).as('opponentId');
+      cy.loginPlayer(myUser);
+      cy.vueRoute('/');
+    }
+
+    /** Older than the dormancy threshold, so the game is archivable */
+    const dormant = () => dayjs.utc().subtract(1, 'hour')
+      .toDate();
+
+    beforeEach(setupWithIds);
+
+    it('Shows no current-game rows when the user has none', () => {
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('[data-cy=text-if-no-game]').should('contain', 'No Games to Join');
+    });
+
+    it('Shows an in-progress game, continues into it, and disables archiving while it is active', function () {
+      // A real game, so /game/:id has gamestates to load
+      cy.setupGameAsP0(true);
+      cy.get('@gameId').then((gameId) => {
+        cy.vueRoute('/');
+        cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+        cy.get('[data-cy=current-game-list-item-name]').should('contain', 'Test Game');
+        // Just-played games are not archivable
+        cy.get(`[data-cy-archive-game=${gameId}]`).should('be.disabled');
+        cy.get(`[data-cy-continue-game=${gameId}]`).click();
+        cy.url().should('include', `/game/${gameId}`);
+        cy.get('#player-hand-cards .player-card').should('have.length', 5);
+      });
+    });
+
+    it('Shows the opponent and archives a dormant casual game', function () {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Abandoned Game',
+          status: GameStatus.STARTED,
+          isRanked: false,
+          p0: this.myUserId,
+          p1: this.opponentId,
+          updatedAt: dormant(),
+        },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+      cy.get('[data-cy=current-game-list-item-opponent]').should('contain', opponentOne.username);
+      cy.get('[data-cy-archive-game]').should('not.be.disabled')
+        .click();
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      // Still gone after a reload
+      cy.visit('/');
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+    });
+
+    it('Excludes archived games from the spectate list', function () {
+      cy.loadFinishedGameFixtures([
+        {
+          name: 'Abandoned Game',
+          status: GameStatus.STARTED,
+          isRanked: false,
+          p0: this.myUserId,
+          p1: this.opponentId,
+          updatedAt: dormant(),
+        },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy-archive-game]').click();
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get('[data-cy=no-spectate-game-text]').should('be.visible');
+    });
+
+    describe('Archive tooltip', () => {
+      /**
+       * The tooltip directive binds to the span wrapping the archive button, not the button itself:
+       * a disabled v-btn is <button disabled> with pointer-events:none, so a real pointer never
+       * reaches it. Hover the wrapper here rather than the button -- triggering the button directly
+       * would pass even if the tooltip were mis-bound and users could never see it.
+       */
+      const hoverArchive = (gameName) =>
+        cy.contains('[data-cy=current-game-list-item]', gameName)
+          .find('[data-cy-archive-game]')
+          .parent()
+          .trigger('mouseenter');
+
+      it('Names the action when archiving is available', function () {
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Dormant Casual',
+            status: GameStatus.STARTED,
+            isRanked: false,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        hoverArchive('Dormant Casual');
+        cy.get('.v-tooltip').should('be.visible')
+          .and('contain', 'Archive');
+      });
+
+      it('Explains the block when archiving is disabled', function () {
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Still Active',
+            status: GameStatus.STARTED,
+            isRanked: false,
+            p0: this.myUserId,
+            p1: this.opponentId,
+          },
+        ]);
+        cy.visit('/');
+        cy.contains('[data-cy=current-game-list-item]', 'Still Active')
+          .find('[data-cy-archive-game]')
+          .should('be.disabled')
+          .should('have.css', 'pointer-events', 'none');
+        hoverArchive('Still Active');
+        cy.get('.v-tooltip').should('be.visible')
+          .and('contain', 'This game is still active and cannot be archived yet.');
+      });
+    });
+
+    describe('Ranked games', () => {
+      /**
+       * Season started 10 days ago, so the current week began 3 days ago: a game created an hour
+       * ago falls inside it, while one created 5 days ago belongs to the previous week.
+       */
+      function loadCurrentSeason() {
+        cy.loadSeasonFixture([
+          {
+            name: 'Current Season',
+            startTime: dayjs.utc().subtract(10, 'day')
+              .toDate(),
+            endTime: dayjs.utc().add(20, 'day')
+              .toDate(),
+          },
+        ]);
+      }
+
+      it('Cannot archive a ranked game from the current season week', function () {
+        loadCurrentSeason();
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'This Week Ranked',
+            status: GameStatus.STARTED,
+            isRanked: true,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            createdAt: dayjs.utc().subtract(1, 'hour')
+              .toDate(),
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        cy.get('[data-cy=current-game-list-item]').should('have.length', 1);
+        cy.get('[data-cy-archive-game]').should('be.disabled');
+      });
+
+      it('Can archive a ranked game from a previous season week', function () {
+        loadCurrentSeason();
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Last Week Ranked',
+            status: GameStatus.STARTED,
+            isRanked: true,
+            p0: this.myUserId,
+            p1: this.opponentId,
+            createdAt: dayjs.utc().subtract(5, 'day')
+              .toDate(),
+            updatedAt: dormant(),
+          },
+        ]);
+        cy.visit('/');
+        cy.get('[data-cy-archive-game]').should('not.be.disabled')
+          .click();
+        cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      });
+    });
+
+    /**
+     * inGameEvents.js can't translate (no component, so no useI18n) -- it hands Home the i18n key
+     * via query.error and Home's $route watcher translates it. This pins that contract, so renaming
+     * the key can't silently reduce the message to a raw dotted string.
+     */
+    it('Translates the archived-game message handed over by the socket handler', () => {
+      cy.vueRoute('/?gameId=1&error=home.snackbar.gameArchived');
+      assertSnackbar('Your opponent archived this game.');
+      cy.url().should('not.contain', 'error=');
+    });
+
+    it('Forbids archiving a game the requester is not playing in', function () {
+      // A started game between two other players; the helper expects them to already exist
+      cy.signupOpponent(playerOne);
+      cy.signupOpponent(playerTwo);
+      setupGameBetweenTwoUnseenPlayers('notMine', false);
+      cy.vueRoute('/');
+      // Never listed for a user who isn't in it
+      cy.get('[data-cy=current-game-list-item]').should('not.exist');
+      cy.get('@notMineGameId').then((gameId) => {
+        cy.window()
+          .its('cuttle.gameListStore')
+          .then((store) =>
+            store.requestArchiveGame(gameId).then(
+              () => {
+                throw new Error('Expected archiving another players game to be rejected');
+              },
+              (err) => {
+                expect(err.message).to.eq('home.error.forbidden');
+              },
+            ),
+          );
+      });
     });
   });
 

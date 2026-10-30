@@ -56,16 +56,33 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
     case SocketEvent.DISCARD_TO_HAND_LIMIT:
+    case SocketEvent.REVEAL_FOUR:
     case SocketEvent.STALEMATE_REQUEST:
     case SocketEvent.STALEMATE_ACCEPT:
     case SocketEvent.STALEMATE_REJECT:
       gameStore.updateGame(evData.game);
       break;
     case SocketEvent.RESOLVE:
-      if (evData.game.lastEvent?.oneOff?.rank === 7) {
-        await gameStore.processSevens(evData.game);
-      } else {
-        gameStore.updateGame(evData.game);
+      switch (evData.game.lastEvent?.oneOff?.rank) {
+        // evData.playedBy on a RESOLVE event is flipped by create-socket-events to the caster,
+        // so the caster (playedBy === myPNum) needs the reveal animation of what was discarded
+        // from the opponent's hand, while the victim just updates the game state directly.
+        // Only a hand of two or fewer is discarded on resolve; larger hands go on to revealFour/discardFour.
+        case 4:
+          if (evData.playedBy === gameStore.myPNum) {
+            await gameStore.processFours(evData.discardedCards, evData.game);
+          } else {
+            gameStore.updateGame(evData.game);
+          }
+          break;
+        case 7:
+          await gameStore.processSevens(evData.game);
+          break;
+        case 9:
+          await gameStore.processNines(evData.targetCard, evData.game);
+          break;
+        default:
+          gameStore.updateGame(evData.game);
       }
       break;
     case SocketEvent.SCUTTLE:
@@ -75,8 +92,18 @@ export async function handleInGameEvents(evData, newRoute = null) {
     case SocketEvent.RESOLVE_THREE:
       await gameStore.processThrees(evData.chosenCard, evData.game);
       break;
+    // Legacy: fours no longer use resolveFour as of rules 3.0.0, but stored games still step
+    // through a separate resolveFour frame, and this switch has no default to fall back on
     case SocketEvent.RESOLVE_FOUR:
       if (evData.playedBy !== gameStore.myPNum) {
+        await gameStore.processFours(evData.discardedCards, evData.game);
+      } else {
+        gameStore.updateGame(evData.game);
+      }
+      break;
+    // playedBy is the four's player, who sees the discards leave their opponent's hidden hand
+    case SocketEvent.DISCARD_FOUR:
+      if (evData.playedBy === gameStore.myPNum) {
         await gameStore.processFours(evData.discardedCards, evData.game);
       } else {
         gameStore.updateGame(evData.game);
@@ -133,6 +160,16 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = null;
       break;
     }
+    /**
+     * Our opponent archived this game out from under us; it can no longer be played.
+     * Hand the message to Home as an i18n key rather than translating here -- this module runs
+     * outside any component, so useI18n() is unavailable to it. HomeView's $route watcher already
+     * reads `query.error`, runs it through the composable's t(), and snackbars it; router.js
+     * bounces failed game loads the same way.
+     */
+    case SocketEvent.GAME_ARCHIVED:
+      router.push({ path: '/', query: { gameId: eventGameId, error: 'home.snackbar.gameArchived' } });
+      return;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);

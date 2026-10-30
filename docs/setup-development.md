@@ -64,6 +64,27 @@ npm run start:client
 
 to start the client on localhost:8080
 
+##### Running several stacks at once
+
+Every port the local stack binds is derived from a single environment variable, so you can boot a
+second (or third) copy of the app — e.g. one per [git worktree](https://git-scm.com/docs/git-worktree) —
+without the ports colliding. Copy `.env.local.example` to `.env.local` (which is git-ignored) in the
+checkout you want to move out of the way:
+
+```
+CUTTLE_PORT_OFFSET=1
+```
+
+That stack then runs the client on `localhost:8081` and the server on `localhost:1338`, and
+`npm run e2e:gui` from that same checkout automatically points at it. Bump the offset again
+(`2`, `3`, ...) for each additional stack. Individual ports can be pinned instead with
+`CUTTLE_CLIENT_PORT` and `PORT`, which win over the offset, and a real environment variable
+(`CUTTLE_PORT_OFFSET=2 npm run start:dev`) wins over `.env.local`.
+
+Each stack keeps its own session cookie and its own `sails-disk` database, so logging into one
+doesn't log you out of the others. If you keep your worktrees inside the repo, put them in
+`worktrees/` or `.claude/worktrees/` — both are git-ignored.
+
 ##### Vue Devtools
 
 cuttle.cards uses the [vite-plugin vue devtools](https://devtools.vuejs.org/guide/vite-plugin), which let you inspect application state e.g. viewing all a component's data or all the state in the various stores. This is incredibly useful for debugging and analyzing problems. The devtools are automatically injected into the application during development and can be opened by clicking on the 'vue' icon at the bottom of the page when visiting the application. They can also be opened from inside Cypress tests, which is a powerful combination, enabling you to use test code to force the app into a specific state, and the devtools to investigate and troubleshoot.

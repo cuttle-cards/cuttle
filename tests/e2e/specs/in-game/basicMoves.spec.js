@@ -248,6 +248,8 @@ describe('Game Basic Moves - P0 Perspective', () => {
       scrap: [],
     });
 
+    cy.get('[data-cy="history-log"]').should('contain', 'played the K♣️.');
+
     // Attempt to play king out of turn
     cy.get('[data-player-hand-card=13-3]').click(); // king of clubs
     playOutOfTurn('faceCard');
@@ -648,6 +650,8 @@ describe('Playing 8s', () => {
       p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
+
+    cy.get('[data-cy="history-log"]').should('contain', 'played the 8♠️ as a glasses eight.');
 
     // Attempt to play glasses eight out of turn
     cy.get('[data-player-hand-card=8-2]').click(); // eight of hearts

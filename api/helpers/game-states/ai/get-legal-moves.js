@@ -1,4 +1,4 @@
-const MoveType = require('../../../../utils/MoveType');
+const MoveType = require('../../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Get legal moves',
@@ -24,7 +24,9 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, playedBy, priorStates }, exits) => {
-    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST', 'STALEMATE_ACCEPT', 'FIZZLE', 'LOADFIXTURE' ];
+    // RESOLVE_FOUR is retained in the enum so stored games still render, but its move helper is
+    // gone -- fours now complete through revealFour and discardFour -- so it must not be looked up here.
+    const disallowedMoveTypes = [ 'DEAL', 'CONCEDE', 'STALEMATE_REQUEST', 'STALEMATE_ACCEPT', 'FIZZLE', 'LOADFIXTURE', 'RESOLVE_FOUR' ];
     const moveTypes = Object.values(_.omit(MoveType, disallowedMoveTypes));
     const res = [];
     for (let moveType of moveTypes) {

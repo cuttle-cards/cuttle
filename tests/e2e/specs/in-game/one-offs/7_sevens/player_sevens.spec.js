@@ -429,6 +429,11 @@ describe('Playing SEVENS', () => {
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS ],
       });
+
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the 8♣️ from the top of the deck as a Glasses eight.',
+      );
     }); // End seven glasses test
   }); // End seven face card describe
 
@@ -623,6 +628,11 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the A♦️ from the top of the deck as a one-off to Scrap all points.',
+      );
+
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
@@ -661,7 +671,7 @@ describe('Playing SEVENS', () => {
       assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
     });
 
-    it('Cannot play 4 from seven when opponent has no cards in hand', () => {
+    it('Plays a 4 from a seven against an empty hand, discarding nothing', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -676,16 +686,27 @@ describe('Playing SEVENS', () => {
       // Play seven of clubs
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-      // Play Four of hearts
+      // Play Four of hearts -- legal against no cards, and discards nothing
       cy.get('[data-top-card=4-2]').should('exist')
         .and('be.visible')
         .click();
       cy.get('[data-move-choice=oneOff]').click();
-
-      // Should not allow playing 4 as one-off
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      // Opponent does not counter (resolves stack)
+      cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      cy.get('#four-discard-dialog').should('not.exist');
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.SEVEN_OF_SPADES, Card.TEN_OF_SPADES ],
+        p1FaceCards: [],
+        scrap: [ Card.SEVEN_OF_CLUBS, Card.FOUR_OF_HEARTS ],
+      });
     });
   }); // End player seven one-off describe
 
@@ -716,6 +737,11 @@ describe('Playing SEVENS', () => {
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
+      cy.get('[data-cy="history-log"]').should(
+        'contain',
+        'played the 2♠️ from the top of the deck as a one-off to Scrap target Royal or Glasses eight, targeting the Q♣️.',
+      );
 
       assertGameState(0, {
         p0Hand: [],
@@ -847,11 +873,12 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      // The queen went to the top of the deck, not back to the opponent's hand
       assertGameState(0, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.QUEEN_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
@@ -902,11 +929,12 @@ describe('Playing SEVENS', () => {
       cy.resolveOpponent();
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
+      // The jack went to the top of the deck, and the ace it was stealing reverts to its owner
       assertGameState(0, {
         p0Hand: [],
         p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_HEARTS ],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],

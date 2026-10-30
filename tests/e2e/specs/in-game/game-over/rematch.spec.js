@@ -121,7 +121,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     });
 
     // Match should be incomplete with one game
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -139,7 +139,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertLoss({ wins: 1, losses: 1, stalemates: 0 });
 
     // Match should be incomplete with two games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -168,7 +168,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertStalemate({ wins: 1, losses: 1, stalemates: 1 });
 
     // Match should be incomplete with three games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -197,7 +197,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-cy=opponent-match-result]').find('[data-cy-result-img=lost]');
 
     // Match should be completed with 4 games
-    cy.request('http://localhost:1337/api/test/match').then((res) => {
+    cy.request(`${Cypress.env('apiUrl')}/api/test/match`).then((res) => {
       expect(res.body.length).to.eq(3);
       const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -264,6 +264,71 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, false);
+  });
+
+  describe('Rematching a reopened finished game', () => {
+    beforeEach(() => {
+      concedePlayer();
+      assertLoss({ wins: 0, losses: 1, stalemates: 0 });
+      cy.location('pathname').as('finishedGamePath', { type: 'static' });
+      cy.get('[data-cy=gameover-go-home]').click();
+      cy.location('pathname').should('equal', '/');
+    });
+
+    function assertRematchHidesOpponentHand(oldGamePath) {
+      const oldGameId = Number(oldGamePath.split('/').pop());
+
+      cy.location('pathname').should('equal', oldGamePath);
+      cy.get('#game-over-dialog').should('be.visible');
+      cy.window().its('cuttle.gameStore.opponent.hand')
+        .should((hand) => {
+          expect(hand.length).to.be.greaterThan(0);
+          expect(hand.every((card) => !card.isHidden && card.rank && card.suit != null)).to.eq(true);
+        });
+
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      cy.get('[data-cy=gameover-rematch]').click();
+
+      cy.location('pathname').should('match', /^\/game\/\d+$/)
+        .should('not.equal', oldGamePath);
+      cy.get('#game-over-dialog').should('not.exist');
+
+      // Check the actual client state as well as the card backs: private card data
+      // must not carry over from the finished game's spectator perspective.
+      cy.window().its('cuttle.gameStore')
+        .should((game) => {
+          expect(game.id).not.to.eq(oldGameId);
+          expect(game.opponent.hand).to.have.length(5);
+          expect(game.opponent.hand.every(
+            (card) => card.isHidden && !card.id && !card.rank && card.suit == null,
+          )).to.eq(true);
+        });
+      cy.get('[data-opponent-hand-card]').should('have.length', 5)
+        .find('img.opponent-card-back')
+        .should('have.length', 5);
+
+      // The returning player must also receive updates from the new player room.
+      cy.drawCardOpponent();
+      cy.get('[data-opponent-hand-card]').should('have.length', 6)
+        .find('img.opponent-card-back')
+        .should('have.length', 6);
+    }
+
+    it('Hides opponent hand after returning via URL', () => {
+      cy.get('@finishedGamePath').then((oldGamePath) => {
+        cy.visit(oldGamePath);
+        assertRematchHidesOpponentHand(oldGamePath);
+      });
+    });
+
+    it('Hides opponent hand after returning via browser Back', () => {
+      // Browser Back keeps the SPA document and its socket connection alive.
+      cy.window().then((previousWindow) => {
+        cy.go('back');
+        cy.window().should('equal', previousWindow);
+      });
+      cy.get('@finishedGamePath').then(assertRematchHidesOpponentHand);
+    });
   });
 
   it('Unranked games with rematch', function () {

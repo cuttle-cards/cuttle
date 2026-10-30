@@ -20,6 +20,8 @@
     />
 
     <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
+    <FourRevealDialog :model-value="gameStore.revealingForFour" @reveal="revealFour" />
+    <FourDiscardDialog :model-value="gameStore.choosingFourDiscards" @discard="discardFour" />
     <FiveDialog v-if="gameStore.showResolveFive" @resolve-five="resolveFive" />
     <DiscardToHandLimitDialog
       :model-value="gameStore.showDiscardToHandLimit"
@@ -56,6 +58,8 @@ import { useAuthStore } from '@/stores/auth';
 import CannotCounterDialog from './components/CannotCounterDialog.vue';
 import CounterDialog from './components/CounterDialog.vue';
 import FourDialog from './components/FourDialog.vue';
+import FourRevealDialog from './components/FourRevealDialog.vue';
+import FourDiscardDialog from './components/FourDiscardDialog.vue';
 import DiscardToHandLimitDialog from './components/DiscardToHandLimitDialog.vue';
 import GameOverDialog from './components/gameOver/GameOverDialog.vue';
 import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
@@ -72,6 +76,8 @@ export default {
     CounterDialog,
     DiscardToHandLimitDialog,
     FourDialog,
+    FourRevealDialog,
+    FourDiscardDialog,
     GameOverDialog,
     ReauthenticateDialog,
     SevenDoubleJacksDialog,
@@ -154,13 +160,23 @@ export default {
       this.gameStore.requestCounter(twoId).then(this.clearSelection)
         .catch(this.handleError);
     },
+    // Legacy: no live game can enter the four-discard phase as of rules 3.0.0, but the dialog
+    // is still rendered when replaying a stored game that did, so the handler stays wired.
     discard(cardIds) {
       const [ cardId1 ] = cardIds;
       const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
-      this.gameStore.requestDiscard({
-        cardId1,
-        cardId2,
-      });
+      this.gameStore
+        .requestDiscard({
+          cardId1,
+          cardId2,
+        })
+        .catch(this.handleError);
+    },
+    revealFour(cardIds) {
+      this.gameStore.requestRevealFour(cardIds).catch(this.handleError);
+    },
+    discardFour(cardIds) {
+      this.gameStore.requestDiscardFour(cardIds).catch(this.handleError);
     },
     discardToHandLimit(cardIds) {
       this.gameStore.requestDiscardToHandLimit(cardIds);

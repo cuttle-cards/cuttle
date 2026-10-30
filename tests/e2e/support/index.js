@@ -27,6 +27,10 @@ Cypress.on('uncaught:exception', (err) => {
 
 // Hide Vue DevTools panel during tests to prevent it from covering UI elements
 Cypress.on('window:before:load', (win) => {
+  // Silence all sound effects (lobby join/leave/start, etc.) so local test runs aren't noisy.
+  // Resolves instead of playing so playAudio()'s awaited play() still succeeds. Tests that need
+  // to assert a sound plays can spy on win.HTMLMediaElement.prototype.play after the visit.
+  win.HTMLMediaElement.prototype.play = () => Promise.resolve();
   // Suppress the intro popups (home announcement + lobby play-time dialog) in tests so their
   // scrims don't cover UI elements. Must be seeded BEFORE the app loads: the dialogs read
   // localStorage at mount, so setting these flags after cy.visit would be too late. Uses the

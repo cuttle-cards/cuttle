@@ -25,6 +25,7 @@ module.exports = {
         'twos',
         'resolved',
         'discardedCards',
+        'fourRevealedCards',
         'p0Hand',
         'p1Hand',
         'p0Points',
@@ -39,14 +40,7 @@ module.exports = {
         if (value) {
           const { convertStrToCard } = sails.helpers.gameStates;
           convertedData[attribute] = Array.isArray(value)
-            ? value.map((cardStr) => {
-              // Is the card frozen
-              const freezeCard =
-                  !!gameStateRow.resolved &&
-                  gameStateRow.resolved[0] === '9' &&
-                  gameStateRow.targetCard === cardStr.substring(0, 3);
-              return convertStrToCard(cardStr, freezeCard);
-            })
+            ? value.map((cardStr) => convertStrToCard(cardStr))
             : convertStrToCard(value);
         }
       });
@@ -83,6 +77,7 @@ module.exports = {
         oneOffTargetType: gameStateRow.oneOffTargetType,
         resolved: convertedData.resolved ?? null,
         discardedCards: convertedData.discardedCards ?? null,
+        fourRevealedCards: convertedData.fourRevealedCards ?? null,
       };
 
       const convertedGameState = sails.helpers.gameStates.validateGamestate(data);

@@ -2,21 +2,10 @@ import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
-function assertCardIsFrozen(card) {
-  const cardSelector = `[data-player-hand-card=${card.rank}-${card.suit}]`;
-  cy.get(cardSelector)
-    .should('have.class', 'frozen')
-    .click();
-
-
-  // Card overlay should have the frozen state shown visually
-  cy.get(`[data-player-overlay-card=${card.rank}-${card.suit}]`).should('have.class', 'frozen');
-  // Frozen move choice cards should be disabled and display frozen text.
-  cy.get('[data-move-choice=points]')
-    .should('have.class', 'v-card--disabled')
-    .contains('This card is frozen')
-    .click({ force: true }); // Break out into separate test case
-  assertSnackbar(SnackBarError.FROZEN_CARD);
+function assertDeckCount(count) {
+  cy.get('#deck .c-deck-count').invoke('text')
+    .invoke('trim')
+    .should('eq', `(${count})`);
 }
 
 describe('Playing NINES', () => {
@@ -52,7 +41,7 @@ describe('Playing NINES', () => {
       });
     }); // End 9 scuttle
 
-    it('Plays a nine as ONE-OFF on lower point card to return it to owners hand', () => {
+    it('Plays a nine as ONE-OFF on a lower point card to put it on top of the deck', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
@@ -60,29 +49,54 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
+        topCard: Card.TWO_OF_CLUBS,
       });
+      assertDeckCount(46);
 
       // Player plays nine
       cy.get('[data-player-hand-card=9-3]').click(); // nine of spades
-      cy.get('[data-move-choice=targetedOneOff').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('[data-opponent-point-card=1-1]').click(); // ace of diamonds
 
       // Wait for opponent to resolve
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       cy.resolveOpponent();
 
+      // The ace is gone from the board, and it did NOT go to anyone's hand
       assertGameState(0, {
         p0Hand: [ Card.NINE_OF_HEARTS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 47,
+      });
+
+      // The opponent's next draw is the card they just lost, proving it was on top
+      cy.drawCardOpponent();
+      assertDeckCount(46);
+
+      // Player draws the card that was underneath it
+      cy.get('#deck').click();
+      assertDeckCount(45);
+
+      // Opponent replays the ace, so it was never frozen
+      cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
+
+      assertGameState(0, {
+        p0Hand: [ Card.NINE_OF_HEARTS, Card.TWO_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_HEARTS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
       });
     }); // End 9 one-off low point card
 
-    it('Plays a nine as ONE-OFF on a higher point card to return it to owners hand', () => {
+    it('Plays a nine as ONE-OFF on a higher point card to put it on top of the deck', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.NINE_OF_CLUBS, Card.NINE_OF_HEARTS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
@@ -91,6 +105,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.NINE_OF_SPADES ],
         p1FaceCards: [],
       });
+      assertDeckCount(46);
 
       // Attempt illegal scuttle
       cy.get('[data-player-hand-card=9-0]').click();
@@ -117,14 +132,15 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.NINE_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [ Card.NINE_OF_SPADES, Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_HEARTS ],
+        deckLength: 47,
       });
     }); // End 9 one-off high-point card
 
-    it('Plays a nine as a ONE-OFF to return a face card to its owners hand', () => {
+    it('Plays a nine as a ONE-OFF to put a face card on top of the deck', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
@@ -133,6 +149,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_DIAMONDS ],
       });
+      assertDeckCount(46);
 
       // Player plays nine
       cy.get('[data-player-hand-card=9-3]').click(); // nine of spades
@@ -148,14 +165,15 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.NINE_OF_HEARTS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_DIAMONDS ],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 47,
       });
     }); // End 9 on face card
 
-    it('Plays a 9 on a jack to steal back point card', () => {
+    it('Plays a 9 on a jack to steal back point card, topdecking the jack', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_SPADES ],
@@ -163,7 +181,9 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.JACK_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
+        topCard: Card.TWO_OF_CLUBS,
       });
+      assertDeckCount(48);
 
       // Player plays Ace of Spades
       cy.get('[data-player-hand-card=1-3]').click();
@@ -190,7 +210,7 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
       });
 
-      // Player plays NINE to destroy jack
+      // Player plays NINE to topdeck the jack
       cy.get('[data-player-hand-card=9-0]').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('#player-hand-targeting').should('be.visible');
@@ -200,19 +220,39 @@ describe('Playing NINES', () => {
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       cy.resolveOpponent();
 
+      // The jack went to the deck; the point card it was stealing reverts to its owner
       assertGameState(0, {
         p0Hand: [],
         p0Points: [ Card.ACE_OF_SPADES, Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 49,
       });
 
       // Should no longer see jack of clubs on screen
       cy.get('[data-player-face-card=11-0]').should('not.exist');
-    }); // End 9 on jack 
+
+      // Opponent draws the topdecked jack back, and player draws the card beneath it
+      cy.drawCardOpponent();
+      cy.get('#deck').click();
+      assertDeckCount(47);
+
+      // Opponent immediately replays the jack, so it was never frozen
+      cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.ACE_OF_SPADES);
+
+      assertGameState(0, {
+        p0Hand: [ Card.TWO_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.ACE_OF_SPADES ],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
+      });
+    }); // End 9 on jack
 
     it('Plays a 9 on a triple jack to steal back jacked point card', () => {
       cy.loadGameFixture(0, {
@@ -223,6 +263,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
       });
+      assertDeckCount(45);
 
       // Player plays Ace of Spades
       cy.get('[data-player-hand-card=1-3]').click();
@@ -249,7 +290,6 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
       });
 
-
       // player plays jack
       cy.get('[data-player-hand-card=11-3]').click();
       cy.get('[data-move-choice=jack]').click();
@@ -259,10 +299,15 @@ describe('Playing NINES', () => {
       // Opponent plays jack
       cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.ACE_OF_SPADES);
 
-      // player plays 9 on jack to steal back card
+      // player plays 9 on the jack stack to steal back the card
       cy.get('[data-player-hand-card=9-0]').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('#player-hand-targeting').should('be.visible');
+
+      // Only the top jack of the stack is a legal target
+      cy.get('.jacks-container').find('.target-overlay')
+        .should('have.length', 1);
+
       cy.get('[data-opponent-face-card=11-1]').click();
 
       cy.resolveOpponent();
@@ -271,22 +316,26 @@ describe('Playing NINES', () => {
         p0Hand: [],
         p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_DIAMONDS, Card.NINE_OF_HEARTS ],
+        p1Hand: [ Card.NINE_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 46,
       });
 
-      // Opponent nines Jack
+      // Opponent nines the jack that is now on top of the player's ace
       cy.playTargetedOneOffOpponent(Card.NINE_OF_HEARTS, Card.JACK_OF_SPADES, 'jack');
       cy.get('[data-cy=cannot-counter-resolve]').click();
-  
+
       assertGameState(0, {
-        p0Hand: [ Card.JACK_OF_SPADES ],
-        p0Points: [ Card.TEN_OF_SPADES, ],
+        p0Hand: [],
+        p0Points: [ Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_DIAMONDS ],
+        p1Hand: [],
         p1Points: [ Card.ACE_OF_SPADES ],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS, Card.NINE_OF_HEARTS ],
+        deckLength: 47,
       });
     });
 
@@ -298,33 +347,16 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS, Card.NINE_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
+        topCard: Card.TWO_OF_CLUBS,
       });
+      assertDeckCount(45);
 
       // Player plays Ace of Spades
       cy.get('[data-player-hand-card=1-3]').click();
       cy.get('[data-move-choice=points]').click();
 
-      assertGameState(0, {
-        p0Hand: [ Card.NINE_OF_CLUBS, Card.JACK_OF_SPADES ],
-        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
-        p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS, Card.NINE_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-
       // Opponent plays jack
       cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.ACE_OF_SPADES);
-
-      assertGameState(0, {
-        p0Hand: [ Card.NINE_OF_CLUBS, Card.JACK_OF_SPADES ],
-        p0Points: [ Card.TEN_OF_SPADES ],
-        p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_DIAMONDS, Card.NINE_OF_HEARTS ],
-        p1Points: [ Card.ACE_OF_SPADES ],
-        p1FaceCards: [],
-      });
-
 
       // player plays jack
       cy.get('[data-player-hand-card=11-3]').click();
@@ -335,7 +367,7 @@ describe('Playing NINES', () => {
       // Opponent plays jack
       cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.ACE_OF_SPADES);
 
-      // player plays 9
+      // player plays 9 on the point card itself
       cy.get('[data-player-hand-card=9-0]').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('#player-hand-targeting').should('be.visible');
@@ -343,14 +375,33 @@ describe('Playing NINES', () => {
 
       cy.resolveOpponent();
 
+      // The ace is topdecked and all three jacks are scrapped
       assertGameState(0, {
-        p0Hand: [  ],
+        p0Hand: [],
         p0Points: [ Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.NINE_OF_HEARTS, Card.ACE_OF_SPADES ],
+        p1Hand: [ Card.NINE_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS ]
+        scrap: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS ],
+        deckLength: 46,
+      });
+
+      // Opponent draws the ace back, and the player draws the card beneath it
+      cy.drawCardOpponent();
+      cy.get('#deck').click();
+      assertDeckCount(44);
+
+      cy.playPointsOpponent(Card.ACE_OF_SPADES);
+
+      assertGameState(0, {
+        p0Hand: [ Card.TWO_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [],
+        p1Hand: [ Card.NINE_OF_HEARTS ],
+        p1Points: [ Card.ACE_OF_SPADES ],
+        p1FaceCards: [],
+        scrap: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS ],
       });
     });
 
@@ -381,15 +432,16 @@ describe('Playing NINES', () => {
         p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [],
+        deckLength: 46,
       });
     });
 
-    it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable later', () => {
+    it('Plays a nine as a ONE-OFF; the topdecked card is drawn back and replayed immediately', () => {
       /*
-      1). P0 plays a 9, targeting an in-play Queen
+      1). P0 plays a 9, topdecking an in-play Queen
       2). P1 plays a 6's one-off, removing some cards
       3). P0 plays a Jack, targeting an in-play 10
-      4). P1 can replay their bounced Queen
+      4). P1 draws their topdecked Queen and replays it with no delay
        */
 
       // Initial state
@@ -400,10 +452,12 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [ Card.QUEEN_OF_DIAMONDS ],
+        topCard: Card.TWO_OF_CLUBS,
       });
+      assertDeckCount(45);
 
       // STEP 1
-      cy.log('STEP 1- P0 plays nine, targeting the Queen in play');
+      cy.log('STEP 1- P0 plays nine, topdecking the Queen in play');
       cy.get('[data-player-hand-card=9-3]').click(); // nine of spades
       cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('#player-hand-targeting').should('be.visible');
@@ -417,10 +471,11 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.JACK_OF_SPADES ],
         p0Points: [],
         p0FaceCards: [ Card.KING_OF_HEARTS ],
-        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_DIAMONDS ],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 46,
       });
 
       // STEP 2
@@ -435,7 +490,7 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.JACK_OF_SPADES ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_DIAMONDS ],
+        p1Hand: [ Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.KING_OF_HEARTS, Card.SIX_OF_HEARTS ],
@@ -451,18 +506,22 @@ describe('Playing NINES', () => {
         p0Hand: [],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [ Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_DIAMONDS ],
+        p1Hand: [ Card.QUEEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.KING_OF_HEARTS, Card.SIX_OF_HEARTS ],
       });
 
       // STEP 4
-      cy.log('STEP 4- P1 plays their previously bounced Queen');
+      cy.log('STEP 4- P1 draws their topdecked Queen and plays it right away');
+      cy.drawCardOpponent();
+      cy.get('#deck').click();
+      assertDeckCount(44);
+
       cy.playFaceCardOpponent(Card.QUEEN_OF_DIAMONDS);
 
       assertGameState(0, {
-        p0Hand: [],
+        p0Hand: [ Card.TWO_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [ Card.QUEEN_OF_HEARTS ],
@@ -472,13 +531,13 @@ describe('Playing NINES', () => {
       });
     });
 
-    it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable even if there is countering', () => {
+    it('Plays a nine as a ONE-OFF; the topdecked card returns even when a later one-off is countered', () => {
       /*
-      1). P0 plays 9 one-off, targeting P1's Queen
+      1). P0 plays 9 one-off, topdecking P1's Queen
       2). P1 plays 6's one-off
-      3). P0 counters and it resolves
+      3). P0 counters and it fizzles
       4). P0 plays their Jack, targeting P1's 10
-      5). P1 plays their Queen again (it should no longer be frozen)
+      5). P1 draws their Queen back and plays it again
        */
 
       // Initial state
@@ -489,10 +548,12 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [ Card.QUEEN_OF_DIAMONDS ],
+        topCard: Card.TWO_OF_CLUBS,
       });
+      assertDeckCount(44);
 
       // STEP 1
-      cy.log('STEP 1- P0 plays nine, targeting the Queen in play');
+      cy.log('STEP 1- P0 plays nine, topdecking the Queen in play');
       cy.get('[data-player-hand-card=9-3]').click(); // nine of spades
       cy.get('[data-move-choice=targetedOneOff]').click();
       cy.get('#player-hand-targeting').should('be.visible');
@@ -506,10 +567,11 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.TWO_OF_SPADES, Card.JACK_OF_SPADES ],
         p0Points: [],
         p0FaceCards: [ Card.KING_OF_HEARTS ],
-        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_DIAMONDS ],
+        p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 45,
       });
 
       // STEP 2
@@ -535,7 +597,7 @@ describe('Playing NINES', () => {
         p0Hand: [ Card.JACK_OF_SPADES ],
         p0Points: [],
         p0FaceCards: [ Card.KING_OF_HEARTS ],
-        p1Hand: [ Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_DIAMONDS ],
+        p1Hand: [ Card.QUEEN_OF_HEARTS ],
         p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.SIX_OF_HEARTS, Card.TWO_OF_SPADES ],
@@ -548,12 +610,16 @@ describe('Playing NINES', () => {
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=10-2]').click(); // Ten of hearts
 
-      // STEP 4
-      cy.log('STEP 5- P1 plays their previously bounced Queen');
+      // STEP 5
+      cy.log('STEP 5- P1 draws their topdecked Queen and plays it');
+      cy.drawCardOpponent();
+      cy.get('#deck').click();
+      assertDeckCount(43);
+
       cy.playFaceCardOpponent(Card.QUEEN_OF_DIAMONDS);
 
       assertGameState(0, {
-        p0Hand: [],
+        p0Hand: [ Card.TWO_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_HEARTS ],
         p0FaceCards: [ Card.KING_OF_HEARTS ],
         p1Hand: [ Card.QUEEN_OF_HEARTS ],
@@ -569,7 +635,7 @@ describe('Playing NINES', () => {
       cy.setupGameAsP1();
     });
 
-    it('Disables playing a frozen number card until the following turn', () => {
+    it('Topdecks the point card, which the player draws back and plays immediately', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.NINE_OF_CLUBS ],
         p0Points: [ Card.THREE_OF_CLUBS ],
@@ -579,14 +645,32 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
         topCard: Card.TEN_OF_CLUBS,
       });
+      assertDeckCount(49);
 
-      // opponent plays nine to return seven to player's hand
+      // opponent plays nine to topdeck the player's seven
       cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, 'point');
 
       // Player resolves
       cy.get('#cannot-counter-dialog').should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
+
+      // The seven is back on top of the deck
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [ Card.THREE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
+      });
+      cy.get('[data-player-hand-card]').should('not.exist');
+      assertDeckCount(50);
+
+      // Player draws and gets their own seven back off the top
+      cy.get('#deck').click();
+      assertDeckCount(49);
 
       assertGameState(1, {
         p0Hand: [],
@@ -595,23 +679,29 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.SEVEN_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
       });
+      // Nothing is frozen any more
+      cy.get('[data-player-hand-card=7-0]').should('not.have.class', 'frozen');
 
-      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
+      cy.drawCardOpponent();
+      assertDeckCount(48);
 
-      // Player then tries to scuttle
+      // Player scuttles with the card that was topdecked
       cy.get('[data-player-hand-card=7-0]').click();
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=scuttle]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-      // Player attempts to scuttle lower point card
+      cy.get('[data-move-choice=scuttle]').click();
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=3-0]').click();
-      assertSnackbar(SnackBarError.FROZEN_CARD);
+
+      assertGameState(1, {
+        p0Hand: [ Card.TEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.THREE_OF_CLUBS ],
+      });
     });
 
     it('Opponent plays a NINE on a jack to steal back point card', () => {
@@ -624,6 +714,7 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
         topCard: Card.TEN_OF_CLUBS,
       });
+      assertDeckCount(46);
 
       // opponent plays Ace of Spades
       cy.playPointsOpponent(Card.ACE_OF_SPADES);
@@ -650,59 +741,48 @@ describe('Playing NINES', () => {
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
+      // The jack went to the deck rather than back to the player's hand
       assertGameState(1, {
         p0Hand: [ Card.ACE_OF_DIAMONDS ],
         p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.JACK_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
+        p1Hand: [ Card.TEN_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        deckLength: 47,
       });
-      // Card should have the frozen state shown visually
-      cy.get('[data-player-hand-card=11-0]').should('have.class', 'frozen');
-
-      // Player attempts plays the returned jack immediately
-      cy.get('[data-player-hand-card=11-0]').click();
-
-      // Card overlay should have the frozen state shown visually
-      cy.get('[data-player-overlay-card=11-0]').should('have.class', 'frozen');
-
-      // Frozen move choice cards should be disabled and display frozen text.
-      cy.get('[data-move-choice=jack]')
-        .should('have.class', 'v-card--disabled')
-        .contains('This card is frozen')
-        .click({ force: true }); // Break out into separate test case
-
-      cy.get('#player-hand-targeting').should('be.visible');
-      cy.get('[data-opponent-point-card=1-3]').click();
-      assertSnackbar(SnackBarError.FROZEN_CARD);
-      cy.log('Correctly prevented player from re-playing frozen card next turn');
 
       cy.get('[data-player-hand-card=10-1]').click();
       cy.get('[data-move-choice=points]').click();
 
+      cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
+
+      // Player draws their jack back off the top of the deck
+      cy.get('#deck').click();
+      assertDeckCount(46);
+
       assertGameState(1, {
-        p0Hand: [ Card.ACE_OF_DIAMONDS ],
-        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0Hand: [],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS ],
         p0FaceCards: [],
         p1Hand: [ Card.JACK_OF_CLUBS ],
         p1Points: [ Card.TEN_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
       });
+      cy.get('[data-player-hand-card=11-0]').should('not.have.class', 'frozen');
 
-      cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
-      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.drawCardOpponent();
 
-      // Player plays jack after one turn
+      // Player replays the jack
       cy.get('[data-player-hand-card=11-0]').click();
       cy.get('[data-move-choice=jack]').click();
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-1]').click();
 
       assertGameState(1, {
-        p0Hand: [],
+        p0Hand: [ Card.TEN_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
         p0FaceCards: [],
         p1Hand: [],
@@ -712,7 +792,7 @@ describe('Playing NINES', () => {
       });
     }); // End 9 on jack
 
-    it('Keeps card frozen after requesting a stalemate', () => {
+    it('Keeps the topdecked card on the deck through a rejected stalemate and a reload', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.NINE_OF_CLUBS ],
         p0Points: [ Card.THREE_OF_CLUBS ],
@@ -723,7 +803,7 @@ describe('Playing NINES', () => {
         topCard: Card.TEN_OF_CLUBS,
       });
 
-      // opponent plays nine to return seven to player's hand
+      // opponent plays nine to topdeck the player's seven
       cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, 'point');
 
       // Player resolves
@@ -731,14 +811,7 @@ describe('Playing NINES', () => {
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
-      assertGameState(1, {
-        p0Hand: [],
-        p0Points: [ Card.THREE_OF_CLUBS ],
-        p0FaceCards: [],
-        p1Hand: [ Card.SEVEN_OF_CLUBS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
+      assertDeckCount(50);
 
       // Player requests stalemate; opponent rejects
       cy.get('#game-menu-activator').click();
@@ -755,12 +828,26 @@ describe('Playing NINES', () => {
       cy.rejectStalemateOpponent();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
-      // Bounced card is frozen
-      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
+      cy.get('[data-player-hand-card]').should('not.exist');
+      assertDeckCount(50);
 
-      // Still frozen after reload
+      // Still on the deck after reload
       cy.reload();
-      assertCardIsFrozen(Card.SEVEN_OF_CLUBS);
+      cy.get('[data-player-hand-card]').should('not.exist');
+      assertDeckCount(50);
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [ Card.THREE_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
+      });
+
+      // The seven is still the very next card off the deck
+      cy.get('#deck').click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -769,44 +856,11 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.SEVEN_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.NINE_OF_CLUBS ],
       });
     });
 
-    it('Clears players frozen card after resolving one-off', () => {
-      cy.loadGameFixture(1, {
-        p0Hand: [ Card.NINE_OF_SPADES, Card.EIGHT_OF_HEARTS ],
-        p0Points: [],
-        p0FaceCards: [ Card.KING_OF_HEARTS ],
-        p1Hand: [ Card.NINE_OF_HEARTS, Card.EIGHT_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [ Card.KING_OF_DIAMONDS ],
-      });
-      cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.KING_OF_DIAMONDS, 'faceCard');
-      cy.get('#cannot-counter-dialog').should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
-
-      cy.get('[data-player-hand-card=9-2]').click();
-      cy.get('[data-move-choice=targetedOneOff').click();
-      cy.get('[data-opponent-face-card=13-2]').click();
-      cy.resolveOpponent();
-      cy.playPointsOpponent(Card.EIGHT_OF_HEARTS);
-
-      cy.get('[data-player-hand-card=13-1]').click();
-      cy.get('[data-move-choice=faceCard]').click();
-
-      assertGameState(1, {
-        p0Hand: [ Card.KING_OF_HEARTS ],
-        p0Points: [ Card.EIGHT_OF_HEARTS ],
-        p0FaceCards: [],
-        p1Hand: [ Card.EIGHT_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [ Card.KING_OF_DIAMONDS ],
-        scrap: [ Card.NINE_OF_HEARTS, Card.NINE_OF_SPADES ],
-      });
-    });
-
-    it('Nine returns card to player hand at hand limit', () => {
+    it('Does not trigger discard-to-hand-limit for the player at the hand limit', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.NINE_OF_SPADES ],
         p0Points: [],
@@ -824,6 +878,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.TEN_OF_CLUBS ],
         p1FaceCards: [],
       });
+      assertDeckCount(42);
 
       // Opponent (P0) plays nine targeting player's (P1's) point card
       cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS, 'point');
@@ -831,6 +886,7 @@ describe('Playing NINES', () => {
         .get('[data-cy=cannot-counter-resolve]')
         .click();
 
+      // The ten went to the deck, so the player's hand never grows past the limit
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
@@ -844,21 +900,22 @@ describe('Playing NINES', () => {
           Card.SEVEN_OF_CLUBS,
           Card.EIGHT_OF_CLUBS,
           Card.NINE_OF_CLUBS,
-          Card.TEN_OF_CLUBS,
         ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 43,
       });
+      cy.get('#discard-to-hand-limit-dialog').should('not.exist');
     });
   }); // End Opponent playing NINES describe
 
-  describe('Nine triggers discard-to-hand-limit', () => {
+  describe('Nine does not trigger discard-to-hand-limit', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
     });
 
-    it('Nine returns card to opponent hand at hand limit', () => {
+    it('Does not trigger discard-to-hand-limit for the opponent at the hand limit', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.NINE_OF_SPADES ],
         p0Points: [],
@@ -876,6 +933,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.TEN_OF_DIAMONDS ],
         p1FaceCards: [],
       });
+      assertDeckCount(42);
 
       // Player plays nine as targeted one-off against opponent's point card
       cy.get('[data-player-hand-card=9-3]').click();
@@ -897,13 +955,118 @@ describe('Playing NINES', () => {
           Card.SIX_OF_HEARTS,
           Card.SEVEN_OF_HEARTS,
           Card.EIGHT_OF_HEARTS,
-          Card.TEN_OF_DIAMONDS,
         ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 43,
+      });
+      cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+    });
+  }); // End Nine does not trigger discard-to-hand-limit
+
+  describe('Playing NINES with an empty deck', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('Puts a card back on an empty deck, replacing the pass with a draw', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.NINE_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.TEN_OF_DIAMONDS ],
+        p1FaceCards: [],
+        deck: [],
+      });
+
+      // The deck is exhausted, so the only thing to do with it is pass
+      assertDeckCount(0);
+      cy.get('#empty-deck-text').should('be.visible');
+
+      // Player nines the opponent's ten, putting it back on the empty deck
+      cy.get('[data-player-hand-card=9-3]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('#player-hand-targeting').should('be.visible');
+      cy.get('[data-opponent-point-card=10-1]').click();
+      cy.resolveOpponent();
+
+      // The deck is no longer empty, so passing is no longer on offer
+      assertDeckCount(1);
+      cy.get('#empty-deck-text').should('not.exist');
+
+      // The opponent has to spend their turn drawing their own ten back
+      cy.drawCardOpponent();
+      assertDeckCount(0);
+      cy.get('#empty-deck-text').should('be.visible');
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        deck: [],
+      });
+    });
+  }); // End empty deck describe
+
+  describe('Topdeck animation', () => {
+    const fixture = {
+      p0Hand: [ Card.NINE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [],
+    };
+
+    function topdeckTheAce() {
+      cy.get('[data-player-hand-card=9-3]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('[data-opponent-point-card=1-1]').click();
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.resolveOpponent();
+    }
+
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
+    it('Flips the target face down, then sends it left toward the deck', () => {
+      cy.viewport(1920, 1080);
+      cy.loadGameFixture(0, fixture);
+      topdeckTheAce();
+
+      // Stage one: still in place, but now showing its back
+      cy.get('[data-opponent-point-card=1-1] img.opponent-card-back').should('exist');
+      // Stage two: leaves toward the deck, which above xs sits to the left
+      cy.get('.to-deck-left-leave-active').should('exist');
+      // Stage three: gone, and the deck has grown
+      cy.get('[data-opponent-point-card=1-1]').should('not.exist');
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [ Card.TEN_OF_HEARTS ],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.NINE_OF_SPADES ],
+        deckLength: 50,
       });
     });
 
-  }); // End Nine triggers discard-to-hand-limit
+    it('Sends the target downward toward the deck on xs', () => {
+      cy.viewport('iphone-x');
+      cy.loadGameFixture(0, fixture);
+      topdeckTheAce();
+
+      cy.get('[data-opponent-point-card=1-1] img.opponent-card-back').should('exist');
+      cy.get('.to-deck-down-leave-active').should('exist');
+      cy.get('[data-opponent-point-card=1-1]').should('not.exist');
+    });
+  }); // End topdeck animation describe
 });

@@ -19,6 +19,8 @@ export default {
   RESOLVE_THREE: 'resolveThree',
   RESOLVE_FOUR: 'resolveFour',
   RESOLVE_FIVE: 'resolveFive',
+  REVEAL_FOUR: 'revealFour',
+  DISCARD_FOUR: 'discardFour',
   DISCARD_TO_HAND_LIMIT: 'discardToHandLimit',
   SCUTTLE: 'scuttle',
   SEVEN_FACE_CARD: 'sevenFaceCard',
@@ -35,4 +37,5 @@ export default {
   UPDATED: 'updated',
   REMATCH: 'rematch',
   NEW_GAME_FOR_REMATCH: 'newGameForRematch',
+  GAME_ARCHIVED: 'gameArchived',
 };

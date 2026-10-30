@@ -23,7 +23,10 @@
  * 1.0.0 (#1197) => GameState API release
  * 1.0.1 (#1320) => Cannot Three for a Three
  * 1.0.2 (#1359) => Hand limit rework: discard down to 8 at end of your turn
+ * 2.0.0 (#1379) => Nine rework: put target card on top of the deck instead of returning it frozen to hand
+ * 3.0.0 (#1384) => Four rework: opponent discards two cards at random instead of choosing
+ * 4.0.0 => Four rework: opponent reveals three cards, and the four's player chooses two of them to discard
  */
 module.exports = {
-  CURRENT_RULES_VERSION: '1.0.2',
+  CURRENT_RULES_VERSION: '4.0.0',
 };

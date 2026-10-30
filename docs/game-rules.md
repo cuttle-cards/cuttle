@@ -44,11 +44,11 @@ On your turn you must make exactly one of the following actions below.
   1. Counter **target One-Off** (play this when an opponent plays a **One-Off** effect to stop it from happening)
   2. Scrap **target Royal or Glasses Eight**
 - **Three**: Choose one card from the **Scrap Pile** and put it in your hand.
-- **Four**: Your opponent discards two cards of their choice from their hand to the **Scrap Pile**
+- **Four**: Your opponent reveals three cards of their choice from their hand, and you choose two of them for your opponent to discard to the **Scrap Pile**. If they hold exactly three cards, all three are revealed; if they hold two or fewer, they discard whatever they have.
 - **Five**: Discard one card then draw up to three cards from the **Deck** up to the 8 card hand limit.
 - **Six**: Scrap all **Royals and Glasses Eights**, including your own.
 - **Seven**: Reveal the top two cards from the **Deck** and choose one of them to play immediately. Play this card however you would like. The other card is placed back on top of the deck.
-- **Nine**: Return an opponent's card on the field to their hand. It can't be played next turn.
+- **Nine**: Put an opponent's card on the field on top of the deck. Only the top Jack of a stack may be targeted.
 
 ## Royals & Glasses Eights
 

@@ -6,12 +6,11 @@ import { mainPhase3AdditionalPenalties } from '../../fixtures/gameStates/ai/mini
 import { resolvingSevenPhase1 } from '../../fixtures/gameStates/ai/resolvingSevenPhase1';
 import { resolvingSevenPhase2 } from '../../fixtures/gameStates/ai/resolvingSevenPhase2';
 import { resolvingSevenPhase3 } from '../../fixtures/gameStates/ai/resolvingSevenPhase3DoubleJack';
-import { resolvingFourPhase1CanDiscardTwoCards } from '../../fixtures/gameStates/ai/resolvingFour1CanDiscardTwoCards';
-import { resolvingFourPhase2HasOnlyTwoCards } from '../../fixtures/gameStates/ai/resolvingFour2HasOnlyTwoCards';
-import { resolvingFourPhase3HasOnlyOneCard } from '../../fixtures/gameStates/ai/resolvingFourPhase3HasOnlyOneCard';
 import { resolvingFivePhase1HasMultipleCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase1HasMultipleCardsInHand';
 import { resolvingFivePhase2HasOneCardInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase2HasOneCardInHand';
 import { resolvingFivePhase3HasNoCardsInHand } from '../../fixtures/gameStates/ai/resolvingFivePhase3HasNoCardsInHand';
+import { resolvingFourRevealPhase } from '../../fixtures/gameStates/ai/resolvingFourRevealPhase';
+import { resolvingFourDiscardPhase } from '../../fixtures/gameStates/ai/resolvingFourDiscardPhase';
 import { counteringPhase1AbleToCounter } from '../../fixtures/gameStates/ai/counteringPhase1AbleToCounter';
 import { counteringPhase2CannotCounter } from '../../fixtures/gameStates/ai/counteringPhase2CannotCounter';
 
@@ -20,12 +19,11 @@ const fixturesForLegalMoves = [
   resolvingSevenPhase1,
   resolvingSevenPhase2,
   resolvingSevenPhase3,
-  resolvingFourPhase1CanDiscardTwoCards,
-  resolvingFourPhase2HasOnlyTwoCards,
-  resolvingFourPhase3HasOnlyOneCard,
   resolvingFivePhase1HasMultipleCardsInHand,
   resolvingFivePhase2HasOneCardInHand,
   resolvingFivePhase3HasNoCardsInHand,
+  resolvingFourRevealPhase,
+  resolvingFourDiscardPhase,
   counteringPhase1AbleToCounter,
   counteringPhase2CannotCounter,
 ];

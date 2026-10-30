@@ -18,7 +18,8 @@ module.exports = {
      * 1 - NEW (game has been created but has not started)
      * 2 - STARTED (game has been started but has not yet finished)
      * 3 - FINISHED (game has been completed)
-     * 4 - ARCHIVED (game has been removed from the list without being started)
+     * 4 - ARCHIVED (an unfinished game a player has dismissed via DELETE /api/game/:gameId;
+     *     treated as a synonym for FINISHED everywhere a game's status is read)
      */
     status: {
       type: 'number',

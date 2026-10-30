@@ -3,6 +3,31 @@ import { Card } from '../../fixtures/cards';
 
 const { _ } = Cypress;
 
+const overflowViewports = [
+  { name: 'mobile', width: 375, height: 667 },
+  { name: 'tablet', width: 700, height: 800 },
+  { name: 'desktop', width: 1280, height: 800 },
+];
+
+const fullHandFixture = {
+  p0Hand: [
+    Card.ACE_OF_CLUBS,
+    Card.TWO_OF_CLUBS,
+    Card.THREE_OF_CLUBS,
+    Card.FOUR_OF_CLUBS,
+    Card.FIVE_OF_CLUBS,
+    Card.SIX_OF_CLUBS,
+    Card.SEVEN_OF_CLUBS,
+    Card.EIGHT_OF_CLUBS,
+  ],
+  p0Points: [],
+  p0FaceCards: [],
+  p1Hand: [ Card.ACE_OF_SPADES ],
+  p1Points: [],
+  p1FaceCards: [],
+  scrap: [],
+};
+
 describe('Game View Layout', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -15,6 +40,24 @@ describe('Game View Layout', () => {
   it('Should display usernames of player and opponent', () => {
     cy.get('[data-cy=opponent-username]').should('be.visible');
     cy.get('[data-cy=player-username]').should('be.visible');
+  });
+
+  overflowViewports.forEach(({ name, width, height }) => {
+    it(`Does not overflow horizontally at ${name} width`, () => {
+      cy.viewport(width, height);
+      cy.loadGameFixture(0, fullHandFixture);
+
+      cy.document().then((document) => {
+        const visibleWidth = document.documentElement.clientWidth;
+
+        expect(document.documentElement.scrollWidth).to.equal(visibleWidth);
+        [ '#game-view-wrapper', '#player-hand-cards', '[data-cy=hand-size-badge]' ]
+          .forEach((selector) => {
+            const { right } = document.querySelector(selector).getBoundingClientRect();
+            expect(right, `${selector} right edge`).to.be.at.most(visibleWidth);
+          });
+      });
+    });
   });
 
   it('Three dialogs', () => {
@@ -177,7 +220,7 @@ describe('Four dialogs layout', () => {
       p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+      p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -189,24 +232,32 @@ describe('Four dialogs layout', () => {
       .get('[data-cy=cannot-counter-resolve]')
       .click();
 
-    // Four Dialog appears (you must discard)
-    cy.get('#four-discard-dialog').should('be.visible');
-    // Choosing cards to discard
-    cy.log('Choosing two cards to discard');
-    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-    cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-    cy.get('[data-discard-card=4-3]').click(); // four of spades
-    cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
+    // Reveal Dialog appears (you must reveal three cards)
+    cy.get('#four-reveal-dialog').should('be.visible');
+    cy.log('Choosing three cards to reveal');
+    cy.get('[data-cy=submit-four-reveal-dialog]').should('be.disabled'); // can't prematurely submit
+    cy.get('[data-four-reveal-card=4-3]').click(); // four of spades
+    cy.get('[data-four-reveal-card=1-1]').click(); // ace of diamonds
+    cy.get('[data-four-reveal-card=10-2]').click(); // ten of hearts
+    // A fourth selection replaces the earliest one
+    cy.get('[data-four-reveal-card=13-2]').click(); // king of hearts
+    cy.get('[data-four-reveal-card=4-3]').should('not.have.class', 'is-selected');
+    cy.get('[data-four-reveal-card=13-2]').should('have.class', 'is-selected');
+    cy.get('[data-cy=submit-four-reveal-dialog]').click(); // submit choice to reveal
+
+    // Opponent chooses two of the revealed cards
+    cy.get('#waiting-for-opponent-choose-four-discards-scrim').should('be.visible');
+    cy.get('[data-overlay-revealed-card=4-3]').should('not.exist');
+    cy.discardFourOpponent(Card.ACE_OF_DIAMONDS, Card.KING_OF_HEARTS);
 
     assertGameState(1, {
       p0Hand: [ Card.ACE_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.TEN_OF_HEARTS ],
+      p1Hand: [ Card.FOUR_OF_SPADES, Card.TEN_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
+      scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.KING_OF_HEARTS ],
     });
   });
 });

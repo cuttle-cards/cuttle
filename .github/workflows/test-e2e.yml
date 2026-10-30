@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cypress install
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v7
         with:
           # Disable running of tests within install job
           runTests: false
@@ -50,7 +50,7 @@ jobs:
           path: assets
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v7
         with:
           record: true
           parallel: true
@@ -61,6 +61,8 @@ jobs:
           wait-on-timeout: 120
 
         env:
+          # Run the suite against the sails server, which serves the built client
+          CUTTLE_E2E_TARGET: server
           VITE_API_URL: http://localhost:1337
           CYPRESS_RECORD_KEY: ${{ secrets.record-key }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
