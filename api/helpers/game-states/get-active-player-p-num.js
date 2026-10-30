@@ -21,6 +21,8 @@ module.exports = {
       case GamePhase.RESOLVING_THREE:
       case GamePhase.RESOLVING_FIVE:
       case GamePhase.RESOLVING_SEVEN:
+      case GamePhase.DISCARDING_TO_HAND_LIMIT:
+      case GamePhase.RESOLVING_FOUR_DISCARD:
         return exits.success(currentState.turn % 2);
 
       case GamePhase.COUNTERING: {
@@ -29,7 +31,9 @@ module.exports = {
       }
 
       case GamePhase.RESOLVING_FOUR:
+      case GamePhase.RESOLVING_FOUR_REVEAL:
         return exits.success((currentState.turn + 1) % 2);
+
 
       case GamePhase.CONSIDERING_STALEMATE:
         return exits.success((currentState.playedBy + 1) % 2);

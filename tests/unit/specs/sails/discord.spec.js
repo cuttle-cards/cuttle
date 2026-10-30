@@ -54,7 +54,8 @@ describe('Login with Discord oAuth', () => {
 
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('totallynotthegovernment69');
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('discord');
   });
 
   it('Logs in with Discord oAuth', async () => {
@@ -73,7 +74,8 @@ describe('Login with Discord oAuth', () => {
 
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('totallynotthegovernment69');
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('discord');
   });
 
   it('Logs into existing account with Discord oAuth', async () => {
@@ -111,7 +113,8 @@ describe('Login with Discord oAuth', () => {
     expect(status.authenticated).toBe(true);
     expect(status.username).toEqual('totallynotthegovernment69');
     expect(status.id).toEqual(userRes.body);
-    expect(status.id).toEqual(status.identities[0].id);
+    expect(status.identities).toHaveLength(1);
+    expect(status.identities[0].provider).toEqual('discord');
   });
 });
 

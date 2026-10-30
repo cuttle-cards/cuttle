@@ -27,10 +27,13 @@
   "login": {
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
+    "confirmPassword": "Confirm Password",
     "title": "Welcome to Cuttle.Cards",
     "subtitle": "The card game that will have you hooked from the first hand!",
-    "formHeaderLogin": "Log In to get Started!",
-    "formHeaderSignup": "Sign up now to start playing and get ready to dive into the world of Cuttle.",
+    "formHeaderLoginEmphasis": "Log In",
+    "formHeaderLogin": " to get Started!",
+    "formHeaderSignupEmphasis": "Sign up",
+    "formHeaderSignup": " now to start playing and get ready to dive into the world of Cuttle.",
     "quote": "\"Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I known about it in college - I would have worn decks ragged through play.\"",
     "quoteCite": "Richard Garfield - Creator of Magic: The Gathering",
     "content": "Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck -- and you can play it for free! Test your mettle in the deepest cardgame under the sea!",
@@ -71,8 +74,8 @@
     "playTimeDialog": {
       "title": "Find a Game",
       "openPlaySessions": "We have open play sessions every Wednesday at 8:30pm ET and every Thursday at 12pm ET. If you hop on the site at those times, you'll always have someone to play!",
-      "discord": "We have a {0} and you can use its {1} channel to find matches.",
-      "discordLink": "Discord channel",
+      "discord": "We have a {discordLink} and you can use its {channel} channel to find matches.",
+      "discordLink": "discord server",
       "findAGame": "#find-a-game",
       "botPlay": "You can play against the bot from the home page.",
       "goHome": "Go Home",
@@ -87,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Hand: {handSize} of {handLimit} cards",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
@@ -99,6 +103,8 @@
       "mustResolve": "{opponentUsername} Must Resolve",
       "isDiscarding": "{opponentUsername} Is Discarding",
       "skipsDiscarding": "{opponentUsername} Skips Discarding",
+      "isRevealingForFour": "{opponentUsername} Is Revealing Three Cards",
+      "isChoosingFourDiscards": "{opponentUsername} Is Choosing Two Cards For You To Discard",
       "choosingFromScrap": "{opponentUsername} Is Choosing A Card From The Scrap Pile",
       "playingFromDeck": "{opponentUsername} Is Playing From The Deck",
       "mustDiscardJack": "{opponentUsername} Must Discard A Jack",
@@ -121,6 +127,21 @@
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
         "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+      },
+      "fourReveal": {
+        "title": "Reveal Three Cards",
+        "body": "{opponentUsername} has resolved a Four One-Off. Choose three cards from your hand to reveal. {opponentUsername} will choose two of them for you to discard.",
+        "reveal": "Reveal"
+      },
+      "fourDiscard": {
+        "title": "Choose Two Cards to Discard",
+        "body": "{opponentUsername} revealed these three cards. Choose two of them for {opponentUsername} to discard.",
+        "discard": "Discard"
+      },
+      "discardToHandLimit": {
+        "title": "Discard Excess Cards",
+        "body": "You have more than 8 cards in hand. Discard down to the hand limit of 8.",
+        "discard": "Discard"
       },
       "five": {
         "discardAndDraw": "Discard and Draw",
@@ -228,12 +249,12 @@
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 (non-three) card in the Scrap and put it to your hand",
-        "4": "Your opponent discards two cards of their choice from their hand",
+        "4": "Your opponent reveals three cards from their hand, and you choose two for them to discard",
         "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
         "8": "Your opponent plays with an open hand (their cards are revealed to you)",
-        "9": "Return target card to its controller's hand. They can't play it next turn",
+        "9": "Put target card on top of the deck",
         "10": "No effect",
         "11": "Play on top of target point card to steal it",
         "12": "Your other cards may only be targeted by scuttles",
@@ -292,7 +313,6 @@
         "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
-        "deckIsEmpty": "The deck is empty; you cannot draw.",
         "handLimit": "You are at the hand limit; you cannot draw.",
         "exhaustedDeck": "Deck exhausted; revealing player hands"
       },
@@ -334,10 +354,15 @@
           "cannotTargetThree": "You cannot target a three with a three"
         },
         "four": {
-          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
-          "notYourTurn": "It's not your turn to discard",
-          "notResolvingFourPhase": "Can't discard unless your opponent played a four",
-          "mustSelectCards": "You must select two cards to discard"
+          "notRevealingPhase": "You can only reveal cards while resolving a four",
+          "mustRevealThree": "You must reveal three cards from your hand",
+          "notChoosingDiscardsPhase": "You can only choose discards while resolving a four",
+          "mustChooseTwoRevealed": "You must choose two of the revealed cards to discard"
+        },
+        "discardToHandLimit": {
+          "notDiscardingPhase": "You can only discard to the hand limit during the discard phase",
+          "handNotOverLimit": "Your hand is not over the limit",
+          "mustSelectCards": "You must select cards to discard down to the hand limit"
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
@@ -351,7 +376,8 @@
           "wrongPhase": "You can't play from the deck right now",
           "mustBeDoubleJacks": "You can't discard from a seven unless both cards are jacks",
           "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
-        }
+        },
+        "onlyTopJack": "You can only target the top Jack of a stack"
       }
     }
   },
@@ -362,11 +388,12 @@
       "cantFindGame": "Can't find game",
       "invalidLobbyNumber": "Invalid Lobby Number",
       "cannotSpectate": "Cannot spectate game because you are playing",
-      "spectateNoGamestates": "Cannot spectate: game is too old"
+      "spectateNoGamestates": "Cannot spectate: game is too old",
+      "gameArchived": "Your opponent archived this game."
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",
-    "noGameslist": "No Active Games",
+    "noOpenGames": "No Games to Join",
     "noSpectatelist": "No Games Available to Spectate",
     "openCreateGame": "Create a game",
     "submitCreateGame": "Create game",
@@ -377,7 +404,18 @@
     "gameName": "Game Name",
       "join": "Join",
       "playVsAi": "Play VS AI",
-      "failedToLoadGameList": "Failed to load game list. Please try again later."
+      "failedToLoadGameList": "Failed to load game list. Please try again later.",
+    "continue": "Continue",
+    "archive": "Archive",
+    "versus": "vs",
+    "archiveBlockedActive": "This game is still active and cannot be archived yet.",
+    "archiveBlockedRanked": "Ranked games from this week's season cannot be archived.",
+    "failedToArchiveGame": "Failed to archive game. Please try again later.",
+    "error": {
+      "forbidden": "You are not a player in this game!",
+      "notArchivable": "This game cannot be archived.",
+      "notFound": "That game no longer exists."
+    }
   },
   "rules": {
     "introduction": "Introduction",
@@ -405,9 +443,9 @@
     "goalText": "The goal is to be the first player to have 21 or more points worth of point cards on your field. The first player to reach the goal wins immediately.",
     "playTitle": "Play",
     "playText-1": "One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",
-    "playText-2": "On your turn you must perform exactly one of the following actions:",
+    "playText-2": "On your turn, you must perform exactly one of the following actions, then discard down to the 8-card hand limit if you have 9 or more cards in hand.",
     "draw": "Draw",
-    "drawDescription": "Take one card from the deck. You may not draw past the 8-card hand limit.  If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate",
+    "drawDescription": "Take one card from the deck. If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate",
     "points": "Points",
     "pointsDescription": "Play a number card from your hand. Worth its rank in points and lasts until scrapped.",
     "scuttle": "Scuttle",
@@ -442,15 +480,15 @@
       "three": "Three",
       "threeDescription": "Choose a (non-three) card from the scrap pile and put it in your hand.",
       "four": "Four",
-      "fourDescription": "Your opponent discards two cards of their choice.",
+      "fourDescription": "Your opponent reveals three cards from their hand, and you choose two of them for your opponent to discard.",
       "five": "Five",
-      "fiveDescription": "Discard one card then draw up to three cards from the deck up to the 8 card hand limit.",
+      "fiveDescription": "Discard one card then draw up to three cards from the deck.",
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
       "sevenDescription": "Reveal the top two cards of the deck to both players and choose one to play however you choose.",
       "nine": "Nine",
-      "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn.",
+      "nineDescription": "Put a card from your opponent's field on top of the deck.",
       "ten": "Ten",
       "tenDescription": "No effect."
     },
@@ -479,7 +517,7 @@
       "rule2": "Shuffle two Jokers into the deck. Jokers count as Royals with the effect \"Steal target Royal\". Similar to Jacks, they may transfer control of a Royal from any player to any other player.",
       "rule3": "The hand limit is reduced to 7 (from 8).",
       "rule4": "Jacks may be played to transfer control of any point card to any other player. You may therefore \"steal\" points from yourself (or anyone else) in order to give them to your partner, potentially winning on your turn with their points (their goal is still determined by the count of their own Kings on the field).",
-      "rule5": "Nines can be played for an alternative, similar effect. Whenever an opponent plays a Royal, you may immediately play a Nine in response to return that card to its owner's hand immediately, preventing its effect from taking place. Doing so may be done out of turn and does not take your turn, but does not prevent the target's owner from playing the card again on their next turn. Alternatively, you may still play a Nine for its original one-off effect on your turn (taking your turn to do so) to return a card to its controller's hand and prevent them from playing that card on their next turn."
+      "rule5": "Nines can be played for an alternative, similar effect. Whenever an opponent plays a Royal, you may immediately play a Nine in response to return that card to its owner's hand immediately, preventing its effect from taking place. Doing so may be done out of turn and does not take your turn, but does not prevent the target's owner from playing the card again on their next turn. Alternatively, you may still play a Nine for its original one-off effect on your turn (taking your turn to do so) to put a card from your opponent's field on top of the deck."
     },
     "faq": {
       "title": "FAQ",
@@ -575,11 +613,13 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle World Championship V!",
-    "title": "Cuttle World Championship V",
-    "heading": "Ultimate showdown",
-    "paragraph": "Cuttle World Championship V is today, Saturday April 11th at 1pm ET! Watch the top 8 players from the past year of ranked play compete in a double elimination showdown for the title of Cuttle World Champion! Watch it live at ",
-    "twitchLink": "twitch.tv/cuttle_cards"
+    "activatorText": "Reveal-Three Fours",
+    "title": "Rules Beta: Reveal-Three Fours",
+    "heading": "Reveal three, discard two",
+    "paragraph": "The Four is the weakest card in the game: a weak effect on a low rank with poor points and scuttling value. And because your opponent picked the two cards to discard, it always stripped their two worst ones. Now your opponent reveals three cards from their hand and you choose which two they discard, so a Four can take something that actually hurts. If they hold exactly three cards, all three are revealed; with two or fewer, they discard whatever they have.",
+    "heading2": "One of four Spades season trials",
+    "paragraph2": "This is a beta, and one of four rules variations we're trialling over the Spades season — two Nine buffs and two Four buffs. We'll put them to a community poll toward the end of the year to decide what stays. For the full context and reasoning behind all four, see",
+    "patreonLink": "Help refine the 4 and the 9"
   },
   "profile": {
     "myGames": "My Games",

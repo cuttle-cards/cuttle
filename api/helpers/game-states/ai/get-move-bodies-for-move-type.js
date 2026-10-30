@@ -1,5 +1,17 @@
-const MoveType = require('../../../../utils/MoveType');
-const TargetType = require('../../../../utils/TargetType');
+const MoveType = require('../../../../utils/MoveType.json');
+const TargetType = require('../../../../utils/TargetType.json');
+
+// Every k-sized subset of arr, preserving order
+const getCombinations = (arr, k) => {
+  if (k === 1) {return arr.map((item) => [ item ]);}
+  const result = [];
+  for (let i = 0; i <= arr.length - k; i++) {
+    for (const rest of getCombinations(arr.slice(i + 1), k - 1)) {
+      result.push([ arr[i], ...rest ]);
+    }
+  }
+  return result;
+};
 
 module.exports = {
   friendlyName: 'Get move bodies for move type',
@@ -85,12 +97,35 @@ module.exports = {
         const twosAndNines = playerHand.filter((card) => [ 2, 9 ].includes(card.rank));
         for (let twoOrNine of twosAndNines) {
           for (let potentialTarget of opponentFaceCards) {
-            res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: potentialTarget.id, targetType: 'faceCard' });
+            res.push({
+              moveType,
+              playedBy,
+              cardId: twoOrNine.id,
+              targetId: potentialTarget.id,
+              targetType: TargetType.faceCard,
+            });
           }
 
           for (let pointCard of opponentPoints) {
+            // Only nines can target the point card itself
+            if (twoOrNine.rank === 9) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId: twoOrNine.id,
+                targetId: pointCard.id,
+                targetType: TargetType.point,
+              });
+            }
+
             if (pointCard.attachments.length) {
-              res.push({ moveType, playedBy, cardId: twoOrNine.id, targetId: pointCard.attachments.at(-1).id });
+              res.push({
+                moveType,
+                playedBy,
+                cardId: twoOrNine.id,
+                targetId: pointCard.attachments.at(-1).id,
+                targetType: TargetType.jack,
+              });
             }
           }
         }
@@ -107,30 +142,6 @@ module.exports = {
         res = scrap.map((card) => ({ moveType, playedBy, cardId: card.id }));
         break;
 
-      case MoveType.RESOLVE_FOUR: {
-
-        if (playerHand.length === 1) {
-          res = [
-            {
-              moveType,
-              playedBy,
-              cardId1: playerHand[0].id,
-            },
-          ];
-        }
-
-        for (let i = 0; i < playerHand.length; i++) {
-          for (let j = i + 1; j < playerHand.length; j++) {
-            res.push({
-              moveType,
-              playedBy,
-              cardId1: playerHand[i].id,
-              cardId2: playerHand[j].id
-            });
-          }
-        }
-        break;
-      }
 
       case MoveType.RESOLVE_FIVE:
         if (!playerHand.length) {
@@ -139,6 +150,40 @@ module.exports = {
           res = playerHand.map((card) => ({ moveType, playedBy, cardId: card.id }));
         }
         break;
+
+      case MoveType.DISCARD_TO_HAND_LIMIT: {
+        const overflowCount = playerHand.length - 8;
+        if (overflowCount <= 0) {break;}
+        // Enumerates every set of cards the player could discard: C(hand, overflow) move bodies.
+        res = getCombinations(playerHand, overflowCount).map((combo) => ({
+          moveType,
+          playedBy,
+          discardedCards: combo.map((card) => card.id),
+        }));
+        break;
+      }
+
+      // Every set of three cards the four's victim could reveal: at most C(8,3)=56 move bodies
+      case MoveType.REVEAL_FOUR:
+        if (playerHand.length < 3) {break;}
+        res = getCombinations(playerHand, 3).map((combo) => ({
+          moveType,
+          playedBy,
+          fourRevealedCards: combo.map((card) => card.id),
+        }));
+        break;
+
+      // Every pair of revealed cards the four's player could choose to discard
+      case MoveType.DISCARD_FOUR: {
+        const fourRevealedCards = currentState.fourRevealedCards ?? [];
+        if (fourRevealedCards.length < 2) {break;}
+        res = getCombinations(fourRevealedCards, 2).map((combo) => ({
+          moveType,
+          playedBy,
+          discardedCards: combo.map((card) => card.id),
+        }));
+        break;
+      }
 
       case MoveType.SEVEN_POINTS:
         res = deck.slice(0, 2)
@@ -199,6 +244,17 @@ module.exports = {
           }
 
           for (let opponentPoint of opponentPoints) {
+            // Only nines can target the point card itself
+            if (targetedOneOff.rank === 9) {
+              res.push({
+                moveType,
+                playedBy,
+                cardId: targetedOneOff.id,
+                targetId: opponentPoint.id,
+                targetType: TargetType.point,
+              });
+            }
+
             if (opponentPoint.attachments.length) {
               res.push({
                 moveType,

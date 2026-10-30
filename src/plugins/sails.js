@@ -5,6 +5,7 @@ import {
   handleGameStarted,
   handleGameCreated,
   handleGameFinished,
+  handleGameArchived,
   handleJoin,
   handleLeftGame,
   handleIsRanked,
@@ -76,6 +77,8 @@ io.socket.on('gameCreated', handleGameCreated);
 io.socket.on('gameStarted', handleGameStarted);
 
 io.socket.on('gameFinished', handleGameFinished);
+
+io.socket.on('gameArchived', handleGameArchived);
 
 io.socket.on('join', handleJoin);
 

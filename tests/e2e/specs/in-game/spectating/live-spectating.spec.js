@@ -21,7 +21,6 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.dismissIntroPopups();
 }
 
 describe('Spectating Games', () => {
@@ -49,6 +48,15 @@ describe('Spectating Games', () => {
     cy.get('@gameId').then((gameId) => {
       cy.visit(`/spectate/${gameId}`);
       cy.url().should('include', `/game/${gameId}`);
+    });
+  });
+
+  it('Redirects a non-player to spectate when they navigate to the game route', () => {
+    cy.setupGameAsSpectator();
+    cy.get('@gameId').then((gameId) => {
+      cy.visit(`/game/${gameId}`);
+      cy.url().should('include', `/spectate/${gameId}`);
+      cy.get('#deck').should('be.visible');
     });
   });
 
@@ -439,7 +447,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
-    cy.dismissIntroPopups();
   });
 
   it('Spectate unranked games with rematch', function () {

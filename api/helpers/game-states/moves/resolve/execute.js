@@ -1,5 +1,6 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 const MoveType = require('../../../../../utils/MoveType.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Resolve One-Off',
@@ -53,12 +54,19 @@ module.exports = {
       twos: [],
     };
 
+    const activePlayer = result.turn % 2 === 0 ? result.p0 : result.p1;
+    const playerMustDiscard = activePlayer.hand.length > HAND_LIMIT;
+
     // If one-off fizzles, make no other changes
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
       result.oneOff = null;
-      result.turn++;
+      // Nothing is pending anymore, so the target slots have to clear too
+      result.oneOffTarget = null;
+      result.oneOffTargetType = null;
+      result.phase = playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN;
+      result.turn = playerMustDiscard ? result.turn : result.turn + 1;
       return exits.success(result);
     }
 
@@ -72,8 +80,15 @@ module.exports = {
       case 6:
         result = sails.helpers.gameStates.moves.resolve.six(result);
         break;
-      case 3:
       case 4:
+        result = sails.helpers.gameStates.moves.resolve.four(result, playedBy);
+        // Unless the victim's hand is too small to choose from, the four awaits their reveal
+        // and its player's choice of discards, which complete it in later moves
+        if ([ GamePhase.RESOLVING_FOUR_REVEAL, GamePhase.RESOLVING_FOUR_DISCARD ].includes(result.phase)) {
+          return exits.success(result);
+        }
+        break;
+      case 3:
       case 5:
       case 7:
         // These one-offs require an additional user input after resolving
@@ -89,7 +104,7 @@ module.exports = {
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
-    
+
     result.scrap.push(result.oneOff);
     result = {
       ...result,
@@ -97,7 +112,8 @@ module.exports = {
       targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
-      turn: result.turn + 1,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
     };
 
     return exits.success(result);

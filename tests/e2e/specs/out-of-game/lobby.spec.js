@@ -1,14 +1,12 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import ThemeColors from '../../../../utils/ThemeColors.json';
-import { LS_ANNOUNCEMENT, LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../../utils/local-storage-utils';
+import { LS_PLAY_TIME_DIALOG_DISMISSED } from '../../../../utils/local-storage-utils';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.dismissIntroPopups();
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -486,7 +484,6 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -671,7 +668,10 @@ describe('Lobby - Play Time Dialog', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem(LS_ANNOUNCEMENT, announcementData.id);
+    // Undo the global pre-load seed (support/index.js) for this block so the play-time dialog can
+    // appear. enterLobby uses cy.vueRoute (SPA nav, no reload), so removing the flag here sticks
+    // until PlayTimeDialog mounts.
+    cy.window().then((win) => win.localStorage.removeItem(LS_PLAY_TIME_DIALOG_DISMISSED));
     cy.signupPlayer(myUser);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
@@ -711,7 +711,6 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    cy.dismissIntroPopups();
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game

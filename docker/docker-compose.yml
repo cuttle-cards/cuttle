@@ -17,7 +17,10 @@ x-app-volume:
 services:
   database:
     container_name: database
-    image: 'postgres:latest'
+    # Pinned to 17: postgres:latest moved to 18, which changed the data-directory layout and is
+    # incompatible with the /var/lib/postgresql/data bind mount below (the container crash-loops with
+    # "PostgreSQL data ... (unused mount/volume)"). Pinning also makes local runs reproducible.
+    image: 'postgres:17'
     ports:
       - 5432:5432
     environment:

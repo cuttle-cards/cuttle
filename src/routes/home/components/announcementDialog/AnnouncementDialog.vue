@@ -32,7 +32,21 @@
         />
       </div>
       <div v-if="announcementData.imgSrc" class="d-flex justify-center mb-4 bg-base-light rounded">
-        <img class="w-75 mb-4" :src="announcementData.imgSrc">
+        <!-- Links out to the full bracket when the announcement supplies a url -->
+        <a
+          v-if="announcementData.imgHref"
+          :href="announcementData.imgHref"
+          target="_blank"
+          class="d-block w-75 mb-4"
+        >
+          <img class="w-100" :src="announcementData.imgSrc" :alt="t(announcementData.title)">
+        </a>
+        <img
+          v-else
+          class="w-75 mb-4"
+          :src="announcementData.imgSrc"
+          :alt="t(announcementData.title)"
+        >
       </div>
       <div v-for="(text, i) in announcementData.announcementText" :key="i" class="mb-4">
         <BaseParagraph :heading="text.heading" :paragraph="text.paragraph" />

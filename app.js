@@ -22,6 +22,13 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
+// Resolve this stack's ports (and the urls derived from them) so that several stacks can be
+// booted in parallel -- see utils/dev-ports.js. Hosting platforms supply PORT and the VITE_*
+// urls themselves, so production is left alone.
+if (process.env.NODE_ENV !== 'production') {
+  require('./utils/dev-ports').applyDevEnv();
+}
+
 // Ensure a "sails" can be located:
 (function () {
   var sails;

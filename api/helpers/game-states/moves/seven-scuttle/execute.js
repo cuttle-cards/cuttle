@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Seven Scuttle',
@@ -36,6 +37,7 @@ module.exports = {
     const { cardId, targetId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
+    const player = playedBy ? result.p1 : result.p0;
     const opponent = playedBy ? result.p0 : result.p1;
 
     // Remove playedCard from the top of the deck
@@ -51,12 +53,13 @@ module.exports = {
     result.scrap.push(oneOff, targetCard, ...targetCard.attachments, playedCard);
     targetCard.attachments = [];
 
-    result.turn++;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       oneOff: null,
       playedBy,
       playedCard,

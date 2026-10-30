@@ -11,7 +11,6 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    cy.dismissIntroPopups();
   });
 
   const checkAndChangeLanguage = (name, lang) => {

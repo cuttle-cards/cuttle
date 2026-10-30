@@ -71,6 +71,7 @@ const checkAndSubscribeToLobby = async (to) => {
 
 const getGameState = async (to) => {
   const gameStore = useGameStore();
+  const authStore = useAuthStore();
   const gameId = parseInt(to.params.gameId);
   gameStore.id = gameId;
 
@@ -79,6 +80,12 @@ const getGameState = async (to) => {
   gameStateIndex = isValidGameStateIndex ? gameStateIndex : -1;
   try {
     const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
+    // A 401 resolves without a game state; in that case mustReauthenticate
+    // is set and GameView shows the ReauthenticateDialog
+    const gamePlayers = response?.game?.players;
+    if (gamePlayers && !gamePlayers.some(({ username }) => username === authStore.username)) {
+      return { name: ROUTE_NAME_SPECTATE, params: { gameId } };
+    }
     if (response?.victory?.gameOver && response.game.rematchGame) {
       await gameStore.requestGameState(response.game.rematchGame);
       return { name: to.name, params: { gameId: response.game.rematchGame } };

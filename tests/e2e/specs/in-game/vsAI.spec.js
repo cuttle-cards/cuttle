@@ -7,7 +7,6 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.dismissIntroPopups();
   cy.get('[data-cy=create-ai-game]').click();
   cy.get('[data-player-hand-card]').should('have.length', 5);
   cy.get('[data-cy=opponent-username]').should('contain', 'CuttleBot');

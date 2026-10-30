@@ -3,6 +3,26 @@ const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 const GameStatus = require('../../../utils/GameStatus.json');
 
+/**
+ * Every relative date below is derived from this single reference instant.
+ *
+ * Calling dayjs.utc() per field re-read the clock each time, leaving sub-millisecond gaps between
+ * values that are meant to line up exactly. That matters because StatsController's season queries
+ * are strict (`updatedAt > startTime`, `endTime < season.endTime`), so a game or match sharing the
+ * season's start millisecond is silently dropped. Whether the gap came out as 0ms or 1ms depended
+ * on how fast the machine evaluated this file, which made the stats spec fail roughly half the time
+ * on a fast, idle machine while passing on slower CI runners.
+ */
+const now = dayjs.utc();
+
+const currentSeasonStart = now.subtract(2, 'week');
+
+/**
+ * Fixtures that belong at the very start of the current season sit an hour inside it, so they are
+ * unambiguously within the season window while still falling in week 1.
+ */
+const currentSeasonWeekOne = currentSeasonStart.add(1, 'hour');
+
 const seasonFixtures = [
   {
     name: 'Clubs 2022',
@@ -27,27 +47,24 @@ const seasonFixtures = [
   },
   {
     name: 'Current Season',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .toDate(),
-    endTime: dayjs.utc().add(11, 'week')
+    startTime: currentSeasonStart.toDate(),
+    endTime: now.add(11, 'week')
       .toDate(),
     gameCounts: [ 50, 80, 100, 110 ],
     uniqePlayersPerWeek: [ 10, 15, 17, 22 ],
   },
   {
     name: 'Future Spades Season',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   {
     name: 'World Championship Season',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .subtract(10, 'second')
+    startTime: currentSeasonStart.subtract(10, 'second')
       .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .subtract(9, 'second')
+    endTime: currentSeasonStart.subtract(9, 'second')
       .toDate(),
     firstPlace: 'player1',
     secondPlace: 'player2',
@@ -294,31 +311,25 @@ const seasonFourMatches = [
     player1: 'player1',
     player2: 'player2',
     winner: 'player2',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .toDate(),
+    startTime: currentSeasonWeekOne.toDate(),
+    endTime: currentSeasonWeekOne.toDate(),
   },
   {
     player1: 'player1',
     player2: 'player3',
     winner: 'player1',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .add(2, 'day')
+    startTime: currentSeasonStart.add(2, 'day')
       .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .add(2, 'day')
+    endTime: currentSeasonStart.add(2, 'day')
       .toDate(),
   },
   {
     player1: 'player1',
     player2: 'player4',
     winner: 'player4',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .add(3, 'day')
+    startTime: currentSeasonStart.add(3, 'day')
       .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .add(3, 'day')
+    endTime: currentSeasonStart.add(3, 'day')
       .toDate(),
   },
   // Player 2 week 1
@@ -326,20 +337,16 @@ const seasonFourMatches = [
     player1: 'player2',
     player2: 'player3',
     winner: 'player3',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .toDate(),
+    startTime: currentSeasonWeekOne.toDate(),
+    endTime: currentSeasonWeekOne.toDate(),
   },
   {
     player1: 'player2',
     player2: 'player4',
     winner: 'player2',
-    startTime: dayjs.utc().subtract(2, 'week')
-      .add(1, 'day')
+    startTime: currentSeasonStart.add(1, 'day')
       .toDate(),
-    endTime: dayjs.utc().subtract(2, 'week')
-      .add(1, 'day')
+    endTime: currentSeasonStart.add(1, 'day')
       .toDate(),
   },
 ];
@@ -353,27 +360,27 @@ const seasonThreeMatches = [
     player1: 'player1',
     player2: 'player2',
     winner: 'player2',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   {
     player1: 'player1',
     player2: 'player3',
     winner: 'player1',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   {
     player1: 'player1',
     player2: 'player4',
     winner: 'player4',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   // Player 2 week 1
@@ -381,18 +388,18 @@ const seasonThreeMatches = [
     player1: 'player2',
     player2: 'player3',
     winner: 'player3',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   {
     player1: 'player2',
     player2: 'player4',
     winner: 'player2',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   // Player 3 week 1
@@ -400,18 +407,18 @@ const seasonThreeMatches = [
     player1: 'player3',
     player2: 'player4',
     winner: 'player3',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
   {
     player1: 'player3',
     player2: 'player5',
     winner: 'player3',
-    startTime: dayjs.utc().add(1, 'year')
+    startTime: now.add(1, 'year')
       .toDate(),
-    endTime: dayjs.utc().add(1, 'year')
+    endTime: now.add(1, 'year')
       .toDate(),
   },
 ];
@@ -568,8 +575,7 @@ const seasonFourGames = [
     turn: 12,
     isRanked: false,
     winner: 'player1',
-    updatedAt: dayjs.utc().subtract(2, 'week')
-      .toDate(),
+    updatedAt: currentSeasonWeekOne.toDate(),
     p0: 'player1',
     p1: 'player2',
   },
@@ -583,7 +589,7 @@ const seasonFourGames = [
     turn: 12,
     isRanked: false,
     winner: 'player1',
-    updatedAt: dayjs.utc().subtract(1, 'week')
+    updatedAt: now.subtract(1, 'week')
       .add(1, 'day')
       .toDate(),
     p0: 'player1',
@@ -598,7 +604,7 @@ const seasonFourGames = [
     turn: 12,
     isRanked: false,
     winner: 'player1',
-    updatedAt: dayjs.utc().subtract(1, 'week')
+    updatedAt: now.subtract(1, 'week')
       .add(2, 'day')
       .toDate(),
     p0: 'player1',
@@ -629,7 +635,7 @@ const gamesWithoutASeason = [
     turn: 12,
     isRanked: false,
     winner: 'player1',
-    updatedAt: dayjs.utc().add(3, 'year')
+    updatedAt: now.add(3, 'year')
       .toDate(),
     p0: 'player1',
     p1: 'player2',

@@ -1,0 +1,608 @@
+import { assertGameState } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
+
+describe('Hand Limit — Discard to Hand Limit Phase', () => {
+  describe('Drawing and Hand Limit', () => {
+    describe('P0 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP0();
+      });
+
+      it('Player draws 9th card and discards one to reach hand limit', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.TEN_OF_CLUBS,
+          secondCard: Card.JACK_OF_CLUBS,
+        });
+
+        // Player draws with a full hand of 8
+        cy.get('#deck').click();
+        // Player now has 9 cards in hand
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+
+        // Discard-to-hand-limit dialog appears
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+
+        // Player selects one card to discard
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        // Player is back to 8 cards
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.ACE_OF_CLUBS ],
+        });
+      });
+    });
+
+    describe('P1 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP1();
+      });
+
+      it('Opponent draws 9th card and must discard — player sees waiting overlay', () => {
+        cy.loadGameFixture(1, {
+          p0Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.TEN_OF_CLUBS,
+          secondCard: Card.JACK_OF_CLUBS,
+        });
+
+        // Opponent (P0) goes first and draws with a full hand of 8
+        cy.drawCardOpponent();
+
+        // Waiting overlay appears for player (P1) while opponent discards
+        cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+
+        // Opponent discards one card
+        cy.discardToHandLimitOpponent(Card.ACE_OF_CLUBS);
+
+        // Overlay disappears and it's now P1's turn (P0 discarded, turn passed to P1)
+        cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+
+        assertGameState(1, {
+          p0Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.ACE_OF_CLUBS ],
+        });
+      });
+    });
+  });
+
+  describe('Fours and Hand Limit', () => {
+    describe('P0 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP0();
+      });
+
+      it('Discards down to hand limit after playing a 4 on opponent when player has 10 cards in hand', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.FOUR_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES, Card.TWO_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+        });
+
+        // Player plays four — the opponent holds only two cards, so both discard on resolve
+        cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
+
+        // Discard-to-hand-limit dialog appears — player (P0) still has 9 cards after playing the four
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+
+        // Player discards 1 card to reach hand limit
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.ACE_OF_CLUBS ],
+        });
+      });
+    });
+  });
+
+  describe('Fives and Hand Limit', () => {
+    describe('P0 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP0();
+      });
+
+      it('Five resolves to 9 cards triggering discard of 1', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.NINE_OF_CLUBS,
+          secondCard: Card.TEN_OF_CLUBS,
+          deck: [ Card.JACK_OF_CLUBS ],
+        });
+
+        // Play five and resolve — discard one card first
+        cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
+        cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+        cy.get('[data-discard-card=1-0]').click();
+        cy.get('[data-cy=submit-five-dialog]').click();
+
+        // Player now has 9 cards (7 remaining - 1 discarded + 3 drawn), triggering discard-to-hand-limit
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+
+        // Player discards 1 card
+        cy.get('[data-discard-hand-limit-card=2-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture
+            Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
+      });
+
+      it('Five resolves to 10 cards triggering discard of 2', () => {
+        cy.loadGameFixture(0, {
+          p0Hand: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.TEN_OF_CLUBS,
+          secondCard: Card.JACK_OF_CLUBS,
+          deck: [ Card.QUEEN_OF_CLUBS ],
+        });
+
+        // Play five and resolve — discard one card first (9 cards → 8 after discard → 10 after drawing 3)
+        cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
+        cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+        cy.get('[data-discard-card=1-0]').click();
+        cy.get('[data-cy=submit-five-dialog]').click();
+
+        // Player now has 10 cards (8 remaining - 1 discarded + 3 drawn), must discard 2
+        cy.get('[data-player-hand-card]').should('have.length', 10);
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+
+        // Player must select 2 cards to discard
+        cy.get('[data-discard-hand-limit-card=2-0]').click();
+        cy.get('[data-discard-hand-limit-card=3-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        assertGameState(0, {
+          p0Hand: [
+            Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS,
+            Card.QUEEN_OF_CLUBS,
+          ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_SPADES ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            Card.FIVE_OF_CLUBS,
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
+      });
+    });
+  });
+
+  describe('Passing and Hand Limit', () => {
+    describe('P1 perspective', () => {
+      beforeEach(() => {
+        cy.setupGameAsP1();
+      });
+
+      it('Forces player to discard down to hand limit after passing while over the limit with an empty deck', () => {
+        // The over-limit hand is seeded directly: the hand limit is only enforced at the end of
+        // the active player's turn, and no effect hands a card to the inactive player.
+        cy.loadGameFixture(1, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.ACE_OF_CLUBS,
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          // Empty deck so the player can pass (rather than draw) on their turn
+          deck: [],
+        });
+
+        // Opponent passes, handing the turn to the player who is over the limit
+        cy.passOpponent();
+
+        // Player has 9 cards and has not been asked to discard yet
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Deck is empty, so on the player's turn the deck shows PASS; clicking it passes the turn
+        cy.get('#turn-indicator').contains('YOUR TURN');
+        cy.get('#deck').should('contain', '(0)')
+          .should('contain', 'PASS')
+          .click();
+
+        // Passing while over the hand limit triggers the discard-to-hand-limit dialog
+        cy.get('#discard-to-hand-limit-dialog').should('be.visible');
+        cy.get('[data-player-hand-card]').should('have.length', 9);
+
+        // Player discards 1 card to reach the hand limit
+        cy.get('[data-discard-hand-limit-card=1-0]').click();
+        cy.get('[data-cy=submit-discard-to-hand-limit-dialog]').click();
+
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('#discard-to-hand-limit-dialog').should('not.exist');
+
+        // Turn passes to the opponent only after discarding down to the limit
+        cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+
+        assertGameState(1, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [
+            Card.THREE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS,
+            Card.SEVEN_OF_CLUBS,
+            Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS,
+          ],
+          p1Points: [],
+          p1FaceCards: [],
+          deck: [],
+          scrap: [
+            // Discarded down to the hand limit
+            Card.ACE_OF_CLUBS,
+            // Cards put into scrap by loadGameFixture (empty deck sends all unused cards to scrap)
+            Card.TWO_OF_CLUBS,
+            Card.NINE_OF_SPADES,
+            Card.JACK_OF_CLUBS,
+            Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS,
+            Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS,
+            Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES,
+            Card.TWO_OF_SPADES,
+            Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES,
+            Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES,
+            Card.EIGHT_OF_SPADES,
+            Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES,
+            Card.QUEEN_OF_SPADES,
+            Card.KING_OF_SPADES,
+          ],
+        });
+      });
+    });
+  });
+});
+
+describe('Hand Size Badge', () => {
+  const baseFixture = {
+    p0Points: [],
+    p0FaceCards: [],
+    p1Hand: [ Card.ACE_OF_SPADES ],
+    p1Points: [],
+    p1FaceCards: [],
+  };
+  const sevenCards = [
+    Card.ACE_OF_CLUBS,
+    Card.TWO_OF_CLUBS,
+    Card.THREE_OF_CLUBS,
+    Card.FOUR_OF_CLUBS,
+    Card.SIX_OF_CLUBS,
+    Card.SEVEN_OF_CLUBS,
+    Card.EIGHT_OF_CLUBS,
+  ];
+  const viewports = [
+    { name: 'xs', width: 375, height: 667 },
+    { name: 'sm', width: 700, height: 800 },
+    { name: 'desktop', width: 1280, height: 800 },
+  ];
+
+  viewports.forEach(({ name, width, height }) => {
+    describe(`at ${name} width`, () => {
+      beforeEach(() => {
+        cy.viewport(width, height);
+        cy.setupGameAsP0();
+      });
+
+      it('Shows 7/8 with the cards icon when under the hand limit', () => {
+        cy.loadGameFixture(0, { ...baseFixture, p0Hand: sevenCards });
+        cy.get('[data-player-hand-card]').should('have.length', 7);
+        cy.get('[data-cy=hand-size-badge]')
+          .should('be.visible')
+          .and('contain', '7/8')
+          .and('have.attr', 'aria-label', 'Hand: 7 of 8 cards');
+        cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('not.exist');
+      });
+
+      it('Shows 8/8 with the alert icon at the hand limit, including with a selected card', () => {
+        cy.loadGameFixture(0, {
+          ...baseFixture,
+          p0Hand: [ ...sevenCards, Card.NINE_OF_CLUBS ],
+        });
+        cy.get('[data-player-hand-card]').should('have.length', 8);
+        cy.get('[data-cy=hand-size-badge]')
+          .should('be.visible')
+          .and('contain', '8/8')
+          .and('have.attr', 'aria-label', 'Hand: 8 of 8 cards');
+        cy.get('[data-cy=hand-size-badge] .mdi-alert-outline').should('exist');
+        cy.get('[data-cy=hand-size-badge] .mdi-cards-outline').should('not.exist');
+
+        // Badge stays in place when a card is selected (the move overlay's scrim then covers the screen)
+        cy.get('[data-player-hand-card=1-0]').click();
+        cy.get('[data-cy=hand-size-badge]')
+          .should('exist')
+          .and('contain', '8/8');
+      });
+    });
+  });
+
+  it('Does not show the badge to spectators', () => {
+    cy.setupGameAsSpectator();
+    cy.get('#player-hand-cards').should('exist');
+    cy.get('[data-cy=hand-size-badge]').should('not.exist');
+  });
+});

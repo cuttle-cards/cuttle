@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Play Points',
@@ -39,12 +40,13 @@ module.exports = {
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
 
     player.points.push(...player.hand.splice(cardIndex, 1));
-    result.turn++;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       playedBy,
       playedCard: player.points.at(-1),
       targetCard: null,

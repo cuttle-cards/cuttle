@@ -8,9 +8,12 @@ import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import GameStatus from '../../utils/GameStatus.json';
 import GamePhase from '../../utils/GamePhase.json';
+import GameConstants from '../../utils/GameConstants.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 import { ROUTE_NAME_VS_AI } from '@/router';
+
+export const { HAND_LIMIT } = GameConstants;
 
 /**
  * @returns number of queens a given player has
@@ -95,6 +98,8 @@ export const useGameStore = defineStore('game', () => {
   const twos = ref([]);
   const oneOff = ref(null);
   const oneOffTarget = ref(null);
+  // Cards the victim of a four revealed, from which the four's player chooses two to discard
+  const fourRevealedCards = ref([]);
   const isRanked = ref(false);
 
   // Threes
@@ -104,7 +109,13 @@ export const useGameStore = defineStore('game', () => {
   // Last Event
   const lastEventChange = ref(null);
   const lastEventOneOffRank = ref(null);
-  const lastEventTargetType = ref(null);
+  // Set only while a nine's topdeck animation is in flight. Drives both the face-down flip
+  // (GameCard renders its back when suit/rank are withheld) and the toward-the-deck exit.
+  const topdeckedCard = ref(null);
+  // Which list the topdecked card sat in, captured before the server state lands so the row
+  // it leaves from animates toward the deck while the others keep their usual direction:
+  // 'playerPoints' | 'playerFaceCards' | 'playerJacks' | 'opponent...' equivalents.
+  const topdeckedCardZone = ref(null);
   const lastEventPlayedBy = ref(null);
   // GameOver
   const gameIsOver = ref(false);
@@ -212,18 +223,39 @@ export const useGameStore = defineStore('game', () => {
     () => phase.value === GamePhase.RESOLVING_THREE && !isPlayersTurn.value,
   );
   const pickingFromScrap = computed(() => phase.value === GamePhase.RESOLVING_THREE && isPlayersTurn.value);
+  // Legacy: no live game enters RESOLVING_FOUR as of rules 3.0.0 (fours resolve through
+  // RESOLVING_FOUR_REVEAL and RESOLVING_FOUR_DISCARD since 4.0.0), but replaying a stored game
+  // that did still renders the dialog.
   const showResolveFour = computed(() => phase.value === GamePhase.RESOLVING_FOUR && !isPlayersTurn.value);
   const waitingForOpponentToDiscard = computed(() => {
     switch (phase.value) {
       case GamePhase.RESOLVING_FOUR:
         return isPlayersTurn.value;
       case GamePhase.RESOLVING_FIVE:
+      case GamePhase.DISCARDING_TO_HAND_LIMIT:
         return !isPlayersTurn.value;
       default:
         return false;
     }
   });
+  // A four's victim reveals three cards on the four player's turn...
+  const revealingForFour = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_REVEAL && !isPlayersTurn.value,
+  );
+  const waitingForOpponentToRevealForFour = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_REVEAL && isPlayersTurn.value,
+  );
+  // ...then the four's player chooses two of them for the victim to discard
+  const choosingFourDiscards = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_DISCARD && isPlayersTurn.value,
+  );
+  const waitingForOpponentToChooseFourDiscards = computed(
+    () => phase.value === GamePhase.RESOLVING_FOUR_DISCARD && !isPlayersTurn.value,
+  );
   const showResolveFive = computed(() => phase.value === GamePhase.RESOLVING_FIVE && isPlayersTurn.value);
+  const showDiscardToHandLimit = computed(
+    () => phase.value === GamePhase.DISCARDING_TO_HAND_LIMIT && isPlayersTurn.value
+  );
   const playingFromDeck = computed(() => phase.value === GamePhase.RESOLVING_SEVEN && isPlayersTurn.value);
   const waitingForOpponentToPlayFromDeck = computed(
     () => phase.value === GamePhase.RESOLVING_SEVEN && !isPlayersTurn.value,
@@ -245,7 +277,6 @@ export const useGameStore = defineStore('game', () => {
   function updateGame(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
-    lastEventTargetType.value = newGame.lastEvent?.oneOffTargetType ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
     lastEventPlayerChoosing.value =
       typeof lastEventPlayer === 'number' && myPNum.value !== null ? lastEventPlayer === myPNum.value : null;
@@ -265,6 +296,7 @@ export const useGameStore = defineStore('game', () => {
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
+    fourRevealedCards.value = newGame.fourRevealedCards?.map((card) => createGameCard(card)) ?? [];
     isRanked.value = newGame.isRanked ?? isRanked.value;
     currentMatch.value = newGame.currentMatch ?? currentMatch.value;
     p0Rematch.value = newGame.p0Rematch ?? null;
@@ -302,11 +334,13 @@ export const useGameStore = defineStore('game', () => {
     twos.value = [];
     oneOff.value = null;
     oneOffTarget.value = null;
+    fourRevealedCards.value = [];
     isRanked.value = false;
     lastEventPlayerChoosing.value = false;
     lastEventChange.value = null;
     lastEventOneOffRank.value = null;
-    lastEventTargetType.value = null;
+    topdeckedCard.value = null;
+    topdeckedCardZone.value = null;
     lastEventPlayedBy.value = null;
     lastEventThreeTarget.value = null;
     gameIsOver.value = false;
@@ -370,6 +404,95 @@ export const useGameStore = defineStore('game', () => {
     await sleep(1000);
     updateGame(game);
   }
+  /**
+   * Finds which list a card currently sits in, so the row it leaves from can animate toward
+   * the deck while every other row keeps its usual direction.
+   */
+  function findFieldZone(cardId) {
+    const sides = [ [ 'player', player.value ], [ 'opponent', opponent.value ] ];
+    for (const [ side, fieldPlayer ] of sides) {
+      if (!fieldPlayer) {
+        continue;
+      }
+      if (fieldPlayer.faceCards?.some(({ id }) => id === cardId)) {
+        return `${side}FaceCards`;
+      }
+      if (fieldPlayer.points?.some(({ id }) => id === cardId)) {
+        return `${side}Points`;
+      }
+      if (fieldPlayer.points?.some(({ attachments }) => attachments?.some(({ id }) => id === cardId))) {
+        return `${side}Jacks`;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Removes a card from either player's points or face cards, including jacks attached to a
+   * point card. Lets a card play its exit before the server state is applied.
+   */
+  function removeCardFromField(cardId) {
+    players.value.forEach((fieldPlayer) => {
+      if (!fieldPlayer) {
+        return;
+      }
+      const faceCardIndex = fieldPlayer.faceCards?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (faceCardIndex > -1) {
+        fieldPlayer.faceCards.splice(faceCardIndex, 1);
+      }
+
+      const pointIndex = fieldPlayer.points?.findIndex(({ id }) => id === cardId) ?? -1;
+      if (pointIndex > -1) {
+        fieldPlayer.points.splice(pointIndex, 1);
+        return;
+      }
+
+      fieldPlayer.points?.forEach((pointCard) => {
+        const jackIndex = pointCard.attachments?.findIndex(({ id }) => id === cardId) ?? -1;
+        if (jackIndex > -1) {
+          pointCard.attachments.splice(jackIndex, 1);
+        }
+      });
+    });
+  }
+
+  /**
+   * Animates a nine putting its target on top of the deck, in three stages.
+   *
+   * The exit and the knock-on move could share a render -- a topdecked jack leaves through
+   * the jacks list while its point card goes home through the points list, and those are
+   * separate TransitionGroups, so the directions do not compete. They are kept apart on
+   * purpose: giving the card its own beat to reach the deck before the point card comes
+   * home reads better than both moving at once.
+   */
+  async function processNines(targetCard, game) {
+    if (!targetCard || !player.value) {
+      updateGame(game);
+      return;
+    }
+
+    // Drop out of the countering phase up front, the way processThrees and processFives do.
+    // The authoritative state does not land until stage 3, so without this the "waiting for
+    // opponent to counter" scrim covers the whole animation.
+    phase.value = GamePhase.MAIN;
+
+    // Stage 1: the target flips face down where it sits. Matches CARD_FLIP's --duration-slow
+    // so the flip finishes before the card starts moving.
+    topdeckedCardZone.value = findFieldZone(targetCard.id);
+    topdeckedCard.value = targetCard;
+    await sleep(1000);
+
+    // Stage 2: the card leaves for the deck on its own, and the deck grows to match
+    removeCardFromField(targetCard.id);
+    deck.value.unshift({ isHidden: true });
+    await sleep(1000);
+
+    // Stage 3: the server state lands, bringing a topdecked jack's point card home
+    topdeckedCard.value = null;
+    topdeckedCardZone.value = null;
+    updateGame(game);
+  }
+
   async function processThrees(chosenCard, game) {
     phase.value = GamePhase.MAIN;
     const three = game.resolved;
@@ -385,7 +508,9 @@ export const useGameStore = defineStore('game', () => {
   }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
-    if (!showOpponentHand.value) {
+    // A four against an empty hand discards nothing, and create-socket-events sends null
+    // rather than an empty array, so this has to guard the way processFives does
+    if (discardedCards?.length && !showOpponentHand.value) {
       opponent.value.hand = [
         ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
         ...discardedCards,
@@ -443,6 +568,9 @@ export const useGameStore = defineStore('game', () => {
       case 'resolveThree':
       case 'resolveFour':
       case 'resolveFive':
+      case 'revealFour':
+      case 'discardFour':
+      case 'discardToHandLimit':
       case 'seven/points':
       case 'seven/scuttle':
       case 'seven/faceCard':
@@ -505,7 +633,8 @@ export const useGameStore = defineStore('game', () => {
             });
           case 401:
             authStore.mustReauthenticate = true;
-            return resolve(jwres.body.message);
+            // Resolve without a game state; ReauthenticateDialog handles recovery
+            return resolve(null);
           default:
             return reject(jwres.body.message);
         }
@@ -619,10 +748,30 @@ export const useGameStore = defineStore('game', () => {
     const moveType = MoveType.JACK;
     await makeSocketRequest('jack', { moveType, cardId, targetId });
   }
+  // Legacy: only reachable from the four-discard dialog, which only appears when replaying a
+  // pre-3.0.0 game. The server no longer accepts the move and answers 400.
   async function requestDiscard({ cardId1, cardId2 }) {
     const moveType = MoveType.RESOLVE_FOUR;
     const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
     await makeSocketRequest('resolveFour', reqData);
+  }
+  async function requestRevealFour(cardIds) {
+    await makeSocketRequest('revealFour', {
+      moveType: MoveType.REVEAL_FOUR,
+      fourRevealedCards: cardIds,
+    });
+  }
+  async function requestDiscardFour(cardIds) {
+    await makeSocketRequest('discardFour', {
+      moveType: MoveType.DISCARD_FOUR,
+      discardedCards: cardIds,
+    });
+  }
+  async function requestDiscardToHandLimit(cardIds) {
+    await makeSocketRequest('discardToHandLimit', {
+      moveType: MoveType.DISCARD_TO_HAND_LIMIT,
+      discardedCards: cardIds,
+    });
   }
   async function requestResolve() {
     const moveType = MoveType.RESOLVE;
@@ -720,12 +869,14 @@ export const useGameStore = defineStore('game', () => {
     secondCard,
     oneOff,
     oneOffTarget,
+    fourRevealedCards,
     isRanked,
     lastEventPlayerChoosing,
     lastEventThreeTarget,
     lastEventChange,
     lastEventOneOffRank,
-    lastEventTargetType,
+    topdeckedCard,
+    topdeckedCardZone,
     lastEventPlayedBy,
     gameIsOver,
     winnerPNum,
@@ -762,7 +913,12 @@ export const useGameStore = defineStore('game', () => {
     pickingFromScrap,
     showResolveFour,
     waitingForOpponentToDiscard,
+    revealingForFour,
+    waitingForOpponentToRevealForFour,
+    choosingFourDiscards,
+    waitingForOpponentToChooseFourDiscards,
     showResolveFive,
+    showDiscardToHandLimit,
     playingFromDeck,
     waitingForOpponentToPlayFromDeck,
     waitingForOpponentToStalemate,
@@ -778,6 +934,7 @@ export const useGameStore = defineStore('game', () => {
     setGameOver,
     setRematch,
     processScuttle,
+    processNines,
     processThrees,
     processFours,
     processFives,
@@ -801,6 +958,9 @@ export const useGameStore = defineStore('game', () => {
     requestPlayTargetedOneOff,
     requestPlayJack,
     requestDiscard,
+    requestRevealFour,
+    requestDiscardFour,
+    requestDiscardToHandLimit,
     requestResolve,
     requestResolveThree,
     requestResolveFive,

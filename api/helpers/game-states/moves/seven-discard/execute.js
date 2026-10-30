@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Discard a Jack via a seven',
@@ -38,6 +39,7 @@ module.exports = {
     let result = _.cloneDeep(currentState);
 
     const { cardId } = requestedMove;
+    const player = playedBy ? result.p1 : result.p0;
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
 
     // Remove discarded card from the deck
@@ -47,12 +49,13 @@ module.exports = {
     const { oneOff } = result;
     result.scrap.push(oneOff, playedCard);
 
-    result.turn++;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
+      phase: playerMustDiscard ? GamePhase.DISCARDING_TO_HAND_LIMIT : GamePhase.MAIN,
+      turn: playerMustDiscard ? result.turn : result.turn + 1,
       playedBy,
       playedCard,
       discardCards: [ playedCard ],

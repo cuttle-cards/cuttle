@@ -5,6 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
+const { CURRENT_RULES_VERSION } = require('../../utils/rulesVersion');
+
 module.exports = {
   attributes: {
     name: {
@@ -16,7 +18,8 @@ module.exports = {
      * 1 - NEW (game has been created but has not started)
      * 2 - STARTED (game has been started but has not yet finished)
      * 3 - FINISHED (game has been completed)
-     * 4 - ARCHIVED (game has been removed from the list without being started)
+     * 4 - ARCHIVED (an unfinished game a player has dismissed via DELETE /api/game/:gameId;
+     *     treated as a synonym for FINISHED everywhere a game's status is read)
      */
     status: {
       type: 'number',
@@ -57,6 +60,15 @@ module.exports = {
     isRanked: {
       type: 'boolean',
       defaultsTo: false,
+    },
+    /**
+     * Semver of the core rule set this game was played under (see utils/rulesVersion.js).
+     * Defaults to the current version at creation time so every game records its rules.
+     * Future orthogonal rule mods (e.g. jokers) will be tracked in a separate ruleVariants column.
+     */
+    rulesVersion: {
+      type: 'string',
+      defaultsTo: CURRENT_RULES_VERSION,
     },
     p0: {
       model: 'user',

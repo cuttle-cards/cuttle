@@ -3,6 +3,7 @@
     v-if="oneOff"
     id="cannot-counter-dialog"
     v-model="show"
+    minimizable
     :title="t('game.dialogs.counterDialogs.cannotCounterTitle')"
   >
     <template #body>

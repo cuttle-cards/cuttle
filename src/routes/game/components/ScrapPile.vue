@@ -113,7 +113,7 @@ import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { onLongPress } from '@vueuse/core';
 import { useGameStore } from '_/src/stores/game';
-import MoveType from '_/utils/MoveType';
+import MoveType from '_/utils/MoveType.json';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';

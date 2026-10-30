@@ -1,4 +1,4 @@
-const GameStatus = require('../../../../utils/GameStatus');
+const GameStatus = require('../../../../utils/GameStatus.json');
 
 module.exports = async function (req, res) {
   const playerId = req.session.usr;

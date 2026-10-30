@@ -53,7 +53,7 @@
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
             <p class="text-h4 text-center font-weight-medium mb-10">
-              {{ formHeaderText }}
+              <span class="font-weight-bold text-primary">{{ formHeaderEmphasis }}</span>{{ formHeaderText }}
             </p>
 
             <v-form
@@ -90,6 +90,23 @@
                 @click:append-inner="showPass = !showPass"
               />
 
+              <template v-if="!isLoggingIn">
+                <label for="confirm-password" class="text-body-1 font-weight-bold">
+                  {{ t('login.confirmPassword') }}
+                </label>
+                <v-text-field
+                  id="confirm-password"
+                  v-model="confirmPw"
+                  class="my-4"
+                  variant="solo"
+                  :rules="confirmPasswordRules"
+                  :density="$vuetify.display.mdAndDown ? 'compact' : 'default'"
+                  :type="showPass ? 'text' : 'password'"
+                  autocomplete="new-password"
+                  data-cy="confirm-password"
+                />
+              </template>
+
               <div
                 id="login-button-container"
                 class="d-flex flex-column flex-md-row justify-space-between align-center flex-wrap"
@@ -97,8 +114,8 @@
                 <v-btn
                   class="px-16"
                   :loading="loading"
-                  :disabled="!isFormValid"
-                  :color="isFormValid ? 'primary' : 'disabled'"
+                  :disabled="!canSubmit"
+                  :color="canSubmit ? 'primary' : 'disabled'"
                   type="submit"
                   size="x-large"
                   text-color="white"
@@ -259,11 +276,13 @@ export default {
     return {
       username: '',
       pw: '',
+      confirmPw: '',
       loading: false,
       showPass: false,
       isFormValid: false,
       usernameRules: [ this.isAlphaNumeric ],
       passwordRules: [ this.has8OrMoreCharacters ],
+      confirmPasswordRules: [ this.passwordsMatch ],
     };
   },
   computed: {
@@ -273,6 +292,11 @@ export default {
     },
     goingToForm() {
       return this.$route.hash === '#login-container';
+    },
+    formHeaderEmphasis() {
+      return this.isLoggingIn
+        ? this.t('login.formHeaderLoginEmphasis')
+        : this.t('login.formHeaderSignupEmphasis');
     },
     formHeaderText() {
       return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
@@ -288,6 +312,15 @@ export default {
         return this.t('login.noAccount');
       }
       return this.t('login.haveAccount');
+    },
+    // When signing up, the confirm-password field must also match. Vuetify's isFormValid
+    // ignores the confirm field until it's been interacted with, so gate submission
+    // explicitly to keep an untouched/empty confirm field from enabling the button.
+    canSubmit() {
+      if (!this.isFormValid) {
+        return false;
+      }
+      return this.isLoggingIn || this.pw === this.confirmPw;
     },
   },
   watch: {
@@ -308,6 +341,11 @@ export default {
   },
   methods: {
     async submitLogin() {
+      // Guard the enter-key path: pressing enter submits the form regardless of the
+      // button's disabled state, so re-check the confirm-password match here.
+      if (!this.isLoggingIn && this.pw !== this.confirmPw) {
+        return;
+      }
       this.loading = true;
       const action = this.isLoggingIn ? this.authStore.requestLogin : this.authStore.requestSignup;
       try {
@@ -321,7 +359,6 @@ export default {
       }
     },
     switchMode() {
-      this.pw = '';
       if (this.isLoggingIn) {
         this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login-container' });
       } else {
@@ -331,6 +368,7 @@ export default {
     handleLogin() {
       this.username = '';
       this.pw = '';
+      this.confirmPw = '';
       this.loading = false;
       const { lobbyRedirectId } = this.$route.params;
       if (!lobbyRedirectId) {
@@ -350,6 +388,9 @@ export default {
     },
     has8OrMoreCharacters(val) {
       return val.length >= 8 || 'Password must contain at least eight characters';
+    },
+    passwordsMatch(val) {
+      return val === this.pw || 'Passwords must match';
     },
     scrollAndFocusLogin() {
       this.$refs.loginContainer.scrollIntoView();

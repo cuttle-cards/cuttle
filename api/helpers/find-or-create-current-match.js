@@ -26,19 +26,13 @@ module.exports = {
   fn: async ({ player1, player2 }, exits) => {
     const currentTime = dayjs.utc();
     try {
-      const currentSeason = await Season.findOne({
-        startTime: { '<=': currentTime.toDate() },
-        endTime: { '>=': currentTime.toDate() },
-      });
+      const currentWeek = await sails.helpers.getCurrentSeasonWeek();
       // FIXME: Handle missing season gracefully
-      if (!currentSeason) {
+      if (!currentWeek) {
         return exits.success();
       }
       // Find relevant match between specified players for current week
-      const seasonStartTime = dayjs.utc(currentSeason.startTime);
-      const weeksSinceSeasonStart = currentTime.diff(seasonStartTime, 'week');
-      const currentWeekStartTime = seasonStartTime.add(weeksSinceSeasonStart, 'week').toDate();
-      const currentWeekEndTime = seasonStartTime.add(weeksSinceSeasonStart + 1, 'week').toDate();
+      const { weekStartTime: currentWeekStartTime, weekEndTime: currentWeekEndTime } = currentWeek;
       let currentMatch = await Match.findOne({
         and: [
           // Match started within current week
