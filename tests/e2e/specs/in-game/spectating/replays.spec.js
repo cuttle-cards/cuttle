@@ -147,6 +147,36 @@ describe('Rewatching finished games', () => {
       });
     });
 
+    it('Loads the game named in the URL when stepping back through browser history', function () {
+      createAndFinishCasualMatch();
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+
+      cy.get('@replayGameId').then((gameId) => {
+        cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+          cy.visit(`/spectate/${gameId}?pNum=0`);
+          cy.get('[data-player-hand-card]').should('have.length', 5);
+
+          selectMatchGame(2);
+          cy.url().should('include', `/spectate/${rematchGameId}`);
+          cy.get('[data-cy=history-log]').should('have.length', 1);
+
+          // Route guards don't re-run on a param-only change, so the board used to
+          // keep showing game 2 while the URL said game 1
+          cy.go('back');
+          cy.url().should('include', `/spectate/${gameId}`);
+          cy.get('[data-cy=match-game-selector]').should('contain', 'Game 1');
+          cy.get('[data-player-hand-card]').should('have.length', 5);
+          cy.get('#player-username-container').should('contain', playerOne.username);
+
+          cy.go('forward');
+          cy.url().should('include', `/spectate/${rematchGameId}`);
+          cy.get('[data-cy=match-game-selector]').should('contain', 'Game 2');
+          cy.get('#player-username-container').should('contain', playerOne.username);
+        });
+      });
+    });
+
     it('Hides the dropdown when the match has only one game', () => {
       setupGameBetweenTwoUnseenPlayers('replay');
 
