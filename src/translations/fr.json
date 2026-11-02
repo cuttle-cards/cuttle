@@ -123,17 +123,6 @@
         "leaveGame": "Quitter le jeu",
         "login": "Se connecter"
       },
-      "scrapDialog": {
-        "scrapPile": "Défausse",
-        "noCards": "Il n'y a aucune carte dans la défausse."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Trier",
-          "chronologically": "Chronologiquement",
-          "rank": "Par valeur"
-        }
-      },
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
@@ -159,6 +148,17 @@
         "nice": "Bon!",
         "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
         "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Sympa!"
+      },
+      "scrapDialog": {
+        "scrapPile": "Défausse",
+        "noCards": "Il n'y a aucune carte dans la défausse."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Trier",
+          "chronologically": "Chronologiquement",
+          "rank": "Par valeur"
+        }
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
@@ -493,8 +493,8 @@
     },
     "readyToPlay": {
       "readyToPlay": "Prêt à jouer ?",
-      "findGame": "Trouver une partie",
-      "signUp": "Inscrivez-vous pour jouer en ligne"
+      "signUp": "Inscrivez-vous pour jouer en ligne",
+      "findGame": "Trouver une partie"
     },
     "multiplayerTitle": "Variantes multijoueurs",
     "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
