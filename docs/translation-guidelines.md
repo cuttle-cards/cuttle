@@ -46,3 +46,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
   A basic literal translation (with Google translate) of one-off might sound weird.  In that case, it can be translated to something like "Ability, Effect, super power, ...". 
 - **Glasses eight** :  The idea is that a sideways 8 looks like a pair of glasses and glasses give you good vision, therefore allowing you to see you opponent's hand. Ideally this term should be translated to a word for glasses, but if that sounds unnatural in the target language, consider alternatives that convey that this is a card that grants vision
 - **Field** :  The field is the area of cards that are in play. Its literal translation might not be of good use, depending on the language.  In French, for example, it wouldn't make much sense to use it. If field doesn't work, use a word that conveys that this is the active area where cards are played.
+
+## Key order
+
+`src/translations/en.json` defines the canonical key order. Every other locale file (de, es, fr, ukr) must list the same keys in the same order, with only the values translated. When adding a new key, add it to `en.json` first, then insert it at the same position in every locale file. `tests/unit/specs/translations.spec.js` fails when any locale drifts from the English order.
