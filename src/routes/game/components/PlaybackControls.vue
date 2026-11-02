@@ -2,6 +2,9 @@
   <menu id="playback-controls" data-cy="playback-controls">
     <UsernameToolTip id="player-username-container" :username="gameStore.playerUsername" />
     <span id="playback-controls-button-wrapper">
+      <!-- Jump to another game in this match -->
+      <MatchGameSelector v-if="gameHistoryStore.showGameSelector" class="mr-4" />
+
       <!-- Skip backward -->
       <v-btn
         :disabled="!gameHistoryStore.canGoToPreviousState"
@@ -47,6 +50,7 @@ import { useRouter } from 'vue-router';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useGameStore } from '@/stores/game';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
+import MatchGameSelector from '@/routes/game/components/MatchGameSelector.vue';
 
 const router = useRouter();
 const gameHistoryStore = useGameHistoryStore();

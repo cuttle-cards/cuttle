@@ -434,4 +434,19 @@ function createAndPlayGameWithOneOffs() {
   });
 }
 
-export { createAndFinishCasualMatch, rewatchCasualMatch, createAndPlayGameWithOneOffs };
+/**
+ * Picks a game out of the playback controls' match dropdown by its 1-based number
+ */
+function selectMatchGame(gameNumber) {
+  cy.get('[data-cy=match-game-selector]').should('be.visible')
+    .click();
+  cy.get('[role=listbox]').contains(`Game ${gameNumber}`)
+    .click();
+}
+
+export {
+  createAndFinishCasualMatch,
+  rewatchCasualMatch,
+  createAndPlayGameWithOneOffs,
+  selectMatchGame,
+};

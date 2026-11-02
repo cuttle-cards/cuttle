@@ -14,6 +14,7 @@ import {
   createAndFinishCasualMatch,
   rewatchCasualMatch,
   createAndPlayGameWithOneOffs,
+  selectMatchGame,
 } from './replayHelpers';
 
 dayjs.extend(utc);
@@ -109,6 +110,172 @@ describe('Rewatching finished games', () => {
         },
         true,
       );
+    });
+  });
+
+  describe('Navigating between games with the match dropdown', () => {
+    it('Jumps forwards and backwards through a casual match, following the same player across the seat swap', function () {
+      createAndFinishCasualMatch();
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+
+      cy.get('@replayGameId').then((gameId) => {
+        cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+          // Game 1 is played with Player1 as p0
+          cy.visit(`/spectate/${gameId}?pNum=0`);
+          cy.get('[data-player-hand-card]').should('have.length', 5);
+          cy.get('#player-username-container').should('contain', playerOne.username);
+
+          cy.get('[data-cy=match-game-selector]').should('be.visible')
+            .click();
+          cy.get('[role=listbox]').find('[data-cy=match-game-option]')
+            .should('have.length', 2);
+          cy.get('[role=listbox]').contains('Game 2')
+            .click();
+
+          // Players swap seats on rematch, so following Player1 means landing on p1
+          cy.url().should('include', `/spectate/${rematchGameId}?gameStateIndex=0&pNum=1`);
+          cy.get('#player-username-container').should('contain', playerOne.username);
+          cy.get('[data-cy=history-log]').should('have.length', 1);
+
+          // Jump back to the first game -- something the gameover button can't do
+          selectMatchGame(1);
+          cy.url().should('include', `/spectate/${gameId}?gameStateIndex=0&pNum=0`);
+          cy.get('#player-username-container').should('contain', playerOne.username);
+          cy.get('[data-player-hand-card]').should('have.length', 5);
+        });
+      });
+    });
+
+    it('Hides the dropdown when the match has only one game', () => {
+      setupGameBetweenTwoUnseenPlayers('replay');
+
+      cy.get('@replayGameId').then((gameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_DIAMONDS ],
+          p1Points: [],
+          p1FaceCards: [],
+        }, gameId);
+
+        cy.recoverSessionOpponent(playerOne);
+        cy.concedeOpponent(gameId);
+
+        cy.visit('/');
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${gameId}`);
+
+        cy.get('[data-cy=playback-controls]').should('be.visible');
+        cy.get('[data-cy=match-game-selector]').should('not.exist');
+      });
+    });
+
+    it('Jumps between the games of a ranked match', () => {
+      setupSeasons();
+      setupGameBetweenTwoUnseenPlayers('replay', true);
+
+      cy.get('@replayGameId').then((gameId) => {
+        cy.recoverSessionOpponent(playerOne);
+        cy.concedeOpponent(gameId);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+        cy.recoverSessionOpponent(playerTwo);
+        cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+
+        cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+          cy.recoverSessionOpponent(playerOne);
+          cy.concedeOpponent(rematchGameId);
+
+          cy.visit('/');
+          cy.signupPlayer(myUser);
+          cy.vueRoute(`/spectate/${gameId}?pNum=0`);
+
+          selectMatchGame(2);
+          cy.url().should('include', `/spectate/${rematchGameId}?gameStateIndex=0&pNum=1`);
+          cy.get('#player-username-container').should('contain', playerOne.username);
+
+          selectMatchGame(1);
+          cy.url().should('include', `/spectate/${gameId}?gameStateIndex=0&pNum=0`);
+        });
+      });
+    });
+
+    it('Redirects home with an error when the selected game has no gamestates', function () {
+      // Seed a match whose second game was never dealt, which can't be spectated
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupOpponent(playerOne).as('playerOneId');
+      cy.signupOpponent(playerTwo)
+        .as('playerTwoId')
+        .then(function () {
+          cy.loadMatchFixtures([
+            {
+              player1: this.playerOneId,
+              player2: this.playerTwoId,
+              winner: null,
+              startTime: dayjs.utc().subtract(1, 'hour')
+                .toDate(),
+              endTime: dayjs.utc().subtract(1, 'hour')
+                .toDate(),
+            },
+          ]);
+        });
+
+      cy.request('/api/test/match').then((matchRes) => {
+        const [ match ] = matchRes.body;
+
+        cy.loadFinishedGameFixtures([
+          {
+            name: 'Finished first game',
+            status: GameStatus.FINISHED,
+            isRanked: true,
+            match: match.id,
+            p0: this.playerOneId,
+            p1: this.playerTwoId,
+            winner: this.playerOneId,
+            updatedAt: dayjs.utc().subtract(30, 'minutes')
+              .toDate(),
+          },
+          {
+            name: 'Second game that was never dealt',
+            status: GameStatus.STARTED,
+            isRanked: true,
+            match: match.id,
+            p0: this.playerTwoId,
+            p1: this.playerOneId,
+            updatedAt: dayjs.utc().toDate(),
+          },
+        ]);
+      });
+
+      cy.request('/api/test/game').then((gameRes) => {
+        const [ firstGame, secondGame ] = gameRes.body.sort((game1, game2) => game1.id - game2.id);
+
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.ACE_OF_DIAMONDS ],
+          p1Points: [],
+          p1FaceCards: [],
+        }, firstGame.id);
+
+        cy.signupPlayer(myUser);
+        cy.visit(`/spectate/${firstGame.id}`);
+        cy.get('[data-player-hand-card]').should('have.length', 1);
+
+        // Both games are listed; only the first one can actually be spectated
+        cy.get('[data-cy=match-game-selector]').should('be.visible')
+          .click();
+        cy.get('[role=listbox]').find('[data-cy=match-game-option]')
+          .should('have.length', 2);
+        cy.get('[role=listbox]').contains('Game 2')
+          .click();
+
+        cy.url().should('not.include', `/spectate/${secondGame.id}`);
+        assertSnackbar('Cannot spectate: game is too old', 'error');
+      });
     });
   });
 
