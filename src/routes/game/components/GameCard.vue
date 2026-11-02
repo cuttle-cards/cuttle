@@ -18,6 +18,16 @@
       aria-hidden="false"
       role="img"
     />
+    <v-icon
+      v-if="isRevealed"
+      class="player-card-icon revealed-icon mr-1 mt-1"
+      color="base-dark"
+      icon="mdi-eye"
+      aria-label="eye icon (card is revealed)"
+      aria-hidden="false"
+      role="img"
+      data-revealed-icon
+    />
     <v-overlay
       :model-value="isValidTarget"
       contained
@@ -90,6 +100,10 @@ export default {
       default: null,
     },
     isFrozen: {
+      type: Boolean,
+      default: false,
+    },
+    isRevealed: {
       type: Boolean,
       default: false,
     },
@@ -245,6 +259,11 @@ export default {
   top: 0;
   right: 0;
   z-index: 1;
+}
+/* Clear of the rank in the top left. The light disc keeps it legible on dark royal art */
+.revealed-icon {
+  background: rgb(var(--v-theme-base-light));
+  border-radius: 50%;
 }
 .opponent-card-back {
   border-radius: 5px;

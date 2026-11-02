@@ -62,6 +62,8 @@ class GameCard {
     this.suit = card.suit;
     this.rank = card.rank;
     this.isFrozen = card.isFrozen;
+    // Both players have seen this card, so it shows face up in a hidden hand or on the deck
+    this.isRevealed = card.isRevealed;
     this.name = str_rank + str_suit;
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
@@ -506,15 +508,28 @@ export const useGameStore = defineStore('game', () => {
     // Finish update (moving card from scrap to hand)
     updateGame(game);
   }
+  /**
+   * Swaps the opponent's discarded cards into their hand so they can animate out of it. Revealed
+   * cards are already face up in the hand, so those are matched by id; any other discard stands in
+   * for one of the hidden cards.
+   */
+  function showOpponentDiscards(discardedCards) {
+    const hand = [ ...opponent.value.hand ];
+    discardedCards.forEach(({ id }) => {
+      const revealedIndex = hand.findIndex((card) => card.id === id);
+      const index = revealedIndex > -1 ? revealedIndex : hand.map(({ isHidden }) => isHidden).lastIndexOf(true);
+      if (index > -1) {
+        hand.splice(index, 1);
+      }
+    });
+    opponent.value.hand = [ ...hand, ...discardedCards ];
+  }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
     // A four against an empty hand discards nothing, and create-socket-events sends null
     // rather than an empty array, so this has to guard the way processFives does
     if (discardedCards?.length && !showOpponentHand.value) {
-      opponent.value.hand = [
-        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
-        ...discardedCards,
-      ];
+      showOpponentDiscards(discardedCards);
       await sleep(1000);
     }
     updateGame(game);
@@ -523,10 +538,7 @@ export const useGameStore = defineStore('game', () => {
     phase.value = GamePhase.MAIN;
     if (discardedCards?.length && !showOpponentHand.value) {
       await sleep(1000);
-      opponent.value.hand = [
-        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
-        ...discardedCards,
-      ];
+      showOpponentDiscards(discardedCards);
       await sleep(1000);
     }
     updateGame(game);
