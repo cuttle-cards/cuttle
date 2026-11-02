@@ -72,6 +72,81 @@ describe('getMatchGames helper', () => {
       expect(matchGames.map(({ id }) => id)).toEqual(games.map(({ id }) => id));
     });
 
+    it('Includes a rematch that is still in progress and not yet recorded on the match', async () => {
+      const [ player1, player2 ] = await createPlayers();
+      const match = await Match.create({
+        player1: player1.id,
+        player2: player2.id,
+        startTime: dayjs.utc().toDate(),
+      }).fetch();
+
+      const finishedGame = await Game.create({
+        name: 'Ranked game 1',
+        status: GameStatus.FINISHED,
+        isRanked: true,
+        match: match.id,
+        p0: player1.id,
+        p1: player2.id,
+        winner: player1.id,
+      }).fetch();
+
+      // rematch.js creates the next game without a match; addGameToMatch only
+      // attaches it once it finishes
+      const ongoingGame = await Game.create({
+        name: 'Ranked game 2',
+        status: GameStatus.STARTED,
+        isRanked: true,
+        p0: player2.id,
+        p1: player1.id,
+      }).fetch();
+      await Game.updateOne({ id: finishedGame.id }).set({ rematchGame: ongoingGame.id });
+
+      const matchGames = await sails.helpers.getMatchGames(finishedGame);
+
+      expect(matchGames.map(({ id }) => id)).toEqual([ finishedGame.id, ongoingGame.id ]);
+    });
+
+    it('Excludes the casual rematches played after the match was won', async () => {
+      const [ player1, player2 ] = await createPlayers();
+      const match = await Match.create({
+        player1: player1.id,
+        player2: player2.id,
+        startTime: dayjs.utc().toDate(),
+        endTime: dayjs.utc().toDate(),
+        winner: player1.id,
+      }).fetch();
+
+      const rankedGames = [];
+      for (let i = 0; i < 2; i++) {
+        const game = await Game.create({
+          name: `Ranked game ${i + 1}`,
+          status: GameStatus.FINISHED,
+          isRanked: true,
+          match: match.id,
+          p0: player1.id,
+          p1: player2.id,
+          winner: player1.id,
+        }).fetch();
+        rankedGames.push(game);
+      }
+      await Game.updateOne({ id: rankedGames[0].id }).set({ rematchGame: rankedGames[1].id });
+
+      // Once a match is won, rematch.js makes every further rematch casual
+      const casualGame = await Game.create({
+        name: 'Casual game after the match',
+        status: GameStatus.FINISHED,
+        isRanked: false,
+        p0: player2.id,
+        p1: player1.id,
+        winner: player2.id,
+      }).fetch();
+      await Game.updateOne({ id: rankedGames[1].id }).set({ rematchGame: casualGame.id });
+
+      const matchGames = await sails.helpers.getMatchGames(rankedGames[0]);
+
+      expect(matchGames.map(({ id }) => id)).toEqual(rankedGames.map(({ id }) => id));
+    });
+
     it('Resolves through the rematch chain when the game has no match yet', async () => {
       const [ player1, player2 ] = await createPlayers();
       const games = await createRematchChain(player1, player2, [
@@ -140,6 +215,38 @@ describe('getMatchGames helper', () => {
       const matchGames = await sails.helpers.getMatchGames(games[0]);
 
       expect(matchGames.map(({ id }) => id)).toEqual(games.map(({ id }) => id));
+    });
+
+    it('Stops at the ranked match the chain grew out of', async () => {
+      const [ player1, player2 ] = await createPlayers();
+      const match = await Match.create({
+        player1: player1.id,
+        player2: player2.id,
+        startTime: dayjs.utc().toDate(),
+        endTime: dayjs.utc().toDate(),
+        winner: player1.id,
+      }).fetch();
+
+      const rankedGame = await Game.create({
+        name: 'Ranked game',
+        status: GameStatus.FINISHED,
+        isRanked: true,
+        match: match.id,
+        p0: player1.id,
+        p1: player2.id,
+        winner: player1.id,
+      }).fetch();
+
+      // Once the match is won, rematch.js makes every further rematch casual
+      const casualGames = await createRematchChain(player1, player2, [
+        GameStatus.FINISHED,
+        GameStatus.FINISHED,
+      ]);
+      await Game.updateOne({ id: rankedGame.id }).set({ rematchGame: casualGames[0].id });
+
+      const matchGames = await sails.helpers.getMatchGames(casualGames[0]);
+
+      expect(matchGames.map(({ id }) => id)).toEqual(casualGames.map(({ id }) => id));
     });
 
     it('Returns a single game when it was never rematched', async () => {
