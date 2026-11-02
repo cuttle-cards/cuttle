@@ -21,10 +21,15 @@ module.exports = {
 
   fn: async function ({ game, gameState }, exits) {
     try {
+      // Flag the hand and deck cards both players have seen, so they stay face up and are shown as public
+      const revealedIds = new Set((gameState.revealedCards ?? []).map(({ id }) => id));
+      const markRevealed = (card) => (revealedIds.has(card.id) ? { ...card, isRevealed: true } : card);
+      const deck = gameState.deck.map(markRevealed);
+
       // Combine game and gamestate users and delete passwords
-      const p0 = { ...game.p0, ...gameState.p0, pNum: 0 };
+      const p0 = { ...game.p0, ...gameState.p0, hand: gameState.p0.hand.map(markRevealed), pNum: 0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game.p1, ...gameState.p1, pNum: 1 };
+      const p1 = { ...game.p1, ...gameState.p1, hand: gameState.p1.hand.map(markRevealed), pNum: 1 };
       delete p1.encryptedPassword;
 
       const players = [ p0, p1 ];
@@ -84,6 +89,7 @@ module.exports = {
 
       // Helper function to create hidden card placeholder
       const createHiddenCard = () => ({ isHidden: true });
+      const hideUnlessRevealed = (card) => (card.isRevealed ? card : createHiddenCard());
 
       // Helper function to hide opponent's hand cards
       const hideOpponentHand = (playerIndex, originalPlayers) => {
@@ -98,7 +104,7 @@ module.exports = {
 
           return {
             ...player,
-            hand: player.hand.map(createHiddenCard),
+            hand: player.hand.map(hideUnlessRevealed),
           };
         });
       };
@@ -110,11 +116,11 @@ module.exports = {
         // Show deck if: resolving seven (first two cards only)
         if (isResolvingSeven) {
           return [
-            ...gameState.deck.slice(0, 2), // First two cards visible
-            ...gameState.deck.slice(2).map(createHiddenCard) // Rest hidden
+            ...deck.slice(0, 2), // First two cards visible
+            ...deck.slice(2).map(hideUnlessRevealed) // Rest hidden unless revealed
           ];
         }
-        return gameState.deck.map(createHiddenCard); // All cards hidden
+        return deck.map(hideUnlessRevealed); // Hidden unless revealed
       };
 
       // Create base socket game object (spectator state)
@@ -141,7 +147,7 @@ module.exports = {
         passes: countPasses,
         turn: gameState.turn,
         phase: gameState.phase,
-        deck: gameState.deck,
+        deck,
         scrap: gameState.scrap,
         twos: gameState.twos,
         resolved: gameState.resolved,

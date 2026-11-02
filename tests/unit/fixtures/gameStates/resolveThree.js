@@ -11,6 +11,7 @@ const gameStateRow = {
   targetCard: 'TH',
   discardedCards: [],
   fourRevealedCards: [],
+  revealedCards: [],
   turn: 1,
   phase: GamePhase.MAIN,
   p0Hand: [ 'TH' ],
@@ -42,6 +43,7 @@ export const resolveThree = {
     targetCard: Card.TEN_OF_HEARTS,
     discardedCards: [],
     fourRevealedCards: [],
+    revealedCards: [],
     turn: 1,
     phase: GamePhase.MAIN,
     p0: {
