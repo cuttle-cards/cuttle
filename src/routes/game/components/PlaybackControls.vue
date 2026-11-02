@@ -115,7 +115,7 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
 }
 
 /* Reclaim horizontal space on phones, where the bar also holds the username and four buttons */
-@media (max-width: 599.98px) {
+@media (max-width: 600px) {
   #player-username-container :deep(.username) {
     padding-inline: 0.5em;
   }
