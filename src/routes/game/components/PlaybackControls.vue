@@ -3,7 +3,11 @@
     <UsernameToolTip id="player-username-container" :username="gameStore.playerUsername" />
     <span id="playback-controls-button-wrapper">
       <!-- Jump to another game in this match -->
-      <MatchGameSelector v-if="gameHistoryStore.showGameSelector" class="mr-4" />
+      <MatchGameSelector
+        v-if="gameHistoryStore.showGameSelector"
+        class="match-game-selector"
+        :class="xs ? 'mr-1' : 'mr-4'"
+      />
 
       <!-- Skip backward -->
       <v-btn
@@ -47,12 +51,14 @@
 <script setup>
 import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useGameStore } from '@/stores/game';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import MatchGameSelector from '@/routes/game/components/MatchGameSelector.vue';
 
 const router = useRouter();
+const { xs } = useDisplay();
 const gameHistoryStore = useGameHistoryStore();
 const gameStore = useGameStore();
 
@@ -100,5 +106,23 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
 
 #player-username-container {
   justify-self: flex-start;
+  /* Let the username truncate before the game selector or buttons get squeezed on narrow screens */
+  min-width: 0;
+}
+
+.match-game-selector {
+  flex-shrink: 0;
+}
+
+/* Reclaim horizontal space on phones, where the bar also holds the username and four buttons */
+@media (max-width: 599.98px) {
+  #player-username-container :deep(.username) {
+    padding-inline: 0.5em;
+  }
+
+  .match-game-selector :deep(.v-field) {
+    --v-field-padding-start: 10px;
+    --v-field-padding-end: 2px;
+  }
 }
 </style>
