@@ -269,7 +269,7 @@ Generally, requests to make moves on the game will lock the requested game to pr
 module.exports \= async function (req, res) {  
  let game;  
  try {  
-   const { saveGamestate, publishGameState, unpackGamestate } \= sails.helpers.gameStates;  
+   const { saveGamestate, publishGameState, unpackGamestate, updateRevealedCards } \= sails.helpers.gameStates;  
    // Use the execute and validate helpers specific to the requested moveType  
    const { execute, validate } \= sails.helpers.gameStates.moves\[req.body.moveType\];
 
