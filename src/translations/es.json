@@ -123,17 +123,6 @@
         "leaveGame": "Abandonar la partida",
         "login": "Iniciar sesión"
       },
-      "scrapDialog": {
-        "scrapPile": "Mazo de descarte",
-        "noCards": "No hay cartas en el mazo de descarte."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Ordenar",
-          "chronologically": "Cronológicamente",
-          "rank": "Por Rango"
-        }
-      },
       "four": {
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
@@ -159,6 +148,17 @@
         "nice": "¡Bien!",
         "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
         "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
+      },
+      "scrapDialog": {
+        "scrapPile": "Mazo de descarte",
+        "noCards": "No hay cartas en el mazo de descarte."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Ordenar",
+          "chronologically": "Cronológicamente",
+          "rank": "Por Rango"
+        }
       },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
@@ -383,8 +383,8 @@
   "home": {
     "snackbar": {
       "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
-      "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
+      "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "invalidLobbyNumber": "Número de lobby no válido",
       "cannotSpectate": "No puede ver el juego porque estás jugando.",
       "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua",
@@ -493,8 +493,8 @@
     },
     "readyToPlay": {
       "readyToPlay": "¿Listo para jugar?",
-      "findGame": "Encuentra una partida",
-      "signUp": "Inicia sesión para jugar online"
+      "signUp": "Inicia sesión para jugar online",
+      "findGame": "Encuentra una partida"
     },
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
