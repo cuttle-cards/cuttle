@@ -1332,8 +1332,16 @@ export default {
       color: white;
       position: absolute;
     }
+    // Sits exactly on the top card of bg-deck.png, which is anchored top-left and 149 of its 171px wide
     & .revealed-top-card {
-      width: 80%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 87%;
+      max-width: none;
+      max-height: none;
+      // GameCard's mx-1 utility class sets its margins with !important
+      margin: 0 !important;
     }
     .c-deck-count {
       margin: 8px;
