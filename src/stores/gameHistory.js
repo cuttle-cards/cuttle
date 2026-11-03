@@ -12,6 +12,9 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
   // State
   const gameStates = ref([]);
+  // Every game of the match this game belongs to, oldest first, as summarized by
+  // the server's getMatchGames helper
+  const matchGames = ref([]);
 
   const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
   
@@ -56,6 +59,11 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     return isSpectating.value && [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(gameStore.status);
   });
 
+  // A single-game match has nothing to navigate between
+  const showGameSelector = computed(() => {
+    return showPlaybackControls.value && matchGames.value.length >= 2;
+  });
+
   const canGoToPreviousState = computed(() => {
     return gameStates.value.length >= 2 && 
       (currentGameStateIndex.value === -1 || currentGameStateIndex.value > 0);
@@ -77,12 +85,14 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
   return {
     gameStates,
+    matchGames,
     isSpectating,
     currentGameStateIndex,
     currentGameState,
     priorGameStates,
     log,
     showPlaybackControls,
+    showGameSelector,
     canGoToPreviousState,
     canGoToNextState,
     clipUrl,
