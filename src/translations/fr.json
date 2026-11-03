@@ -302,6 +302,12 @@
     "history": {
       "title": "Historique"
     },
+    "playbackControls": {
+      "gameSelector": {
+        "label": "Jeu",
+        "option": "Jeu {number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "Ce n'est pas votre tour !",
