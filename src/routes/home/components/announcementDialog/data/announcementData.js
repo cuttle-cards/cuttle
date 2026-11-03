@@ -1,7 +1,7 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'randomFours2026Announcement',
+  id: 'revealThreeFours2026Announcement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [

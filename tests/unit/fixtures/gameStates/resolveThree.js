@@ -10,6 +10,7 @@ const gameStateRow = {
   playedCard: null,
   targetCard: 'TH',
   discardedCards: [],
+  fourRevealedCards: [],
   turn: 1,
   phase: GamePhase.MAIN,
   p0Hand: [ 'TH' ],
@@ -40,6 +41,7 @@ export const resolveThree = {
     playedCard: null,
     targetCard: Card.TEN_OF_HEARTS,
     discardedCards: [],
+    fourRevealedCards: [],
     turn: 1,
     phase: GamePhase.MAIN,
     p0: {
@@ -155,6 +157,7 @@ export const resolveThree = {
       oneOff: null,
       oneOffTarget: null,
       oneOffTargetType: null,
+      fourRevealedCards: [],
       turn: 1,
       log: [ 'myUsername took the 10♥️ from the Scrap pile to their hand.' ],
       chat: [],

@@ -686,7 +686,7 @@ describe('Playing SEVENS', () => {
       // Play seven of clubs
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-      // Play Four of hearts -- a random discard against no cards is legal and does nothing
+      // Play Four of hearts -- legal against no cards, and discards nothing
       cy.get('[data-top-card=4-2]').should('exist')
         .and('be.visible')
         .click();

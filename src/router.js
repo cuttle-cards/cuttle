@@ -99,7 +99,12 @@ const getGameState = async (to) => {
   return;
 };
 
-const setupSpectate = async (to) => {
+/**
+ * Loads the requested game before entering /spectate/:gameId. Exported so GameView
+ * can re-run it on beforeRouteUpdate: route-level guards don't fire when only the
+ * gameId param changes, which browser back/forward between games of a match does.
+ */
+export const setupSpectate = async (to) => {
   const gameStore = useGameStore();
   const authStore = useAuthStore();
   const gameId = Number(to.params.gameId);

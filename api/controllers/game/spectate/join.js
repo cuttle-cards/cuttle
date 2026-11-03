@@ -72,6 +72,17 @@ module.exports = async function (req, res) {
     }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvents = await createSocketEvents(game, gameState);
+
+    // Spectators of a finished game can jump between the games of its match; live
+    // games skip this so the per-move path stays a single lookup
+    if ([ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status)) {
+      const matchGames = await sails.helpers.getMatchGames(game);
+      socketEvents.spectatorState.game = {
+        ...socketEvents.spectatorState.game,
+        matchGames,
+      };
+    }
+
     // Only notify others that a spectator joined, do not send full game state
     const payload = {
       gameId,

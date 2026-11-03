@@ -66,6 +66,13 @@ module.exports = async function(req, res) {
     const statePerspective = gameIsFinished ? 'spectator' : userRelationship;
     const response = socketEvents[`${statePerspective}State`];
 
+    // Spectators of a finished game can jump between the games of its match; live
+    // games skip this so the per-move path stays a single lookup
+    if (gameIsFinished) {
+      const matchGames = await sails.helpers.getMatchGames(game);
+      response.game = { ...response.game, matchGames };
+    }
+
     return res.ok(response);
 
   } catch (err) {

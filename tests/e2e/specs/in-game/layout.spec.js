@@ -210,6 +210,57 @@ describe('Game View Layout', () => {
   });
 });
 
+describe('Four dialogs layout', () => {
+  beforeEach(() => {
+    cy.setupGameAsP1();
+  });
+
+  it('Four dialogs', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    // Opponent plays four
+    cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
+    // Player cannot counter
+    cy.get('#cannot-counter-dialog').should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
+
+    // Reveal Dialog appears (you must reveal three cards)
+    cy.get('#four-reveal-dialog').should('be.visible');
+    cy.log('Choosing three cards to reveal');
+    cy.get('[data-cy=submit-four-reveal-dialog]').should('be.disabled'); // can't prematurely submit
+    cy.get('[data-four-reveal-card=4-3]').click(); // four of spades
+    cy.get('[data-four-reveal-card=1-1]').click(); // ace of diamonds
+    cy.get('[data-four-reveal-card=10-2]').click(); // ten of hearts
+    // A fourth selection replaces the earliest one
+    cy.get('[data-four-reveal-card=13-2]').click(); // king of hearts
+    cy.get('[data-four-reveal-card=4-3]').should('not.have.class', 'is-selected');
+    cy.get('[data-four-reveal-card=13-2]').should('have.class', 'is-selected');
+    cy.get('[data-cy=submit-four-reveal-dialog]').click(); // submit choice to reveal
+
+    // Opponent chooses two of the revealed cards
+    cy.get('#waiting-for-opponent-choose-four-discards-scrim').should('be.visible');
+    cy.get('[data-overlay-revealed-card=4-3]').should('not.exist');
+    cy.discardFourOpponent(Card.ACE_OF_DIAMONDS, Card.KING_OF_HEARTS);
+
+    assertGameState(1, {
+      p0Hand: [ Card.ACE_OF_HEARTS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.FOUR_OF_SPADES, Card.TEN_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.KING_OF_HEARTS ],
+    });
+  });
+});
 
 describe.skip('Aesthetic tests', () => {
   beforeEach(() => {
