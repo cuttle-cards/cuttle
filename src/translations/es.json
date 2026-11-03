@@ -85,8 +85,8 @@
       "fallback": "Se ha producido un error desconocido.",
       "forbidden": "¡No eres un jugador en este juego!",
       "gameStatus": "El juego aún no ha comenzado o ya ha terminado.",
-      "noGameStates":"El juego no se ha poblado con la colección .gameStates.",
-      "alreadyDealt":"Las cartas ya están repartidas."
+      "noGameStates": "El juego no se ha poblado con la colección .gameStates.",
+      "alreadyDealt": "Las cartas ya están repartidas."
     }
   },
   "game": {
@@ -123,17 +123,6 @@
         "leaveGame": "Abandonar la partida",
         "login": "Iniciar sesión"
       },
-      "scrapDialog": {
-        "scrapPile": "Mazo de descarte",
-        "noCards": "No hay cartas en el mazo de descarte."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Ordenar",
-          "chronologically": "Cronológicamente",
-          "rank": "Por Rango"
-        }
-      },
       "four": {
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
@@ -159,6 +148,17 @@
         "nice": "¡Bien!",
         "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
         "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
+      },
+      "scrapDialog": {
+        "scrapPile": "Mazo de descarte",
+        "noCards": "No hay cartas en el mazo de descarte."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Ordenar",
+          "chronologically": "Cronológicamente",
+          "rank": "Por Rango"
+        }
       },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
@@ -407,9 +407,9 @@
     "playAiLink": "jugar contra la IA",
     "playAiContent2": "para aprender y poner a prueba tus habilidades.",
     "gameName": "Nombre de la partida",
-      "join": "Unirse",
-      "playVsAi": "Jugar contra la IA",
-      "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde.",
+    "join": "Unirse",
+    "playVsAi": "Jugar contra la IA",
+    "failedToLoadGameList": "No se pudieron cargar las partidas. Inténtalo de nuevo más tarde.",
     "continue": "Continuar",
     "archive": "Archivar",
     "versus": "vs",
@@ -499,8 +499,8 @@
     },
     "readyToPlay": {
       "readyToPlay": "¿Listo para jugar?",
-      "findGame": "Encuentra una partida",
-      "signUp": "Inicia sesión para jugar online"
+      "signUp": "Inicia sesión para jugar online",
+      "findGame": "Encuentra una partida"
     },
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
