@@ -302,6 +302,12 @@
     "history": {
       "title": "Historial"
     },
+    "playbackControls": {
+      "gameSelector": {
+        "label": "Partida",
+        "option": "Partida {number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "¡No es tu turno!",
