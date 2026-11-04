@@ -139,7 +139,8 @@ const authStore = useAuthStore();
 const snackbarStore = useSnackbarStore();
 
 const show = ref(false);
-const needsEmail = ref(false);
+// Read at mount like the other home page dialogs. Only prompt once per page load
+const hasPrompted = ref(!!getLocalStorage(LS_EMAIL_PROMPT_DISMISSED));
 const step = ref(STEPS.EMAIL);
 const email = ref('');
 const promotional = ref(false);
@@ -225,27 +226,31 @@ function dismiss() {
   show.value = false;
 }
 
+// Don't prompt if we can't tell whether the user has an email
+const needsEmail = computed(() => authStore.authenticated && authStore.hasLoadedEmail && !authStore.email);
+
 watch(
   [ needsEmail, () => props.waiting ],
   ([ needs, waiting ]) => {
-    if (needs && !waiting) {
+    if (needs && !waiting && !hasPrompted.value) {
       show.value = true;
-      // Only prompt once per page load
-      needsEmail.value = false;
+      hasPrompted.value = true;
     }
   },
+  { immediate: true },
 );
 
-onMounted(async () => {
-  if (getLocalStorage(LS_EMAIL_PROMPT_DISMISSED)) {
-    return;
+// Login and signup don't return the email, so load it for whichever account is signed in.
+// Runs again when the account changes, e.g. after finishing OAuth signup or switching accounts
+function loadEmail() {
+  if (authStore.authenticated && !authStore.hasLoadedEmail) {
+    authStore.requestStatus(true);
   }
-  if (!authStore.hasLoadedEmail) {
-    await authStore.requestStatus(true);
-  }
-  // Don't prompt if we still can't tell whether the user has an email
-  needsEmail.value = authStore.hasLoadedEmail && !authStore.email;
-});
+}
+
+watch(() => authStore.userId, loadEmail);
+
+onMounted(loadEmail);
 
 onBeforeUnmount(() => {
   clearInterval(cooldownTimer);

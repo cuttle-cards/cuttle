@@ -19,6 +19,12 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     authSuccess(username, userId) {
+      // Don't keep the previous account's email when switching accounts
+      if (userId !== this.userId) {
+        this.email = null;
+        this.promotional = false;
+        this.hasLoadedEmail = false;
+      }
       this.authenticated = true;
       this.username = username;
       this.userId = userId;
@@ -98,9 +104,12 @@ export const useAuthStore = defineStore('auth', {
         if (identities) {
           this.identities = identities;
         }
-        this.email = email ?? null;
-        this.promotional = promotional ?? false;
-        this.hasLoadedEmail = true;
+        // The email fields are missing if the server couldn't look them up
+        if (email !== undefined) {
+          this.email = email;
+          this.promotional = promotional;
+          this.hasLoadedEmail = true;
+        }
 
         return;
       } catch (err) {

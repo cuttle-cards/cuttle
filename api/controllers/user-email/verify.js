@@ -21,10 +21,17 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'emailPreference.error.codeExpired' });
     }
 
+    // Reserve this attempt before checking the code. The update only matches if no parallel
+    // request has used the same attempt, so parallel guesses can't exceed MAX_ATTEMPTS
+    const reserved = await UserEmail.updateOne({ id: userEmail.id, attempts: userEmail.attempts })
+      .set({ attempts: userEmail.attempts + 1 });
+    if (!reserved) {
+      return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
+    }
+
     const expected = Buffer.from(userEmail.verificationCode);
     const actual = Buffer.from(sails.helpers.email.hashVerificationCode(code));
     if (!crypto.timingSafeEqual(expected, actual)) {
-      await UserEmail.updateOne({ id: userEmail.id }).set({ attempts: userEmail.attempts + 1 });
       return res.badRequest({ message: 'emailPreference.error.invalidCode' });
     }
 
@@ -34,8 +41,14 @@ module.exports = async function (req, res) {
       return res.status(409).json({ message: 'emailPreference.error.emailTaken' });
     }
 
+    let saved;
     try {
-      await UserEmail.updateOne({ id: userEmail.id }).set({
+      // Only save if no newer code was requested since we read the row
+      saved = await UserEmail.updateOne({
+        id: userEmail.id,
+        pendingEmail: userEmail.pendingEmail,
+        verificationCode: userEmail.verificationCode,
+      }).set({
         email: userEmail.pendingEmail,
         pendingEmail: null,
         verificationCode: null,
@@ -48,6 +61,9 @@ module.exports = async function (req, res) {
         return res.status(409).json({ message: 'emailPreference.error.emailTaken' });
       }
       throw err;
+    }
+    if (!saved) {
+      return res.badRequest({ message: 'emailPreference.error.codeExpired' });
     }
 
     return res.ok({ email: userEmail.pendingEmail, promotional: userEmail.promotional });

@@ -37,10 +37,24 @@ module.exports = async function (req, res) {
       promotional,
     };
 
+    // Claim the cooldown before sending. Every send writes a new code hash, so the update only
+    // matches if no parallel request has sent a code since we read the row
+    let claimed;
     if (userEmail) {
-      await UserEmail.updateOne({ id: userEmail.id }).set(updates);
+      claimed = await UserEmail.updateOne({ id: userEmail.id, verificationCode: userEmail.verificationCode })
+        .set(updates);
     } else {
-      await UserEmail.create({ user: userId, ...updates });
+      try {
+        claimed = await UserEmail.create({ user: userId, ...updates }).fetch();
+      } catch (err) {
+        // A parallel request created this user's row first
+        if (err.code !== 'E_UNIQUE') {
+          throw err;
+        }
+      }
+    }
+    if (!claimed) {
+      return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
     }
 
     await sails.helpers.email.sendVerificationEmail(email, code);

@@ -141,4 +141,57 @@ describe('User preferred email', () => {
     const secondRow = await UserEmail.findOne({ user: secondId });
     expect(secondRow.email).toBeNull();
   });
+
+  it('Sends only one code when requests race', async () => {
+    const { agent, userId } = await signup('myUser');
+    const sendCode = () => agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+
+    // First request creates the row, the rest race to update it after the cooldown
+    const firstRace = await Promise.all([ sendCode(), sendCode(), sendCode() ]);
+    expect(firstRace.filter((res) => res.statusCode === 200)).toHaveLength(1);
+
+    await UserEmail.updateOne({ user: userId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+    const secondRace = await Promise.all([ sendCode(), sendCode(), sendCode() ]);
+    expect(secondRace.filter((res) => res.statusCode === 200)).toHaveLength(1);
+    expect(secondRace.filter((res) => res.statusCode === 429)).toHaveLength(2);
+  });
+
+  it('Does not allow parallel guesses past the attempt limit', async () => {
+    const { agent, userId } = await signup('myUser');
+    await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    await setKnownCode(userId);
+    const guess = () => agent.post('/api/user/email/verify').send({ code: '000000' });
+
+    // Keep guessing in parallel batches until the code locks
+    let checkedGuesses = 0;
+    for (let i = 0; i < 5; i++) {
+      const results = await Promise.all(Array.from({ length: 10 }, guess));
+      checkedGuesses += results.filter((res) => res.body.message === 'emailPreference.error.invalidCode').length;
+    }
+
+    expect(checkedGuesses).toBe(5);
+    const row = await UserEmail.findOne({ user: userId });
+    expect(row.attempts).toBe(5);
+    const res = await agent.post('/api/user/email/verify').send({ code: '123456' });
+    expect(res.body.message).toBe('emailPreference.error.codeExpired');
+  });
+
+  it('Does not save an email whose code was replaced by a newer request', async () => {
+    const { agent, userId } = await signup('myUser');
+    await agent.post('/api/user/email/request-code').send({ email: 'old@example.com' });
+    const oldCode = await setKnownCode(userId);
+
+    // A newer code for a different address replaces the old one before the old code is checked
+    await UserEmail.updateOne({ user: userId }).set({
+      pendingEmail: 'new@example.com',
+      verificationCode: sails.helpers.email.hashVerificationCode('654321'),
+    });
+
+    const res = await agent.post('/api/user/email/verify').send({ code: oldCode });
+    expect(res.statusCode).toBe(400);
+    const row = await UserEmail.findOne({ user: userId });
+    expect(row.email).toBeNull();
+    expect(row.pendingEmail).toBe('new@example.com');
+  });
 });
