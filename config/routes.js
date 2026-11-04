@@ -19,7 +19,6 @@ module.exports.routes = {
   '/api/user/status': 'userController.status',
 
   // User email
-  'GET /api/user/email': 'user-email/get',
   'POST /api/user/email/request-code': 'user-email/request-code',
   'POST /api/user/email/verify': 'user-email/verify',
 

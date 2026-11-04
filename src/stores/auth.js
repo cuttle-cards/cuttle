@@ -10,7 +10,12 @@ export const useAuthStore = defineStore('auth', {
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
-    identities: []
+    identities: [],
+    // Verified preferred email, null if the user hasn't added one
+    email: null,
+    promotional: false,
+    // Login and signup don't return the email, so it's only known after requestStatus()
+    hasLoadedEmail: false,
   }),
   actions: {
     authSuccess(username, userId) {
@@ -22,6 +27,9 @@ export const useAuthStore = defineStore('auth', {
       this.authenticated = false;
       this.username = null;
       this.identities = [];
+      this.email = null;
+      this.promotional = false;
+      this.hasLoadedEmail = false;
     },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
@@ -77,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, identities, id } = status;
+        const { authenticated, username, identities, id, email, promotional } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -90,6 +98,9 @@ export const useAuthStore = defineStore('auth', {
         if (identities) {
           this.identities = identities;
         }
+        this.email = email ?? null;
+        this.promotional = promotional ?? false;
+        this.hasLoadedEmail = true;
 
         return;
       } catch (err) {
@@ -142,6 +153,36 @@ export const useAuthStore = defineStore('auth', {
         this.clearAuth();
         throw new Error(err);
       }
+    },
+    async requestEmailCode(email, promotional) {
+      const response = await fetch('/api/user/email/request-code', {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({ email, promotional }),
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.message ?? 'emailPreference.error.sendFailed');
+      }
+    },
+    async verifyEmailCode(code) {
+      const response = await fetch('/api/user/email/verify', {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({ code }),
+        credentials: 'include',
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.message ?? 'emailPreference.error.invalidCode');
+      }
+      this.email = data.email;
+      this.promotional = data.promotional;
     },
     async oAuth(provider) {
       const url = `${import.meta.env.VITE_API_URL}/api/user/${provider}/redirect`;

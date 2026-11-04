@@ -88,11 +88,14 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username, identities } = await User.findOne({ id }).populate('identities');
+      const userEmail = await UserEmail.findOne({ user: id });
       return res.ok({
         id,
         username,
         authenticated,
-        identities
+        identities,
+        email: userEmail?.email ?? null,
+        promotional: userEmail?.promotional ?? false,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out

@@ -947,9 +947,10 @@ describe('Email Preference Dialog', () => {
 
     cy.get('[data-cy=email-preference-verify]').should('be.disabled');
     cy.get('[data-cy=email-preference-resend]').should('be.disabled');
-    cy.get('[data-cy=email-preference-code] input').each(($input, i) => {
-      cy.wrap($input).type(`${i + 1}`);
-    });
+    cy.get('[data-cy=email-preference-code] input').filter(':visible')
+      .each(($input, i) => {
+        cy.wrap($input).type(`${i + 1}`);
+      });
     cy.get('[data-cy=email-preference-verify]').click();
     cy.wait('@verify').its('request.body')
       .should('deep.equal', { code: '123456' });

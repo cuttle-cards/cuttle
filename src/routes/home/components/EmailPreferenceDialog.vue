@@ -116,7 +116,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getLocalStorage, setLocalStorage, LS_EMAIL_PROMPT_DISMISSED } from '_/utils/local-storage-utils.js';
-import { useUserEmailStore } from '@/stores/userEmail';
+import { useAuthStore } from '@/stores/auth';
 import { useSnackbarStore } from '@/stores/snackbar';
 import BaseDialog from '@/components/BaseDialog.vue';
 
@@ -135,7 +135,7 @@ const STEPS = {
 const RESEND_COOLDOWN_SECONDS = 60;
 
 const { t } = useI18n();
-const userEmailStore = useUserEmailStore();
+const authStore = useAuthStore();
 const snackbarStore = useSnackbarStore();
 
 const show = ref(false);
@@ -175,7 +175,7 @@ async function sendCode() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    await userEmailStore.requestCode(email.value.trim(), promotional.value);
+    await authStore.requestEmailCode(email.value.trim(), promotional.value);
     code.value = '';
     step.value = STEPS.CODE;
     startCooldown();
@@ -191,7 +191,7 @@ async function resendCode() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    await userEmailStore.requestCode(email.value.trim(), promotional.value);
+    await authStore.requestEmailCode(email.value.trim(), promotional.value);
     startCooldown();
   } catch (err) {
     errorMessage.value = t(err.message);
@@ -205,7 +205,7 @@ async function verifyCode() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    await userEmailStore.verifyCode(code.value);
+    await authStore.verifyEmailCode(code.value);
     show.value = false;
     snackbarStore.alert(t('emailPreference.verified'), 'success');
   } catch (err) {
@@ -240,12 +240,11 @@ onMounted(async () => {
   if (getLocalStorage(LS_EMAIL_PROMPT_DISMISSED)) {
     return;
   }
-  try {
-    await userEmailStore.requestEmail();
-    needsEmail.value = !userEmailStore.email;
-  } catch {
-    // Don't prompt if we can't tell whether the user has an email
+  if (!authStore.hasLoadedEmail) {
+    await authStore.requestStatus(true);
   }
+  // Don't prompt if we still can't tell whether the user has an email
+  needsEmail.value = authStore.hasLoadedEmail && !authStore.email;
 });
 
 onBeforeUnmount(() => {

@@ -25,14 +25,18 @@ describe('User preferred email', () => {
   });
 
   it('Requires login', async () => {
-    const res = await request(globalThis.sailsApp).get('/api/user/email');
-    expect(res.statusCode).toBe(401);
+    const app = request(globalThis.sailsApp);
+    const codeRes = await app.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(codeRes.statusCode).toBe(401);
+    const verifyRes = await app.post('/api/user/email/verify').send({ code: '123456' });
+    expect(verifyRes.statusCode).toBe(401);
   });
 
   it('Returns no email for a new user', async () => {
     const { agent } = await signup('myUser');
-    const { body } = await agent.get('/api/user/email');
-    expect(body).toEqual({ email: null, promotional: false });
+    const { body } = await agent.get('/api/user/status');
+    expect(body.email).toBeNull();
+    expect(body.promotional).toBe(false);
   });
 
   it('Rejects invalid email formats', async () => {
@@ -59,8 +63,10 @@ describe('User preferred email', () => {
     const verifyRes = await agent.post('/api/user/email/verify').send({ code });
     expect(verifyRes.statusCode).toBe(200);
 
-    const { body } = await agent.get('/api/user/email');
-    expect(body).toEqual({ email: 'me@example.com', promotional: true });
+    expect(verifyRes.body).toEqual({ email: 'me@example.com', promotional: true });
+    const { body } = await agent.get('/api/user/status');
+    expect(body.email).toBe('me@example.com');
+    expect(body.promotional).toBe(true);
 
     const verified = await UserEmail.findOne({ user: userId });
     expect(verified.pendingEmail).toBeNull();
