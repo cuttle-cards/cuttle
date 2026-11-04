@@ -23,7 +23,7 @@
       class="player-card-icon revealed-icon mr-1 mt-1"
       color="base-dark"
       icon="mdi-eye"
-      aria-label="eye icon (card is revealed)"
+      :aria-label="$t('game.revealedIcon')"
       aria-hidden="false"
       role="img"
       data-revealed-icon
@@ -260,7 +260,9 @@ export default {
   right: 0;
   z-index: 1;
 }
-/* Clear of the rank in the top left. The light disc keeps it legible on dark royal art */
+/* Sits top right, clear of the rank. The disc matches the card face exactly, so it only shows on a
+   card that is frozen as well as revealed -- one a nine bounced back to hand -- where it masks the
+   frozen tint behind the glyph. 50% keeps that mask a circle instead of a cream square */
 .revealed-icon {
   background: rgb(var(--v-theme-base-light));
   border-radius: 50%;

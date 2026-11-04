@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Hand: {handSize} von {handLimit} Karten",
+    "revealedIcon": "Das Augen-Symbol bedeutet, dass die Karte aufgedeckt ist",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",

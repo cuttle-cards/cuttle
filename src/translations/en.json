@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Hand: {handSize} of {handLimit} cards",
+    "revealedIcon": "Eye icon signifies the card is revealed",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
