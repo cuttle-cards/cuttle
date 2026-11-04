@@ -26,7 +26,10 @@
  * 2.0.0 (#1379) => Nine rework: put target card on top of the deck instead of returning it frozen to hand
  * 3.0.0 (#1384) => Four rework: opponent discards two cards at random instead of choosing
  * 4.0.0 => Four rework: opponent reveals three cards, and the four's player chooses two of them to discard
+ * 5.0.0 (#1472) => Revealed cards stay public: a card both players have seen in a hand or the
+ *   deck (a four's reveals, a three's pick, a seven's top two, glasses, a card bounced back
+ *   from the field, an empty deck) stays face up until it leaves
  */
 module.exports = {
-  CURRENT_RULES_VERSION: '4.0.0',
+  CURRENT_RULES_VERSION: '5.0.0',
 };
