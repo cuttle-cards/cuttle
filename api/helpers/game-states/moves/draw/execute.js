@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Draw a card',
@@ -36,7 +37,7 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
 
     player.hand.push(result.deck.shift());
-    const playerMustDiscard = player.hand.length > 8;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,

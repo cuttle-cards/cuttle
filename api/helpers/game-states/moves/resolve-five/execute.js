@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 
 module.exports = {
   friendlyName: 'Resolve Five',
@@ -49,7 +50,7 @@ module.exports = {
 
     const cardsToDraw = Math.min(3, result.deck.length);
     player.hand.push(...result.deck.splice(0, cardsToDraw));
-    const playerMustDiscard = player.hand.length > 8;
+    const playerMustDiscard = player.hand.length > HAND_LIMIT;
 
     result = {
       ...result,

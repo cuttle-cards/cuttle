@@ -1,107 +1,150 @@
-import { assertGameState, assertSnackbar } from '../../../support/helpers';
+import { assertGameState } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
-import { SnackBarError } from '../../../fixtures/snackbarError';
 
+/**
+ * As of rules 4.0.0 a four makes its victim reveal three cards from their hand, then lets the
+ * four's player choose two of them for the victim to discard. Steps that offer no choice are
+ * skipped: a hand of exactly three is revealed whole, and a hand of two or fewer is discarded
+ * outright as the four resolves.
+ */
 describe('FOURS', () => {
   describe('Playing FOURS', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
     });
 
-    it('Plays a 4 to make opponent discard two cards of their choice', () => {
-      // Set Up
+    it('Plays a 4, then chooses two of the three cards the opponent reveals for them to discard', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
 
-      cy.get('[data-cy=history-log]').should('contain', 'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must discard two cards.');
-      // Opponent chooses two cards to discard
-      cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      cy.get('[data-opponent-hand-card=1-2]').should('be.visible');
-      cy.get('[data-opponent-hand-card=10-2]').should('be.visible');
-      cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 discarded the A♥️ and the 10♥️.');
+      // Opponent chooses which three cards to reveal
+      cy.get('#waiting-for-opponent-reveal-four-scrim').should('be.visible');
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must reveal three cards from their hand.',
+      );
+      cy.revealFourOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES);
+      cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'definitelyNotTheGovernment6969 revealed the A♥️, the 10♥️, and the K♠️.',
+      );
+
+      // Player chooses two of the revealed cards; the unrevealed ace isn't offered
+      cy.get('#four-choose-discard-dialog')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-four-discard-card]').should('have.length', 3);
+          cy.get('[data-four-discard-card=1-1]').should('not.exist');
+          cy.get('[data-cy=submit-four-discard-dialog]').should('be.disabled');
+          cy.get('[data-four-discard-card=1-2]').click();
+          cy.get('[data-cy=submit-four-discard-dialog]').should('be.disabled');
+          cy.get('[data-four-discard-card=13-3]').click();
+          cy.get('[data-cy=submit-four-discard-dialog]').should('not.be.disabled')
+            .click();
+        });
+
+      cy.get('#four-choose-discard-dialog').should('not.exist');
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'myUsername chose the A♥️ and the K♠️ for definitelyNotTheGovernment6969 to discard.',
+      );
+
       assertGameState(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_DIAMONDS ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.KING_OF_SPADES ],
+      });
+      // The four completes the player's turn
+      cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
+    });
+
+    it('Skips the reveal when the opponent holds exactly three cards', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.FOUR_OF_SPADES ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
+
+      cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♠️ one-off resolves, revealing definitelyNotTheGovernment6969\'s whole hand: the A♥️, the 10♥️, and the K♠️.',
+      );
+
+      cy.get('#four-choose-discard-dialog')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-four-discard-card]').should('have.length', 3);
+          cy.get('[data-four-discard-card=1-2]').click();
+          cy.get('[data-four-discard-card=10-2]').click();
+          cy.get('[data-cy=submit-four-discard-dialog]').click();
+        });
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.KING_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
       });
     });
 
-    it('Plays a 4 to make opponent discard two cards of their choice while player has glasses', () => {
-      // Set Up
+    it('Discards both of the opponent\'s cards when they hold just two', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
         p0Points: [],
-        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
       });
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
 
-      cy.get('[data-cy=history-log]').should('contain', 'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must discard two cards.');
-      // Opponent chooses two cards to discard
-      cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+      // The opponent's discards are revealed in their hand before landing in the scrap (#1440)
       cy.get('[data-opponent-hand-card=1-2]').should('be.visible');
       cy.get('[data-opponent-hand-card=10-2]').should('be.visible');
-      cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 discarded the A♦️ and the 10♥️.');
-      assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
-        p1Hand: [ Card.ACE_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
-      });
-    });
 
-    it('Plays a 4 to make opponent discard their only two cards', () => {
-      // Set Up
-      cy.loadGameFixture(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-
-      cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
-
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-      // Opponent chooses two cards to discard
-      cy.log('Opponent discards both their remaining cards');
-      cy.discardOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+      // Nothing to choose, so no further steps
+      cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
+      cy.get('#four-choose-discard-dialog').should('not.exist');
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♠️ one-off resolves, discarding the A♥️ and the 10♥️ from definitelyNotTheGovernment6969\'s hand.',
+      );
 
       assertGameState(0, {
-        p0Hand: [],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
       });
     });
 
-    it('Plays a 4 to make opponent discard the last card in their hand', () => {
-      // Set Up
+    it('Discards the opponent\'s only card when they hold just one', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
@@ -111,13 +154,12 @@ describe('FOURS', () => {
         p1FaceCards: [],
       });
 
-      // Play the four of clubs
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-      // Opponent chooses two cards to discard
-      cy.log('Opponent discards both their remaining cards');
-      cy.discardOpponent(Card.ACE_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♣️ one-off resolves, discarding the A♥️ from definitelyNotTheGovernment6969\'s hand.',
+      );
 
       assertGameState(0, {
         p0Hand: [],
@@ -130,8 +172,7 @@ describe('FOURS', () => {
       });
     });
 
-    it('Prevents playing a 4 when opponent has no cards in hand', () => {
-      // Set Up
+    it('Can play a 4 against an empty hand, discarding nothing', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
@@ -141,90 +182,54 @@ describe('FOURS', () => {
         p1FaceCards: [],
       });
 
-      // Play the four of spades
-      cy.log('Attempting to playing Four of clubs as one off');
-      cy.get('[data-player-hand-card=4-0]').click(); // four of clubs
-      cy.get('[data-move-choice=oneOff]').click();
+      cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
-      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      cy.get('[data-cy=history-log]').should(
+        'contain',
+        'The 4♣️ one-off resolves; definitelyNotTheGovernment6969 has no cards to discard.',
+      );
 
       assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_CLUBS ],
       });
     });
 
-    it('Prevents opponent from discarding illegally', () => {
-      // Set Up
+    it('Plays a 4 while the player has glasses', () => {
       cy.loadGameFixture(0, {
-        p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
+        p0Hand: [ Card.FOUR_OF_SPADES ],
         p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+      cy.get('#waiting-for-opponent-reveal-four-scrim').should('be.visible');
+      cy.revealFourOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
-      // Illegal Discard 1: Only 1 card selected
-      cy.log('Opponent illegally discards: No cards selected');
-      cy.discardOpponent(); // Discard with no selection
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+      cy.get('#four-choose-discard-dialog')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-four-discard-card=1-1]').click();
+          cy.get('[data-four-discard-card=10-2]').click();
+          cy.get('[data-cy=submit-four-discard-dialog]').click();
+        });
+
       assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Hand: [],
         p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.KING_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
-      });
-      cy.log('Successfully prevented discarding with no cards selected');
-
-      // Illegal Discard 2: Only 1 card selected
-      cy.log('Opponent illegally discards: Chooses only 1 card');
-      cy.discardOpponent(Card.ACE_OF_HEARTS); // Only 1 card selected (should have 2)
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-      assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-      cy.log('Successfully prevented discarding only 1 card');
-
-      // Illegal Discard 3: Card not in hand
-      cy.log('Opponent illegally discards: Chooses a card not in their hand');
-      cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_SPADES); // Ten of spades not in hand
-      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
-      assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-      cy.log('Successfully prevented discarding a card not in hand');
-
-      // Legal Discard
-      cy.discardOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.exist');
-      assertGameState(0, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.TEN_OF_HEARTS ],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
     });
   });
@@ -234,75 +239,139 @@ describe('FOURS', () => {
       cy.setupGameAsP1();
     });
 
-    it('Discards two cards when opponent plays a four, repeated fours', () => {
+    it('Reveals three cards when the opponent plays a four, then discards the two they choose', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      cy.get('#four-reveal-dialog')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-four-reveal-card]').should('have.length', 4);
+          cy.get('[data-cy=submit-four-reveal-dialog]').should('be.disabled');
+          cy.get('[data-four-reveal-card=1-1]').click();
+          cy.get('[data-four-reveal-card=10-2]').click();
+          cy.get('[data-cy=submit-four-reveal-dialog]').should('be.disabled');
+          cy.get('[data-four-reveal-card=6-3]').click();
+          cy.get('[data-cy=submit-four-reveal-dialog]').should('not.be.disabled')
+            .click();
+        });
+
+      // Waits for the opponent's choice, seeing the revealed cards
+      cy.get('#four-reveal-dialog').should('not.exist');
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-overlay-revealed-card]').should('have.length', 3);
+          cy.get('[data-overlay-revealed-card=13-2]').should('not.exist');
+        });
+
+      cy.discardFourOpponent(Card.ACE_OF_DIAMONDS, Card.SIX_OF_SPADES);
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim').should('not.exist');
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TEN_OF_HEARTS, Card.KING_OF_HEARTS ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.SIX_OF_SPADES ],
+      });
+    });
+
+    it('Reveals the player\'s whole hand when they hold exactly three cards', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.SIX_OF_SPADES ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      cy.get('#four-reveal-dialog').should('not.exist');
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim')
+        .should('be.visible')
+        .find('[data-overlay-revealed-card]')
+        .should('have.length', 3);
+
+      cy.discardFourOpponent(Card.TEN_OF_HEARTS, Card.SIX_OF_SPADES);
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.TEN_OF_HEARTS, Card.SIX_OF_SPADES ],
+      });
+    });
+
+    it('Discards the player\'s two cards when the opponent plays a four', () => {
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
         topCard: Card.SIX_OF_DIAMONDS,
       });
 
-      // Opponent plays four
+      // The victim's own discards must not be revealed in their opponent's hand (#1440)
+      cy.window()
+        .its('cuttle.gameStore')
+        .then((store) => {
+          cy.spy(store, 'processFours').as('processFours');
+        });
+
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-      // Player cannot counter
-      cy.get('#cannot-counter-dialog').should('be.visible')
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
-      cy.log('Player resolves opponent\'s Four');
 
-      // Four Dialog appears (you must discard)
-      cy.get('#four-discard-dialog').should('be.visible');
-      // Choosing cards to discard
-      cy.log('Choosing two cards to discard');
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=4-3]').click(); // four of spades
-      cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
+      // Nothing to choose -- both cards are discarded as the four resolves
+      cy.get('#four-reveal-dialog').should('not.exist');
+      cy.get('#waiting-for-opponent-choose-four-discards-scrim').should('not.exist');
 
       assertGameState(1, {
         p0Hand: [ Card.FOUR_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [ Card.TEN_OF_HEARTS ],
+        p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       });
+      cy.get('@processFours').should('not.have.been.called');
 
-      // Player draws the 6 of diamonds
+      // A second four against the now-empty hand is still legal and discards nothing
       cy.get('#deck').click();
-
-      // Opponent plays 2nd four
       cy.playOneOffOpponent(Card.FOUR_OF_DIAMONDS);
-      // Player cannot counter
-      cy.get('#cannot-counter-dialog').should('be.visible')
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
-
-      // Choosing cards to discard
-      cy.log('Choosing two cards to discard');
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      // Discard dialog should still be open
-      cy.get('#four-discard-dialog').should('be.visible');
-      // Validate game state same as above
-      assertGameState(1, {
-        p0Hand: [],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.TEN_OF_HEARTS, Card.SIX_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-      // Properly discard as expected
-      cy.log('Choosing two cards to discard - second time');
-      cy.get('[data-discard-card=10-2]').click(); // 10 of hearts
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=6-1]').click(); // six of diamonds
-      cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
 
       assertGameState(1, {
         p0Hand: [],
@@ -313,92 +382,40 @@ describe('FOURS', () => {
         p1FaceCards: [],
         scrap: [
           Card.FOUR_OF_CLUBS,
-          Card.FOUR_OF_SPADES,
+          Card.FOUR_OF_DIAMONDS,
           Card.ACE_OF_DIAMONDS,
           Card.TEN_OF_HEARTS,
           Card.SIX_OF_DIAMONDS,
-          Card.FOUR_OF_DIAMONDS,
         ],
       });
     });
+  });
 
-    it('Minimizes FourDialog and reopens it before discarding', () => {
+  /**
+   * Fours resolved into a separate `resolveFour` move before rules 3.0.0, and stored games
+   * still hold that phase. The move is gone, but the rendering path has to survive: unpacking
+   * the phase, resolving the active player from it, and showing the discard dialog.
+   */
+  describe('Legacy four-discard states (pre-3.0.0 games)', () => {
+    it('Renders a stored RESOLVING_FOUR state', () => {
+      cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES ],
-        p1Points: [],
-        p1FaceCards: [],
-      });
-
-      // Opponent plays four
-      cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-      // Player cannot counter
-      cy.get('#cannot-counter-dialog').should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
-
-      // Four Dialog appears (you must discard)
-      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
-      // Minimize the dialog
-      cy.get('[data-cy="minimize-dialog-button"]').click();
-      // Reopen the dialog
-      cy.get('[data-cy="four-discard-dialog-activator"] button').click();
-      // Verify dialog is open again
-      cy.get('[data-cy=four-discard-dialog]').should('be.visible');
-      // Choosing cards to discard
-      cy.log('Choosing two cards to discard');
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=4-3]').click(); // four of spades
-      cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
-
-      assertGameState(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES ],
-      });
-    });
-    it('Discards last card when FOURd with one card in hand', () => {
-      cy.loadGameFixture(1, {
-        p0Hand: [ Card.FOUR_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [ Card.ACE_OF_DIAMONDS ],
-        p1Points: [],
-        p1FaceCards: [],
+        // GamePhase.RESOLVING_FOUR -- unreachable through play, staged directly. The four
+        // sat in oneOff while the victim chose, which is where a real legacy row holds it.
+        phase: 4,
+        oneOff: Card.FOUR_OF_CLUBS,
       });
 
-      // Opponent plays four
-      cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-      // Player cannot counter
-      cy.get('#cannot-counter-dialog').should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
-
-      // Four Dialog appears (you must discard)
+      // The frame must render rather than erroring on an unknown phase or active player
       cy.get('#four-discard-dialog').should('be.visible');
-      // Choosing cards to discard
-      cy.log('Choosing (only) card to discard');
-      cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-      cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-      cy.get('[data-cy=submit-four-dialog]').click();
-
-      assertGameState(1, {
-        p0Hand: [],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
-      });
+      cy.get('[data-discard-card=1-1]').should('be.visible');
+      cy.get('[data-discard-card=10-2]').should('be.visible');
     });
   });
 });

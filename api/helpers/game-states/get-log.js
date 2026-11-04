@@ -1,4 +1,5 @@
 const MoveType = require('../../../utils/MoveType.json');
+const GamePhase = require('../../../utils/GamePhase.json');
 const { getCardName } = require('../../../utils/game-utils');
 const { game: gameText } = require('../../../src/translations/en.json');
 
@@ -33,6 +34,15 @@ module.exports = {
       const playedCardObj = playedCard ? convertStrToCard(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
       const resolvedCardName = resolved ? getFullCardName(resolved) : null;
+
+      // Lists card names as "the A", "the A and the B", or "the A, the B, and the C"
+      const listCardNames = (cards) => {
+        const names = cards.map((card) => `the ${getFullCardName(card)}`);
+        if (names.length <= 2) {
+          return names.join(' and ');
+        }
+        return `${names.slice(0, -1).join(', ')}, and ${names.at(-1)}`;
+      };
 
       const getResolveFiveMessage = () => {
         const previousRow = game.gameStates[i - 1] ?? null;
@@ -91,8 +101,31 @@ module.exports = {
               return `The ${resolvedCardName} resolves; the ${targetCardName} is scrapped.`;
             case 3:
               return `The ${resolvedCardName} one-off resolves; ${opponent} will draw one card of their choice from the Scrap pile.`;
-            case 4:
-              return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
+            case 4: {
+              // The four awaits its victim's reveal, or its player's choice from a revealed hand of three
+              if (row.phase === GamePhase.RESOLVING_FOUR_REVEAL) {
+                return `The ${resolvedCardName} one-off resolves; ${player} must reveal three cards from their hand.`;
+              }
+              if (row.phase === GamePhase.RESOLVING_FOUR_DISCARD) {
+                return `The ${resolvedCardName} one-off resolves, revealing ${player}'s whole hand: ${listCardNames(
+                  row.fourRevealedCards,
+                )}.`;
+              }
+              // Legacy rows (rules < 3.0.0) always entered the RESOLVING_FOUR phase and deferred the
+              // discard to a separate resolveFour move, so the cards are named on that row instead
+              if (row.phase === GamePhase.RESOLVING_FOUR) {
+                return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
+              }
+              if (!discardedCards?.length) {
+                return `The ${resolvedCardName} one-off resolves; ${player} has no cards to discard.`;
+              }
+              // Rules 3.x discarded two cards at random; from 4.0.0 only a hand too small to choose
+              // from is discarded on resolution, and it is discarded whole
+              const discardedAtRandom = parseInt(game.rulesVersion, 10) === 3;
+              return `The ${resolvedCardName} one-off resolves, discarding ${listCardNames(discardedCards)}${
+                discardedAtRandom ? ' at random' : ''
+              } from ${player}'s hand.`;
+            }
             case 5:
               return `The ${resolvedCardName} one-off resolves; ${opponent} must discard 1 card, and will draw up to 3.`;
             case 6:
@@ -120,6 +153,12 @@ module.exports = {
           return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
             discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
+
+        case MoveType.REVEAL_FOUR:
+          return `${player} revealed ${listCardNames(row.fourRevealedCards)}.`;
+
+        case MoveType.DISCARD_FOUR:
+          return `${player} chose ${listCardNames(discardedCards)} for ${opponent} to discard.`;
 
         case MoveType.DISCARD_TO_HAND_LIMIT: {
           const names = discardedCards.map(getFullCardName);

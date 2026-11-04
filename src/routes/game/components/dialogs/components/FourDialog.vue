@@ -1,3 +1,8 @@
+<!--
+  Legacy dialog: fours discard two cards at random as of rules 3.0.0, so no live game can
+  enter the four-discard phase. Retained because replaying a stored pre-3.0.0 game renders
+  dialogs from the historical phase.
+-->
 <template>
   <BaseDialog
     id="four-discard-dialog"

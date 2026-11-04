@@ -36,8 +36,15 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'home.snackbar.spectateNoGamestates' });
     }
 
-    // Subscribe socket to game as spectator
-    sails.sockets.join(req, `game_${gameId}_spectator`);
+    // Players may view their finished games with full visibility, but must
+    // receive rematch events through their player room to keep new hands private.
+    let userRelationship = 'spectator';
+    if (spectator.id === p0.id) {
+      userRelationship = 'p0';
+    } else if (spectator.id === p1.id) {
+      userRelationship = 'p1';
+    }
+    sails.sockets.join(req, `game_${gameId}_${userRelationship}`);
 
     // Add spectating users to table
     const spectatorAlreadyExisted = await UserSpectatingGame.updateOne(
@@ -65,6 +72,17 @@ module.exports = async function (req, res) {
     }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvents = await createSocketEvents(game, gameState);
+
+    // Spectators of a finished game can jump between the games of its match; live
+    // games skip this so the per-move path stays a single lookup
+    if ([ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status)) {
+      const matchGames = await sails.helpers.getMatchGames(game);
+      socketEvents.spectatorState.game = {
+        ...socketEvents.spectatorState.game,
+        matchGames,
+      };
+    }
+
     // Only notify others that a spectator joined, do not send full game state
     const payload = {
       gameId,

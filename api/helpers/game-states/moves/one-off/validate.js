@@ -125,11 +125,9 @@ module.exports = {
           }
           return exits.success();
 
-        // Four requires opponent to have cards in hand
+        // Fours discard at random, so an empty hand just discards nothing. The arm has to
+        // stay: the default below rejects any rank that isn't explicitly allowed here.
         case 4:
-          if (!opponent.hand.length) {
-            throw new Error('game.snackbar.oneOffs.four.opponentHasNoCards');
-          }
           return exits.success();
 
         // Five and sevens require cards in deck

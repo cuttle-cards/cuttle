@@ -90,6 +90,7 @@
     }
   },
   "game": {
+    "handSize": "Hand: {handSize} von {handLimit} Karten",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
@@ -102,6 +103,8 @@
       "mustResolve": "{opponentUsername} Muss Auflösen",
       "isDiscarding": "{opponentUsername} Legt Eine Karte Ab",
       "skipsDiscarding": "{opponentUsername} Überspringt Das Ablegen",
+      "isRevealingForFour": "{opponentUsername} Deckt Drei Karten Auf",
+      "isChoosingFourDiscards": "{opponentUsername} Wählt Zwei Karten, Die Du Abwerfen Musst",
       "choosingFromScrap": "{opponentUsername} Wählt Eine Karte Aus Dem Ablagestapel",
       "playingFromDeck": "{opponentUsername} Spielt Aus Dem Stapel",
       "mustDiscardJack": "{opponentUsername} Muss Einen Buben Ablegen",
@@ -124,6 +127,16 @@
         "discardTwoCards": "Zwei Karten abwerfen",
         "discard": "Abwerfen",
         "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
+      },
+      "fourReveal": {
+        "title": "Drei Karten aufdecken",
+        "body": "{opponentUsername} hat einen Vierer als Einmaleffekt gelöst. Wähle drei Karten aus deiner Hand zum Aufdecken. {opponentUsername} wählt zwei davon, die du abwerfen musst.",
+        "reveal": "Aufdecken"
+      },
+      "fourDiscard": {
+        "title": "Zwei Karten zum Abwerfen wählen",
+        "body": "{opponentUsername} hat diese drei Karten aufgedeckt. Wähle zwei davon, die {opponentUsername} abwerfen muss.",
+        "discard": "Abwerfen"
       },
       "discardToHandLimit": {
         "title": "Überzählige Karten ablegen",
@@ -236,7 +249,7 @@
         "1": "Alle Punktkarten abwerfen",
         "2": "Ziel-König oder Gläser Acht abwerfen",
         "3": "Wähle 1 Karte, die keine 3 ist, aus dem Abwurfstapel und nimm sie auf die Hand",
-        "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
+        "4": "Dein Gegner deckt drei Karten aus seiner Hand auf, und du wählst zwei, die er abwerfen muss",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
         "6": "Alle Könige und Gläser Acht abwerfen",
         "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
@@ -289,6 +302,12 @@
     "history": {
       "title": "Verlauf"
     },
+    "playbackControls": {
+      "gameSelector": {
+        "label": "Spiel",
+        "option": "Spiel {number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "Es ist nicht dein Zug!",
@@ -340,10 +359,10 @@
           "cannotTargetThree": "Du kannst keine 3 mit einer 3 als Ziel wählen"
         },
         "four": {
-          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
-          "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
-          "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
-          "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
+          "notRevealingPhase": "Du kannst nur Karten aufdecken, während ein Vierer gelöst wird",
+          "mustRevealThree": "Du musst drei Karten aus deiner Hand aufdecken",
+          "notChoosingDiscardsPhase": "Du kannst nur Karten zum Abwerfen wählen, während ein Vierer gelöst wird",
+          "mustChooseTwoRevealed": "Du musst zwei der aufgedeckten Karten zum Abwerfen wählen"
         },
         "discardToHandLimit": {
           "notDiscardingPhase": "Du kannst nur während der Ablegephase auf die Handkartenobergrenze ablegen",
@@ -466,7 +485,7 @@
       "three": "Drei",
       "threeDescription": "Wähle eine (nicht-Drei) Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
-      "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
+      "fourDescription": "Dein Gegner deckt drei Karten aus seiner Hand auf, und du wählst zwei davon, die er abwerfen muss.",
       "five": "Fünf",
       "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel.",
       "six": "Sechs",
@@ -599,12 +618,13 @@
     }
   },
   "announcement": {
-    "activatorText": "Finde deine laufenden Spiele!",
-    "title": "Deine Aktuellen Spiele",
-    "heading": "Mach da weiter, wo du aufgehört hast",
-    "paragraph": "Tab zu einem Spiel geschlossen? Deine laufenden Spiele erscheinen jetzt ganz oben im Tab Spielen. Drücke auf Fortsetzen, um direkt wieder ins Spiel zu kommen – genau da, wo du aufgehört hast.",
-    "heading2": "Aufgegebene Spiele aufräumen",
-    "paragraph2": "Fertig mit einem Spiel, zu dem niemand zurückkehrt? Das × neben Fortsetzen archiviert es und entfernt es aus den Listen beider Spieler. Spiele, die gerade gespielt werden, lassen sich nicht archivieren – und Spiele aus der Rangliste der aktuellen Woche ebenso wenig, denn die zählen noch für dein Match."
+    "activatorText": "Vierer, die drei Karten aufdecken",
+    "title": "Regel-Beta: Vierer decken drei Karten auf",
+    "heading": "Drei aufdecken, zwei abwerfen",
+    "paragraph": "Der Vierer ist die schwächste Karte im Spiel: ein schwacher Effekt auf einem niedrigen Rang mit wenig Punkten und kaum Versenkungswert. Und weil dein Gegner die beiden Karten aussuchte, verlor er immer nur seine zwei schlechtesten. Jetzt deckt dein Gegner drei Karten aus seiner Hand auf und du wählst, welche zwei er abwirft, sodass ein Vierer auch wirklich wehtun kann. Hat er genau drei Karten, werden alle drei aufgedeckt; hat er zwei oder weniger, wirft er ab, was er hat.",
+    "heading2": "Eine von vier Testregeln der Pik-Saison",
+    "paragraph2": "Das ist eine Beta und eine von vier Regelvarianten, die wir in der Pik-Saison testen — zwei Verbesserungen für Neuner und zwei für Vierer. Gegen Ende des Jahres stellen wir sie in einer Community-Umfrage zur Abstimmung. Den vollständigen Hintergrund zu allen vier findest du unter",
+    "patreonLink": "Die 4 und die 9 verbessern"
   },
   "profile": {
     "myGames": "Meine Spiele",

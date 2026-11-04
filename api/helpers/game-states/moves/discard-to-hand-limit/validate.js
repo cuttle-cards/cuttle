@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const { HAND_LIMIT } = require('../../../../../utils/GameConstants.json');
 const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
@@ -14,7 +15,8 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to discard to hand limit
-     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard (must equal hand.length - 8)
+     * @param { string[] } requestedMove.discardedCards - IDs of cards to discard
+     *   (must be exactly enough to reach the hand limit)
      * @param { MoveType.DISCARD_TO_HAND_LIMIT } requestedMove.moveType
      */
     requestedMove: {
@@ -47,7 +49,7 @@ module.exports = {
 
 
       const player = playedBy ? currentState.p1 : currentState.p0;
-      const overflowCount = player.hand.length - 8;
+      const overflowCount = player.hand.length - HAND_LIMIT;
 
       if (overflowCount <= 0) {
         throw new BadRequestError('game.snackbar.oneOffs.discardToHandLimit.handNotOverLimit');

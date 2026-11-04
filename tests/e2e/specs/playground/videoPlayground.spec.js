@@ -553,9 +553,17 @@ describe('Video Playground', () => {
     cy.wait(1000);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
-    cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+
+    // The opponent holds exactly three cards, so all three are revealed; choose two to discard
+    cy.get('#four-choose-discard-dialog').should('be.visible');
     cy.wait(1000);
-    cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES);
+    cy.get('[data-four-discard-card=1-1]').click();
+    cy.wait(500);
+    cy.get('[data-four-discard-card=11-3]').click();
+    cy.wait(1000);
+    cy.get('[data-cy=submit-four-discard-dialog]').click();
+    cy.get('#scrap').contains('(3)');
+    cy.wait(3000);
   });
 
   it('Playing Fives', () => {

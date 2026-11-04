@@ -6,6 +6,7 @@
 - [Implementation Priority](#implementation-priority)
 - [Discovery Strategy](#discovery-strategy)
 - [Critical Safety Rules](#critical-safety-rules)
+- [Running the App](#running-the-app)
 - [Finding Information](#finding-information)
 - [Constraints and Escalation](#constraints-and-escalation)
 - [Communication Patterns](#communication-patterns)
@@ -57,6 +58,13 @@ In case of conflicting rules, the following hierarchy applies:
 - **Validation**: Run `npm run lint` and `npm run test:unit` before finishing.
 - **Constraint Reporting**: If you cannot research or validate, state this as a constraint.
 
+## Running the App
+
+- **Dependencies**: If `node_modules` is missing or out of sync with `package-lock.json`, run `npm ci` in your worktree. Do not symlink `node_modules` from another checkout; a shared directory can be wiped or changed by another worktree.
+- **Ports**: 8080 (client) and 1337 (server) are often already in use by another stack. Do not kill it.
+- **Booting your own stack**: Set `CUTTLE_PORT_OFFSET=<n>` in a git-ignored `.env.local` (see `.env.local.example`) so the client, server, and Cypress all agree on ports. For example, `CUTTLE_PORT_OFFSET=1` gives client 8081 and server 1338. An inline `CUTTLE_PORT_OFFSET=<n>` overrides the file for a one-off run. Delete `.env.local` when you tear down the worktree.
+- **Source of truth**: All port resolution lives in `utils/dev-ports.js`. Read it before changing ports, URLs, or dev/test scripts.
+
 ## Finding Information
 
 ### State Management (Frontend)
@@ -84,6 +92,9 @@ In case of conflicting rules, the following hierarchy applies:
 
 ### Dependencies
 - **Policy**: Do not add, update, or remove dependencies without explicit approval.
+- **Transitive vulnerabilities**: Fix by bumping the top-level dependency that owns the transitive package, not by adding an `overrides` entry. A global override applies to every consumer in the tree, so it can downgrade packages that already resolve to a patched version, and an exact pin blocks future patches.
+- **Lockfile**: `package-lock.json` must be produced by `npm install`. Never hand-edit it. `npm ci` installs a hand-edited lockfile verbatim rather than rejecting it, so a bad edit will not be caught by CI.
+- **Verification**: After a dependency change, confirm the resulting tree with `npm ls <package>` and `npm audit`. Note that `npm run test:unit` and the Cypress e2e suite both run on `sails-disk`; database adapter changes are not exercised by CI and need `npm run docker:start` to validate against Postgres.
 
 ## Constraints and Escalation
 

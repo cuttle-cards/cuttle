@@ -10,7 +10,7 @@ const DeckIds = require('../../utils/DeckIds.json');
  *
  */
 module.exports = function (req, res, next) {
-  const { moveType, cardId, cardId1, cardId2, targetId, targetType } = req.body;
+  const { moveType, cardId, targetId, targetType } = req.body;
 
   switch (moveType) {
     // These moves require no extra data
@@ -43,22 +43,6 @@ module.exports = function (req, res, next) {
       }
       return next();
 
-    // Requires `cardId1` and optionally accepts `cardId2`
-    case MoveType.RESOLVE_FOUR:
-      {
-        if (!cardId1) {
-          return res.badRequest({ message: 'Must specify a card' });
-        }
-
-        if (!DeckIds.includes(cardId1)) {
-          return res.badRequest({ message: `${cardId1} is not a valid cardId` });
-        }
-
-        if (cardId2 && !DeckIds.includes(cardId2)) {
-          return res.badRequest({ message: `${cardId2} is not a valid cardId` });
-        }
-      }
-      return next();
 
     // Requires a non-empty `discardedCards` array of valid card IDs
     case MoveType.DISCARD_TO_HAND_LIMIT:
@@ -68,6 +52,23 @@ module.exports = function (req, res, next) {
           return res.badRequest({ message: 'Must specify cards to discard' });
         }
         const invalidId = discardedCards.find((id) => !DeckIds.includes(id));
+        if (invalidId) {
+          return res.badRequest({ message: `${invalidId} is not a valid cardId` });
+        }
+      }
+      return next();
+
+    // Require an array of exactly two/three valid card IDs
+    case MoveType.REVEAL_FOUR:
+    case MoveType.DISCARD_FOUR:
+      {
+        const isReveal = moveType === MoveType.REVEAL_FOUR;
+        const cardIds = isReveal ? req.body.fourRevealedCards : req.body.discardedCards;
+        const requiredCount = isReveal ? 3 : 2;
+        if (!Array.isArray(cardIds) || cardIds.length !== requiredCount) {
+          return res.badRequest({ message: `Must specify ${requiredCount} cards` });
+        }
+        const invalidId = cardIds.find((id) => !DeckIds.includes(id));
         if (invalidId) {
           return res.badRequest({ message: `${invalidId} is not a valid cardId` });
         }

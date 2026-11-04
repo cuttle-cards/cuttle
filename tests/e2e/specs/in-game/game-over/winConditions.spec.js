@@ -407,7 +407,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.alreadyConsideringStalemate');
             }
@@ -435,7 +437,9 @@ describe('Stalemates', () => {
             try {
               await store.acceptStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.opponentConsideringStalemate');
             }
@@ -467,7 +471,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
             }
@@ -508,7 +514,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
             }
@@ -530,7 +538,9 @@ describe('Stalemates', () => {
             try {
               await store.requestStalemate();
               // Fail test if backend allows request
-              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              cy.then(() => {
+                assert.fail('Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+              });
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.alreadyConsideringStalemate');
             }
@@ -588,12 +598,14 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
       p0Hand: [ Card.FOUR_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
+      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.TWO_OF_SPADES, Card.TEN_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
     });
 
     cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
+    // Concede while the opponent is still revealing
+    cy.get('#waiting-for-opponent-reveal-four-scrim').should('be.visible');
 
     cy.get('#game-menu-activator').click({ force: true });
     cy.get('#game-menu').should('be.visible')
@@ -605,6 +617,6 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     assertLoss();
     goHomeJoinNewGame();
 
-    cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+    cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
   });
 });

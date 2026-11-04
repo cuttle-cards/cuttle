@@ -392,6 +392,7 @@
                 />
               </TransitionGroup>
             </div>
+            <HandSizeBadge v-if="!isSpectating" />
           </div>
           <TargetSelectionOverlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
@@ -432,6 +433,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import GameDialogs from '@/routes/game/components/dialogs/GameDialogs.vue';
+import { ROUTE_NAME_SPECTATE, setupSpectate } from '@/router';
 import GameMenu from '@/routes/game/components/GameMenu.vue';
 import GameOverlays from '@/routes/game/components/GameOverlays.vue';
 import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
@@ -440,6 +442,7 @@ import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOver
 import ScrapPile from '@/routes/game/components/ScrapPile.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 import PlaybackControls from './components/PlaybackControls.vue';
+import HandSizeBadge from '@/routes/game/components/HandSizeBadge.vue';
 
 export default {
   name: 'GameView',
@@ -455,6 +458,17 @@ export default {
     UsernameToolTip,
     SpectatorListMenu,
     PlaybackControls,
+    HandSizeBadge,
+  },
+  async beforeRouteUpdate(to, from) {
+    // Switching games keeps us on the same route, so beforeEnter doesn't re-run.
+    // Without this the previous game stays on the board under the new URL --
+    // browser back/forward between games of a match hits exactly that.
+    const isNewSpectatedGame = to.name === ROUTE_NAME_SPECTATE &&
+      to.params.gameId !== from.params.gameId &&
+      Number(to.params.gameId) !== this.gameStore.id;
+
+    return isNewSpectatedGame ? setupSpectate(to) : undefined;
   },
   setup() {
     const { t } = useI18n();
@@ -466,7 +480,6 @@ export default {
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
-      showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
       showHistoryDrawer: false,
@@ -1124,7 +1137,7 @@ export default {
 ////////////
 #game-view-wrapper {
   color: rgb(var(--v-theme-text-light));
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-image: url('/img/game/board-background.webp');
   background-size: cover;
@@ -1508,6 +1521,7 @@ export default {
 .player-cards-container {
   grid-column-start: 3;
   grid-column-end: span 8;
+  padding-bottom: 24px; /* room for the hand size badge */
 }
 
 #opponent-username-container {
