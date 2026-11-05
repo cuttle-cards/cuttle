@@ -303,6 +303,8 @@
       "title": "Historial"
     },
     "playbackControls": {
+      "play": "Reproducir",
+      "pause": "Pausa",
       "gameSelector": {
         "label": "Partida",
         "option": "Partida {number}"

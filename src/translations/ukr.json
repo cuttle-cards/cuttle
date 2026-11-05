@@ -303,6 +303,8 @@
       "title": "Історія"
     },
     "playbackControls": {
+      "play": "Відтворити",
+      "pause": "Пауза",
       "gameSelector": {
         "label": "Гра",
         "option": "Гра {number}"

@@ -27,6 +27,16 @@
         @click="goToState(previousGameStateIndex)"
       />
 
+      <!-- Play / pause: only the one that applies is shown -->
+      <v-btn
+        :disabled="!gameHistoryStore.isPlaying && !gameHistoryStore.canGoToNextState"
+        variant="text"
+        :icon="gameHistoryStore.isPlaying ? 'mdi-pause' : 'mdi-play'"
+        :aria-label="t(gameHistoryStore.isPlaying ? 'game.playbackControls.pause' : 'game.playbackControls.play')"
+        :data-cy="gameHistoryStore.isPlaying ? 'pause' : 'play'"
+        @click="togglePlayback"
+      />
+
       <!-- Step forward -->
       <v-btn
         :disabled="!gameHistoryStore.canGoToNextState"
@@ -49,14 +59,17 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue';
+import { computed, onUnmounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useGameStore } from '@/stores/game';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import MatchGameSelector from '@/routes/game/components/MatchGameSelector.vue';
+import { getPlaybackDelay } from '@/util/playbackDelay';
 
+const { t } = useI18n();
 const router = useRouter();
 const { xs } = useDisplay();
 const gameHistoryStore = useGameHistoryStore();
@@ -80,9 +93,80 @@ function goToState(gameStateIndex) {
   });  
 }
 
-watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
-  await gameStore.requestGameState(gameStore.id, newVal);
+let advanceTimer = null;
+// Identifies the most recent navigation, so a slow response for a superseded one can't schedule an advance
+let navigationId = 0;
+
+function clearAdvanceTimer() {
+  clearTimeout(advanceTimer);
+  advanceTimer = null;
+}
+
+function pause() {
+  gameHistoryStore.isPlaying = false;
+  clearAdvanceTimer();
+}
+
+/**
+ * Queue the move to the next state after the real gap between the two moves. Always called after the current state
+ * has loaded, so requests can't pile up or resolve out of order. Playing past the final state ends playback.
+ */
+function scheduleAdvance() {
+  clearAdvanceTimer();
+  if (!gameHistoryStore.isPlaying) {
+    return;
+  }
+  if (!gameHistoryStore.canGoToNextState) {
+    return pause();
+  }
+  const fromIndex = currentGameStateIndex.value;
+  const { gameStates } = gameHistoryStore;
+  const delay = getPlaybackDelay(gameStates[fromIndex], gameStates[fromIndex + 1]);
+  advanceTimer = setTimeout(() => goToState(fromIndex + 1), delay);
+}
+
+function togglePlayback() {
+  if (gameHistoryStore.isPlaying) {
+    return pause();
+  }
+  gameHistoryStore.isPlaying = true;
+  scheduleAdvance();
+}
+
+// -1 means "latest", so resolve it to a real position before comparing direction
+function resolveIndex(gameStateIndex) {
+  return gameStateIndex === -1 ? gameHistoryStore.gameStates.length - 1 : gameStateIndex;
+}
+
+watch(() => gameHistoryStore.currentGameStateIndex, async (newVal, oldVal) => {
+  // Any navigation resets the timer, so stepping forward during playback hurries it along without stopping it
+  clearAdvanceTimer();
+  // Moving backward pauses, however it happened (buttons or browser history)
+  if (resolveIndex(newVal) < resolveIndex(oldVal)) {
+    pause();
+  }
+
+  const thisNavigationId = ++navigationId;
+  let res;
+  try {
+    res = await gameStore.requestGameState(gameStore.id, newVal);
+  } catch (err) {
+    pause();
+    throw err;
+  }
+  // A null response means the user must reauthenticate before anything else can load
+  if (res === null) {
+    return pause();
+  }
+  if (thisNavigationId === navigationId) {
+    scheduleAdvance();
+  }
 });
+
+// Switching games (e.g. via the match game selector) bypasses goToState, so don't carry playback into the new game
+watch(() => gameStore.id, pause);
+
+onUnmounted(pause);
 </script>
 
 <style scoped>
