@@ -48,6 +48,7 @@ module.exports = {
     },
     attempts: {
       type: 'number',
+      columnType: 'integer',
       defaultsTo: 0,
     },
     promotional: {

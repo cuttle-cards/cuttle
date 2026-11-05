@@ -128,6 +128,18 @@ describe('User preferred email', () => {
     expect(res.body.message).toBe('emailPreference.error.emailTaken');
   });
 
+  it('Does not send a code for an email the user already verified', async () => {
+    const { agent, userId } = await signup('myUser');
+    await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    await agent.post('/api/user/email/verify').send({ code: await setKnownCode(userId) });
+    await UserEmail.updateOne({ user: userId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+
+    const res = await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(res.statusCode).toBe(409);
+    expect(res.body.message).toBe('emailPreference.error.emailTaken');
+  });
+
   it('Returns 409 when another user verifies the same email first', async () => {
     const { agent: firstAgent, userId: firstId } = await signup('firstUser');
     const { agent: secondAgent, userId: secondId } = await signup('secondUser');

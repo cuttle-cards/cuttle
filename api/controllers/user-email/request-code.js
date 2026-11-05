@@ -12,9 +12,9 @@ module.exports = async function (req, res) {
     const promotional = req.body.promotional === true;
     const userId = req.session.usr;
 
-    // Email must not already belong to another user
-    const emailOwner = await UserEmail.findOne({ email });
-    if (emailOwner && emailOwner.user !== userId) {
+    // Email must not already be verified by any user, including this one
+    const prevEmail = await UserEmail.findOne({ email });
+    if (prevEmail) {
       return res.status(409).json({ message: 'emailPreference.error.emailTaken' });
     }
 
