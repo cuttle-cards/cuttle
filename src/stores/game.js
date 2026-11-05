@@ -26,15 +26,19 @@ function queenCount(player) {
   return player?.faceCards?.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
-const compareByRankThenSuit = (card1, card2) => {
-  if (card1.isHidden || card2.isHidden) {
-    return 0;
-  }
-  return card1.rank - card2.rank || card1.suit - card2.suit;
-};
+const compareByRankThenSuit = (card1, card2) => card1.rank - card2.rank || card1.suit - card2.suit;
 
 const setPlayers = (player) => {
+  /**
+   * Leaves a hand holding hidden cards in the order the server sent it. Hidden cards have no rank
+   * or suit, so there is no ordering that covers a partly revealed hand: sorting one would compare
+   * the revealed cards to each other while every comparison against a hidden card came back equal,
+   * and adjacent revealed cards would jump position at the moment they were revealed.
+   */
   const sortCards = (cards) => {
+    if (cards?.some(({ isHidden }) => isHidden)) {
+      return cards;
+    }
     return cards?.sort(compareByRankThenSuit);
   };
 
