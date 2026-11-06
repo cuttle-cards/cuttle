@@ -243,6 +243,7 @@ An uncompressed, object-oriented representation of a `GameStateRow`, created usi
        * array of moves  
    * spectatingUsers  
        * array of users  
+   * matchGames: Array\<{ id, status, winner, p0, p1, createdAt }\> (only on the `get-game` and `spectate/join` responses for FINISHED/ARCHIVED games; every game in the match, oldest first, from `sails.helpers.getMatchGames`. Populates the spectator's game dropdown)  
 * \<Player\>  
    * Hand Array\<Card\>  
    * Points Array\<Card\>  

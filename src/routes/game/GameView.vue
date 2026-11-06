@@ -446,6 +446,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import GameDialogs from '@/routes/game/components/dialogs/GameDialogs.vue';
+import { ROUTE_NAME_SPECTATE, setupSpectate } from '@/router';
 import GameMenu from '@/routes/game/components/GameMenu.vue';
 import GameOverlays from '@/routes/game/components/GameOverlays.vue';
 import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
@@ -471,6 +472,16 @@ export default {
     SpectatorListMenu,
     PlaybackControls,
     HandSizeBadge,
+  },
+  async beforeRouteUpdate(to, from) {
+    // Switching games keeps us on the same route, so beforeEnter doesn't re-run.
+    // Without this the previous game stays on the board under the new URL --
+    // browser back/forward between games of a match hits exactly that.
+    const isNewSpectatedGame = to.name === ROUTE_NAME_SPECTATE &&
+      to.params.gameId !== from.params.gameId &&
+      Number(to.params.gameId) !== this.gameStore.id;
+
+    return isNewSpectatedGame ? setupSpectate(to) : undefined;
   },
   setup() {
     const { t } = useI18n();

@@ -303,6 +303,15 @@
     "history": {
       "title": "Історія"
     },
+    "playbackControls": {
+      "play": "Відтворити",
+      "pause": "Пауза",
+      "gameSelector": {
+        "label": "Гра",
+        "option": "Гра {number}",
+        "optionShort": "Г{number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "Зараз не ваш хід!",

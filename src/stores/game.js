@@ -316,6 +316,9 @@ export const useGameStore = defineStore('game', () => {
     status.value = newGame.status ?? GameStatus.ARCHIVED;
     phase.value = newGame.phase ?? GamePhase.MAIN;
     gameHistoryStore.gameStates = newGame.gameStates ?? [];
+    // Only the spectator payloads of finished games carry matchGames, so hold onto
+    // the last list rather than clearing it on every live move event
+    gameHistoryStore.matchGames = newGame.matchGames ?? gameHistoryStore.matchGames;
   }
   function opponentJoined(newPlayer) {
     players.value.push(cloneDeep(newPlayer));
@@ -359,6 +362,7 @@ export const useGameStore = defineStore('game', () => {
     currentMatch.value = null;
     iWantToContinueSpectating.value = false;
     status.value = GameStatus.ARCHIVED;
+    gameHistoryStore.matchGames = [];
   }
   function updateReady(pNumArg) {
     if (pNumArg === 0) {

@@ -303,6 +303,15 @@
     "history": {
       "title": "Verlauf"
     },
+    "playbackControls": {
+      "play": "Abspielen",
+      "pause": "Pause",
+      "gameSelector": {
+        "label": "Spiel",
+        "option": "Spiel {number}",
+        "optionShort": "S{number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "Es ist nicht dein Zug!",

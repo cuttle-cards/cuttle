@@ -85,8 +85,8 @@
       "fallback": "Une erreur inconnue s'est produite.",
       "forbidden": "Vous n'êtes pas un joueur dans ce jeu !",
       "gameStatus": "Le jeu n'a pas encore commencé ou est terminé.",
-      "noGameStates":"Le jeu n'a pas été peuplé avec la collection .gameStates.",
-      "alreadyDealt":"Les cartes sont déjà distribuées."
+      "noGameStates": "Le jeu n'a pas été peuplé avec la collection .gameStates.",
+      "alreadyDealt": "Les cartes sont déjà distribuées."
     }
   },
   "game": {
@@ -124,17 +124,6 @@
         "leaveGame": "Quitter le jeu",
         "login": "Se connecter"
       },
-      "scrapDialog": {
-        "scrapPile": "Défausse",
-        "noCards": "Il n'y a aucune carte dans la défausse."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Trier",
-          "chronologically": "Chronologiquement",
-          "rank": "Par valeur"
-        }
-      },
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
@@ -160,6 +149,17 @@
         "nice": "Bon!",
         "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
         "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Sympa!"
+      },
+      "scrapDialog": {
+        "scrapPile": "Défausse",
+        "noCards": "Il n'y a aucune carte dans la défausse."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Trier",
+          "chronologically": "Chronologiquement",
+          "rank": "Par valeur"
+        }
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
@@ -303,6 +303,15 @@
     "history": {
       "title": "Historique"
     },
+    "playbackControls": {
+      "play": "Lecture",
+      "pause": "Pause",
+      "gameSelector": {
+        "label": "Jeu",
+        "option": "Jeu {number}",
+        "optionShort": "J{number}"
+      }
+    },
     "snackbar": {
       "global": {
         "notYourTurn": "Ce n'est pas votre tour !",
@@ -402,9 +411,9 @@
     "playAiLink": "jouer contre l'IA",
     "playAiContent2": "pour apprendre les bases et tester votre courage.",
     "gameName": "Nom de la partie",
-      "join": "Rejoindre",
-      "playVsAi": "Jouer contre l'IA",
-      "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
+    "join": "Rejoindre",
+    "playVsAi": "Jouer contre l'IA",
+    "failedToLoadGameList": "Impossible de charger les parties. Veuillez réessayer plus tard.",
     "continue": "Continuer",
     "archive": "Archiver",
     "versus": "contre",
@@ -494,8 +503,8 @@
     },
     "readyToPlay": {
       "readyToPlay": "Prêt à jouer ?",
-      "findGame": "Trouver une partie",
-      "signUp": "Inscrivez-vous pour jouer en ligne"
+      "signUp": "Inscrivez-vous pour jouer en ligne",
+      "findGame": "Trouver une partie"
     },
     "multiplayerTitle": "Variantes multijoueurs",
     "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
