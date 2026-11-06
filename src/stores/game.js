@@ -26,15 +26,19 @@ function queenCount(player) {
   return player?.faceCards?.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
-const compareByRankThenSuit = (card1, card2) => {
-  if (card1.isHidden || card2.isHidden) {
-    return 0;
-  }
-  return card1.rank - card2.rank || card1.suit - card2.suit;
-};
+const compareByRankThenSuit = (card1, card2) => card1.rank - card2.rank || card1.suit - card2.suit;
 
 const setPlayers = (player) => {
+  /**
+   * Leaves a hand holding hidden cards in the order the server sent it. Hidden cards have no rank
+   * or suit, so there is no ordering that covers a partly revealed hand: sorting one would compare
+   * the revealed cards to each other while every comparison against a hidden card came back equal,
+   * and adjacent revealed cards would jump position at the moment they were revealed.
+   */
   const sortCards = (cards) => {
+    if (cards?.some(({ isHidden }) => isHidden)) {
+      return cards;
+    }
     return cards?.sort(compareByRankThenSuit);
   };
 
@@ -62,6 +66,8 @@ class GameCard {
     this.suit = card.suit;
     this.rank = card.rank;
     this.isFrozen = card.isFrozen;
+    // Both players have seen this card, so it shows face up in a hidden hand or on the deck
+    this.isRevealed = card.isRevealed;
     this.name = str_rank + str_suit;
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
@@ -291,7 +297,11 @@ export const useGameStore = defineStore('game', () => {
     p0Ready.value = newGame.p0Ready ?? p0Ready.value;
     p1Ready.value = newGame.p1Ready ?? p1Ready.value;
     passes.value = newGame.passes ?? passes.value;
+    const previousOpponentHand = opponent.value?.hand ?? [];
     players.value = newGame.players?.map((player) => setPlayers(player)) ?? players.value;
+    if (opponent.value?.hand) {
+      opponent.value.hand = assignHandKeys(previousOpponentHand, opponent.value.hand);
+    }
     spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
@@ -510,15 +520,70 @@ export const useGameStore = defineStore('game', () => {
     // Finish update (moving card from scrap to hand)
     updateGame(game);
   }
+  let nextHandKey = 0;
+  /**
+   * Carries the identity of each slot in a hand across an update, so a card keeps the same DOM
+   * node -- and so its transitions play on it -- for as long as it stays in the hand.
+   *
+   * Keying on the cards themselves cannot do this. A face-down card is an anonymous placeholder
+   * with no id to key on, and a card gains one at the moment it is revealed, so its key would
+   * change exactly when it should be flipping in place. Keying on position instead breaks the
+   * other way: the hand closes up when a card leaves, and every card after it would shift onto
+   * its neighbour's node.
+   *
+   * So the slots are carried instead. A card that was already in the hand keeps the slot it held,
+   * which covers the cards that stay put while others leave. Everything else -- a card that has
+   * just been revealed, or just been drawn -- takes a slot that held a face-down card, which is
+   * what lets a revealed card keep the node its placeholder occupied. Slots left over belonged to
+   * cards that are now gone, and releasing them is what animates those cards out of the hand.
+   */
+  function assignHandKeys(previousHand, nextHand) {
+    const taken = new Set();
+    const keptKeys = nextHand.map((card) => {
+      const previous =
+        card.id === undefined ? null : previousHand.find(({ id }) => id !== undefined && id === card.id);
+      if (previous?.handKey !== undefined) {
+        taken.add(previous.handKey);
+        return previous.handKey;
+      }
+      return null;
+    });
+    // Read the free keys out before assigning any, since a hand can be rebuilt from its own cards
+    const freeKeys = previousHand
+      .filter(({ isHidden, handKey }) => isHidden && handKey !== undefined && !taken.has(handKey))
+      .map(({ handKey }) => handKey);
+    nextHand.forEach((card, index) => {
+      card.handKey = keptKeys[index] ?? freeKeys.shift() ?? `opponent_hand_${nextHandKey++}`;
+    });
+    return nextHand;
+  }
+  /**
+   * Swaps the opponent's discarded cards into their hand so they can animate out of it. A revealed
+   * card is already face up in the hand, so it is left where it sits and animates out from there;
+   * any other discard takes the place of one of the anonymous hidden cards, which only ever come
+   * off the end of the hand.
+   */
+  function showOpponentDiscards(discardedCards) {
+    const hand = [ ...opponent.value.hand ];
+    const hiddenDiscards = [];
+    discardedCards.forEach((discardedCard) => {
+      if (hand.some(({ id }) => id === discardedCard.id)) {
+        return;
+      }
+      const hiddenIndex = hand.map(({ isHidden }) => isHidden).lastIndexOf(true);
+      if (hiddenIndex > -1) {
+        hand.splice(hiddenIndex, 1);
+      }
+      hiddenDiscards.push(discardedCard);
+    });
+    opponent.value.hand = assignHandKeys(opponent.value.hand, [ ...hand, ...hiddenDiscards ]);
+  }
   async function processFours(discardedCards, game) {
     phase.value = GamePhase.MAIN;
     // A four against an empty hand discards nothing, and create-socket-events sends null
     // rather than an empty array, so this has to guard the way processFives does
     if (discardedCards?.length && !showOpponentHand.value) {
-      opponent.value.hand = [
-        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
-        ...discardedCards,
-      ];
+      showOpponentDiscards(discardedCards);
       await sleep(1000);
     }
     updateGame(game);
@@ -527,10 +592,7 @@ export const useGameStore = defineStore('game', () => {
     phase.value = GamePhase.MAIN;
     if (discardedCards?.length && !showOpponentHand.value) {
       await sleep(1000);
-      opponent.value.hand = [
-        ...opponent.value.hand.slice(0, opponent.value.hand.length - discardedCards.length),
-        ...discardedCards,
-      ];
+      showOpponentDiscards(discardedCards);
       await sleep(1000);
     }
     updateGame(game);
