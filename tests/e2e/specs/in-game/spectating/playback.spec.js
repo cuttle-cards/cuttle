@@ -107,6 +107,33 @@ describe('Auto-advancing playback of finished games', () => {
     cy.url({ timeout: FULL_PLAYBACK_TIMEOUT_MS }).should('match', /gameStateIndex=[2-9]/);
   });
 
+  it('Waits for a state that is still loading before starting the advance timer', () => {
+    const SLOW_LOAD_MS = 2000;
+    // Shorter than the load, longer than the 500ms floor on the delay between auto-advances
+    const WAIT_DURING_LOAD_MS = 1200;
+
+    // Stands in for a state whose animation is still running when play is pressed
+    cy.window().then((win) => {
+      const { gameStore } = win.cuttle;
+      const requestGameState = gameStore.requestGameState.bind(gameStore);
+      gameStore.requestGameState = async (...args) => {
+        const res = await requestGameState(...args);
+        await new Promise((resolve) => setTimeout(resolve, SLOW_LOAD_MS));
+        return res;
+      };
+    });
+
+    cy.get('[data-cy=step-forward]').click();
+    cy.url().should('include', '?gameStateIndex=1');
+    cy.get('[data-cy=play]').click();
+
+    cy.wait(WAIT_DURING_LOAD_MS);
+    cy.url().should('include', '?gameStateIndex=1');
+
+    // Once the slow state lands, playback carries on from it
+    cy.url({ timeout: FULL_PLAYBACK_TIMEOUT_MS }).should('match', /gameStateIndex=[2-9]/);
+  });
+
   describe('Layout', () => {
     it('Labels the game selector in full on wide screens', () => {
       cy.get('[data-cy=match-game-selector]').should('contain.text', 'Game 1');

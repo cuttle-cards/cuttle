@@ -104,6 +104,8 @@ function goToState(gameStateIndex) {
 let advanceTimer = null;
 // Identifies the most recent navigation, so a slow response for a superseded one can't schedule an advance
 let navigationId = 0;
+// True from the moment a navigation requests its state until that state (and its animation) has finished loading
+let isLoadingState = false;
 
 function clearAdvanceTimer() {
   clearTimeout(advanceTimer);
@@ -138,7 +140,11 @@ function togglePlayback() {
     return pause();
   }
   gameHistoryStore.isPlaying = true;
-  scheduleAdvance();
+  // If the current state is still loading, the watcher schedules the advance once it lands. Starting the timer now
+  // could load the next state before this one finishes animating, which would then overwrite it with older moves
+  if (!isLoadingState) {
+    scheduleAdvance();
+  }
 }
 
 // -1 means "latest", so resolve it to a real position before comparing direction
@@ -155,12 +161,18 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal, oldVal) => {
   }
 
   const thisNavigationId = ++navigationId;
+  isLoadingState = true;
   let res;
   try {
     res = await gameStore.requestGameState(gameStore.id, newVal);
   } catch (err) {
     pause();
     throw err;
+  } finally {
+    // Only the latest navigation settles the loading state; a superseded one finishing must not clear it early
+    if (thisNavigationId === navigationId) {
+      isLoadingState = false;
+    }
   }
   // A null response means the user must reauthenticate before anything else can load
   if (res === null) {
