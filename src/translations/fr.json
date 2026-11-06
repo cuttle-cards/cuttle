@@ -303,9 +303,12 @@
       "title": "Historique"
     },
     "playbackControls": {
+      "play": "Lecture",
+      "pause": "Pause",
       "gameSelector": {
         "label": "Jeu",
-        "option": "Jeu {number}"
+        "option": "Jeu {number}",
+        "optionShort": "J{number}"
       }
     },
     "snackbar": {

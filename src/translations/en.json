@@ -304,9 +304,12 @@
       "title": "History"
     },
     "playbackControls": {
+      "play": "Play",
+      "pause": "Pause",
       "gameSelector": {
         "label": "Game",
-        "option": "Game {number}"
+        "option": "Game {number}",
+        "optionShort": "G{number}"
       }
     },
     "snackbar": {
