@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Рука: {handSize} з {handLimit} карт",
+    "revealedIcon": "Піктограма ока означає, що карту розкрито",
     "resolve": "Вирішити",
     "scrap": "Скинути",
     "view": "Переглянути",
@@ -303,6 +304,15 @@
     },
     "history": {
       "title": "Історія"
+    },
+    "playbackControls": {
+      "play": "Відтворити",
+      "pause": "Пауза",
+      "gameSelector": {
+        "label": "Гра",
+        "option": "Гра {number}",
+        "optionShort": "Г{number}"
+      }
     },
     "snackbar": {
       "global": {

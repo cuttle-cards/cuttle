@@ -29,6 +29,16 @@
       role="img"
       data-selected-target
     />
+    <v-icon
+      v-if="isRevealed"
+      class="player-card-icon revealed-icon mr-1 mt-1"
+      color="base-dark"
+      icon="mdi-eye"
+      :aria-label="$t('game.revealedIcon')"
+      aria-hidden="false"
+      role="img"
+      data-revealed-icon
+    />
     <v-overlay
       :model-value="isValidTarget"
       contained
@@ -105,6 +115,10 @@ export default {
       default: null,
     },
     isFrozen: {
+      type: Boolean,
+      default: false,
+    },
+    isRevealed: {
       type: Boolean,
       default: false,
     },
@@ -260,6 +274,13 @@ export default {
   top: 0;
   right: 0;
   z-index: 1;
+}
+/* Sits top right, clear of the rank. The disc matches the card face exactly, so it only shows on a
+   card that is frozen as well as revealed -- one a nine bounced back to hand -- where it masks the
+   frozen tint behind the glyph. 50% keeps that mask a circle instead of a cream square */
+.revealed-icon {
+  background: rgb(var(--v-theme-base-light));
+  border-radius: 50%;
 }
 .opponent-card-back {
   border-radius: 5px;

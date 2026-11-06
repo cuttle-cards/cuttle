@@ -79,6 +79,7 @@ module.exports = {
         twos: gameState.twos ?? [],
         discardedCards: gameState.discardedCards ?? [],
         fourRevealedCards: gameState.fourRevealedCards ?? [],
+        revealedCards: gameState.revealedCards ?? [],
 
         playedCard: gameState.playedCard ?? null,
         targetCard: gameState.targetCard ?? null,

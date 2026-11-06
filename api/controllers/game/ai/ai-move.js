@@ -8,7 +8,7 @@ const GameStatus = require('../../../../utils/GameStatus.json');
 
 module.exports = async function (req, res) {
   let game;
-  const { saveGamestate, publishGameState, unpackGamestate } = sails.helpers.gameStates;
+  const { saveGamestate, publishGameState, unpackGamestate, updateRevealedCards } = sails.helpers.gameStates;
   try {
     ///////////////////////////
     // Fetch and format data //
@@ -52,10 +52,11 @@ module.exports = async function (req, res) {
     ///////////////////////////////
     // Execute & Publish Changes //
     ///////////////////////////////
-    const updatedState = sails.helpers.gameStates.ai.chooseAiMove(gameState, playedBy, game.gameStates);
-    if (!updatedState) {
+    const aiState = sails.helpers.gameStates.ai.chooseAiMove(gameState, playedBy, game.gameStates);
+    if (!aiState) {
       throw new BadRequestError('AI has no legal moves!');
     }
+    const updatedState = updateRevealedCards(gameState, aiState);
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
     await publishGameState(game, { ...updatedState, id: gameStateRow.id });
