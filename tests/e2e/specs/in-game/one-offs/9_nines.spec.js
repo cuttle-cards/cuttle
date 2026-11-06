@@ -77,6 +77,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       });
     }); // End 9 one-off two point cards
 
@@ -119,6 +120,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_HEARTS ],
+        revealedCards: [ Card.NINE_OF_SPADES, Card.KING_OF_DIAMONDS ],
       });
     }); // End 9 one-off high-point card
 
@@ -150,6 +152,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.ACE_OF_DIAMONDS ],
       });
     }); // End 9 on face card + point card
 
@@ -207,6 +210,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        revealedCards: [ Card.JACK_OF_CLUBS, Card.KING_OF_DIAMONDS ],
       });
 
       // Should no longer see jack of clubs on screen
@@ -255,6 +259,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        revealedCards: [ Card.JACK_OF_CLUBS, Card.ACE_OF_SPADES ],
       });
     }); // End 9 on jack + its own host
 
@@ -302,6 +307,7 @@ describe('Playing NINES', () => {
           Card.JACK_OF_SPADES,
           Card.NINE_OF_CLUBS,
         ],
+        revealedCards: [ Card.ACE_OF_SPADES, Card.KING_OF_DIAMONDS ],
       });
     }); // End 9 on triple jacked point card
 
@@ -336,6 +342,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_CLUBS ],
+        revealedCards: [ Card.FOUR_OF_DIAMONDS, Card.JACK_OF_CLUBS ],
       });
     }); // End 9 on point card + jack on a different host
 
@@ -420,6 +427,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS ],
       });
     });
 
@@ -513,6 +521,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.FOUR_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS ],
       });
 
       // STEP 2
@@ -531,6 +540,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.FOUR_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.KING_OF_HEARTS, Card.SIX_OF_HEARTS ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS ],
       });
 
       // STEP 3
@@ -547,6 +557,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.KING_OF_HEARTS, Card.SIX_OF_HEARTS ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS ],
       });
 
       // STEP 4
@@ -561,6 +572,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_DIAMONDS ],
         scrap: [ Card.NINE_OF_SPADES, Card.KING_OF_HEARTS, Card.SIX_OF_HEARTS ],
+        revealedCards: [ Card.KING_OF_CLUBS ],
       });
     });
 
@@ -603,6 +615,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.FOUR_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS ],
       });
 
       // STEP 2
@@ -631,6 +644,7 @@ describe('Playing NINES', () => {
         p1Points: [ Card.FOUR_OF_HEARTS ],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES, Card.SIX_OF_HEARTS, Card.TWO_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS ],
       });
 
       // STEP 4
@@ -652,6 +666,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [ Card.KING_OF_DIAMONDS ],
         scrap: [ Card.NINE_OF_SPADES, Card.SIX_OF_HEARTS, Card.TWO_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_CLUBS ],
       });
     });
   }); // End Player playing 9s describe
@@ -913,6 +928,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.KING_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       });
     });
   }); // End playing a NINE from a seven
@@ -967,6 +983,7 @@ describe('Playing NINES', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_SPADES ],
+        revealedCards: [ Card.TEN_OF_DIAMONDS, Card.NINE_OF_DIAMONDS ],
       });
     });
 

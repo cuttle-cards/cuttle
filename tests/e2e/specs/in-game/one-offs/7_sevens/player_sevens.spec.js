@@ -885,6 +885,7 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
+        revealedCards: [ Card.KING_OF_HEARTS, Card.KING_OF_CLUBS ],
       });
     }); // End playing NINE from seven
 
@@ -945,6 +946,7 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
+        revealedCards: [ Card.JACK_OF_CLUBS, Card.KING_OF_HEARTS ],
       });
     }); // End playing NINE on jacks from a seven
 
