@@ -10,52 +10,50 @@ describe('Revealed cards', () => {
     cy.setupGameAsP0();
   });
 
-  it('Shows the card a nine topdecks face up on the deck, then in the opponent\'s hand once drawn', () => {
+  it('Shows the cards a nine returns face up in the opponent\'s hand', () => {
     cy.loadGameFixture(0, {
       p0Hand: [ Card.NINE_OF_SPADES, Card.TEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [ Card.SIX_OF_HEARTS ],
-      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1FaceCards: [],
       topCard: Card.TWO_OF_CLUBS,
     });
-    cy.get('[data-revealed-top-card]').should('not.exist');
 
-    // Player nines the opponent's ace of diamonds onto the deck
+    // A nine takes exactly two targets, and returns both to their controller's hand
     cy.get('[data-player-hand-card=9-3]').click();
     cy.get('[data-move-choice=targetedOneOff]').click();
-    cy.get('[data-opponent-point-card=1-1]').click();
+    cy.get('#player-hand-targeting').should('be.visible');
+    cy.get('[data-opponent-point-card=1-1]').click({ force: true });
+    cy.get('[data-opponent-point-card=4-1]').click({ force: true });
+    cy.get('[data-cy=confirm-targets]').should('not.be.disabled')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
 
-    cy.get('[data-revealed-top-card=1-1]').should('be.visible')
-      .find('[data-revealed-icon]')
-      .should('exist');
-
-    // Opponent draws it back; it stays face up in their hand
-    cy.drawCardOpponent();
-    cy.get('[data-revealed-top-card]').should('not.exist');
+    // Both players saw the cards on the field, so they stay face up in the hand they land in
     assertGameState(0, {
       p0Hand: [ Card.TEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [ Card.SIX_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.NINE_OF_SPADES ],
-      revealedCards: [ Card.ACE_OF_DIAMONDS ],
+      revealedCards: [ Card.ACE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS ],
     });
 
     // The reveal is saved with the game, so it survives a reload
     cy.reload();
     cy.get('[data-opponent-hand-card=1-1] [data-revealed-icon]').should('exist');
+    cy.get('[data-opponent-hand-card=4-1] [data-revealed-icon]').should('exist');
     cy.get('[data-opponent-hand-card=6-2]').should('not.exist');
 
     // Once played, the card leaves the hand and is no longer marked
-    cy.get('#deck').click();
     cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
-    cy.get('[data-revealed-icon]').should('not.exist');
+    cy.get('[data-opponent-hand-card=1-1]').should('not.exist');
+    cy.get('[data-opponent-hand-card=4-1] [data-revealed-icon]').should('exist');
   });
 
   it('Marks the card the player picks with a three as revealed in their own hand', () => {
