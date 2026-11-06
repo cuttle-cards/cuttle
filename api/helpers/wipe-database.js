@@ -18,6 +18,7 @@ module.exports = {
         UserSpectatingGame.destroy({}),
         GameStateRow.destroy({}),
         Identity.destroy({}),
+        UserEmail.destroy({}),
       ]);
 
     } catch (err) {

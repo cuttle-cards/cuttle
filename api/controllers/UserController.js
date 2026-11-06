@@ -88,12 +88,22 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username, identities } = await User.findOne({ id }).populate('identities');
-      return res.ok({
+      const status = {
         id,
         username,
         authenticated,
-        identities
-      });
+        identities,
+      };
+      // A failed email lookup shouldn't log the user out. The email fields are left off so the
+      // client knows the email is unknown rather than missing
+      try {
+        const userEmail = await UserEmail.findOne({ user: id });
+        status.email = userEmail?.email ?? null;
+        status.promotional = userEmail?.promotional ?? false;
+      } catch (err) {
+        sails.log.error(err);
+      }
+      return res.ok(status);
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
       await sails.helpers.logout(req);

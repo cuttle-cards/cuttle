@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage, LS_ANNOUNCEMENT } from '_/utils/local-storage-utils.js';
@@ -80,6 +80,8 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 const show = ref(false);
 const preferenceSaved= ref(false);
+// Lets the home page know when the announcement is on screen
+const isOpen = defineModel('open', { type: Boolean, default: false });
 
 const announcementIsActive = computed(() => {
   const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
@@ -100,6 +102,10 @@ const close = () => {
 if (getLocalStorage(LS_ANNOUNCEMENT) !== announcementData.id) {
   show.value = true;
 }
+
+watchEffect(() => {
+  isOpen.value = announcementIsActive.value && show.value;
+});
 </script>
 
 <style scoped>

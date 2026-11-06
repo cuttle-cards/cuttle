@@ -32,6 +32,7 @@ const sailsGlobals = {
   UserSpectatingGame: true,
   GameStateRow: true,
   Identity: true,
+  UserEmail: true,
 };
 
 const clientFiles = '**/client/**/*.{j,t}s?(x)';

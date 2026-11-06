@@ -17,6 +17,9 @@ export default defineConfig({
     isolate: false,
     env:{
       VITE_JWT_SECRET: 'cuttle_TEST_JWT_SECRET',
+      // Never send real emails from tests
+      GMAIL_USER: '',
+      GMAIL_APP_PASSWORD: '',
     }
   },
 });
