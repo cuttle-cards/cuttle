@@ -114,8 +114,8 @@
                     class="opponent-hand-wrapper"
                   >
                     <GameCard
-                      v-for="(card, index) in gameStore.opponent.hand"
-                      :key="`opponent_hand_card_${index}`"
+                      v-for="card in gameStore.opponent.hand"
+                      :key="card.handKey"
                       :suit="card.suit ?? undefined"
                       :rank="card.rank ?? undefined"
                       :is-revealed="card.isRevealed"
