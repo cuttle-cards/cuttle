@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     ///////////////////////////
     // Fetch and format data //
     ///////////////////////////
-    const { saveGamestate, publishGameState, unpackGamestate } = sails.helpers.gameStates;
+    const { saveGamestate, publishGameState, unpackGamestate, updateRevealedCards } = sails.helpers.gameStates;
     const { execute, validate } = sails.helpers.gameStates.moves[req.body.moveType];
     game = await sails.helpers.lockGame(req.params.gameId);
 
@@ -54,7 +54,7 @@ module.exports = async function (req, res) {
     ///////////////////////////////
     // Execute & Publish Changes //
     ///////////////////////////////
-    const updatedState = execute(gameState, req.body, playedBy, game.gameStates);
+    const updatedState = updateRevealedCards(gameState, execute(gameState, req.body, playedBy, game.gameStates));
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
     await publishGameState(game, { ...updatedState, id: gameStateRow.id });

@@ -665,6 +665,8 @@ describe('Reconnecting to a game', () => {
           p1Points: [],
           p1FaceCards: [],
           scrap: [ Card.THREE_OF_CLUBS ],
+          // The opponent took the two from the scrap in plain sight
+          revealedCards: [ Card.TWO_OF_CLUBS ],
         });
       });
     }); // End 3's reconnect
@@ -759,6 +761,8 @@ describe('Reconnecting to a game', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_CLUBS, Card.THREE_OF_DIAMONDS, Card.TEN_OF_SPADES ],
+        // The six was revealed to the four and kept, so it stays face up
+        revealedCards: [ Card.SIX_OF_HEARTS ],
       });
     });
 

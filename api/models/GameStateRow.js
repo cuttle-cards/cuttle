@@ -62,6 +62,13 @@ module.exports = {
       defaultsTo: [],
       columnType: 'jsonb',
     },
+    // Cards in a hand or the deck that both players have seen, so neither needs to remember them.
+    // Prod/staging add it with DEFAULT '[]', which backfills rows saved before the column existed
+    revealedCards: {
+      type: 'json',
+      defaultsTo: [],
+      columnType: 'jsonb',
+    },
     // Which turn number the move was made on
     turn: {
       type: 'number',

@@ -66,6 +66,8 @@ describe('FOURS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.KING_OF_SPADES ],
+        // The ten was revealed to the four and kept, so it stays face up; the unrevealed ace stays hidden
+        revealedCards: [ Card.TEN_OF_HEARTS ],
       });
       // The four completes the player's turn
       cy.get('#turn-indicator').contains('OPPONENT\'S TURN');
@@ -106,6 +108,8 @@ describe('FOURS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
+        // The whole hand was revealed, so the king the opponent keeps stays face up
+        revealedCards: [ Card.KING_OF_SPADES ],
       });
     });
 
