@@ -307,7 +307,8 @@
       "pause": "Pause",
       "gameSelector": {
         "label": "Spiel",
-        "option": "Spiel {number}"
+        "option": "Spiel {number}",
+        "optionShort": "S{number}"
       }
     },
     "snackbar": {

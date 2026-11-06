@@ -106,4 +106,32 @@ describe('Auto-advancing playback of finished games', () => {
     // Playback keeps going past the state that was jumped to
     cy.url({ timeout: FULL_PLAYBACK_TIMEOUT_MS }).should('match', /gameStateIndex=[2-9]/);
   });
+
+  describe('Layout', () => {
+    it('Labels the game selector in full on wide screens', () => {
+      cy.get('[data-cy=match-game-selector]').should('contain.text', 'Game 1');
+    });
+
+    // The bar holds the username, game selector, and five buttons; at these widths it only fits if the
+    // buttons shrink and the selector abbreviates its label
+    [ 375, 390 ].forEach((width) => {
+      it(`Fits every playback button on screen at ${width}px wide`, () => {
+        cy.viewport(width, 800);
+        cy.get('[data-cy=match-game-selector]').should('contain.text', 'G1')
+          .and('not.contain.text', 'Game 1');
+
+        cy.get('[data-cy=skip-forward]').then(($button) => {
+          const { right } = $button[0].getBoundingClientRect();
+          expect(right).to.be.at.most($button[0].ownerDocument.documentElement.clientWidth);
+        });
+      });
+    });
+
+    it('Still lists games by their full name in the dropdown on phones', () => {
+      cy.viewport(375, 800);
+      cy.get('[data-cy=match-game-selector]').click();
+      cy.get('[role=listbox]').should('contain.text', 'Game 1')
+        .and('contain.text', 'Game 2');
+    });
+  });
 });

@@ -13,6 +13,7 @@
       <v-btn
         :disabled="!gameHistoryStore.canGoToPreviousState"
         variant="text"
+        :size="buttonSize"
         icon="mdi-skip-backward"
         data-cy="skip-backward"
         @click="goToState(0)"
@@ -22,6 +23,7 @@
       <v-btn
         :disabled="!gameHistoryStore.canGoToPreviousState"
         variant="text"
+        :size="buttonSize"
         icon="mdi-step-backward"
         data-cy="step-backward"
         @click="goToState(previousGameStateIndex)"
@@ -31,6 +33,7 @@
       <v-btn
         :disabled="!gameHistoryStore.isPlaying && !gameHistoryStore.canGoToNextState"
         variant="text"
+        :size="buttonSize"
         :icon="gameHistoryStore.isPlaying ? 'mdi-pause' : 'mdi-play'"
         :aria-label="t(gameHistoryStore.isPlaying ? 'game.playbackControls.pause' : 'game.playbackControls.play')"
         :data-cy="gameHistoryStore.isPlaying ? 'pause' : 'play'"
@@ -41,6 +44,7 @@
       <v-btn
         :disabled="!gameHistoryStore.canGoToNextState"
         variant="text"
+        :size="buttonSize"
         icon="mdi-step-forward"
         data-cy="step-forward"
         @click="goToState(currentGameStateIndex + 1)"
@@ -50,6 +54,7 @@
       <v-btn
         :disabled="!gameHistoryStore.canGoToNextState"
         variant="text"
+        :size="buttonSize"
         icon="mdi-skip-forward"
         data-cy="skip-forward"
         @click="goToState(-1)"
@@ -74,6 +79,9 @@ const router = useRouter();
 const { xs } = useDisplay();
 const gameHistoryStore = useGameHistoryStore();
 const gameStore = useGameStore();
+
+// Five buttons plus the game selector and username don't fit on phones at the default size
+const buttonSize = computed(() => (xs.value ? 'small' : 'default'));
 
 const currentGameStateIndex = computed(() => gameHistoryStore.currentGameStateIndex);
 

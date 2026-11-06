@@ -307,7 +307,8 @@
       "pause": "Pausa",
       "gameSelector": {
         "label": "Partida",
-        "option": "Partida {number}"
+        "option": "Partida {number}",
+        "optionShort": "P{number}"
       }
     },
     "snackbar": {
