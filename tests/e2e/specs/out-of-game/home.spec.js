@@ -4,7 +4,8 @@ import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fi
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
 import dayjs from 'dayjs';
-import { LS_EMAIL_PROMPT_DISMISSED } from '../../../../utils/local-storage-utils';
+import { LS_ANNOUNCEMENT, LS_EMAIL_PROMPT_DISMISSED } from '../../../../utils/local-storage-utils';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
@@ -969,5 +970,30 @@ describe('Email Preference Dialog', () => {
     cy.get('[data-cy=email-preference-input] input').type('taken@example.com');
     cy.get('[data-cy=email-preference-send-code]').click();
     cy.get('[data-cy=email-preference-input]').should('contain', 'This email is already in use');
+  });
+
+  it('Waits for the announcement to close before prompting on reload', function () {
+    const announcementIsActive = dayjs().isAfter(dayjs(announcementData.startTime))
+      && dayjs().isBefore(dayjs(announcementData.endTime));
+    if (!announcementIsActive) {
+      this.skip();
+    }
+    cy.vueRoute('/');
+    cy.get('[data-cy=email-preference-dialog]').should('be.visible');
+
+    // Reload with neither dialog dismissed. Runs after the global seed in support/index.js
+    cy.on('window:before:load', (win) => {
+      win.localStorage.removeItem(LS_ANNOUNCEMENT);
+      win.localStorage.removeItem(LS_EMAIL_PROMPT_DISMISSED);
+    });
+    cy.intercept('GET', '/api/user/status').as('status');
+    cy.reload();
+    cy.wait('@status');
+
+    cy.get('[data-cy=announcement-dialog]').should('be.visible');
+    cy.get('[data-cy=email-preference-dialog]').should('not.exist');
+
+    cy.get('[data-cy=announcement-dialog-close]').click();
+    cy.get('[data-cy=email-preference-dialog]').should('be.visible');
   });
 });

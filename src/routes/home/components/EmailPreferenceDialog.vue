@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     id="email-preference-dialog"
-    v-model="show"
+    v-model="isOpen"
     variant="dark"
     :max-width="500"
     :title="t('emailPreference.title')"
@@ -141,6 +141,14 @@ const snackbarStore = useSnackbarStore();
 const show = ref(false);
 // Read at mount like the other home page dialogs. Only prompt once per page load
 const hasPrompted = ref(!!getLocalStorage(LS_EMAIL_PROMPT_DISMISSED));
+// Stay hidden while another home page dialog is open. The announcement reports that it's open
+// after this component mounts, so this can't rely on the order the dialogs start up in
+const isOpen = computed({
+  get: () => show.value && !props.waiting,
+  set: (value) => {
+    show.value = value;
+  },
+});
 const step = ref(STEPS.EMAIL);
 const email = ref('');
 const promotional = ref(false);
