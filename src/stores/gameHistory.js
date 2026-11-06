@@ -15,6 +15,9 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Every game of the match this game belongs to, oldest first, as summarized by
   // the server's getMatchGames helper
   const matchGames = ref([]);
+  // Whether playback is auto-advancing through the game's states. Ephemeral: deliberately kept out of the URL
+  // so gameStateIndex keeps a single meaning and a shared link never arrives mid-playback
+  const isPlaying = ref(false);
 
   const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
   
@@ -86,6 +89,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   return {
     gameStates,
     matchGames,
+    isPlaying,
     isSpectating,
     currentGameStateIndex,
     currentGameState,
