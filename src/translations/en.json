@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Hand: {handSize} of {handLimit} cards",
     "revealedIcon": "Eye icon signifies the card is revealed",
+    "frozenIcon": "Snowflake icon signifies the card is frozen",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
