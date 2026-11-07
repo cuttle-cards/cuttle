@@ -8,7 +8,7 @@
     :model-value="showSnackbar"
     :color="color"
     :timeout="timeout"
-    class="base-snackbar"
+    :class="[ 'base-snackbar', { 'clears-playback-controls': showingPlaybackControls } ]"
     position="fixed"
     location="bottom"
     z-index="3000"
@@ -32,12 +32,18 @@
 
 <script>
 import { useSnackbarStore } from '../stores/snackbar';
+import { useGameHistoryStore } from '../stores/gameHistory';
 import { mapStores } from 'pinia';
 
 export default {
   name: 'TheSnackbar',
   computed: {
-    ...mapStores(useSnackbarStore),
+    ...mapStores(useSnackbarStore, useGameHistoryStore),
+
+    // The spectator playback bar is fixed across the bottom of the game, where this snackbar lands
+    showingPlaybackControls() {
+      return this.gameHistoryStore.showPlaybackControls;
+    },
 
     showSnackbar() {
       return this.snackbarStore.getShowSnackbar;
@@ -60,3 +66,21 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+/*
+  The spectator playback bar is fixed to the bottom of the game at z-index 2500, above dialogs,
+  while Vuetify hands this snackbar a lower z-index off its own overlay stack. Left alone, an error
+  renders behind the bar where it can be neither read nor dismissed. Sit above the bar, and clear
+  its height so it doesn't cover the playback buttons while it shows -- keep this in step with
+  #playback-controls' min-height in PlaybackControls.vue.
+*/
+.clears-playback-controls {
+  /* Vuetify writes the overlay's z-index inline, so clearing the bar's 2500 has to win outright */
+  z-index: 2600 !important;
+
+  :deep(.v-snackbar__wrapper) {
+    margin-bottom: 56px;
+  }
+}
+</style>

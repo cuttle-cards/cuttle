@@ -7,8 +7,14 @@ import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router
 import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
-// Handles socket updates of game data
-export async function handleInGameEvents(evData, newRoute = null) {
+/**
+ * Handles socket updates of game data.
+ *
+ * `fromSocket` marks an event the server pushed at us, as opposed to the response to a state we
+ * asked for. Only pushed events can land on a spectator who has paused behind the live edge, and
+ * only those get held back -- a navigation or a reconnect must always render what it fetched.
+ */
+export async function handleInGameEvents(evData, newRoute = null, { fromSocket = false } = {}) {
   const gameStore = useGameStore();
   const gameHistoryStore = useGameHistoryStore();
   const snackbarStore = useSnackbarStore();
@@ -26,6 +32,33 @@ export async function handleInGameEvents(evData, newRoute = null) {
   ) {
     return;
   }
+  /**
+   * Our opponent archived this game out from under us; it can no longer be played, so this has to
+   * reach the user even while they're paused in the past.
+   * Hand the message to Home as an i18n key rather than translating here -- this module runs
+   * outside any component, so useI18n() is unavailable to it. HomeView's $route watcher already
+   * reads `query.error`, runs it through the composable's t(), and snackbars it; router.js
+   * bounces failed game loads the same way.
+   */
+  if (evData.change === SocketEvent.GAME_ARCHIVED) {
+    router.push({ path: '/', query: { gameId: eventGameId, error: 'home.snackbar.gameArchived' } });
+    return;
+  }
+
+  /**
+   * A spectator who paused behind the live edge keeps the board they're looking at. The states they
+   * can navigate to, the log, who else is watching and whether the game is still running all keep
+   * tracking the live game -- so the controls can say how far behind they've fallen, and ordinary
+   * replay takes over once the game finishes -- but nothing redraws the board, pops the game over
+   * dialog or carries them into a rematch until they navigate forward themselves.
+   */
+  if (fromSocket && gameHistoryStore.holdLiveUpdates) {
+    if (evData.game) {
+      gameStore.updateGameMetadata(evData.game);
+    }
+    return;
+  }
+
   // Handle GameOver
   if (evData.victory?.gameOver) {
     gameStore.setGameOver(evData.victory);
@@ -160,16 +193,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = null;
       break;
     }
-    /**
-     * Our opponent archived this game out from under us; it can no longer be played.
-     * Hand the message to Home as an i18n key rather than translating here -- this module runs
-     * outside any component, so useI18n() is unavailable to it. HomeView's $route watcher already
-     * reads `query.error`, runs it through the composable's t(), and snackbars it; router.js
-     * bounces failed game loads the same way.
-     */
-    case SocketEvent.GAME_ARCHIVED:
-      router.push({ path: '/', query: { gameId: eventGameId, error: 'home.snackbar.gameArchived' } });
-      return;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
         gameStore.removeSpectator(evData.username);

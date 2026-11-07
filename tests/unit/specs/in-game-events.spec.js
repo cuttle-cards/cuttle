@@ -6,11 +6,16 @@ const { mockGameStore, mockGameHistoryStore, mockSnackbarStore, mockRouter } = v
   mockGameStore: {
     id: 1,
     myPNum: 0,
+    iWantToContinueSpectating: true,
     updateGame: vi.fn(),
+    updateGameMetadata: vi.fn(),
     processFours: vi.fn(),
+    setGameOver: vi.fn(),
+    requestSpectate: vi.fn(),
   },
   mockGameHistoryStore: {
     isSpectating: false,
+    holdLiveUpdates: false,
   },
   mockSnackbarStore: {
     alert: vi.fn(),
@@ -97,5 +102,98 @@ describe('handleInGameEvents - SocketEvent.RESOLVE case 4', () => {
 
     expect(mockGameStore.updateGame).toHaveBeenCalledWith(evData.game);
     expect(mockGameStore.processFours).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * A live spectator who has paused keeps the board they stopped on. Only events the server pushed can
+ * reach them in that state; a state they navigated to must always render, however far behind it is.
+ */
+describe('handleInGameEvents - paused behind the live edge', () => {
+  const pointsEvent = (extra = {}) => ({
+    change: SocketEvent.POINTS,
+    gameId: 1,
+    playedBy: 1,
+    game: { id: 1, status: 2, log: [ 'a move happened' ], gameStates: [ {}, {}, {} ] },
+    ...extra,
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRouter.currentRoute.value = { name: 'spectate', params: { gameId: '1' } };
+    mockGameHistoryStore.isSpectating = true;
+    mockGameHistoryStore.holdLiveUpdates = true;
+    mockGameStore.iWantToContinueSpectating = true;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    mockRouter.currentRoute.value = { name: 'game', params: { gameId: '1' } };
+    mockGameHistoryStore.isSpectating = false;
+    mockGameHistoryStore.holdLiveUpdates = false;
+  });
+
+  it('Updates the surrounding game but not the board on a pushed move', async () => {
+    const evData = pointsEvent();
+
+    await handleInGameEvents(evData, null, { fromSocket: true });
+
+    expect(mockGameStore.updateGameMetadata).toHaveBeenCalledWith(evData.game);
+    expect(mockGameStore.updateGame).not.toHaveBeenCalled();
+  });
+
+  it('Defers game over rather than spoiling the result of a state the spectator has not reached', async () => {
+    const evData = pointsEvent({ victory: { gameOver: true, winner: 0, conceded: false } });
+
+    await handleInGameEvents(evData, null, { fromSocket: true });
+
+    expect(mockGameStore.setGameOver).not.toHaveBeenCalled();
+    expect(mockGameStore.updateGameMetadata).toHaveBeenCalledWith(evData.game);
+  });
+
+  it('Does not carry the spectator into a rematch', async () => {
+    const evData = {
+      change: SocketEvent.NEW_GAME_FOR_REMATCH,
+      oldGameId: 1,
+      gameId: 2,
+      newGame: { id: 2 },
+    };
+
+    await handleInGameEvents(evData, null, { fromSocket: true });
+
+    expect(mockGameStore.requestSpectate).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
+  });
+
+  it('Still sends the spectator home when the game is archived out from under them', async () => {
+    await handleInGameEvents(
+      { change: SocketEvent.GAME_ARCHIVED, gameId: 1 },
+      null,
+      { fromSocket: true },
+    );
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      path: '/',
+      query: { gameId: 1, error: 'home.snackbar.gameArchived' },
+    });
+  });
+
+  it('Renders a state the spectator navigated to, which never comes from the socket', async () => {
+    const evData = pointsEvent();
+
+    await handleInGameEvents(evData);
+
+    expect(mockGameStore.updateGame).toHaveBeenCalledWith(evData.game);
+    expect(mockGameStore.updateGameMetadata).not.toHaveBeenCalled();
+  });
+
+  it('Renders a pushed move once the spectator is following the live edge again', async () => {
+    mockGameHistoryStore.holdLiveUpdates = false;
+    const evData = pointsEvent();
+
+    await handleInGameEvents(evData, null, { fromSocket: true });
+
+    expect(mockGameStore.updateGame).toHaveBeenCalledWith(evData.game);
+    expect(mockGameStore.updateGameMetadata).not.toHaveBeenCalled();
   });
 });

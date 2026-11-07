@@ -60,7 +60,7 @@ let gameEventQueue = Promise.resolve();
 export async function addGameEventToQueue(event) {
   // Each update runs independently - errors won't affect the chain
   gameEventQueue = gameEventQueue
-    .then(() => handleInGameEvents(event))
+    .then(() => handleInGameEvents(event, null, { fromSocket: true }))
     .catch(error => {
       console.error('Failed to process game event:', error);
     });

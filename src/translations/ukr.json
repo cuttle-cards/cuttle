@@ -306,6 +306,10 @@
     "playbackControls": {
       "play": "Відтворити",
       "pause": "Пауза",
+      "live": "НАЖИВО",
+      "paused": "ПАУЗА",
+      "goLive": "Перейти до прямого ефіру",
+      "goLiveNewStates": "Перейти до прямого ефіру, нових ходів: {count}",
       "gameSelector": {
         "label": "Гра",
         "option": "Гра {number}",
