@@ -213,6 +213,19 @@ export function playOutOfTurn(moveName) {
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
+/**
+ * Asserts the revealed cards in a hidden opponent hand render face up with the eye icon
+ * @param opponentHand: fixture's list of cards in the opponent's hand
+ * @param revealedCards: fixture's list of cards both players have seen (optional)
+ */
+function assertRevealedOpponentHandCards(opponentHand, revealedCards = []) {
+  opponentHand
+    .filter((card) => revealedCards.some((revealedCard) => cardsMatch(card, revealedCard)))
+    .forEach((card) => {
+      cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}] [data-revealed-icon]`).should('exist');
+    });
+}
+
 function assertDomMatchesFixture(pNum, fixture, spectating) {
   const expectedP0Points = sumRanks(fixture.p0Points);
   const expectedP0PointsToWin = pointsToWin(countKings(fixture.p0FaceCards));
@@ -281,6 +294,8 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
+    } else {
+      assertRevealedOpponentHandCards(fixture.p1Hand, fixture.revealedCards);
     }
   } else if (pNum === 1) {
     // Player hand
@@ -297,6 +312,8 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
       fixture.p0Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
+    } else {
+      assertRevealedOpponentHandCards(fixture.p0Hand, fixture.revealedCards);
     }
   }
   // Test scrap (if provided)
@@ -403,12 +420,26 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
           `,
           );
 
-          const allHidden = gamePlayer.hand.every(
-            (card) => card.isHidden && !card.id && !card.rank && !card.suit,
+          // Cards both players have seen stay face up in an otherwise hidden hand
+          const revealedCards = fixture.revealedCards ?? [];
+          const faceUpCards = gamePlayer.hand.filter((card) => !card.isHidden);
+          const expectedFaceUpCards = fixturePlayer.hand.filter((card) =>
+            revealedCards.some((revealedCard) => cardsMatch(card, revealedCard)),
           );
-          expect(allHidden).to.eq(
+          expect(
+            cardListsMatch(faceUpCards, expectedFaceUpCards) && faceUpCards.every((card) => card.isRevealed),
+          ).to.eq(
             true,
-            `All cards in P${i} Hand should be hidden, 
+            `P${i} Hand should show only its revealed cards ${printCardList(expectedFaceUpCards)}, 
+            but actual hand showed: ${printCardList(faceUpCards)}`,
+          );
+
+          const allOthersHidden = gamePlayer.hand
+            .filter((card) => card.isHidden)
+            .every((card) => !card.id && !card.rank && !card.suit);
+          expect(allOthersHidden).to.eq(
+            true,
+            `All unrevealed cards in P${i} Hand should be hidden, 
             but actual hand included known cards: ${printCardList(gamePlayer.hand)}`,
           );
         }
@@ -444,7 +475,7 @@ function assertStoreMatchesFixture(pNum, fixture, isSpectating = false) {
 
       // Deck size if specified. Only the size is assertable from a player's perspective:
       // create-socket-events' hideDeck() replaces every deck card with { isHidden: true }
-      // except while resolving a seven, so the cards themselves are unknowable here.
+      // except while resolving a seven or once revealed, so the cards are otherwise unknowable here.
       if (typeof fixture.deckLength === 'number') {
         expect(game.deck.length).to.eq(
           fixture.deckLength,

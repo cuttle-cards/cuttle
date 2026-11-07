@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Hand: {handSize} von {handLimit} Karten",
+    "revealedIcon": "Das Augen-Symbol bedeutet, dass die Karte aufgedeckt ist",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
@@ -303,9 +304,12 @@
       "title": "Verlauf"
     },
     "playbackControls": {
+      "play": "Abspielen",
+      "pause": "Pause",
       "gameSelector": {
         "label": "Spiel",
-        "option": "Spiel {number}"
+        "option": "Spiel {number}",
+        "optionShort": "S{number}"
       }
     },
     "snackbar": {

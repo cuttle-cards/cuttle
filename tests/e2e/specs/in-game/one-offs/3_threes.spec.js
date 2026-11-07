@@ -271,6 +271,8 @@ describe('Opponent Threes', () => {
       p1Points: [],
       p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.THREE_OF_CLUBS ],
+      // The opponent took the ace from the scrap in plain sight
+      revealedCards: [ Card.ACE_OF_SPADES ],
     });
   });
 });

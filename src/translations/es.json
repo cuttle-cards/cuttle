@@ -91,6 +91,7 @@
   },
   "game": {
     "handSize": "Mano: {handSize} de {handLimit} cartas",
+    "revealedIcon": "El icono de ojo indica que la carta está revelada",
     "resolve": "Resolver",
     "scrap": "Descartar",
     "view": "Ver",
@@ -303,9 +304,12 @@
       "title": "Historial"
     },
     "playbackControls": {
+      "play": "Reproducir",
+      "pause": "Pausa",
       "gameSelector": {
         "label": "Partida",
-        "option": "Partida {number}"
+        "option": "Partida {number}",
+        "optionShort": "P{number}"
       }
     },
     "snackbar": {
