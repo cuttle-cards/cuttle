@@ -57,6 +57,16 @@ if (!import.meta.env.PROD) {
 
 let gameEventQueue = Promise.resolve();
 
+/**
+ * Resolves once every game event received so far has finished handling, animations included.
+ * A navigation awaits this before loading its state: an animation that began while the spectator
+ * was following live writes the board when it finishes, which would otherwise land on top of the
+ * state they navigated to.
+ */
+export function whenGameEventsSettle() {
+  return gameEventQueue;
+}
+
 export async function addGameEventToQueue(event) {
   // Each update runs independently - errors won't affect the chain
   gameEventQueue = gameEventQueue

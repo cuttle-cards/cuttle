@@ -47,6 +47,17 @@ const AFTER_P0_ACE_WHILE_LOSING = {
   p0Points: [ Card.ACE_OF_SPADES ],
 };
 
+// A scuttle animates for a second before it writes the board, which is the window a navigation
+// has to survive
+const SCUTTLE_FIXTURE = {
+  p0Hand: [ Card.ACE_OF_SPADES ],
+  p0Points: [ Card.TWO_OF_SPADES ],
+  p0FaceCards: [],
+  p1Hand: [ Card.TEN_OF_HEARTS ],
+  p1Points: [],
+  p1FaceCards: [],
+};
+
 function spectateLiveGame(fixture = STARTING_FIXTURE) {
   cy.setupGameAsSpectator();
   cy.loadGameFixture(0, fixture);
@@ -267,6 +278,32 @@ describe('Playback controls while spectating a live game', () => {
 
     opponentPlaysPoints(playerTwo, Card.ACE_OF_HEARTS);
     assertGameState(0, AFTER_P1_ACE, true);
+  });
+
+  it('Keeps the state a spectator navigates to, even mid-animation', () => {
+    spectateLiveGame(SCUTTLE_FIXTURE);
+    opponentPlaysPoints(playerOne, Card.ACE_OF_SPADES);
+    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+
+    // Widen the window a real scuttle animation opens between the event arriving and its board write
+    const SLOW_ANIMATION_MS = 2000;
+    cy.window().then((win) => {
+      const { gameStore } = win.cuttle;
+      const processScuttle = gameStore.processScuttle.bind(gameStore);
+      gameStore.processScuttle = async (...args) => {
+        await new Promise((resolve) => setTimeout(resolve, SLOW_ANIMATION_MS));
+        return processScuttle(...args);
+      };
+    });
+
+    cy.recoverSessionOpponent(playerTwo);
+    cy.scuttleOpponent(Card.TEN_OF_HEARTS, Card.TWO_OF_SPADES);
+    // Step back while the scuttle is still animating; its board write must not land on top of this
+    cy.get('[data-cy=step-backward]').click();
+
+    cy.wait(SLOW_ANIMATION_MS + PAST_MAX_DELAY_MS);
+    cy.url().should('include', `gameStateIndex=${FIXTURE_STATE_INDEX}`);
+    assertGameState(0, SCUTTLE_FIXTURE, true);
   });
 
   it('Keeps a snackbar clear of the bar, which is fixed over the bottom of the screen', () => {

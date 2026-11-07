@@ -14,6 +14,10 @@ import { sleep } from '@/util/sleep';
  * asked for. Only pushed events can land on a spectator who has paused behind the live edge, and
  * only those get held back -- a navigation or a reconnect must always render what it fetched.
  */
+// Who else is watching has nothing to do with which state a spectator is looking at, and these
+// events carry no game payload, so holding them would drop them rather than defer them
+const SPECTATOR_LIST_EVENTS = [ SocketEvent.SPECTATOR_JOINED, SocketEvent.SPECTATOR_LEFT ];
+
 export async function handleInGameEvents(evData, newRoute = null, { fromSocket = false } = {}) {
   const gameStore = useGameStore();
   const gameHistoryStore = useGameHistoryStore();
@@ -52,7 +56,7 @@ export async function handleInGameEvents(evData, newRoute = null, { fromSocket =
    * replay takes over once the game finishes -- but nothing redraws the board, pops the game over
    * dialog or carries them into a rematch until they navigate forward themselves.
    */
-  if (fromSocket && gameHistoryStore.holdLiveUpdates) {
+  if (fromSocket && gameHistoryStore.holdLiveUpdates && !SPECTATOR_LIST_EVENTS.includes(evData.change)) {
     if (evData.game) {
       gameStore.updateGameMetadata(evData.game);
     }

@@ -11,6 +11,8 @@ const { mockGameStore, mockGameHistoryStore, mockSnackbarStore, mockRouter } = v
     updateGameMetadata: vi.fn(),
     processFours: vi.fn(),
     setGameOver: vi.fn(),
+    addSpectator: vi.fn(),
+    removeSpectator: vi.fn(),
     requestSpectate: vi.fn(),
   },
   mockGameHistoryStore: {
@@ -163,6 +165,25 @@ describe('handleInGameEvents - paused behind the live edge', () => {
 
     expect(mockGameStore.requestSpectate).not.toHaveBeenCalled();
     expect(mockRouter.replace).not.toHaveBeenCalled();
+  });
+
+  it('Keeps the list of who else is watching current', async () => {
+    await handleInGameEvents(
+      { change: SocketEvent.SPECTATOR_JOINED, gameId: 1, username: 'someoneElse' },
+      null,
+      { fromSocket: true },
+    );
+
+    expect(mockGameStore.addSpectator).toHaveBeenCalledWith('someoneElse');
+
+    await handleInGameEvents(
+      { change: SocketEvent.SPECTATOR_LEFT, gameId: 1, username: 'someoneElse' },
+      null,
+      { fromSocket: true },
+    );
+
+    // These carry no game payload, so holding them would drop them rather than defer them
+    expect(mockGameStore.removeSpectator).toHaveBeenCalledWith('someoneElse');
   });
 
   it('Still sends the spectator home when the game is archived out from under them', async () => {

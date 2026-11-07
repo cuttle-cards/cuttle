@@ -107,6 +107,7 @@ import { useGameStore } from '@/stores/game';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import MatchGameSelector from '@/routes/game/components/MatchGameSelector.vue';
 import { getPlaybackDelay } from '@/util/playbackDelay';
+import { whenGameEventsSettle } from '@/plugins/sails';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -254,6 +255,9 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal, oldVal) => {
   isLoadingState = true;
   let res;
   try {
+    // An animation that began while we were following live writes the board when it finishes, so
+    // let it land before loading the state asked for; otherwise it overwrites this navigation
+    await whenGameEventsSettle();
     res = await gameStore.requestGameState(gameStore.id, newVal);
   } catch (err) {
     pause();
