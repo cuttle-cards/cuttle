@@ -76,8 +76,7 @@ describe('Playback controls while spectating a live game', () => {
     spectateLiveGame();
 
     cy.get('[data-cy=playback-controls]').should('be.visible');
-    cy.get('[data-cy=live-indicator]').should('be.visible')
-      .and('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     // Following live is play mode, so pause is the action on offer
     cy.get('[data-cy=pause]').should('be.visible');
     cy.get('[data-cy=play]').should('not.exist');
@@ -117,7 +116,7 @@ describe('Playback controls while spectating a live game', () => {
 
     opponentPlaysPoints(playerOne, Card.ACE_OF_SPADES);
 
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     cy.url().should('include', 'gameStateIndex=-1');
     assertGameState(0, AFTER_P0_ACE, true);
   });
@@ -130,7 +129,7 @@ describe('Playback controls while spectating a live game', () => {
     // Stepping back pauses
     cy.get('[data-cy=step-backward]').click();
     assertGameState(0, STARTING_FIXTURE, true);
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'false');
+    cy.get('[data-cy=live-indicator]').should('not.exist');
     cy.get('[data-cy=states-behind-badge]').should('have.text', '1');
 
     opponentPlaysPoints(playerTwo, Card.ACE_OF_HEARTS);
@@ -160,7 +159,7 @@ describe('Playback controls while spectating a live game', () => {
     cy.get('[data-cy=skip-forward]').click();
 
     cy.url().should('include', 'gameStateIndex=-1');
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     cy.get('[data-cy=pause]').should('be.visible');
     assertGameState(0, AFTER_P1_ACE, true);
   });
@@ -175,7 +174,7 @@ describe('Playback controls while spectating a live game', () => {
     // -1 means "keep up with the latest", so pausing there has to name the state actually on screen
     cy.url().should('not.include', 'gameStateIndex=-1')
       .and('include', 'gameStateIndex=2');
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'false');
+    cy.get('[data-cy=live-indicator]').should('not.exist');
     cy.get('[data-cy=play]').should('be.visible')
       .and('not.be.disabled');
     assertGameState(0, AFTER_P0_ACE, true);
@@ -188,7 +187,7 @@ describe('Playback controls while spectating a live game', () => {
     cy.get('[data-cy=play]').click();
 
     cy.url().should('include', 'gameStateIndex=-1');
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     assertGameState(0, AFTER_P1_ACE, true);
   });
 
@@ -201,7 +200,7 @@ describe('Playback controls while spectating a live game', () => {
     cy.get('[data-cy=step-forward]').click();
 
     cy.url().should('include', 'gameStateIndex=-1');
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     cy.get('[data-cy=pause]').should('be.visible');
     assertGameState(0, AFTER_P0_ACE, true);
   });
@@ -267,13 +266,13 @@ describe('Playback controls while spectating a live game', () => {
 
     // Pins the url and pauses, leaving the -1 it came from in browser history
     cy.get('[data-cy=step-backward]').click();
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'false');
+    cy.get('[data-cy=live-indicator]').should('not.exist');
 
     cy.go('back');
 
     // A -1 url nothing keeps up with would strand the spectator, so arriving there follows live again
     cy.url().should('include', 'gameStateIndex=-1');
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
     assertGameState(0, AFTER_P0_ACE, true);
 
     opponentPlaysPoints(playerTwo, Card.ACE_OF_HEARTS);
@@ -283,7 +282,7 @@ describe('Playback controls while spectating a live game', () => {
   it('Keeps the state a spectator navigates to, even mid-animation', () => {
     spectateLiveGame(SCUTTLE_FIXTURE);
     opponentPlaysPoints(playerOne, Card.ACE_OF_SPADES);
-    cy.get('[data-cy=live-indicator]').should('have.attr', 'data-live', 'true');
+    cy.get('[data-cy=live-indicator]').should('be.visible');
 
     // Widen the window a real scuttle animation opens between the event arriving and its board write
     const SLOW_ANIMATION_MS = 2000;
@@ -327,9 +326,20 @@ describe('Playback controls while spectating a live game', () => {
       it(`Fits the live indicator and the whole button row on screen at ${width}px wide`, () => {
         cy.viewport(width, 800);
         spectateLiveGame();
-        cy.get('[data-cy=step-backward]').click();
 
-        cy.get('[data-cy=live-indicator]').should('be.visible');
+        // The indicator only exists while following live, so it is measured before pausing
+        cy.get('[data-cy=live-indicator]').should('be.visible')
+          .then(([ indicator ]) => {
+            cy.get('[data-cy=skip-backward]').then(([ firstButton ]) => {
+              const { left, right } = indicator.getBoundingClientRect();
+              expect(left).to.be.at.least(0);
+              expect(right).to.be.at.most(firstButton.getBoundingClientRect().left);
+            });
+          });
+
+        // And the badge only exists once paused behind the live edge, which stepping back does
+        cy.get('[data-cy=step-backward]').click();
+        cy.get('[data-cy=live-indicator]').should('not.exist');
         cy.get('[data-cy=states-behind-badge] .v-badge__badge').should('be.visible');
 
         [ '[data-cy=skip-forward]', '[data-cy=states-behind-badge] .v-badge__badge' ].forEach((selector) => {

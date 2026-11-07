@@ -14,21 +14,20 @@
       />
 
       <!--
-        Whether the board is keeping up with the game. Paused and playing look identical at the live
-        edge while a player thinks, so the only other signal -- the play/pause icon -- isn't enough
+        Shown only while the board is keeping up with the game. Paused has no marker of its own: the
+        play icon and the count on skip-forward already say the spectator is behind
       -->
       <v-chip
-        v-if="gameHistoryStore.isLive"
+        v-if="gameHistoryStore.isFollowingLive"
         class="live-indicator"
         :class="xs ? 'mr-1' : 'mr-4'"
-        size="small"
-        variant="flat"
+        variant="text"
         label
-        :color="gameHistoryStore.isFollowingLive ? 'error' : 'surface-2'"
-        :data-live="gameHistoryStore.isFollowingLive"
+        color="#FF3D3D"
         data-cy="live-indicator"
       >
-        {{ t(`game.playbackControls.${gameHistoryStore.isFollowingLive ? 'live' : 'paused'}`) }}
+        <v-icon start icon="mdi-record" />
+        {{ t('game.playbackControls.live') }}
       </v-chip>
 
       <!-- Skip backward -->
@@ -79,7 +78,7 @@
       <v-badge
         :model-value="gameHistoryStore.statesBehind > 0"
         :content="gameHistoryStore.statesBehind"
-        color="error"
+        color="primary"
         offset-x="8"
         data-cy="states-behind-badge"
       >

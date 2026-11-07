@@ -308,7 +308,6 @@
       "play": "Play",
       "pause": "Pause",
       "live": "LIVE",
-      "paused": "PAUSED",
       "goLive": "Go live",
       "goLiveNewStates": "Go live, {count} new moves",
       "gameSelector": {
