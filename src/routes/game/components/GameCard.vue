@@ -14,7 +14,7 @@
       class="player-card-icon mr-1 mt-1"
       color="frozen"
       icon="mdi-snowflake"
-      aria-label="snowflake icon (card is frozen)"
+      :aria-label="$t('game.frozenIcon')"
       aria-hidden="false"
       role="img"
     />

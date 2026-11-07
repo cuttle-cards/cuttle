@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Hand: {handSize} von {handLimit} Karten",
     "revealedIcon": "Das Augen-Symbol bedeutet, dass die Karte aufgedeckt ist",
+    "frozenIcon": "Das Schneeflocken-Symbol bedeutet, dass die Karte eingefroren ist",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
