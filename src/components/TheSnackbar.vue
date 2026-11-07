@@ -69,16 +69,16 @@ export default {
 
 <style scoped lang="scss">
 /*
-  The spectator playback bar is fixed to the bottom of the game at z-index 2500, above dialogs,
-  while Vuetify hands this snackbar a lower z-index off its own overlay stack. Left alone, an error
-  renders behind the bar where it can be neither read nor dismissed. Sit above the bar, and clear
-  its height so it doesn't cover the playback buttons while it shows -- keep this in step with
-  #playback-controls' min-height in PlaybackControls.vue.
+  The spectator playback bar is fixed across the bottom of the game, exactly where this snackbar
+  lands, and an error rendering behind it can be neither read nor dismissed.
+
+  Sit the snackbar clear of the bar rather than stacking it over the bar: vuetify assigns overlay
+  z-indexes from a running stack, each new overlay taking the last one's + 10 (see useStack), so
+  the prop above is only honoured while nothing else is open and no fixed value here reliably wins.
+  Not overlapping settles it without entering that race, and leaves the bar's buttons usable while
+  the snackbar shows. Keep the offset in step with #playback-controls' min-height.
 */
 .clears-playback-controls {
-  /* Vuetify writes the overlay's z-index inline, so clearing the bar's 2500 has to win outright */
-  z-index: 2600 !important;
-
   :deep(.v-snackbar__wrapper) {
     margin-bottom: 56px;
   }
