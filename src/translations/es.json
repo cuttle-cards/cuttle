@@ -306,6 +306,9 @@
     "playbackControls": {
       "play": "Reproducir",
       "pause": "Pausa",
+      "live": "EN VIVO",
+      "goLive": "Ir en vivo",
+      "goLiveNewStates": "Ir en vivo, {count} jugadas nuevas",
       "gameSelector": {
         "label": "Partida",
         "option": "Partida {number}",

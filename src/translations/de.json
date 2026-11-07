@@ -306,6 +306,9 @@
     "playbackControls": {
       "play": "Abspielen",
       "pause": "Pause",
+      "live": "LIVE",
+      "goLive": "Zum Live-Stand",
+      "goLiveNewStates": "Zum Live-Stand, {count} neue Züge",
       "gameSelector": {
         "label": "Spiel",
         "option": "Spiel {number}",

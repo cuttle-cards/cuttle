@@ -306,6 +306,9 @@
     "playbackControls": {
       "play": "Lecture",
       "pause": "Pause",
+      "live": "EN DIRECT",
+      "goLive": "Revenir au direct",
+      "goLiveNewStates": "Revenir au direct, {count} nouveaux coups",
       "gameSelector": {
         "label": "Jeu",
         "option": "Jeu {number}",

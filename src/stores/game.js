@@ -280,7 +280,11 @@ export const useGameStore = defineStore('game', () => {
   );
 
   // Actions
-  function updateGame(newGame) {
+  /**
+   * Everything that describes the position on screen. A spectator paused behind the live edge skips
+   * this, so incoming moves can't redraw the board they deliberately stopped on.
+   */
+  function updateBoard(newGame) {
     lastEventChange.value = newGame.lastEvent?.change ?? null;
     lastEventOneOffRank.value = newGame.lastEvent?.oneOff?.rank ?? null;
     const lastEventPlayer = newGame.lastEvent?.pNum;
@@ -292,7 +296,6 @@ export const useGameStore = defineStore('game', () => {
     turn.value = newGame.turn ?? turn.value;
     deck.value = newGame.deck?.map((card) => createGameCard(card)) ?? deck.value;
     scrap.value = newGame.scrap?.map((card) => createGameCard(card)) ?? scrap.value;
-    log.value = cloneDeep(newGame.log) ?? log.value;
     name.value = newGame.name ?? name.value;
     p0Ready.value = newGame.p0Ready ?? p0Ready.value;
     p1Ready.value = newGame.p1Ready ?? p1Ready.value;
@@ -302,23 +305,36 @@ export const useGameStore = defineStore('game', () => {
     if (opponent.value?.hand) {
       opponent.value.hand = assignHandKeys(previousOpponentHand, opponent.value.hand);
     }
-    spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     twos.value = newGame.twos?.map((card) => createGameCard(card)) ?? twos.value;
     oneOff.value = createGameCard(newGame.oneOff) ?? null;
     oneOffTarget.value = createGameCard(newGame.oneOffTarget) ?? null;
     fourRevealedCards.value = newGame.fourRevealedCards?.map((card) => createGameCard(card)) ?? [];
     isRanked.value = newGame.isRanked ?? isRanked.value;
     currentMatch.value = newGame.currentMatch ?? currentMatch.value;
+    gameIsOver.value = newGame.gameIsOver ?? false;
+    phase.value = newGame.phase ?? GamePhase.MAIN;
+  }
+  /**
+   * Everything about the game around the position, which keeps tracking the live game even for a
+   * spectator paused in the past: the full log (gameHistoryStore slices it to the viewed index), the
+   * states available to navigate to, who else is watching, and whether the game is still running.
+   */
+  function updateGameMetadata(newGame) {
+    log.value = cloneDeep(newGame.log) ?? log.value;
+    spectatingUsers.value = newGame.spectatingUsers ?? spectatingUsers.value;
     p0Rematch.value = newGame.p0Rematch ?? null;
     p1Rematch.value = newGame.p1Rematch ?? null;
     rematchGameId.value = newGame.rematchGame ?? null;
-    gameIsOver.value = newGame.gameIsOver ?? false;
     status.value = newGame.status ?? GameStatus.ARCHIVED;
-    phase.value = newGame.phase ?? GamePhase.MAIN;
     gameHistoryStore.gameStates = newGame.gameStates ?? [];
     // Only the spectator payloads of finished games carry matchGames, so hold onto
     // the last list rather than clearing it on every live move event
     gameHistoryStore.matchGames = newGame.matchGames ?? gameHistoryStore.matchGames;
+  }
+  // Board first, so the fields that read myPNum (and therefore status) still see the previous status
+  function updateGame(newGame) {
+    updateBoard(newGame);
+    updateGameMetadata(newGame);
   }
   function opponentJoined(newPlayer) {
     players.value.push(cloneDeep(newPlayer));
@@ -363,6 +379,7 @@ export const useGameStore = defineStore('game', () => {
     iWantToContinueSpectating.value = false;
     status.value = GameStatus.ARCHIVED;
     gameHistoryStore.matchGames = [];
+    gameHistoryStore.isPlaying = false;
   }
   function updateReady(pNumArg) {
     if (pNumArg === 0) {
@@ -713,6 +730,13 @@ export const useGameStore = defineStore('game', () => {
       resetState();
       const res = await makeSocketRequest(slug, {}, 'POST', true);
       updateGame(res.body.game);
+      // Follow a live game only when entering at its latest state, matching the index the server
+      // defaults to. A link to an earlier move, a finished game, or a reconnect while paused all
+      // land paused where they asked to be. The route hasn't committed yet during the spectate
+      // guard, so this reads the requested index rather than gameHistoryStore's view of the url
+      const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
+      const entersAtLiveEdge = !isValidGameStateIndex || gameStateIndex === -1;
+      gameHistoryStore.isPlaying = status.value === GameStatus.STARTED && entersAtLiveEdge;
       return handleInGameEvents(res.body, route);
     } catch (err) {
       if (authStore.mustReauthenticate) {
@@ -992,6 +1016,8 @@ export const useGameStore = defineStore('game', () => {
     showOpponentHand,
     // Actions
     updateGame,
+    updateBoard,
+    updateGameMetadata,
     opponentJoined,
     removeSpectator,
     resetState,
