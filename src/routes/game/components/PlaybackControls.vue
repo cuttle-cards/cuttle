@@ -167,6 +167,9 @@ let advanceTimer = null;
 let navigationId = 0;
 // True from the moment a navigation requests its state until that state (and its animation) has finished loading
 let isLoadingState = false;
+// Set on teardown, so a navigation waiting on an animation doesn't load a state into a game the
+// user has already left
+let isUnmounted = false;
 
 function clearAdvanceTimer() {
   clearTimeout(advanceTimer);
@@ -252,13 +255,21 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal, oldVal) => {
   }
 
   const thisNavigationId = ++navigationId;
+  // The wait below can span a switch to another game (a rematch, or the match game selector), and
+  // this index means nothing there, so pin the game this navigation belongs to before waiting
+  const gameId = gameStore.id;
   isLoadingState = true;
   let res;
   try {
     // An animation that began while we were following live writes the board when it finishes, so
     // let it land before loading the state asked for; otherwise it overwrites this navigation
     await whenGameEventsSettle();
-    res = await gameStore.requestGameState(gameStore.id, newVal);
+    // Whatever the wait outlasted -- the game changing, another navigation, leaving the game --
+    // has already loaded the right state, and this one would only overwrite it
+    if (isUnmounted || gameStore.id !== gameId || thisNavigationId !== navigationId) {
+      return;
+    }
+    res = await gameStore.requestGameState(gameId, newVal);
   } catch (err) {
     pause();
     throw err;
@@ -284,7 +295,10 @@ watch(() => gameStore.id, () => {
   gameHistoryStore.isPlaying = gameHistoryStore.isLive;
 });
 
-onUnmounted(stopPlayback);
+onUnmounted(() => {
+  isUnmounted = true;
+  stopPlayback();
+});
 </script>
 
 <style scoped>
