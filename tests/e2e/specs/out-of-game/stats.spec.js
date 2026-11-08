@@ -95,97 +95,97 @@ describe('Stats Page', () => {
     cy.get('th').should('have.length', 43);
     // Should be one active player row: Player1
     cy.get('tr.active-user-stats').should('have.length', 1);
-    cy.get('[data-player-row=Player1]').should('have.class', 'active-user-stats');
+    cy.get(`[data-player-row=${playerOne.username}]`).should('have.class', 'active-user-stats');
 
     // Player 1 data
-    cy.get('[data-cy=username-Player1]').contains('Player1');
-    cy.get('[data-cy=rank-Player1]').contains(1);
-    cy.get('[data-cy=week-total-points-Player1]').contains('9');
-    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
-    cy.get('[data-cy=week-1-points-Player1]').contains('5');
-    cy.get('[data-cy=week-1-wins-Player1]').contains('4');
-    cy.get('[data-cy=week-2-points-Player1]').contains('4');
-    cy.get('[data-cy=week-2-wins-Player1]').contains('3');
+    cy.get(`[data-cy=username-${playerOne.username}]`).contains(playerOne.username);
+    cy.get(`[data-cy=rank-${playerOne.username}]`).contains(1);
+    cy.get(`[data-cy=week-total-points-${playerOne.username}]`).contains('9');
+    cy.get(`[data-cy=week-total-wins-${playerOne.username}]`).contains('7');
+    cy.get(`[data-cy=week-1-points-${playerOne.username}]`).contains('5');
+    cy.get(`[data-cy=week-1-wins-${playerOne.username}]`).contains('4');
+    cy.get(`[data-cy=week-2-points-${playerOne.username}]`).contains('4');
+    cy.get(`[data-cy=week-2-wins-${playerOne.username}]`).contains('3');
 
     // Player 2 data
-    cy.get('[data-cy=username-Player2]').contains('Player2');
-    cy.get('[data-cy=rank-Player2]').contains(1);
-    cy.get('[data-cy=week-total-points-Player2]').contains('9');
-    cy.get('[data-cy=week-total-wins-Player2]').contains('7');
-    cy.get('[data-cy=week-1-points-Player2]').contains('4');
-    cy.get('[data-cy=week-1-wins-Player2]').contains('2');
-    cy.get('[data-cy=week-2-points-Player2]').contains('5');
-    cy.get('[data-cy=week-2-wins-Player2]').contains('5');
+    cy.get(`[data-cy=username-${playerTwo.username}]`).contains(playerTwo.username);
+    cy.get(`[data-cy=rank-${playerTwo.username}]`).contains(1);
+    cy.get(`[data-cy=week-total-points-${playerTwo.username}]`).contains('9');
+    cy.get(`[data-cy=week-total-wins-${playerTwo.username}]`).contains('7');
+    cy.get(`[data-cy=week-1-points-${playerTwo.username}]`).contains('4');
+    cy.get(`[data-cy=week-1-wins-${playerTwo.username}]`).contains('2');
+    cy.get(`[data-cy=week-2-points-${playerTwo.username}]`).contains('5');
+    cy.get(`[data-cy=week-2-wins-${playerTwo.username}]`).contains('5');
 
     // Player 3 data
-    cy.get('[data-cy=username-Player3]').contains('Player3');
-    cy.get('[data-cy=rank-Player3]').contains(3);
-    cy.get('[data-cy=week-total-points-Player3]').contains('6');
-    cy.get('[data-cy=week-total-wins-Player3]').contains('3');
-    cy.get('[data-cy=week-1-points-Player3]').contains('3');
-    cy.get('[data-cy=week-1-wins-Player3]').contains('1');
-    cy.get('[data-cy=week-2-points-Player3]').contains('3');
-    cy.get('[data-cy=week-2-wins-Player3]').contains('2');
+    cy.get(`[data-cy=username-${playerThree.username}]`).contains(playerThree.username);
+    cy.get(`[data-cy=rank-${playerThree.username}]`).contains(3);
+    cy.get(`[data-cy=week-total-points-${playerThree.username}]`).contains('6');
+    cy.get(`[data-cy=week-total-wins-${playerThree.username}]`).contains('3');
+    cy.get(`[data-cy=week-1-points-${playerThree.username}]`).contains('3');
+    cy.get(`[data-cy=week-1-wins-${playerThree.username}]`).contains('1');
+    cy.get(`[data-cy=week-2-points-${playerThree.username}]`).contains('3');
+    cy.get(`[data-cy=week-2-wins-${playerThree.username}]`).contains('2');
 
     // Player 5 data
-    cy.get('[data-cy=username-Player5]').contains('Player5');
-    cy.get('[data-cy=rank-Player5]').contains(4);
-    cy.get('[data-cy=week-total-points-Player5]').contains('5');
-    cy.get('[data-cy=week-total-wins-Player5]').contains('2');
-    cy.get('[data-cy=week-1-points-Player5]').contains('3');
-    cy.get('[data-cy=week-1-wins-Player5]').contains('1');
-    cy.get('[data-cy=week-2-points-Player5]').contains('2');
-    cy.get('[data-cy=week-2-wins-Player5]').contains('1');
+    cy.get(`[data-cy=username-${playerFive.username}]`).contains(playerFive.username);
+    cy.get(`[data-cy=rank-${playerFive.username}]`).contains(4);
+    cy.get(`[data-cy=week-total-points-${playerFive.username}]`).contains('5');
+    cy.get(`[data-cy=week-total-wins-${playerFive.username}]`).contains('2');
+    cy.get(`[data-cy=week-1-points-${playerFive.username}]`).contains('3');
+    cy.get(`[data-cy=week-1-wins-${playerFive.username}]`).contains('1');
+    cy.get(`[data-cy=week-2-points-${playerFive.username}]`).contains('2');
+    cy.get(`[data-cy=week-2-wins-${playerFive.username}]`).contains('1');
 
     // Player 4 data
-    cy.get('[data-cy=username-Player4]').contains('Player4');
-    cy.get('[data-cy=rank-Player4]').contains(5);
-    cy.get('[data-cy=week-total-points-Player4]').contains('4');
-    cy.get('[data-cy=week-total-wins-Player4]').contains('1');
-    cy.get('[data-cy=week-1-points-Player4]').contains('3');
-    cy.get('[data-cy=week-1-wins-Player4]').contains('1');
-    cy.get('[data-cy=week-2-points-Player4]').contains('1');
-    cy.get('[data-cy=week-2-wins-Player4]').contains('0');
+    cy.get(`[data-cy=username-${playerFour.username}]`).contains(playerFour.username);
+    cy.get(`[data-cy=rank-${playerFour.username}]`).contains(5);
+    cy.get(`[data-cy=week-total-points-${playerFour.username}]`).contains('4');
+    cy.get(`[data-cy=week-total-wins-${playerFour.username}]`).contains('1');
+    cy.get(`[data-cy=week-1-points-${playerFour.username}]`).contains('3');
+    cy.get(`[data-cy=week-1-wins-${playerFour.username}]`).contains('1');
+    cy.get(`[data-cy=week-2-points-${playerFour.username}]`).contains('1');
+    cy.get(`[data-cy=week-2-wins-${playerFour.username}]`).contains('0');
 
     // Win and loss menus - Player 1 week 1
-    cy.get('[data-cy=week-1-points-Player1]').click();
-    cy.get('[data-cy=player-Player1-week-1-results]').should('contain', 'Player1 Week 1');
-    cy.get('[data-players-beaten=Player1-week-1]').should('contain', 'Player2, Player3, Player4');
-    cy.get('[data-players-lost-to=Player1-week-1]').should('not.contain', 'Player');
-    cy.get('[data-players-lost-to=Player1-week-1]').should('contain', 'None');
-    cy.get('[data-win-rate=Player1-week-1]').should('contain', '100%');
-    cy.get('[data-win-rate=Player1-week-1]').should('contain', '4 Won');
-    cy.get('[data-win-rate=Player1-week-1]').should('contain', '0 Lost');
-    cy.get('[data-win-rate=Player1-week-1]').should('contain', '4 Total');
-    cy.get('[data-cy=week-1-points-Player1]').click(); // Close menu
-    cy.get('[data-cy=player-Player1-week-1-results]').should('not.exist');
+    cy.get(`[data-cy=week-1-points-${playerOne.username}]`).click();
+    cy.get(`[data-cy=player-${playerOne.username}-week-1-results]`).should('contain', `${playerOne.username} Week 1`);
+    cy.get(`[data-players-beaten=${playerOne.username}-week-1]`).should('contain', `${playerTwo.username}, ${playerThree.username}, ${playerFour.username}`);
+    cy.get(`[data-players-lost-to=${playerOne.username}-week-1]`).should('not.contain', 'Player');
+    cy.get(`[data-players-lost-to=${playerOne.username}-week-1]`).should('contain', 'None');
+    cy.get(`[data-win-rate=${playerOne.username}-week-1]`).should('contain', '100%');
+    cy.get(`[data-win-rate=${playerOne.username}-week-1]`).should('contain', '4 Won');
+    cy.get(`[data-win-rate=${playerOne.username}-week-1]`).should('contain', '0 Lost');
+    cy.get(`[data-win-rate=${playerOne.username}-week-1]`).should('contain', '4 Total');
+    cy.get(`[data-cy=week-1-points-${playerOne.username}]`).click(); // Close menu
+    cy.get(`[data-cy=player-${playerOne.username}-week-1-results]`).should('not.exist');
 
     // Win and loss menu - Player2 week 1
-    cy.get('[data-cy=week-1-points-Player2]').click();
-    cy.get('[data-cy=player-Player2-week-1-results]').should('contain', 'Player2 Week 1');
-    cy.get('[data-players-beaten=Player2-week-1]').should('contain', 'Player3, Player4');
-    cy.get('[data-players-lost-to=Player2-week-1]').should('contain', 'Player1');
-    cy.get('[data-win-rate=Player2-week-1]').should('contain', '66%');
-    cy.get('[data-win-rate=Player2-week-1]').should('contain', '2 Won');
-    cy.get('[data-win-rate=Player2-week-1]').should('contain', '1 Lost');
-    cy.get('[data-win-rate=Player2-week-1]').should('contain', '3 Total');
-    cy.get('[data-cy=week-1-points-Player2]').click(); // Close menu
-    cy.get('[data-cy=player-Player2-week-1-results]').should('not.exist');
+    cy.get(`[data-cy=week-1-points-${playerTwo.username}]`).click();
+    cy.get(`[data-cy=player-${playerTwo.username}-week-1-results]`).should('contain', `${playerTwo.username} Week 1`);
+    cy.get(`[data-players-beaten=${playerTwo.username}-week-1]`).should('contain', `${playerThree.username}, ${playerFour.username}`);
+    cy.get(`[data-players-lost-to=${playerTwo.username}-week-1]`).should('contain', playerOne.username);
+    cy.get(`[data-win-rate=${playerTwo.username}-week-1]`).should('contain', '66%');
+    cy.get(`[data-win-rate=${playerTwo.username}-week-1]`).should('contain', '2 Won');
+    cy.get(`[data-win-rate=${playerTwo.username}-week-1]`).should('contain', '1 Lost');
+    cy.get(`[data-win-rate=${playerTwo.username}-week-1]`).should('contain', '3 Total');
+    cy.get(`[data-cy=week-1-points-${playerTwo.username}]`).click(); // Close menu
+    cy.get(`[data-cy=player-${playerTwo.username}-week-1-results]`).should('not.exist');
 
     // Win and loss menu - Player3 total
-    cy.get('[data-cy=week-total-points-Player3]').click();
-    cy.get('[data-cy=player-Player3-week-total-results]').should('contain', 'Player3 Clubs 2022');
-    cy.get('[data-players-beaten=Player3-week-total]').should('contain', 'Player5 (2), Player4 (1)');
-    cy.get('[data-players-lost-to=Player3-week-total]').should(
+    cy.get(`[data-cy=week-total-points-${playerThree.username}]`).click();
+    cy.get(`[data-cy=player-${playerThree.username}-week-total-results]`).should('contain', `${playerThree.username} Clubs 2022`);
+    cy.get(`[data-players-beaten=${playerThree.username}-week-total]`).should('contain', `${playerFive.username} (2), ${playerFour.username} (1)`);
+    cy.get(`[data-players-lost-to=${playerThree.username}-week-total]`).should(
       'contain',
-      'Player1 (3), Player2 (2), Player4 (1)',
+      `${playerOne.username} (3), ${playerTwo.username} (2), ${playerFour.username} (1)`,
     );
-    cy.get('[data-win-rate=Player3-week-total]').should('contain', '33%');
-    cy.get('[data-win-rate=Player3-week-total]').should('contain', '3 Won');
-    cy.get('[data-win-rate=Player3-week-total]').should('contain', '6 Lost');
-    cy.get('[data-win-rate=Player3-week-total]').should('contain', '9 Total');
-    cy.get('[data-cy=week-total-points-Player3]').click(); // Close menu
-    cy.get('[data-cy=player-Player3-week-total-results]').should('not.exist');
+    cy.get(`[data-win-rate=${playerThree.username}-week-total]`).should('contain', '33%');
+    cy.get(`[data-win-rate=${playerThree.username}-week-total]`).should('contain', '3 Won');
+    cy.get(`[data-win-rate=${playerThree.username}-week-total]`).should('contain', '6 Lost');
+    cy.get(`[data-win-rate=${playerThree.username}-week-total]`).should('contain', '9 Total');
+    cy.get(`[data-cy=week-total-points-${playerThree.username}]`).click(); // Close menu
+    cy.get(`[data-cy=player-${playerThree.username}-week-total-results]`).should('not.exist');
 
     // Players should be sorted in rank order
     cy.get('[data-cy^=rank-]').should('have.length', 5);
@@ -201,16 +201,16 @@ describe('Stats Page', () => {
       .should('contain', 5);
 
     // Incomplete match should not contribute to points
-    cy.get('[data-cy=week-3-points-Player1]').should('not.exist');
-    cy.get('[data-cy=week-3-points-Player2]').should('not.exist');
+    cy.get(`[data-cy=week-3-points-${playerOne.username}]`).should('not.exist');
+    cy.get(`[data-cy=week-3-points-${playerTwo.username}]`).should('not.exist');
   });
 
   it('Filters table to show selected weeks', () => {
     // 43 columns: rank & username, (total + 13 weeks) x 3 (parent + points + wins)
     cy.get('th').should('have.length', 43);
     // Total counts across all weeks
-    cy.get('[data-cy=week-total-points-Player1]').contains('9');
-    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
+    cy.get(`[data-cy=week-total-points-${playerOne.username}]`).contains('9');
+    cy.get(`[data-cy=week-total-wins-${playerOne.username}]`).contains('7');
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click();
     cy.get('[role=listbox]').contains('Week 2')
@@ -242,12 +242,12 @@ describe('Stats Page', () => {
     // Expect 6 columns: rank & username, (total + week_1) x 3 (wins + points + parent)
     cy.get('th').should('have.length', 7);
     // Total counts should only still show season totals
-    cy.get('[data-cy=week-total-points-Player1]').contains('9');
-    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
-    cy.get('[data-cy=week-1-points-Player1]').contains('5');
-    cy.get('[data-cy=week-1-wins-Player1]').contains('4');
+    cy.get(`[data-cy=week-total-points-${playerOne.username}]`).contains('9');
+    cy.get(`[data-cy=week-total-wins-${playerOne.username}]`).contains('7');
+    cy.get(`[data-cy=week-1-points-${playerOne.username}]`).contains('5');
+    cy.get(`[data-cy=week-1-wins-${playerOne.username}]`).contains('4');
     // Week 2 should not appear
-    cy.get('[data-cy=week-2-wins-Player1]').should('not.exist');
+    cy.get(`[data-cy=week-2-wins-${playerOne.username}]`).should('not.exist');
   });
 
   it('Selects different seasons to show their results', () => {
@@ -262,18 +262,18 @@ describe('Stats Page', () => {
     cy.get('[data-tournament]').should('not.exist');
 
     // Stats data table
-    cy.get('[data-cy=week-1-points-Player1]').contains('3');
-    cy.get('[data-cy=week-1-wins-Player1]').contains('1');
+    cy.get(`[data-cy=week-1-points-${playerOne.username}]`).contains('3');
+    cy.get(`[data-cy=week-1-wins-${playerOne.username}]`).contains('1');
 
     // Switch back to Clubs 2022
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('Clubs 2022')
       .click();
     // Stats data table
-    cy.get('[data-cy=week-total-points-Player1]').contains('9');
-    cy.get('[data-cy=week-total-wins-Player1]').contains('7');
-    cy.get('[data-cy=week-2-points-Player1]').contains('4');
-    cy.get('[data-cy=week-2-wins-Player1]').contains('3');
+    cy.get(`[data-cy=week-total-points-${playerOne.username}]`).contains('9');
+    cy.get(`[data-cy=week-total-wins-${playerOne.username}]`).contains('7');
+    cy.get(`[data-cy=week-2-points-${playerOne.username}]`).contains('4');
+    cy.get(`[data-cy=week-2-wins-${playerOne.username}]`).contains('3');
   });
 
   it('Hides season that should not be available', () => {

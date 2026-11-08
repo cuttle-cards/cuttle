@@ -369,7 +369,7 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
         .click();
       cy.get('[data-cy="spectate-list-menu"')
-        .should('contain', 'myUsername')
+        .should('contain', myUser.username)
         .should('contain', playerThree.username);
 
       cy.get('[data-player-hand-card]').should('have.length', 5);
@@ -384,7 +384,7 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '3')
         .click();
       cy.get('[data-cy="spectate-list-menu"')
-        .should('contain', 'myUsername')
+        .should('contain', myUser.username)
         .should('contain', playerThree.username)
         .should('contain', playerFour.username);
       cy.wait(500);
@@ -407,7 +407,7 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
         .click();
       cy.get('[data-cy="spectate-list-menu"')
-        .should('contain', 'myUsername')
+        .should('contain', myUser.username)
         .should('contain', playerThree.username);
       cy.get('@gameId').then((gameId) => {
         cy.setOpponentToLeaveSpectate(gameId);
@@ -429,7 +429,7 @@ describe('Spectating Games', () => {
       cy.get(`[data-cy-spectate-game]`).click();
       cy.get('[data-cy="spectate-list-button"]').should('contain', '1')
         .click();
-      cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
+      cy.get('[data-cy="spectate-list-menu"').should('contain', myUser.username);
     });
   });
 });
@@ -489,7 +489,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
       .click();
     cy.get('[data-cy="spectate-list-menu"')
-      .should('contain', 'myUsername')
+      .should('contain', myUser.username)
       .should('contain', playerThree.username);
   });
 });

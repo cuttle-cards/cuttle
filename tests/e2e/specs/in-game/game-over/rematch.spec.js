@@ -229,13 +229,13 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Player2 won and Player1 (visible player) lost
     cy.get('[data-cy=player-match-result]')
-      .should('contain', 'Player1')
+      .should('contain', playerOne.username)
       .find('[data-cy-result-img=lost]')
-      .should('have.attr', 'alt', 'Player1 lost the match');
+      .should('have.attr', 'alt', `${playerOne.username} lost the match`);
     cy.get('[data-cy=opponent-match-result]')
-      .should('contain', 'Player2')
+      .should('contain', playerTwo.username)
       .find('[data-cy-result-img=won]')
-      .should('have.attr', 'alt', 'Player2 won the match');
+      .should('have.attr', 'alt', `${playerTwo.username} won the match`);
   });
 
   it('Shows when opponent declines continuing your ranked match', () => {
