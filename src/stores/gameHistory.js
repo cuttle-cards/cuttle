@@ -15,8 +15,9 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Every game of the match this game belongs to, oldest first, as summarized by
   // the server's getMatchGames helper
   const matchGames = ref([]);
-  // Whether playback is auto-advancing through the game's states. Ephemeral: deliberately kept out of the URL
-  // so gameStateIndex keeps a single meaning and a shared link never arrives mid-playback
+  // Whether playback is auto-advancing through the game's states. On a live game this doubles as
+  // "following the live edge". Ephemeral: deliberately kept out of the URL so gameStateIndex keeps
+  // a single meaning and a shared link never arrives mid-playback
   const isPlaying = ref(false);
 
   const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
@@ -58,11 +59,36 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
       gameStore.log.slice(0, currentGameStateIndex.value + 1);
   });
 
-  const showPlaybackControls = computed(() => {
-    return isSpectating.value && [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(gameStore.status);
+  // Spectating a game that is still being played, so new states keep arriving over the socket
+  const isLive = computed(() => isSpectating.value && gameStore.status === GameStatus.STARTED);
+
+  // Where the viewed state actually sits in gameStates; -1 in the url means "the latest"
+  const resolvedGameStateIndex = computed(() => {
+    return currentGameStateIndex.value === -1 ?
+      gameStates.value.length - 1 :
+      currentGameStateIndex.value;
   });
 
-  // A single-game match has nothing to navigate between
+  const isAtLatestState = computed(() => resolvedGameStateIndex.value === gameStates.value.length - 1);
+
+  // Following live updates is just play mode while on the latest state
+  const isFollowingLive = computed(() => isLive.value && isPlaying.value && isAtLatestState.value);
+
+  // Incoming states must not re-render the board unless the spectator is following the live edge
+  const holdLiveUpdates = computed(() => isLive.value && !isFollowingLive.value);
+
+  // How many states have arrived ahead of the one on screen. Derived rather than counted, so there's
+  // nothing to reset and the number ticks up visibly as each move lands on a paused board
+  const statesBehind = computed(() => {
+    return isLive.value ?
+      Math.max(0, gameStates.value.length - 1 - resolvedGameStateIndex.value) :
+      0;
+  });
+
+  const showPlaybackControls = computed(() => isSpectating.value);
+
+  // A single-game match has nothing to navigate between. Live games are never sent matchGames,
+  // so this stays false for them without needing to say so
   const showGameSelector = computed(() => {
     return showPlaybackControls.value && matchGames.value.length >= 2;
   });
@@ -75,6 +101,9 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   const canGoToNextState = computed(() => {
     return currentGameStateIndex.value >= 0 && currentGameStateIndex.value < gameStates.value.length - 1;
   });
+
+  // Pinned behind the live edge, there's always somewhere forward to go: back to the action
+  const canGoLive = computed(() => isLive.value && currentGameStateIndex.value !== -1);
 
   const clipUrl = computed(() => {
     const { origin } = window.location;
@@ -95,10 +124,17 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     currentGameState,
     priorGameStates,
     log,
+    isLive,
+    resolvedGameStateIndex,
+    isAtLatestState,
+    isFollowingLive,
+    holdLiveUpdates,
+    statesBehind,
     showPlaybackControls,
     showGameSelector,
     canGoToPreviousState,
     canGoToNextState,
+    canGoLive,
     clipUrl,
   };
 });

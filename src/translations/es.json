@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Mano: {handSize} de {handLimit} cartas",
     "revealedIcon": "El icono de ojo indica que la carta está revelada",
+    "frozenIcon": "El icono de copo de nieve indica que la carta está bloqueada",
     "resolve": "Resolver",
     "scrap": "Descartar",
     "view": "Ver",
@@ -306,6 +307,9 @@
     "playbackControls": {
       "play": "Reproducir",
       "pause": "Pausa",
+      "live": "EN VIVO",
+      "goLive": "Ir en vivo",
+      "goLiveNewStates": "Ir en vivo, {count} jugadas nuevas",
       "gameSelector": {
         "label": "Partida",
         "option": "Partida {number}",
