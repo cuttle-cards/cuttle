@@ -11,6 +11,11 @@
     data-cy="match-game-selector"
     @update:model-value="spectateGame"
   >
+    <!-- Phones are too narrow for the full label next to five buttons, so the activator shortens it -->
+    <template #selection="{ item }">
+      <span v-if="xs">{{ t('game.playbackControls.gameSelector.optionShort', { number: item.raw.number }) }}</span>
+      <span v-else>{{ item.title }}</span>
+    </template>
     <template #item="{ props: itemProps, item }">
       <v-list-item
         v-bind="itemProps"
@@ -25,11 +30,13 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import GameStatus from '_/utils/GameStatus.json';
 
 const { t } = useI18n();
+const { xs } = useDisplay();
 const router = useRouter();
 const gameStore = useGameStore();
 const gameHistoryStore = useGameHistoryStore();
@@ -37,6 +44,7 @@ const gameHistoryStore = useGameHistoryStore();
 const gameOptions = computed(() =>
   gameHistoryStore.matchGames.map(({ id }, index) => ({
     title: t('game.playbackControls.gameSelector.option', { number: index + 1 }),
+    number: index + 1,
     value: id,
   })),
 );

@@ -28,6 +28,8 @@ module.exports = async function (req, res) {
       turn = 0,
       resolved = null,
       oneOff = null,
+      // Cards both players have already seen, so tests can stage them without replaying the reveal
+      revealedCards = [],
     } = req.body;
 
     const allFixtureCards = new Set(Object.values(req.body).flat()
@@ -65,6 +67,7 @@ module.exports = async function (req, res) {
       twos: [],
       discardedCards: [],
       fourRevealedCards: [],
+      revealedCards,
       oneOff,
       oneOffTarget: null,
       resolved,

@@ -91,6 +91,8 @@
   },
   "game": {
     "handSize": "Hand: {handSize} von {handLimit} Karten",
+    "revealedIcon": "Das Augen-Symbol bedeutet, dass die Karte aufgedeckt ist",
+    "frozenIcon": "Das Schneeflocken-Symbol bedeutet, dass die Karte eingefroren ist",
     "resolve": "Lösen",
     "scrap": "Schrotten",
     "view": "Ansehen",
@@ -303,9 +305,15 @@
       "title": "Verlauf"
     },
     "playbackControls": {
+      "play": "Abspielen",
+      "pause": "Pause",
+      "live": "LIVE",
+      "goLive": "Zum Live-Stand",
+      "goLiveNewStates": "Zum Live-Stand, {count} neue Züge",
       "gameSelector": {
         "label": "Spiel",
-        "option": "Spiel {number}"
+        "option": "Spiel {number}",
+        "optionShort": "S{number}"
       }
     },
     "snackbar": {

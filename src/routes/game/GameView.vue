@@ -89,6 +89,7 @@
                           :key="card.id"
                           :suit="card.suit"
                           :rank="card.rank"
+                          :is-revealed="card.isRevealed"
                           :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                           class="opponent-hand-card-revealed"
                         />
@@ -100,6 +101,7 @@
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
+                      :is-revealed="card.isRevealed"
                       :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                       class="opponent-hand-card-revealed"
                     />
@@ -112,11 +114,12 @@
                     class="opponent-hand-wrapper"
                   >
                     <GameCard
-                      v-for="(card, index) in gameStore.opponent.hand"
-                      :key="`opponent_hand_card_${index}`"
+                      v-for="card in gameStore.opponent.hand"
+                      :key="card.handKey"
                       :suit="card.suit ?? undefined"
                       :rank="card.rank ?? undefined"
-                      :data-opponent-hand-card="card.suit && card.rank ? `${card.rank}-${card.suit}` : ''"
+                      :is-revealed="card.isRevealed"
+                      :data-opponent-hand-card="card.isHidden ? '' : `${card.rank}-${card.suit}`"
                       class="opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
                   </TransitionGroup>
@@ -147,6 +150,14 @@
             @click="drawCard"
           >
             <template v-if="!gameStore.resolvingSeven">
+              <GameCard
+                v-if="topCard?.isRevealed"
+                :suit="topCard.suit"
+                :rank="topCard.rank"
+                :is-revealed="true"
+                :data-revealed-top-card="`${topCard.rank}-${topCard.suit}`"
+                class="revealed-top-card"
+              />
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -369,6 +380,7 @@
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
                       :is-frozen="card.isFrozen"
+                      :is-revealed="card.isRevealed"
                       class="mt-2"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -385,6 +397,7 @@
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
                   :is-frozen="card.isFrozen"
+                  :is-revealed="card.isRevealed"
                   class="mt-2"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -1329,6 +1342,17 @@ export default {
       text-align: center;
       color: white;
       position: absolute;
+    }
+    // Sits exactly on the top card of bg-deck.png, which is anchored top-left and 149 of its 171px wide
+    & .revealed-top-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 87%;
+      max-width: none;
+      max-height: none;
+      // GameCard's mx-1 utility class sets its margins with !important
+      margin: 0 !important;
     }
     .c-deck-count {
       margin: 8px;
