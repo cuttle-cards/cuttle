@@ -11,7 +11,6 @@
     :class="[ 'base-snackbar', { 'clears-playback-controls': showingPlaybackControls } ]"
     position="fixed"
     location="bottom"
-    z-index="3000"
     data-cy="global-snackbar"
     @update:model-value="clear"
   >
@@ -73,10 +72,11 @@ export default {
   lands, and an error rendering behind it can be neither read nor dismissed.
 
   Sit the snackbar clear of the bar rather than stacking it over the bar: vuetify assigns overlay
-  z-indexes from a running stack, each new overlay taking the last one's + 10 (see useStack), so
-  the prop above is only honoured while nothing else is open and no fixed value here reliably wins.
-  Not overlapping settles it without entering that race, and leaves the bar's buttons usable while
-  the snackbar shows. Keep the offset in step with #playback-controls' min-height.
+  z-indexes from a running stack, each new overlay taking the last one's + 10 (see useStack), so a
+  z-index declared here would only be honoured while nothing else is open — and would seed that
+  stack above the bar for everything opened afterwards (#1479). Not overlapping settles it without
+  entering that race, and leaves the bar's buttons usable while the snackbar shows. Keep the offset
+  in step with #playback-controls' min-height.
 */
 .clears-playback-controls {
   :deep(.v-snackbar__wrapper) {

@@ -112,6 +112,105 @@ const jsonExtensions = {
   },
 };
 
+/*
+  Vuetify assigns overlay z-indexes at runtime from a running stack: each overlay takes the last
+  one's value + 10, and the declared `z-index` prop is only honoured while that stack is empty
+  (see vuetify's useStack). So declaring one does not raise a single overlay, it re-seeds the base
+  for every overlay opened on top of it, for as long as the declaring overlay stays open — which
+  is how a dialog ended up above the spectator playback bar in #1479.
+
+  Left alone the stack climbs only +10 per concurrently-open overlay, which keeps it far below the
+  chrome that has to sit above it (`--z-above-overlays` in App.vue). This rule keeps it that way.
+  Reach for layout or `attach` instead; if an overlay genuinely must be raised, that is a decision
+  to make deliberately alongside the constant, not with a local disable.
+*/
+const vueUtils = require('eslint-plugin-vue/lib/utils');
+
+// Matched loosely so `VDialog`, `v-dialog` and `<BaseDialog>` all compare equal
+const normalizeTagName = (name) => name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+
+const overlayComponents = new Set(
+  [
+    // Vuetify components that push onto the global stack
+    'v-overlay',
+    'v-dialog',
+    'v-menu',
+    'v-tooltip',
+    'v-snackbar',
+    'v-bottom-sheet',
+    'v-speed-dial',
+    // Wrap an overlay and forward attrs to it
+    'v-select',
+    'v-autocomplete',
+    'v-combobox',
+    'base-dialog',
+    'base-menu',
+  ].map(normalizeTagName),
+);
+
+// `menu-props`, `list-props`, `dialog-props`: objects handed straight to a nested overlay
+const forwardedPropsAttribute = /-props$/;
+
+const isZIndexKey = (property) => {
+  if (property.type !== 'Property') {
+    return false;
+  }
+  const { key } = property;
+  const name = key.type === 'Identifier' ? key.name : key.value;
+  return name === 'zIndex' || name === 'z-index';
+};
+
+const overlayZIndex = {
+  rules: {
+    'no-overlay-z-index': {
+      meta: {
+        type: 'problem',
+        schema: [],
+        messages: {
+          declared: `Don't declare a z-index on <{{tag}}>: vuetify seeds its overlay stack from it, raising every overlay opened afterwards above the chrome that must stay on top (see #1479).`,
+        },
+      },
+      create(context) {
+        const report = (node, tag) => context.report({ node, messageId: 'declared', data: { tag } });
+
+        return vueUtils.defineTemplateBodyVisitor(context, {
+          VAttribute(node) {
+            const element = node.parent.parent;
+            const tag = element.rawName;
+            const isOverlay = overlayComponents.has(normalizeTagName(tag));
+
+            if (!node.directive) {
+              if (isOverlay && node.key.name === 'z-index') {
+                report(node, tag);
+              }
+              return;
+            }
+
+            const argument = node.key.argument?.name;
+            if (typeof argument !== 'string') {
+              return;
+            }
+
+            if (isOverlay && argument === 'z-index') {
+              report(node, tag);
+              return;
+            }
+
+            // A forwarded props object reaches an overlay wherever it is declared
+            const expression = node.value?.expression;
+            if (forwardedPropsAttribute.test(argument) && expression?.type === 'ObjectExpression') {
+              const zIndex = expression.properties.find(isZIndexKey);
+              if (zIndex) {
+                report(zIndex, tag);
+              }
+            }
+          },
+        });
+      },
+    },
+  },
+};
+
 module.exports = [
   {
     // The worktree dirs are git-ignored, but that doesn't stop eslint walking into them: each
@@ -129,6 +228,7 @@ module.exports = [
       prettier,
       'no-only-tests': noOnlyTests,
       'json-extensions': jsonExtensions,
+      'overlay-z-index': overlayZIndex,
     },
     languageOptions: {
       ecmaVersion: 'latest',
@@ -137,6 +237,7 @@ module.exports = [
     },
     rules: {
       'json-extensions/explicit-json-extension': 'error',
+      'overlay-z-index/no-overlay-z-index': 'error',
       'eol-last': [ 'error', 'always' ],
       'max-len': [
         'warn',
