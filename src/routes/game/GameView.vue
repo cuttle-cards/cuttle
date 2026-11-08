@@ -10,7 +10,7 @@
       <div
         id="game-menu-wrapper"
         class="d-flex flex-column flex-sm-row align-center"
-        :style="menuWrapperStyle"
+        :class="{ 'is-spectating': isSpectating }"
       >
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" @handle-error="handleError" />
@@ -507,12 +507,6 @@ export default {
     isSpectating() {
       return this.gameHistoryStore.isSpectating;
     },
-    menuWrapperStyle() {
-      return {
-        zIndex: this.isSpectating ? 2411 : 3, // Allows spectators to access game menu wrapper in any moment
-      };
-    },
-
     ////////////////////
     // Responsiveness //
     ////////////////////
@@ -1171,6 +1165,12 @@ export default {
   display: inline-block;
   right: 0;
   margin: 10px;
+  z-index: 3;
+
+  /* The dialogs a spectator sees are the players' own, so the game menu stays reachable under them */
+  &.is-spectating {
+    z-index: var(--z-above-overlays);
+  }
 }
 
 .valid-move {

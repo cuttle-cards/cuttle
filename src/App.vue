@@ -66,6 +66,14 @@ export default {
 :root {
   // CSS containment for isolated components
   --contain-isolated: layout style;
+
+  // Chrome that must stay above every vuetify overlay: the spectator playback bar and the game
+  // menu wrapper. Vuetify assigns overlay z-indexes from a running stack (see useStack), starting
+  // at 2400 for a dialog and climbing +10 for each overlay open at the same time, so 3000 leaves
+  // room for dozens of them. That headroom only holds while no component declares a z-index on an
+  // overlay of its own: a declared value seeds the stack, and everything opened on top of it
+  // inherits the raised base. See #1479, and the lint rule that enforces it in eslint.config.js.
+  --z-above-overlays: 3000;
 }
 
 .gradient-text {
