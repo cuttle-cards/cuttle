@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Mano: {handSize} de {handLimit} cartas",
     "revealedIcon": "El icono de ojo indica que la carta está revelada",
+    "frozenIcon": "El icono de copo de nieve indica que la carta está bloqueada",
     "resolve": "Resolver",
     "scrap": "Descartar",
     "view": "Ver",
