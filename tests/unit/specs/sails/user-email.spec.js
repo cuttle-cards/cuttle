@@ -122,10 +122,17 @@ describe('User preferred email', () => {
     await firstAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
     await firstAgent.post('/api/user/email/verify').send({ code: await setKnownCode(firstId) });
 
-    const { agent: secondAgent } = await signup('secondUser');
-    const res = await secondAgent.post('/api/user/email/request-code').send({ email: 'ME@example.com' });
+    // Requesting a code doesn't reveal that the address is taken
+    const { agent: secondAgent, userId: secondId } = await signup('secondUser');
+    const codeRes = await secondAgent.post('/api/user/email/request-code').send({ email: 'ME@example.com' });
+    expect(codeRes.statusCode).toBe(200);
+
+    // Only someone with the code, i.e. the mailbox owner, learns it's taken
+    const res = await secondAgent.post('/api/user/email/verify').send({ code: await setKnownCode(secondId) });
     expect(res.statusCode).toBe(409);
     expect(res.body.message).toBe('emailPreference.error.emailTaken');
+    const secondRow = await UserEmail.findOne({ user: secondId });
+    expect(secondRow.email).toBeNull();
   });
 
   it('Does not send a code for an email the user already verified', async () => {

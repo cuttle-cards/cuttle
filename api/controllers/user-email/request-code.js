@@ -12,9 +12,11 @@ module.exports = async function (req, res) {
     const promotional = req.body.promotional === true;
     const userId = req.session.usr;
 
-    // Email must not already be verified by any user, including this one
+    // Only tell the caller an email is taken when it's already their own. An address verified by
+    // someone else gets a code like any other, and verify rejects it, so only the mailbox owner
+    // can learn that it's in use
     const prevEmail = await UserEmail.findOne({ email });
-    if (prevEmail) {
+    if (prevEmail?.user === userId) {
       return res.status(409).json({ message: 'emailPreference.error.emailTaken' });
     }
 

@@ -975,7 +975,9 @@ describe('Email Preference Dialog', () => {
   });
 
   it('Shows an error when the email is already in use', () => {
-    cy.intercept('POST', '/api/user/email/request-code', {
+    // A taken address only fails at verify, so requesting the code can't reveal it
+    cy.intercept('POST', '/api/user/email/request-code', { statusCode: 200, body: {} });
+    cy.intercept('POST', '/api/user/email/verify', {
       statusCode: 409,
       body: { message: 'emailPreference.error.emailTaken' },
     });
@@ -983,7 +985,12 @@ describe('Email Preference Dialog', () => {
 
     cy.get('[data-cy=email-preference-input] input').type('taken@example.com');
     cy.get('[data-cy=email-preference-send-code]').click();
-    cy.get('[data-cy=email-preference-input]').should('contain', 'This email is already in use');
+    cy.get('[data-cy=email-preference-code] input').filter(':visible')
+      .each(($input, i) => {
+        cy.wrap($input).type(`${i + 1}`);
+      });
+    cy.get('[data-cy=email-preference-verify]').click();
+    cy.get('[data-cy=email-preference-error]').should('contain', 'This email is already in use');
   });
 
   it('Waits for the announcement to close before prompting on reload', () => {

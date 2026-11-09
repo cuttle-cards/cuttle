@@ -41,7 +41,8 @@ module.exports = {
         from: `Cuttle <${GMAIL_USER}>`,
         to: email,
         subject: 'Your Cuttle verification code',
-        text: `Your Cuttle verification code is ${code}. It expires in 10 minutes.`,
+        text: `Your Cuttle verification code is ${code}. It expires in 10 minutes.\n\n`
+          + 'If you didn\'t request this code, you can safely ignore this email.',
       });
 
       return exits.success();
