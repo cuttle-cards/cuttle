@@ -972,14 +972,16 @@ describe('Email Preference Dialog', () => {
     cy.get('[data-cy=email-preference-input]').should('contain', 'This email is already in use');
   });
 
-  it('Waits for the announcement to close before prompting on reload', function () {
-    const announcementIsActive = dayjs().isAfter(dayjs(announcementData.startTime))
-      && dayjs().isBefore(dayjs(announcementData.endTime));
-    if (!announcementIsActive) {
-      this.skip();
-    }
+  it('Waits for the announcement to close before prompting on reload', () => {
     cy.vueRoute('/');
     cy.get('[data-cy=email-preference-dialog]').should('be.visible');
+
+    // Freeze only Date (timers stay real) inside the announcement's window, so the announcement
+    // shows on reload even after it has ended in real time
+    const insideAnnouncement = announcementData.startTime
+      ? dayjs(announcementData.startTime).add(1, 'minute')
+      : dayjs();
+    cy.clock(insideAnnouncement.valueOf(), [ 'Date' ]);
 
     // Reload with neither dialog dismissed. Runs after the global seed in support/index.js
     cy.on('window:before:load', (win) => {

@@ -662,6 +662,7 @@
       "emailTaken": "This email is already in use",
       "tooManyRequests": "Please wait a minute before requesting another code",
       "sendFailed": "We couldn't send your code. Please try again later.",
+      "verifyFailed": "We couldn't verify your code. Please try again.",
       "invalidCode": "That code is incorrect",
       "codeExpired": "That code has expired. Please request a new one.",
       "noPendingEmail": "Please request a new code"

@@ -16,6 +16,9 @@ export const useAuthStore = defineStore('auth', {
     promotional: false,
     // Login and signup don't return the email, so it's only known after requestStatus()
     hasLoadedEmail: false,
+    // Changes whenever the signed-in account changes (login, logout, account switch) so a
+    // requestStatus() response that arrives afterward can be ignored
+    authVersion: 0,
   }),
   actions: {
     authSuccess(username, userId) {
@@ -24,12 +27,14 @@ export const useAuthStore = defineStore('auth', {
         this.email = null;
         this.promotional = false;
         this.hasLoadedEmail = false;
+        this.authVersion++;
       }
       this.authenticated = true;
       this.username = username;
       this.userId = userId;
     },
     clearAuth() {
+      this.authVersion++;
       this.authenticated = false;
       this.username = null;
       this.identities = [];
@@ -86,11 +91,16 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
+      const { authVersion } = this;
       try {
         const response = await fetch('/api/user/status', {
           credentials: 'include',
         });
         const status = await response.json();
+        // The user logged in, out, or switched accounts while this was pending
+        if (authVersion !== this.authVersion) {
+          return;
+        }
         const { authenticated, username, identities, id, email, promotional } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
@@ -113,7 +123,9 @@ export const useAuthStore = defineStore('auth', {
 
         return;
       } catch (err) {
-        this.clearAuth();
+        if (authVersion === this.authVersion) {
+          this.clearAuth();
+        }
       }
     },
     disconnectSocket() {
@@ -188,7 +200,7 @@ export const useAuthStore = defineStore('auth', {
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(data.message ?? 'emailPreference.error.invalidCode');
+        throw new Error(data.message ?? 'emailPreference.error.verifyFailed');
       }
       this.email = data.email;
       this.promotional = data.promotional;

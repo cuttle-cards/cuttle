@@ -34,7 +34,8 @@ module.exports = async function (req, res) {
       codeExpiresAt: now.add(CODE_TTL_MINUTES, 'minute').toDate(),
       codeSentAt: now.toDate(),
       attempts: 0,
-      promotional,
+      // Staged like pendingEmail, so abandoning verification doesn't change the stored opt-in
+      pendingPromotional: promotional,
     };
 
     // Claim the cooldown before sending. Every send writes a new code hash, so the update only
@@ -57,7 +58,14 @@ module.exports = async function (req, res) {
       return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
     }
 
-    await sails.helpers.email.sendVerificationEmail(email, code);
+    try {
+      await sails.helpers.email.sendVerificationEmail(email, code);
+    } catch (err) {
+      // Don't hold the user in the cooldown for a code they never got. The code hash stays, so
+      // the claim above still guards any parallel request
+      await UserEmail.updateOne({ id: claimed.id }).set({ codeSentAt: null });
+      throw err;
+    }
 
     return res.ok();
   } catch (err) {

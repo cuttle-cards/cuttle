@@ -50,6 +50,7 @@ module.exports = async function (req, res) {
         verificationCode: userEmail.verificationCode,
       }).set({
         email: userEmail.pendingEmail,
+        promotional: userEmail.pendingPromotional,
         pendingEmail: null,
         verificationCode: null,
         codeExpiresAt: null,
@@ -66,7 +67,7 @@ module.exports = async function (req, res) {
       return res.badRequest({ message: 'emailPreference.error.codeExpired' });
     }
 
-    return res.ok({ email: userEmail.pendingEmail, promotional: userEmail.promotional });
+    return res.ok({ email: saved.email, promotional: saved.promotional });
   } catch (err) {
     return res.badRequest(err);
   }

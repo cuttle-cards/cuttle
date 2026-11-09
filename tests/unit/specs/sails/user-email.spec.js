@@ -154,6 +154,43 @@ describe('User preferred email', () => {
     expect(secondRow.email).toBeNull();
   });
 
+  it('Does not change the stored opt-in until the new email is verified', async () => {
+    const { agent, userId } = await signup('myUser');
+    await agent.post('/api/user/email/request-code').send({ email: 'first@example.com', promotional: true });
+    await agent.post('/api/user/email/verify').send({ code: await setKnownCode(userId) });
+    await UserEmail.updateOne({ user: userId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+
+    // Start changing the email and opt out, but abandon before verifying
+    await agent.post('/api/user/email/request-code').send({ email: 'second@example.com', promotional: false });
+    const { body: abandoned } = await agent.get('/api/user/status');
+    expect(abandoned.email).toBe('first@example.com');
+    expect(abandoned.promotional).toBe(true);
+
+    // Verifying applies the new opt-in along with the new email
+    const res = await agent.post('/api/user/email/verify').send({ code: await setKnownCode(userId) });
+    expect(res.body).toEqual({ email: 'second@example.com', promotional: false });
+  });
+
+  it('Does not start the cooldown when the email fails to send', async () => {
+    const { agent, userId } = await signup('myUser');
+    // Without gmail credentials the email helper fails in production instead of logging the code
+    const { environment } = sails.config;
+    sails.config.environment = 'production';
+    try {
+      const res = await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+      expect(res.statusCode).toBe(400);
+      expect(res.body.message).toBe('emailPreference.error.sendFailed');
+    } finally {
+      sails.config.environment = environment;
+    }
+
+    const row = await UserEmail.findOne({ user: userId });
+    expect(row.codeSentAt).toBeNull();
+    const retry = await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(retry.statusCode).toBe(200);
+  });
+
   it('Sends only one code when requests race', async () => {
     const { agent, userId } = await signup('myUser');
     const sendCode = () => agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });

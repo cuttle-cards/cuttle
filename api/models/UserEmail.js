@@ -55,5 +55,12 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false,
     },
+    /**
+     * Opt-in chosen with pendingEmail. Copied to `promotional` only when that email is verified
+     */
+    pendingPromotional: {
+      type: 'boolean',
+      defaultsTo: false,
+    },
   },
 };

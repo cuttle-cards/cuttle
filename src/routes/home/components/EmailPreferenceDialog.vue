@@ -118,6 +118,7 @@ import { useI18n } from 'vue-i18n';
 import { getLocalStorage, setLocalStorage, LS_EMAIL_PROMPT_DISMISSED } from '_/utils/local-storage-utils.js';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbarStore } from '@/stores/snackbar';
+import EmailValidation from '_/utils/EmailValidation.json';
 import BaseDialog from '@/components/BaseDialog.vue';
 
 const props = defineProps({
@@ -134,7 +135,7 @@ const STEPS = {
 };
 const RESEND_COOLDOWN_SECONDS = 60;
 
-const { t } = useI18n();
+const { t, te } = useI18n();
 const authStore = useAuthStore();
 const snackbarStore = useSnackbarStore();
 
@@ -160,7 +161,19 @@ const errorMessage = ref('');
 const resendCooldown = ref(0);
 let cooldownTimer = null;
 
-const emailRules = [ (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val?.trim() ?? '') || t('emailPreference.error.invalidEmail') ];
+// Same rules as the hasValidEmail policy
+const emailPattern = new RegExp(EmailValidation.pattern);
+const emailRules = [ (val) => {
+  const trimmed = val?.trim() ?? '';
+  return (trimmed.length <= EmailValidation.maxLength && emailPattern.test(trimmed))
+    || t('emailPreference.error.invalidEmail');
+} ];
+
+// The API rejects with an i18n key. Anything else (e.g. a network failure) gets the fallback
+function errorText(err, fallbackKey) {
+  const key = err?.message ?? err;
+  return te(key) ? t(key) : t(fallbackKey);
+}
 
 const resendText = computed(() => (resendCooldown.value > 0
   ? t('emailPreference.resendIn', { seconds: resendCooldown.value })
@@ -189,7 +202,7 @@ async function sendCode() {
     step.value = STEPS.CODE;
     startCooldown();
   } catch (err) {
-    errorMessage.value = t(err.message);
+    errorMessage.value = errorText(err, 'emailPreference.error.sendFailed');
   } finally {
     loading.value = false;
   }
@@ -203,7 +216,7 @@ async function resendCode() {
     await authStore.requestEmailCode(email.value.trim(), promotional.value);
     startCooldown();
   } catch (err) {
-    errorMessage.value = t(err.message);
+    errorMessage.value = errorText(err, 'emailPreference.error.sendFailed');
   } finally {
     loading.value = false;
     resending.value = false;
@@ -218,7 +231,7 @@ async function verifyCode() {
     show.value = false;
     snackbarStore.alert(t('emailPreference.verified'), 'success');
   } catch (err) {
-    errorMessage.value = t(err.message);
+    errorMessage.value = errorText(err, 'emailPreference.error.verifyFailed');
   } finally {
     loading.value = false;
   }

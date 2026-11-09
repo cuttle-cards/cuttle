@@ -661,6 +661,7 @@
       "emailTaken": "Cet e-mail est déjà utilisé",
       "tooManyRequests": "Veuillez patienter une minute avant de demander un autre code",
       "sendFailed": "Nous n'avons pas pu envoyer votre code. Veuillez réessayer plus tard.",
+      "verifyFailed": "Nous n'avons pas pu vérifier votre code. Veuillez réessayer.",
       "invalidCode": "Ce code est incorrect",
       "codeExpired": "Ce code a expiré. Veuillez en demander un nouveau.",
       "noPendingEmail": "Veuillez demander un nouveau code"
