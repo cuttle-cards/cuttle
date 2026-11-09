@@ -1,4 +1,5 @@
 import { assertGameState, playOutOfTurn } from '../../../support/helpers';
+import { myUser, opponentOne } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 
 describe('FIVES', () => {
@@ -25,7 +26,7 @@ describe('FIVES', () => {
         });
         // Player plays five
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
-        cy.get('[data-cy=history-log]').should('contain', 'The 5♠️ one-off resolves; myUsername must discard 1 card, and will draw up to 3.');
+        cy.get('[data-cy=history-log]').should('contain', `The 5♠️ one-off resolves; ${myUser.username} must discard 1 card, and will draw up to 3.`);
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
         cy.get('[data-discard-card=1-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
@@ -33,7 +34,7 @@ describe('FIVES', () => {
         cy.get('#deck').should('contain', '(39)');
         cy.get('[data-player-hand-card]').should('have.length', 4);
 
-        cy.get('[data-cy=history-log]').should('contain', 'myUsername discarded the A♣️ and drew 3 cards');
+        cy.get('[data-cy=history-log]').should('contain', `${myUser.username} discarded the A♣️ and drew 3 cards`);
         // Attempt to plays five out of turn
         cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
         playOutOfTurn('oneOff');
@@ -86,7 +87,7 @@ describe('FIVES', () => {
           deck: [],
         });
 
-        cy.get('[data-cy=history-log]').should('contain', 'myUsername skipped discarding (empty hand) and drew 3 cards');
+        cy.get('[data-cy=history-log]').should('contain', `${myUser.username} skipped discarding (empty hand) and drew 3 cards`);
         // Deck should now be empty
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -595,7 +596,7 @@ describe('FIVES', () => {
       cy.get('[data-cy=cannot-counter-dialog]').should('be.visible')
         .click();
       cy.get('[data-cy=cannot-counter-resolve]').click();
-      cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'definitelyNotTheGovernment6969 Skips Discarding');
+      cy.get('#waiting-for-opponent-discard-scrim').should('contain', `${opponentOne.username} Skips Discarding`);
       cy.resolveFiveOpponent();
       assertGameState(1, {
         p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
