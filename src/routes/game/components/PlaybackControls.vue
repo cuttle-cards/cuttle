@@ -53,7 +53,8 @@
       <!-- Play / pause: only the one that applies is shown -->
       <v-btn
         :disabled="!gameHistoryStore.isPlaying && !gameHistoryStore.canGoToNextState && !gameHistoryStore.isLive"
-        variant="text"
+        color="primary"
+        variant="flat"
         :size="buttonSize"
         :icon="gameHistoryStore.isPlaying ? 'mdi-pause' : 'mdi-play'"
         :aria-label="t(gameHistoryStore.isPlaying ? 'game.playbackControls.pause' : 'game.playbackControls.play')"
