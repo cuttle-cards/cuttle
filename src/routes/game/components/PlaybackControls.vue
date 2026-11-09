@@ -311,7 +311,8 @@ onUnmounted(() => {
   bottom: 0;
   background-color: rgba(var(--v-theme-base-dark)) !important;
   width: 100%;
-  z-index: 2500; /* greater than v-dialog's z-index */
+  /* The spectator's only navigation, so it stays above the overlays it shares the screen with */
+  z-index: var(--z-above-overlays);
 }
 
 #playback-controls-button-wrapper {

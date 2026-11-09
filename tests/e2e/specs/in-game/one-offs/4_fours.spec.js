@@ -422,5 +422,63 @@ describe('FOURS', () => {
       cy.get('[data-discard-card=1-1]').should('be.visible');
       cy.get('[data-discard-card=10-2]').should('be.visible');
     });
+
+    it('Selects up to two cards in the legacy discard dialog, dropping the oldest when a third is chosen', () => {
+      cy.setupGameAsP1();
+      cy.loadGameFixture(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+        p1Points: [],
+        p1FaceCards: [],
+        // GamePhase.RESOLVING_FOUR, staged directly as above
+        phase: 4,
+        oneOff: Card.FOUR_OF_CLUBS,
+      });
+
+      cy.get('#four-discard-dialog').should('be.visible');
+      cy.get('[data-cy=submit-four-dialog]').should('be.disabled');
+
+      // Clicking a card selects it, and clicking it again deselects it
+      cy.get('[data-discard-card=1-1]').click();
+      cy.get('[data-discard-card=1-1]').should('have.class', 'is-selected');
+      cy.get('[data-cy=submit-four-dialog]').should('be.disabled');
+      cy.get('[data-discard-card=1-1]').click();
+      cy.get('[data-discard-card=1-1]').should('not.have.class', 'is-selected');
+
+      // Two selections enable the discard button
+      cy.get('[data-discard-card=1-1]').click();
+      cy.get('[data-discard-card=10-2]').click();
+      cy.get('[data-cy=submit-four-dialog]').should('not.be.disabled');
+
+      // A third selection replaces the first one chosen
+      cy.get('[data-discard-card=5-0]').click();
+      cy.get('[data-discard-card=1-1]').should('not.have.class', 'is-selected');
+      cy.get('[data-discard-card=10-2]').should('have.class', 'is-selected');
+      cy.get('[data-discard-card=5-0]').should('have.class', 'is-selected');
+      cy.get('[data-cy=submit-four-dialog]').should('not.be.disabled');
+    });
+
+    it('Enables the legacy discard dialog with one selection when only one card is in hand', () => {
+      cy.setupGameAsP1();
+      cy.loadGameFixture(1, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        // GamePhase.RESOLVING_FOUR, staged directly as above
+        phase: 4,
+        oneOff: Card.FOUR_OF_CLUBS,
+      });
+
+      cy.get('#four-discard-dialog').should('be.visible');
+      cy.get('[data-cy=submit-four-dialog]').should('be.disabled');
+      cy.get('[data-discard-card=1-1]').click();
+      cy.get('[data-discard-card=1-1]').should('have.class', 'is-selected');
+      cy.get('[data-cy=submit-four-dialog]').should('not.be.disabled');
+    });
   });
 });
