@@ -82,7 +82,7 @@
               </h2>
               <p class="d-block text-md">
                 {{ t('rules.playText-1') }} <br>
-                {{ t('rules.playText-2') }}
+                {{ t('rules.playText-2', {handLimit: HAND_LIMIT, handLimitPlusOne: HAND_LIMIT + 1}) }}
               </p>
             </v-row>
           </section>
@@ -329,6 +329,7 @@ import { mapStores } from 'pinia';
 import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { HAND_LIMIT } from '@/stores/game.js';
 import { useThemedLogo } from '@/composables/themedLogo';
 import { rules, royals, oneOffs, faq, sectionTitles, multiplayer } from './data/rulesData';
 import RulesNav from './components/RulesNav.vue';
@@ -371,7 +372,8 @@ export default {
     return {
       t,
       logoSrc,
-      goTo
+      goTo,
+      HAND_LIMIT
     };
   },
   data() {
