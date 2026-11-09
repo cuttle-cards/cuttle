@@ -21,6 +21,7 @@
           :label="t('emailPreference.emailLabel')"
           type="email"
           autocomplete="email"
+          :disabled="loading"
           :rules="emailRules"
           :error-messages="errorMessage"
           data-cy="email-preference-input"
@@ -29,6 +30,7 @@
         <v-checkbox
           v-model="promotional"
           :label="t('emailPreference.promotionalLabel')"
+          :disabled="loading"
           density="compact"
           hide-details
           data-cy="email-preference-promotional"
@@ -40,7 +42,7 @@
         @submit.prevent="verifyCode"
       >
         <p class="mb-2">
-          {{ t('emailPreference.codeSent', { email }) }}
+          {{ t('emailPreference.codeSent', { email: submitted.email }) }}
         </p>
         <v-otp-input
           v-model="code"
@@ -153,6 +155,8 @@ const isOpen = computed({
 const step = ref(STEPS.EMAIL);
 const email = ref('');
 const promotional = ref(false);
+// What the code was actually sent for, so edits to the form can't change it mid-verification
+const submitted = ref({ email: '', promotional: false });
 const code = ref('');
 const isEmailFormValid = ref(false);
 const loading = ref(false);
@@ -196,8 +200,10 @@ async function sendCode() {
   }
   loading.value = true;
   errorMessage.value = '';
+  const request = { email: email.value.trim(), promotional: promotional.value };
   try {
-    await authStore.requestEmailCode(email.value.trim(), promotional.value);
+    await authStore.requestEmailCode(request.email, request.promotional);
+    submitted.value = request;
     code.value = '';
     step.value = STEPS.CODE;
     startCooldown();
@@ -213,7 +219,7 @@ async function resendCode() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    await authStore.requestEmailCode(email.value.trim(), promotional.value);
+    await authStore.requestEmailCode(submitted.value.email, submitted.value.promotional);
     startCooldown();
   } catch (err) {
     errorMessage.value = errorText(err, 'emailPreference.error.sendFailed');

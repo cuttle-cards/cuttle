@@ -960,6 +960,20 @@ describe('Email Preference Dialog', () => {
     assertSnackbar('Your email has been saved', 'success');
   });
 
+  it('Locks the form while sending and shows the address the code went to', () => {
+    cy.intercept('POST', '/api/user/email/request-code', { statusCode: 200, body: {}, delay: 1000 })
+      .as('requestCode');
+    cy.vueRoute('/');
+
+    cy.get('[data-cy=email-preference-input] input').type('sent@example.com');
+    cy.get('[data-cy=email-preference-send-code]').click();
+    cy.get('[data-cy=email-preference-input] input').should('be.disabled');
+    cy.get('[data-cy=email-preference-promotional] input').should('be.disabled');
+    cy.wait('@requestCode');
+
+    cy.get('[data-cy=email-preference-dialog]').should('contain', 'sent@example.com');
+  });
+
   it('Shows an error when the email is already in use', () => {
     cy.intercept('POST', '/api/user/email/request-code', {
       statusCode: 409,

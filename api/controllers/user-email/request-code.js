@@ -61,9 +61,11 @@ module.exports = async function (req, res) {
     try {
       await sails.helpers.email.sendVerificationEmail(email, code);
     } catch (err) {
-      // Don't hold the user in the cooldown for a code they never got. The code hash stays, so
-      // the claim above still guards any parallel request
-      await UserEmail.updateOne({ id: claimed.id }).set({ codeSentAt: null });
+      // Don't hold the user in the cooldown for a code they never got. Matching on this request's
+      // code hash means a newer request's cooldown is never cleared, and leaving the hash in place
+      // keeps the claim above guarding parallel requests
+      await UserEmail.updateOne({ id: claimed.id, verificationCode: claimed.verificationCode })
+        .set({ codeSentAt: null });
       throw err;
     }
 
