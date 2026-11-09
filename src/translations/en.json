@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Hand: {handSize} of {handLimit} cards",
     "revealedIcon": "Eye icon signifies the card is revealed",
+    "frozenIcon": "Snowflake icon signifies the card is frozen",
     "resolve": "Resolve",
     "scrap": "Scrap",
     "view": "View",
@@ -307,6 +308,9 @@
     "playbackControls": {
       "play": "Play",
       "pause": "Pause",
+      "live": "LIVE",
+      "goLive": "Go live",
+      "goLiveNewStates": "Go live, {count} new moves",
       "gameSelector": {
         "label": "Game",
         "option": "Game {number}",

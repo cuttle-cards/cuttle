@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Рука: {handSize} з {handLimit} карт",
     "revealedIcon": "Піктограма ока означає, що карту розкрито",
+    "frozenIcon": "Піктограма сніжинки означає, що карту заморожено",
     "resolve": "Вирішити",
     "scrap": "Скинути",
     "view": "Переглянути",
@@ -306,6 +307,9 @@
     "playbackControls": {
       "play": "Відтворити",
       "pause": "Пауза",
+      "live": "НАЖИВО",
+      "goLive": "Перейти до прямого ефіру",
+      "goLiveNewStates": "Перейти до прямого ефіру, нових ходів: {count}",
       "gameSelector": {
         "label": "Гра",
         "option": "Гра {number}",

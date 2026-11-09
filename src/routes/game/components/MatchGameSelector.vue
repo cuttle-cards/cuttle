@@ -1,10 +1,19 @@
 <template>
+  <!--
+    The menu is attached to the bar, so the dropdown renders inside the bar's own stacking context
+    and paints above it without a z-index. Declaring one here would seed vuetify's overlay stack
+    above the bar, pushing every overlay opened afterwards on top of the controls (#1479).
+
+    Attached to the bar rather than with `attach: true`: that attaches to the activator's own
+    field, which is a containing block only as wide as the collapsed selector, and the options
+    then ellipsize at phone widths.
+  -->
   <v-select
     :model-value="gameStore.id"
     :items="gameOptions"
     :aria-label="t('game.playbackControls.gameSelector.label')"
     :list-props="{ bgColor: 'base-light', baseColor: 'base-dark', color: 'primary' }"
-    :menu-props="{ zIndex: 2600 }"
+    :menu-props="{ attach: '#playback-controls' }"
     density="compact"
     variant="outlined"
     hide-details

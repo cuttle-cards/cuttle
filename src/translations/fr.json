@@ -92,6 +92,7 @@
   "game": {
     "handSize": "Main : {handSize} cartes sur {handLimit}",
     "revealedIcon": "L'icône d'œil indique que la carte est révélée",
+    "frozenIcon": "L'icône de flocon de neige indique que la carte est gelée",
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",
@@ -306,6 +307,9 @@
     "playbackControls": {
       "play": "Lecture",
       "pause": "Pause",
+      "live": "EN DIRECT",
+      "goLive": "Revenir au direct",
+      "goLiveNewStates": "Revenir au direct, {count} nouveaux coups",
       "gameSelector": {
         "label": "Jeu",
         "option": "Jeu {number}",

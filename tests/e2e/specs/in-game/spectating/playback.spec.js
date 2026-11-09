@@ -161,4 +161,54 @@ describe('Auto-advancing playback of finished games', () => {
         .and('contain.text', 'Game 2');
     });
   });
+
+  /*
+    Vuetify assigns overlay z-indexes from a running stack, so a z-index declared on any overlay
+    re-seeds that stack and every overlay opened on top of it inherits the raised base. The game
+    selector used to declare one to clear the bar it belongs to, which put dialogs opened while it
+    was up above the controls (#1479). It is attached to the bar instead, so nothing raises the
+    stack and the controls stay on top of it for every ordering.
+  */
+  describe('Stacking against overlays', () => {
+    const elementAtCenterOf = (selector) =>
+      cy.get(selector).then(($el) => {
+        const { left, top, width, height } = $el[0].getBoundingClientRect();
+        return $el[0].ownerDocument.elementFromPoint(left + width / 2, top + height / 2);
+      });
+
+    it('Renders the game selector dropdown inside the playback bar', () => {
+      cy.get('[data-cy=match-game-selector]').click();
+      cy.get('[role=listbox]').should('be.visible')
+        .closest('#playback-controls')
+        .should('exist');
+    });
+
+    it('Keeps every overlay below the playback controls while the dropdown is open', () => {
+      cy.get('[data-cy=match-game-selector]').click();
+      cy.get('[role=listbox]').should('be.visible');
+
+      // Whatever seeds the stack propagates to every overlay opened afterwards, so an overlay at
+      // or above the bar now means a dialog opened later lands on top of the controls
+      cy.get('#playback-controls').then(($bar) => {
+        const { defaultView } = $bar[0].ownerDocument;
+        const barZIndex = Number(defaultView.getComputedStyle($bar[0]).zIndex);
+        expect(barZIndex, 'playback controls z-index').to.be.greaterThan(0);
+
+        const raised = [ ...defaultView.document.querySelectorAll('.v-overlay') ]
+          .map((overlay) => Number(defaultView.getComputedStyle(overlay).zIndex))
+          .filter((zIndex) => zIndex >= barZIndex);
+
+        expect(raised, 'overlays stacked at or above the playback controls').to.be.empty;
+      });
+    });
+
+    it('Keeps the playback buttons on top while the dropdown is open', () => {
+      cy.get('[data-cy=match-game-selector]').click();
+      cy.get('[role=listbox]').should('be.visible');
+
+      elementAtCenterOf('[data-cy=skip-forward]').should((topmost) => {
+        expect(topmost.closest('[data-cy=skip-forward]'), 'topmost element over skip-forward').to.not.be.null;
+      });
+    });
+  });
 });

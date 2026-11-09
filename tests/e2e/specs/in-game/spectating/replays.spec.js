@@ -428,6 +428,14 @@ describe('Rewatching finished games', () => {
         cy.url().should('contain', '?gameStateIndex=6');
         assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
 
+        // The dialogs a spectator sees belong to the players; the controls are their own
+        // navigation, so no overlay may cover them (#1479)
+        cy.get('[data-cy=skip-backward]').then(($button) => {
+          const { left, top, width, height } = $button[0].getBoundingClientRect();
+          const topmost = $button[0].ownerDocument.elementFromPoint(left + width / 2, top + height / 2);
+          expect(topmost.closest('[data-cy=skip-backward]'), 'topmost element over skip-backward').to.not.be.null;
+        });
+
         cy.get('[data-cy=gameover-rematch]').click();
         cy.wait(1000);
         cy.get('#game-over-dialog').should('not.exist');

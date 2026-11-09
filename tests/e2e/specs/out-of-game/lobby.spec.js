@@ -722,7 +722,7 @@ describe('Lobby invite links', () => {
   it('Joins Lobby via invite link', function () {
     const { gameId } = this.gameSummary;
     cy.visit(`/lobby/${gameId}`);
-    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.get(`[data-cy-ready-indicator=${opponentOne.username}]`).should('be.visible');
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => expect(store.id).to.eq(gameId));
@@ -741,7 +741,7 @@ describe('Lobby invite links', () => {
     cy.url().should('include', `/login/${gameId}`);
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
-    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.get(`[data-cy-ready-indicator=${opponentOne.username}]`).should('be.visible');
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => expect(store.id).to.eq(gameId));
@@ -753,7 +753,7 @@ describe('Lobby invite links', () => {
   it('Joins Lobby from url and refreshes', function () {
     const { gameId } = this.gameSummary;
     cy.visit(`/lobby/${gameId}`);
-    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.get(`[data-cy-ready-indicator=${opponentOne.username}]`).should('be.visible');
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => expect(store.id).to.eq(gameId));

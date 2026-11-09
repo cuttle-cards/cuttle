@@ -1,5 +1,6 @@
 import { assertGameState, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
+import { myUser, opponentOne } from '../../../fixtures/userFixtures';
 
 describe('Countering One-Offs', () => {
   beforeEach(() => {
@@ -69,7 +70,7 @@ describe('Countering One-Offs', () => {
     // Opponent resolves
     cy.resolveOpponent();
 
-    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+    cy.get('[data-cy=history-log]').should('contain', `${myUser.username} played the 2♠️ to counter ${opponentOne.username}'s A♣️.`);
 
     assertGameState(1, {
       // Opponent is P0
@@ -121,7 +122,7 @@ describe('Countering One-Offs', () => {
     // Opponent resolves
     cy.resolveOpponent();
 
-    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+    cy.get('[data-cy=history-log]').should('contain', `${myUser.username} played the 2♠️ to counter ${opponentOne.username}'s A♣️.`);
 
     assertGameState(1, {
       // Opponent is P0
@@ -351,11 +352,11 @@ describe('Countering One-Offs', () => {
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
 
-    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♥️ to counter definitelyNotTheGovernment6969\'s A♣️.');
+    cy.get('[data-cy=history-log]').should('contain', `${myUser.username} played the 2♥️ to counter ${opponentOne.username}'s A♣️.`);
     // Opponent counters back (2nd counter)
     cy.counterOpponent(Card.TWO_OF_CLUBS);
 
-    cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 played the 2♣️ to counter myUsername\'s 2♥️.');
+    cy.get('[data-cy=history-log]').should('contain', `${opponentOne.username} played the 2♣️ to counter ${myUser.username}'s 2♥️.`);
     // Player counters again (3rd counter)
     cy.get('#counter-dialog').should('be.visible')
       .get('[data-cy=counter]')
@@ -370,7 +371,7 @@ describe('Countering One-Offs', () => {
     // Opponent plays 4th and final counter
     cy.counterOpponent(Card.TWO_OF_DIAMONDS);
 
-    cy.get('[data-cy=history-log]').should('contain', 'myUsername played the 2♠️ to counter definitelyNotTheGovernment6969\'s 2♣️.');
+    cy.get('[data-cy=history-log]').should('contain', `${myUser.username} played the 2♠️ to counter ${opponentOne.username}'s 2♣️.`);
     // Player cannot counter back
     cy.get('#cannot-counter-dialog').should('be.visible')
       .get('[data-cy=cannot-counter-resolve]')
@@ -574,7 +575,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
   });
 
   describe('Opponent May Counter', () => {
-    it(`Displays "definitelyNotTheGovernment6969 May counter" when player had neither glasses nor a queen`, () => {
+    it(`Displays "${opponentOne.username} May counter" when player had neither glasses nor a queen`, () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -587,14 +588,14 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       });
 
       cy.window().its('cuttle.gameStore.opponentUsername')
-        .should('equal', 'definitelyNotTheGovernment6969');
+        .should('equal', opponentOne.username);
         
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
-        .should('contain', 'definitelyNotTheGovernment6969 May Counter');
+        .should('contain', `${opponentOne.username} May Counter`);
 
       // make sure drawing is not possible
       cy.window()
@@ -615,7 +616,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         });
     });
 
-    it(`Displays "definitelyNotTheGovernment6969 May counter" when player has glasses but opponent has a two in hand`, () => {
+    it(`Displays "${opponentOne.username} May counter" when player has glasses but opponent has a two in hand`, () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -628,19 +629,19 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       });
 
       cy.window().its('cuttle.gameStore.opponentUsername')
-        .should('equal', 'definitelyNotTheGovernment6969');
+        .should('equal', opponentOne.username);
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
-        .should('contain', 'definitelyNotTheGovernment6969 May Counter');
+        .should('contain', `${opponentOne.username} May Counter`);
     });
   });
 
   describe('Opponent Must Resolve', () => {
-    it(`Displays "definitelyNotTheGovernment6969 Must Resolve" when player has a queen`, () => {
+    it(`Displays "${opponentOne.username} Must Resolve" when player has a queen`, () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -653,17 +654,17 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       });
 
       cy.window().its('cuttle.gameStore.opponentUsername')
-        .should('equal', 'definitelyNotTheGovernment6969');
+        .should('equal', opponentOne.username);
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
-        .should('contain', 'definitelyNotTheGovernment6969 Must Resolve');
+        .should('contain', `${opponentOne.username} Must Resolve`);
     });
 
-    it(`Displays "definitelyNotTheGovernment6969 Must Resolve" when player has glasses while opponent does not have a two in hand`, () => {
+    it(`Displays "${opponentOne.username} Must Resolve" when player has glasses while opponent does not have a two in hand`, () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -676,17 +677,17 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       });
 
       cy.window().its('cuttle.gameStore.opponentUsername')
-        .should('equal', 'definitelyNotTheGovernment6969');
+        .should('equal', opponentOne.username);
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
-        .should('contain', 'definitelyNotTheGovernment6969 Must Resolve');
+        .should('contain', `${opponentOne.username} Must Resolve`);
     });
 
-    it(`Display "definitelyNotTheGovernment6969 Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand`, () => {
+    it(`Display "${opponentOne.username} Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand`, () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -699,14 +700,14 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       });
 
       cy.window().its('cuttle.gameStore.opponentUsername')
-        .should('equal', 'definitelyNotTheGovernment6969');
+        .should('equal', opponentOne.username);
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
 
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
-        .should('contain', 'definitelyNotTheGovernment6969 Must Resolve');
+        .should('contain', `${opponentOne.username} Must Resolve`);
     });
   });
 });

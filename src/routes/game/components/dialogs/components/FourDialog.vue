@@ -41,74 +41,60 @@
   </BaseDialog>
 </template>
 
-<script>
-import { mapStores } from 'pinia';
+<script setup>
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
-import { useI18n } from 'vue-i18n';
 
-export default {
-  name: 'FourDialog',
-  components: {
-    BaseDialog,
-    GameCard,
+defineOptions({ name: 'FourDialog' });
+
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    modelValue: {
-      required: true,
-      type: Boolean,
-    },
+});
+const emit = defineEmits([ 'discard' ]);
+const { t } = useI18n();
+const gameStore = useGameStore();
+
+const selectedIds = ref([]);
+
+const show = computed({
+  get() {
+    return props.modelValue;
   },
-  emits: [ 'discard' ],
-  setup() {
-    const { t } = useI18n();
-    return { t };
+  set() {
+    // do nothing - parent controls whether dialog is open
   },
-  data() {
-    return {
-      selectedIds: [],
-    };
-  },
-  computed: {
-    ...mapStores(useGameStore),
-    show: {
-      get() {
-        return this.modelValue;
-      },
-      set() {
-        // do nothing - parent controls whether dialog is open
-      },
-    },
-    hand() {
-      return this.gameStore.player.hand;
-    },
-    readyToDiscard() {
-      return this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1);
-    },
-  },
-  methods: {
-    selectCard(handIndex) {
-      const cardId = this.hand[handIndex].id;
-      // If already selected, deselect
-      if (this.selectedIds.includes(cardId)) {
-        this.selectedIds.splice(this.selectedIds.indexOf(cardId), 1);
-      } else {
-        this.selectedIds.push(cardId);
-        // If three cards are selected, deselect 1st selection
-        if (this.selectedIds.length > 2) {
-          this.selectedIds.splice(0, 1);
-        }
-      }
-    },
-    discard() {
-      if (this.readyToDiscard) {
-        this.$emit('discard', [ ...this.selectedIds ]);
-        this.selectedIds = [];
-      }
-    },
-  },
-};
+});
+const hand = computed(() => gameStore.player.hand);
+const readyToDiscard = computed(
+  () => selectedIds.value.length === 2 || (selectedIds.value.length === 1 && hand.value.length === 1),
+);
+
+function selectCard(handIndex) {
+  const cardId = hand.value[handIndex].id;
+  // If already selected, deselect
+  if (selectedIds.value.includes(cardId)) {
+    selectedIds.value.splice(selectedIds.value.indexOf(cardId), 1);
+  } else {
+    selectedIds.value.push(cardId);
+    // If three cards are selected, deselect 1st selection
+    if (selectedIds.value.length > 2) {
+      selectedIds.value.splice(0, 1);
+    }
+  }
+}
+
+function discard() {
+  if (readyToDiscard.value) {
+    emit('discard', [ ...selectedIds.value ]);
+    selectedIds.value = [];
+  }
+}
 </script>
 
 <style lang="scss" scoped>

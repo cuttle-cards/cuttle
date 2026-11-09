@@ -8,10 +8,9 @@
     :model-value="showSnackbar"
     :color="color"
     :timeout="timeout"
-    class="base-snackbar"
+    :class="[ 'base-snackbar', { 'clears-playback-controls': showingPlaybackControls } ]"
     position="fixed"
     location="bottom"
-    z-index="3000"
     data-cy="global-snackbar"
     @update:model-value="clear"
   >
@@ -32,12 +31,18 @@
 
 <script>
 import { useSnackbarStore } from '../stores/snackbar';
+import { useGameHistoryStore } from '../stores/gameHistory';
 import { mapStores } from 'pinia';
 
 export default {
   name: 'TheSnackbar',
   computed: {
-    ...mapStores(useSnackbarStore),
+    ...mapStores(useSnackbarStore, useGameHistoryStore),
+
+    // The spectator playback bar is fixed across the bottom of the game, where this snackbar lands
+    showingPlaybackControls() {
+      return this.gameHistoryStore.showPlaybackControls;
+    },
 
     showSnackbar() {
       return this.snackbarStore.getShowSnackbar;
@@ -60,3 +65,22 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+/*
+  The spectator playback bar is fixed across the bottom of the game, exactly where this snackbar
+  lands, and an error rendering behind it can be neither read nor dismissed.
+
+  Sit the snackbar clear of the bar rather than stacking it over the bar: vuetify assigns overlay
+  z-indexes from a running stack, each new overlay taking the last one's + 10 (see useStack), so a
+  z-index declared here would only be honoured while nothing else is open — and would seed that
+  stack above the bar for everything opened afterwards (#1479). Not overlapping settles it without
+  entering that race, and leaves the bar's buttons usable while the snackbar shows. Keep the offset
+  in step with #playback-controls' min-height.
+*/
+.clears-playback-controls {
+  :deep(.v-snackbar__wrapper) {
+    margin-bottom: 56px;
+  }
+}
+</style>
