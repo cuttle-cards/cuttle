@@ -1,5 +1,6 @@
 const MoveType = require('../../../../utils/MoveType.json');
 const TargetType = require('../../../../utils/TargetType.json');
+const { HAND_LIMIT } = require('../../../../utils/GameConstants.json');
 
 // Every k-sized subset of arr, preserving order
 const getCombinations = (arr, k) => {
@@ -152,7 +153,7 @@ module.exports = {
         break;
 
       case MoveType.DISCARD_TO_HAND_LIMIT: {
-        const overflowCount = playerHand.length - 8;
+        const overflowCount = playerHand.length - HAND_LIMIT;
         if (overflowCount <= 0) {break;}
         // Enumerates every set of cards the player could discard: C(hand, overflow) move bodies.
         res = getCombinations(playerHand, overflowCount).map((combo) => ({
