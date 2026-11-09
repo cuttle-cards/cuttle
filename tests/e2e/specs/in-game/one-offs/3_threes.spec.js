@@ -1,6 +1,7 @@
 import { assertGameState, assertSnackbar, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
+import { myUser } from '../../../fixtures/userFixtures';
 const { _ } = Cypress;
 
 function assertThreeTransition (card, whichPlayer = 'player') {
@@ -113,7 +114,7 @@ describe('Playing THREEs', () => {
     cy.resolveOpponent();
 
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
-    cy.get('[data-cy="history-log"]').should('contain', 'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.');
+    cy.get('[data-cy="history-log"]').should('contain', `The 3♣️ one-off resolves; ${myUser.username} will draw one card of their choice from the Scrap pile.`);
 
     cy.get('#three-dialog').should('be.visible');
     // resolve button should be disabled
@@ -191,7 +192,7 @@ describe('Playing THREEs', () => {
     cy.resolveOpponent();
 
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
-    cy.get('[data-cy="history-log"]').should('contain', 'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.');
+    cy.get('[data-cy="history-log"]').should('contain', `The 3♣️ one-off resolves; ${myUser.username} will draw one card of their choice from the Scrap pile.`);
 
     cy.get('#three-dialog').should('be.visible');
     // resolve button should be disabled
