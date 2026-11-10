@@ -66,38 +66,43 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage, LS_ANNOUNCEMENT } from '_/utils/local-storage-utils.js';
-import { announcementData } from './data/announcementData';
+import { isAnnouncementActive } from '@/util/announcement';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseParagraph from '@/components/BaseParagraph.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+
+const props = defineProps({
+  // The announcement to show; see ./data/announcementData.js for its shape
+  announcement: {
+    type: Object,
+    required: true,
+  },
+});
+
+const announcementData = toRef(props, 'announcement');
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const show = ref(false);
 const preferenceSaved= ref(false);
 
-const announcementIsActive = computed(() => {
-  const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
-  const isBeforeEndTime = announcementData.endTime ? dayjs().isBefore(dayjs(announcementData.endTime)) : true;
-  const appliesToMyUser = !announcementData.userIds?.length || announcementData.userIds.includes(authStore.userId);
-
-  return isAfterStartTime && isBeforeEndTime && appliesToMyUser;
-});
+const announcementIsActive = computed(() =>
+  isAnnouncementActive(announcementData.value, { userId: authStore.userId }),
+);
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage(LS_ANNOUNCEMENT, announcementData.id);
+    setLocalStorage(LS_ANNOUNCEMENT, announcementData.value.id);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
-if (getLocalStorage(LS_ANNOUNCEMENT) !== announcementData.id) {
+if (getLocalStorage(LS_ANNOUNCEMENT) !== announcementData.value.id) {
   show.value = true;
 }
 </script>
