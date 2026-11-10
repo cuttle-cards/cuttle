@@ -60,6 +60,7 @@ describe('Profile Page', () => {
       cy.vueRoute('/my-profile');
       cy.contains('h1', 'My Profile').should('be.visible');
       cy.contains('No games found').should('be.visible');
+      cy.get('[data-cy="game-count"]').should('not.exist');
     });
   });
 
@@ -89,6 +90,7 @@ describe('Profile Page', () => {
 
       cy.get('[data-cy="game-list-item"]')
         .should('have.length', 8);
+      cy.get('[data-cy="game-count"]').should('contain', 'Total games: 30');
 
       cy.get('[data-cy="game-list"]').scrollTo('bottom', { ensureScrollable: false });
       cy.window().its('cuttle.myGamesStore')
@@ -217,6 +219,7 @@ describe('Profile Page', () => {
 
       cy.get('[data-cy="game-list-item"]')
         .should('have.length', 3);
+      cy.get('[data-cy="game-count"]').should('contain', 'Total games: 3');
 
       cy.contains('[data-cy="game-list-item"]', 'Player Won Game').should('be.visible');
       cy.contains('[data-cy="game-list-item"]', 'Opponent Won Game').should('be.visible');
