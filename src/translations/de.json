@@ -85,8 +85,8 @@
       "fallback": "Ein unbekannter Fehler ist aufgetreten.",
       "forbidden": "Du bist kein Spieler in diesem Spiel!",
       "gameStatus": "Das Spiel hat noch nicht begonnen oder ist bereits beendet.",
-      "noGameStates": "Das Spiel wurde nicht mit der .gameStates-Sammlung gefüllt.",
-      "alreadyDealt": "Die Karten sind bereits verteilt."
+      "noGameStates":"Das Spiel wurde nicht mit der .gameStates-Sammlung gefüllt.",
+      "alreadyDealt":"Die Karten sind bereits verteilt."
     }
   },
   "game": {
@@ -415,9 +415,9 @@
     "playAiLink": "gegen die KI zu spielen",
     "playAiContent2": "um die Grundlagen zu lernen und dein Können zu testen.",
     "gameName": "Spielname",
-    "join": "Beitreten",
-    "playVsAi": "Gegen die KI spielen",
-    "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
+      "join": "Beitreten",
+      "playVsAi": "Gegen die KI spielen",
+      "failedToLoadGameList": "Spiele konnten nicht geladen werden. Bitte versuche es später erneut.",
     "continue": "Fortsetzen",
     "archive": "Archivieren",
     "versus": "gegen",
@@ -598,7 +598,7 @@
     "pointsAndWins": "Punkte und Siege",
     "pointsOnly": "Nur Punkte",
     "winsOnly": "Nur Siege",
-    "statsScoring": {
+      "statsScoring": {
       "title": "Ranglistenwertung",
       "button": "Wie werden die Ränge bestimmt?",
       "displayName": "1 Punkt | {count} Punkte",
