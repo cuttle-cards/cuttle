@@ -17,7 +17,7 @@
       >
         <div class="d-flex align-center justify-space-between">
           <h2>{{ t('profile.myGames') }}</h2>
-          <span v-if="games.length > 0" data-cy="game-count">
+          <span v-if="myGamesStore.totalCount > 0" data-cy="game-count">
             {{ t('profile.totalGames', { count: myGamesStore.totalCount }) }}
           </span>
         </div>
