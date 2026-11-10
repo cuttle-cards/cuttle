@@ -638,6 +638,7 @@
   "profile": {
     "myGames": "My Games",
     "noGamesFound": "No games found",
+    "totalGames": "Total games: {count}",
     "win": "Win",
     "lose": "Lose",
     "stalemate": "Stalemate",

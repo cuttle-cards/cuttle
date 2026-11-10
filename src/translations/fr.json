@@ -637,6 +637,7 @@
   "profile": {
     "myGames": "Mes jeux",
     "noGamesFound": "Aucun jeu trouvé",
+    "totalGames": "Parties au total : {count}",
     "win": "Victoire",
     "lose": "Défaite",
     "stalemate": "Pat",
