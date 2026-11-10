@@ -11,12 +11,12 @@ describe('Profile Page', () => {
     cy.visit('/');
   });
 
-  describe('Profile page content', function () {
+  describe('Profile page content', function() {
     beforeEach(() => {
       cy.signupPlayer(myUser);
     });
 
-    it('Displays username', function () {
+    it('Displays username', function() {
       cy.vueRoute('/my-profile');
       cy.contains('h1', 'My Profile').should('be.visible');
       cy.get('[data-cy=username]').should('contain', myUser.username);
@@ -32,7 +32,7 @@ describe('Profile Page', () => {
       });
     });
 
-    it('Shows provider connected state', function () {
+    it('Shows provider connected state', function() {
       cy.vueRoute('/my-profile');
 
       [ 'Discord', 'Google' ].forEach((provider) => {
@@ -56,7 +56,7 @@ describe('Profile Page', () => {
       });
     });
 
-    it('Shows fallback when no games', function () {
+    it('Shows fallback when no games', function() {
       cy.vueRoute('/my-profile');
       cy.contains('h1', 'My Profile').should('be.visible');
       cy.contains('No games found').should('be.visible');
@@ -72,7 +72,7 @@ describe('Profile Page', () => {
       cy.signupOpponent(playerOne);
     });
 
-    it('Loads more games on scroll', function () {
+    it('Loads more games on scroll', function() {
       const games = Array.from({ length: 30 }).map((_, i) => ({
         name: `Game ${i + 1}`,
         status: GameStatus.FINISHED,
@@ -115,7 +115,7 @@ describe('Profile Page', () => {
         .should('be.visible');
     });
 
-    it('Does not load more games when hasMore is false', function () {
+    it('Does not load more games when hasMore is false', function() {
       const games = Array.from({ length: 10 }).map((_, i) => ({
         name: `Game ${i + 1}`,
         status: GameStatus.FINISHED,
@@ -138,7 +138,7 @@ describe('Profile Page', () => {
         });
     });
 
-    it('Resets games on unmount', function () {
+    it('Resets games on unmount', function() {
       cy.loadFinishedGameFixtures([
         {
           name: 'Temporary Game',
@@ -176,7 +176,7 @@ describe('Profile Page', () => {
       cy.signupOpponent(playerTwo);
     });
 
-    it('Lists finished games with fixture data', function () {
+    it('Lists finished games with fixture data', function() {
       cy.loadFinishedGameFixtures([
         {
           name: 'Opponent Won Game',
@@ -231,7 +231,7 @@ describe('Profile Page', () => {
         .and('include', '/spectate/');
     });
 
-    it('Shows correct icons for win/loss/stalemate', function () {
+    it('Shows correct icons for win/loss/stalemate', function() {
       cy.loadFinishedGameFixtures([
         {
           name: 'Opponent Won Game',
@@ -287,7 +287,7 @@ describe('Profile Page', () => {
         .should('exist');
     });
 
-    it('Shows correct ranked/casual labels', function () {
+    it('Shows correct ranked/casual labels', function() {
       cy.loadFinishedGameFixtures([
         {
           name: 'Ranked Game',
@@ -322,7 +322,7 @@ describe('Profile Page', () => {
         .should('contain', 'Casual');
     });
 
-    it('Shows opponent names correctly', function () {
+    it('Shows opponent names correctly', function() {
       cy.loadFinishedGameFixtures([
         {
           name: 'Game vs PlayerOne',
