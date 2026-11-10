@@ -3,6 +3,11 @@ import { points } from '../../fixtures/gameStates/points';
 import { resolveThree } from '../../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../../fixtures/gameStates/resolveNine';
 import { duplicateCard, missingCard, scrapAttachments, invalidCard } from '../../fixtures/gameStates/cardValidationErrors';
+import { cloneDeep } from 'lodash';
+import { Card } from '../../fixtures/Card';
+import MoveType from '../../../../utils/MoveType.json';
+import TargetType from '../../../../utils/TargetType.json';
+import GamePhase from '../../../../utils/GamePhase.json';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
@@ -133,5 +138,68 @@ describe('Throwing Errors on card validations',() => {
   it('throws an error when a card in the scrap has an attachment', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(scrapAttachments))
       .toThrowError(/^6C is not a point card, and cannot have attachments$/);
+  });
+});
+
+describe('Labelling the jacks on a point card with the players who played them', () => {
+  const tenWithJacks = (...jacks) => ({ ...cloneDeep(Card.TEN_OF_SPADES), attachments: cloneDeep(jacks) });
+
+  it('labels the last jack with the player who controls the card, for odd and even counts', () => {
+    const { convertCardToStr } = sails.helpers.gameStates;
+    const one = tenWithJacks(Card.JACK_OF_DIAMONDS);
+    const two = tenWithJacks(Card.JACK_OF_DIAMONDS, Card.JACK_OF_HEARTS);
+    const three = tenWithJacks(Card.JACK_OF_DIAMONDS, Card.JACK_OF_HEARTS, Card.JACK_OF_CLUBS);
+
+    expect(convertCardToStr(one, 'p1')).toBe('TS(JD-p1)');
+    expect(convertCardToStr(two, 'p0')).toBe('TS(JD-p1,JH-p0)');
+    expect(convertCardToStr(three, 'p1')).toBe('TS(JD-p1,JH-p0,JC-p1)');
+  });
+
+  it('throws when a card with jacks has no controller', () => {
+    expect(() => sails.helpers.gameStates.convertCardToStr(tenWithJacks(Card.JACK_OF_DIAMONDS)))
+      .toThrowError(/Missing the player who controls TS/);
+  });
+
+  describe('through a game of jacks and a nine', () => {
+    let state;
+
+    beforeEach(() => {
+      state = {
+        p0: { hand: cloneDeep([ Card.JACK_OF_HEARTS ]), points: cloneDeep([ Card.TEN_OF_SPADES ]), faceCards: [] },
+        p1: { hand: cloneDeep([ Card.JACK_OF_DIAMONDS, Card.NINE_OF_CLUBS ]), points: [], faceCards: [] },
+        deck: cloneDeep([ Card.ACE_OF_CLUBS ]),
+        scrap: [], twos: [], discardedCards: [], fourRevealedCards: [], revealedCards: [],
+        playedCard: null, targetCard: null, oneOff: null, oneOffTarget: null, oneOffTargetType: null,
+        resolved: null, gameId: 1, playedBy: 0, moveType: MoveType.POINTS, turn: 1, phase: GamePhase.MAIN,
+      };
+    });
+
+    const play = (move, requestedMove, playedBy) => {
+      state = sails.helpers.gameStates.moves[move].execute(state, requestedMove, playedBy, []);
+      return sails.helpers.gameStates.packGamestate(state);
+    };
+
+    it('labels a jacked card and a card jacked back', () => {
+      let row = play('jack', { moveType: MoveType.JACK, cardId: 'JD', targetId: 'TS' }, 1);
+      expect(row.p1Points).toEqual([ 'TS(JD-p1)' ]);
+      expect(row.targetCard).toBe('TS(JD-p1)');
+
+      row = play('jack', { moveType: MoveType.JACK, cardId: 'JH', targetId: 'TS' }, 0);
+      expect(row.p0Points).toEqual([ 'TS(JD-p1,JH-p0)' ]);
+      expect(row.targetCard).toBe('TS(JD-p1,JH-p0)');
+    });
+
+    it('keeps the controller when a nine targets a card with two jacks, and when it resolves', () => {
+      play('jack', { moveType: MoveType.JACK, cardId: 'JD', targetId: 'TS' }, 1);
+      play('jack', { moveType: MoveType.JACK, cardId: 'JH', targetId: 'TS' }, 0);
+
+      let row = play('oneOff', { moveType: MoveType.ONE_OFF, cardId: '9C', targetId: 'TS', targetType: TargetType.point }, 1);
+      expect(row.oneOffTarget).toBe('TS(JD-p1,JH-p0)');
+
+      // The nine sends TS back to the deck, but the row still records who controlled it
+      row = play('resolve', { moveType: MoveType.RESOLVE }, 0);
+      expect(row.deck[0]).toBe('TS');
+      expect(row.targetCard).toBe('TS(JD-p1,JH-p0)');
+    });
   });
 });
