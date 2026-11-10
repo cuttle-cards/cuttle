@@ -142,7 +142,7 @@
       },
       "discardToHandLimit": {
         "title": "Défaussez les cartes en trop",
-        "body": "Vous avez plus de 8 cartes en main. Défaussez-vous jusqu'à la limite de 8 cartes en main.",
+        "body": "Vous avez plus de {handLimit} cartes en main. Défaussez-vous jusqu'à la limite de {handLimit} cartes en main.",
         "discard": "Défausser"
       },
       "five": {
@@ -456,7 +456,7 @@
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement.",
     "playTitle": "Jouer",
     "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
-    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes, puis vous défausser jusqu’à la limite de 8 cartes en main si vous avez 9 cartes ou plus en main.",
+    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes, puis vous défausser jusqu’à la limite de {handLimit} cartes en main si vous avez {handLimitPlusOne} cartes ou plus en main.",
     "draw": "Piocher",
     "drawDescription": "Prenez une carte de la pioche. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
     "points": "Points",

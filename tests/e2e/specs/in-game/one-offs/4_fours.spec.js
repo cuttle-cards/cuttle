@@ -1,3 +1,4 @@
+import { myUser, opponentOne } from '../../../fixtures/userFixtures';
 import { assertGameState } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
@@ -29,13 +30,13 @@ describe('FOURS', () => {
       cy.get('#waiting-for-opponent-reveal-four-scrim').should('be.visible');
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must reveal three cards from their hand.',
+        `The 4♠️ one-off resolves; ${opponentOne.username} must reveal three cards from their hand.`,
       );
       cy.revealFourOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.KING_OF_SPADES);
       cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'definitelyNotTheGovernment6969 revealed the A♥️, the 10♥️, and the K♠️.',
+        `${opponentOne.username} revealed the A♥️, the 10♥️, and the K♠️.`,
       );
 
       // Player chooses two of the revealed cards; the unrevealed ace isn't offered
@@ -55,7 +56,7 @@ describe('FOURS', () => {
       cy.get('#four-choose-discard-dialog').should('not.exist');
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'myUsername chose the A♥️ and the K♠️ for definitelyNotTheGovernment6969 to discard.',
+        `${myUser.username} chose the A♥️ and the K♠️ for ${opponentOne.username} to discard.`,
       );
 
       assertGameState(0, {
@@ -88,7 +89,7 @@ describe('FOURS', () => {
       cy.get('#waiting-for-opponent-reveal-four-scrim').should('not.exist');
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'The 4♠️ one-off resolves, revealing definitelyNotTheGovernment6969\'s whole hand: the A♥️, the 10♥️, and the K♠️.',
+        `The 4♠️ one-off resolves, revealing ${opponentOne.username}'s whole hand: the A♥️, the 10♥️, and the K♠️.`,
       );
 
       cy.get('#four-choose-discard-dialog')
@@ -134,7 +135,7 @@ describe('FOURS', () => {
       cy.get('#four-choose-discard-dialog').should('not.exist');
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'The 4♠️ one-off resolves, discarding the A♥️ and the 10♥️ from definitelyNotTheGovernment6969\'s hand.',
+        `The 4♠️ one-off resolves, discarding the A♥️ and the 10♥️ from ${opponentOne.username}'s hand.`,
       );
 
       assertGameState(0, {
@@ -162,7 +163,7 @@ describe('FOURS', () => {
 
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'The 4♣️ one-off resolves, discarding the A♥️ from definitelyNotTheGovernment6969\'s hand.',
+        `The 4♣️ one-off resolves, discarding the A♥️ from ${opponentOne.username}'s hand.`,
       );
 
       assertGameState(0, {
@@ -190,7 +191,7 @@ describe('FOURS', () => {
 
       cy.get('[data-cy=history-log]').should(
         'contain',
-        'The 4♣️ one-off resolves; definitelyNotTheGovernment6969 has no cards to discard.',
+        `The 4♣️ one-off resolves; ${opponentOne.username} has no cards to discard.`,
       );
 
       assertGameState(0, {
