@@ -637,6 +637,7 @@
   "profile": {
     "myGames": "Мої ігри",
     "noGamesFound": "Ігор не знайдено",
+    "totalGames": "Усього ігор: {count}",
     "win": "Перемога",
     "lose": "Поразка",
     "stalemate": "Нічия",
