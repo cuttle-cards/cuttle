@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isAnnouncementActive } from '@/util/announcement';
+import { isAnnouncementActive } from '@/routes/home/components/announcementDialog/data/announcementUtils';
 
 const announcement = (overrides = {}) => ({
   id: 'testAnnouncement',

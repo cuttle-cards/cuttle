@@ -69,7 +69,7 @@
 import { ref, computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getLocalStorage, setLocalStorage, LS_ANNOUNCEMENT } from '_/utils/local-storage-utils.js';
-import { isAnnouncementActive } from '@/util/announcement';
+import { isAnnouncementActive } from './data/announcementUtils';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseParagraph from '@/components/BaseParagraph.vue';
