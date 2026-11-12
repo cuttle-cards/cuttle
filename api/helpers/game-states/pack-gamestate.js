@@ -1,3 +1,27 @@
+const MoveType = require('../../../utils/MoveType.json');
+
+/**
+ * The player controlling a card, from whose points it is in
+ *
+ * @param { GameState } gameState
+ * @param { Card } card
+ * @returns { 'p0' | 'p1' | undefined }
+ */
+function controllerOf(gameState, card) {
+  if (gameState.p0.points.some(({ id }) => id === card.id)) {
+    return 'p0';
+  }
+  if (gameState.p1.points.some(({ id }) => id === card.id)) {
+    return 'p1';
+  }
+  // A resolving nine has already sent its target back to the deck. The target belonged to the
+  // player resolving the nine, since one-offs only target the opponent's cards.
+  if (gameState.moveType === MoveType.RESOLVE && gameState.resolved?.rank === 9) {
+    return gameState.playedBy ? 'p1' : 'p0';
+  }
+  return undefined;
+}
+
 module.exports = {
   friendlyName: 'pack GameState',
 
@@ -31,13 +55,16 @@ module.exports = {
         'revealedCards',
       ];
 
+      // A targeted point card can carry jacks, whose labels depend on who controls the card
+      const ownedAttributes = [ 'targetCard', 'oneOffTarget' ];
+
       attributesToConvert.forEach((attribute) => {
         const value = gameState[attribute];
         if (value) {
           const { convertCardToStr } = sails.helpers.gameStates;
           convertedData[attribute] = Array.isArray(value)
             ? value.map((card) => convertCardToStr(card))
-            : convertCardToStr(value);
+            : convertCardToStr(value, ownedAttributes.includes(attribute) ? controllerOf(gameState, value) : undefined);
         } else {
           convertedData[attribute] = null; // Handle null or undefined attributes
         }
