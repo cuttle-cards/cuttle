@@ -106,6 +106,15 @@ export default {
         (this.playingFromDeck && !this.cardSelectedFromDeck)
       );
     },
+    /**
+     * How many cards a nine could legally target. Point cards and royals/glasses each offer one
+     * target; a point card's jack stack offers one more, since only the top jack is targetable.
+     */
+    numValidNineTargets() {
+      const { points, faceCards } = this.gameStore.opponent;
+      const jackTargets = points.filter(({ attachments }) => attachments.length).length;
+      return points.length + faceCards.length + jackTargets;
+    },
     // Determines which disabled text to display
     disabledText() {
       if (this.playingFromDeck && !this.cardSelectedFromDeck) {
@@ -178,31 +187,30 @@ export default {
       let oneOffDisabled = this.allMovesAreDisabled;
       let oneOffDisabledExplanation = this.disabledText;
       if (!this.allMovesAreDisabled) {
-        if (this.opponentQueenCount >= 2) {
-          oneOffDisabled = true;
-          oneOffDisabledExplanation = this.t('game.moves.disabledMove.multipleQueens', { rank: this.selectedCard.rank });
-        } else {
-          let validTargetExists;
-          // Twos
-          if (this.selectedCard.rank === 2) {
+        // Twos are blocked by two or more queens; nines are blocked by any queen at all,
+        // since a lone queen is the only legal target and a nine needs two of them
+        if (this.selectedCard.rank === 2) {
+          if (this.opponentQueenCount >= 2) {
+            oneOffDisabled = true;
+            oneOffDisabledExplanation = this.t('game.moves.disabledMove.multipleQueens', {
+              rank: this.selectedCard.rank,
+            });
+          } else {
             const numOpFaceCards = this.gameStore.opponent.faceCards.length;
             const numOpJacks = this.gameStore.opponent.points.reduce((jackCount, pointCard) => {
               return jackCount + pointCard.attachments.length;
             }, 0);
-            const numTotalTargets = numOpFaceCards + numOpJacks;
-            validTargetExists = numTotalTargets >= 1;
-            if (!validTargetExists) {
+            if (numOpFaceCards + numOpJacks < 1) {
               oneOffDisabled = true;
               oneOffDisabledExplanation = this.t('game.moves.disabledMove.noRoyals');
             }
-          } else {
-            const numValidTargets =
-              this.gameStore.opponent.points.length + this.gameStore.opponent.faceCards.length;
-            if (numValidTargets === 0) {
-              oneOffDisabled = true;
-              oneOffDisabledExplanation = this.t('game.moves.disabledMove.noRoyalsOrPoints');
-            }
           }
+        } else if (this.opponentQueenCount >= 1) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.queenBlocksNine');
+        } else if (this.numValidNineTargets < 2) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.nineNeedsTwoTargets');
         }
       }
       return {

@@ -59,11 +59,13 @@ module.exports = {
         playedBy: 1, // p1 "deals"
         playedCard: null,
         targetCard: null,
+        targetCardTwo: null,
         discardedCards: [],
         fourRevealedCards: [],
         revealedCards: [],
         oneOff: null,
         oneOffTarget: null,
+        oneOffTargetTwo: null,
         resolving: null,
       };
 

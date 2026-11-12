@@ -18,6 +18,8 @@ function baseState(overrides = {}) {
     oneOff: null,
     oneOffTarget: null,
     oneOffTargetType: null,
+    oneOffTargetTwo: null,
+    oneOffTargetTwoType: null,
     resolved: null,
     playedCard: null,
     targetCard: null,
@@ -56,40 +58,52 @@ describe('Revealed cards', () => {
       expect(ids(result.revealedCards)).to.deep.eq([ 'KS' ]);
     });
 
-    it('Reveals the point card a nine returns to the deck', () => {
+    it('Reveals the point cards a nine returns to hand', () => {
       const state = baseState({
-        p1: { hand: [ Card.ACE_OF_HEARTS ], points: [ Card.TEN_OF_SPADES ], faceCards: [] },
+        p1: {
+          hand: [ Card.ACE_OF_HEARTS ],
+          points: [ Card.TEN_OF_SPADES, Card.NINE_OF_SPADES ],
+          faceCards: [],
+        },
         oneOff: Card.NINE_OF_CLUBS,
         oneOffTarget: Card.TEN_OF_SPADES,
         oneOffTargetType: 'point',
+        oneOffTargetTwo: Card.NINE_OF_SPADES,
+        oneOffTargetTwoType: 'point',
         phase: GamePhase.COUNTERING,
         moveType: MoveType.ONE_OFF,
         playedBy: 0,
       });
       // The nine's target resolves it
       const result = play(state, { moveType: MoveType.RESOLVE }, 1);
-      expect(result.deck[0].id).to.eq('TS');
-      expect(ids(result.revealedCards)).to.deep.eq([ 'TS' ]);
+      expect(ids(result.p1.hand)).to.include.members([ 'TS', '9S' ]);
+      expect(ids(result.revealedCards)).to.deep.eq([ 'TS', '9S' ]);
     });
 
-    it('Reveals the jack a nine returns to the deck', () => {
+    it('Reveals the jack a nine returns to hand', () => {
       const state = baseState({
         p1: {
           hand: [ Card.ACE_OF_HEARTS ],
-          points: [ { ...Card.TEN_OF_SPADES, attachments: [ Card.JACK_OF_HEARTS ] } ],
+          points: [
+            { ...Card.TEN_OF_SPADES, attachments: [ Card.JACK_OF_HEARTS ] },
+            Card.NINE_OF_SPADES,
+          ],
           faceCards: [],
         },
         oneOff: Card.NINE_OF_CLUBS,
         oneOffTarget: Card.JACK_OF_HEARTS,
         oneOffTargetType: 'jack',
+        oneOffTargetTwo: Card.NINE_OF_SPADES,
+        oneOffTargetTwoType: 'point',
         phase: GamePhase.COUNTERING,
         moveType: MoveType.ONE_OFF,
         playedBy: 0,
       });
       const result = play(state, { moveType: MoveType.RESOLVE }, 1);
-      expect(result.deck[0].id).to.eq('JH');
-      // The ten of spades returns to the field, which is public anyway
-      expect(ids(result.revealedCards)).to.deep.eq([ 'JH' ]);
+      expect(ids(result.p1.hand)).to.include.members([ 'JH', '9S' ]);
+      // Untargeted, the ten of spades reverts to the caster's field, which is public anyway
+      expect(ids(result.p0.points)).to.deep.eq([ 'TS' ]);
+      expect(ids(result.revealedCards)).to.deep.eq([ 'JH', '9S' ]);
     });
 
     it('Reveals the top two cards of the deck while resolving a seven', () => {
