@@ -142,7 +142,7 @@
       },
       "discardToHandLimit": {
         "title": "Überzählige Karten ablegen",
-        "body": "Du hast mehr als 8 Karten auf der Hand. Lege auf die Handkartenobergrenze von 8 ab.",
+        "body": "Du hast mehr als {handLimit} Karten auf der Hand. Lege auf die Handkartenobergrenze von {handLimit} ab.",
         "discard": "Ablegen"
       },
       "five": {
@@ -456,7 +456,7 @@
     "goalText": "Das Ziel ist es, der erste Spieler zu sein, der 21 oder mehr Punkte auf seinem Spielfeld hat. Der erste Spieler, der das Ziel erreicht, gewinnt sofort.",
     "playTitle": "Spiel",
     "playText-1": "Ein Spieler (traditionell der Geber) erhält 6 Karten, und sein Gegner erhält 5 Karten. Der Spieler mit 5 Karten beginnt.",
-    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausführen und danach auf die Handkartenobergrenze von 8 ablegen, wenn du 9 oder mehr Karten auf der Hand hast.",
+    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausführen und danach auf die Handkartenobergrenze von {handLimit} ablegen, wenn du {handLimitPlusOne} oder mehr Karten auf der Hand hast.",
     "draw": "Ziehen",
     "drawDescription": "Nimm eine Karte vom Stapel. Wenn keine Karten mehr im Stapel sind, kannst du passen. Drei aufeinanderfolgende Pässe enden das Spiel unentschieden.",
     "points": "Punkte",
@@ -637,6 +637,7 @@
   "profile": {
     "myGames": "Meine Spiele",
     "noGamesFound": "Keine Spiele gefunden",
+    "totalGames": "Spiele insgesamt: {count}",
     "win": "Sieg",
     "lose": "Niederlage",
     "stalemate": "Patt",

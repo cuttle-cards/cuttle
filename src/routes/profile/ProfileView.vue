@@ -15,7 +15,12 @@
         class="pa-4 mt-4"
         style="background-color: rgba(var(--v-theme-base-light)); color: rgba(var(--v-theme-base-dark))"
       >
-        <h2>{{ t('profile.myGames') }}</h2>
+        <div class="d-flex align-center justify-space-between">
+          <h2>{{ t('profile.myGames') }}</h2>
+          <span v-if="myGamesStore.totalCount > 0" data-cy="game-count">
+            {{ t('profile.totalGames', { count: myGamesStore.totalCount }) }}
+          </span>
+        </div>
 
         <v-virtual-scroll
           v-if="games.length > 0"

@@ -1,5 +1,5 @@
 <template>
-  <AnnouncementDialog v-model:open="announcementOpen" />
+  <AnnouncementDialog v-model:open="announcementOpen" :announcement="announcementData" />
   <EmailPreferenceDialog :waiting="announcementOpen || oAuthSignup" />
   <OauthSignupDialog v-model="oAuthSignup" />
   <div class="h-100 bg-base-dark">
@@ -165,6 +165,7 @@ import GameListItem, { GAME_LIST_ITEM_MODE } from '@/routes/home/components/Game
 import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
+import { announcementData } from './components/announcementDialog/data/announcementData';
 import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
 import EmailPreferenceDialog from '@/routes/home/components/EmailPreferenceDialog.vue';
 
@@ -194,6 +195,7 @@ export default {
     return {
       TABS,
       GAME_LIST_ITEM_MODE,
+      announcementData,
       tab: TABS.PLAY,
       loadingData: true,
       oAuthSignup: false,

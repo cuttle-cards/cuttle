@@ -7,7 +7,7 @@
   >
     <template #body>
       <p class="mb-4">
-        {{ t('game.dialogs.discardToHandLimit.body') }}
+        {{ t('game.dialogs.discardToHandLimit.body', {handLimit: HAND_LIMIT}) }}
       </p>
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
@@ -39,7 +39,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useGameStore } from '@/stores/game.js';
+import { useGameStore, HAND_LIMIT } from '@/stores/game.js';
 import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -65,7 +65,7 @@ const show = computed({
 });
 
 const hand = computed(() => player.value.hand);
-const discardCount = computed(() => Math.max(0, hand.value.length - 8));
+const discardCount = computed(() => Math.max(0, hand.value.length - HAND_LIMIT));
 const readyToDiscard = computed(() => selectedIds.value.length === discardCount.value);
 
 function selectCard(cardId) {

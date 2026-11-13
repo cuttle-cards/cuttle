@@ -9,7 +9,7 @@
     scrollable
     :persistent="false"
     :max-width="750"
-    :title="t(announcementData.title)"
+    :title="t(announcement.title)"
   >
     <template #activator>
       <v-btn
@@ -17,13 +17,13 @@
         rounded="0"
         block
       >
-        {{ t(announcementData.activatorText) }}
+        {{ t(announcement.activatorText) }}
       </v-btn>
     </template>
     <template #body>
-      <div v-if="announcementData.displayCards.length" class="cards d-flex justify-center my-4">
+      <div v-if="announcement.displayCards.length" class="cards d-flex justify-center my-4">
         <GameCard
-          v-for="card in announcementData.displayCards"
+          v-for="card in announcement.displayCards"
           :key="card.suit + card.rank"
           :suit="card.suit"
           :rank="card.rank"
@@ -31,24 +31,24 @@
           :high-elevation="true"
         />
       </div>
-      <div v-if="announcementData.imgSrc" class="d-flex justify-center mb-4 bg-base-light rounded">
+      <div v-if="announcement.imgSrc" class="d-flex justify-center mb-4 bg-base-light rounded">
         <!-- Links out to the full bracket when the announcement supplies a url -->
         <a
-          v-if="announcementData.imgHref"
-          :href="announcementData.imgHref"
+          v-if="announcement.imgHref"
+          :href="announcement.imgHref"
           target="_blank"
           class="d-block w-75 mb-4"
         >
-          <img class="w-100" :src="announcementData.imgSrc" :alt="t(announcementData.title)">
+          <img class="w-100" :src="announcement.imgSrc" :alt="t(announcement.title)">
         </a>
         <img
           v-else
           class="w-75 mb-4"
-          :src="announcementData.imgSrc"
-          :alt="t(announcementData.title)"
+          :src="announcement.imgSrc"
+          :alt="t(announcement.title)"
         >
       </div>
-      <div v-for="(text, i) in announcementData.announcementText" :key="i" class="mb-4">
+      <div v-for="(text, i) in announcement.announcementText" :key="i" class="mb-4">
         <BaseParagraph :heading="text.heading" :paragraph="text.paragraph" />
       </div>  
     </template>
@@ -68,13 +68,20 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage, LS_ANNOUNCEMENT } from '_/utils/local-storage-utils.js';
-import { announcementData } from './data/announcementData';
+import { isAnnouncementActive } from './data/announcementUtils';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseParagraph from '@/components/BaseParagraph.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+
+const props = defineProps({
+  // The announcement to show; see ./data/announcementData.js for its shape
+  announcement: {
+    type: Object,
+    required: true,
+  },
+});
 
 const { t } = useI18n();
 const authStore = useAuthStore();
@@ -83,23 +90,19 @@ const preferenceSaved= ref(false);
 // Lets the home page know when the announcement is on screen
 const isOpen = defineModel('open', { type: Boolean, default: false });
 
-const announcementIsActive = computed(() => {
-  const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
-  const isBeforeEndTime = announcementData.endTime ? dayjs().isBefore(dayjs(announcementData.endTime)) : true;
-  const appliesToMyUser = !announcementData.userIds?.length || announcementData.userIds.includes(authStore.userId);
-
-  return isAfterStartTime && isBeforeEndTime && appliesToMyUser;
-});
+const announcementIsActive = computed(() =>
+  isAnnouncementActive(props.announcement, { userId: authStore.userId }),
+);
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage(LS_ANNOUNCEMENT, announcementData.id);
+    setLocalStorage(LS_ANNOUNCEMENT, props.announcement.id);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
-if (getLocalStorage(LS_ANNOUNCEMENT) !== announcementData.id) {
+if (getLocalStorage(LS_ANNOUNCEMENT) !== props.announcement.id) {
   show.value = true;
 }
 
