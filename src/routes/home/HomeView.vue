@@ -1,5 +1,6 @@
 <template>
-  <AnnouncementDialog :announcement="announcementData" />
+  <AnnouncementDialog v-model:open="announcementOpen" :announcement="announcementData" />
+  <EmailPreferenceDialog :waiting="announcementOpen || oAuthSignup" />
   <OauthSignupDialog v-model="oAuthSignup" />
   <div class="h-100 bg-base-dark">
     <v-container id="home-container" class="container">
@@ -166,6 +167,7 @@ import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 import { announcementData } from './components/announcementDialog/data/announcementData';
 import OauthSignupDialog from '@/routes/home/components/OauthSignupDialog.vue';
+import EmailPreferenceDialog from '@/routes/home/components/EmailPreferenceDialog.vue';
 
 const TABS = {
   PLAY: '/',
@@ -179,6 +181,7 @@ export default {
     CreateGameDialog,
     AnnouncementDialog,
     OauthSignupDialog,
+    EmailPreferenceDialog,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -196,6 +199,7 @@ export default {
       tab: TABS.PLAY,
       loadingData: true,
       oAuthSignup: false,
+      announcementOpen: false,
     };
   },
   computed: {
