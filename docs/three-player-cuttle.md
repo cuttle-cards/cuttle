@@ -26,8 +26,8 @@ Decided in design discussion; not all are derivable from `en.json`.
 |---|---|
 | Glasses eight | Reveals every other player's hand to **all** players, persisting until those cards leave the hand -- the 5.0.0 behaviour, reading "both players" as "all players". Identical to current behaviour at two players. |
 | Four's reveal | **Public** -- every player sees the cards a four's victim reveals. |
-| Empty-deck reveal | **Public** -- once the deck runs out, all hands are shown to all players, as in two-player. |
-| Hidden information | Consequently cutthroat has **no private knowledge**: revealed state stays one global `revealedCards` set, with no per-viewer structure. |
+| Empty-deck reveal | **Not revealed** in cutthroat. At two players the reveal is a convenience for information you could already deduce -- every card not on the field, in the scrap or in your hand must be in your opponent's. At three players only the *union* of the two opponents' hands is deducible, not the split, so revealing would add information the game never earned. Two-player behaviour is unchanged. |
+| Hidden information | Cutthroat has **no private knowledge**: every reveal that exists (glasses, a four, a seven) is public, so revealed state stays one global `revealedCards` set with no per-viewer structure. The guiding distinction: reveals that are deliberate card effects carry over to three players; reveals that are conveniences for deducible information carry over only if the deduction does. |
 | Counter priority | Clockwise (ascending pNum) from whoever last added to the stack. p0 casts → p1 may counter → if p1 declines, p2 may counter → if p2 counters, p0 may counter that, then p1, etc. Declines are cleared each time the stack grows. |
 | Stalemate | All three players passing consecutively (one full round). |
 | Concede | **Not allowed** in cutthroat. |
@@ -86,6 +86,7 @@ belong in a **variant policy object**, e.g. `utils/variants/cutthroat.js`:
   deal: [ 5, 5, 5 ],
   deckIds: [ /* 52, or 54 with jokers */ ],
   disallowedMoveTypes: [ 'concede', 'stalemateRequest', 'stalemateAccept', 'stalemateReject' ],
+  revealHandsOnEmptyDeck: false, // true at two players -- see settled decisions
 }
 ```
 
@@ -581,6 +582,13 @@ Move the following out of hard-coded constants into the variant object:
 - **Hand limit.** `utils/GameConstants.json` is a single global.
 - **Stalemate threshold.** `check-game-state-for-win-sync.js:51` uses `numPasses >= 3`, with
   `create-socket-events.js:37-48` scanning the 3 most recent rows.
+- **Empty-deck reveal.** A new `revealHandsOnEmptyDeck` flag, true at two players and false for
+  cutthroat. It is implemented in **two independent places**, and both must read it:
+  `update-revealed-cards.js:68`, which adds every hand to `revealedCards`, and
+  `create-socket-events.js:97-101`, where `hideOpponentHand` unhides every hand whenever
+  `deckIsEmpty` — a live path that ignores `revealedCards` entirely. Gating only the first would
+  still leak every hand at three players through the second. The client has no implementation of
+  its own; it only renders the server's `isHidden` placeholders.
 
 > **Trap:** the two-player rule is `playerCount + 1` (three passes = one and a half rounds); the
 > cutthroat rule is `playerCount` (exactly one round). They coincide at 3 **by accident**. Do not
@@ -615,8 +623,10 @@ holds `players: Player[]` (`src/stores/game.js:100`), though `opponent` is
 appendix). It destructures `{ p0, p1 }` and cross-references by name: p0's glasses reveal p1's hand
 and vice versa, `publicIds` reads `[ previousState.p0, previousState.p1 ]`, and the empty-deck branch
 reveals both hands. Rewrite it to iterate players, with each glasses holder revealing every *other*
-player's hand. Under the settled rule that is the complete three-player behaviour, and at two players
-it is byte-identical — so glasses need no Phase 3 rules work at all.
+player's hand. Under the settled rule that is the complete three-player behaviour for glasses, and at
+two players it is byte-identical — so glasses need no Phase 3 rules work at all. The empty-deck
+branch is different: it must be **gated** on `revealHandsOnEmptyDeck` (1d), not merely iterated,
+since cutthroat does not reveal on an empty deck.
 
 **Acceptance criteria:** `GameState` exposes `players[]`; the ~25 `playedBy ? p1 : p0` lookup sites
 (sweep category "benign") become `players[playedBy]`; no helper derives a player *identity* from
@@ -643,8 +653,11 @@ p2 room would silently miss them; it is in scope here too.
 unhides hands for a glasses holder in their own payload, but that only covers *live* visibility for
 the holder. Under the settled rule — glasses reveal to all players, persisting — the rule lives in
 `update-revealed-cards.js` and flows through the global `revealedCards` set; see 1e.
-`hideOpponentHand`'s holder-only unhide becomes redundant, since `move.js` publishes the state after
-`updateRevealedCards` runs, but it remains consistent. Leave it.
+`hideOpponentHand`'s holder-only glasses unhide becomes redundant, since `move.js` publishes the state
+after `updateRevealedCards` runs, but it remains consistent — leave that branch. Its `deckIsEmpty`
+branch (lines 97-101) is **not** redundant and must not be left: it is a second, independent
+implementation of the empty-deck reveal and must read `revealHandsOnEmptyDeck` (1d), or it unhides
+every hand at three players even after `update-revealed-cards.js` is gated.
 
 **Acceptance criteria:** `createSocketEvents` returns one state per player plus a spectator state,
 derived from player count rather than a fixed `{ p0State, p1State, spectatorState }`;
@@ -763,9 +776,12 @@ hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
 - **Required by the above, not deferrable:** `find-current-games-for-user.js:45` derives the
   opponent by alternation (sweep category C5). Go Home is only an exit if the player can get back,
   so the home-page current-games list must render three-player games in the first release.
-- **Rules page line for glasses.** `glassesDescription` reads "reveal your opponent's hand", which
+- **Rules page lines for reveals.** `glassesDescription` reads "reveal your opponent's hand", which
   is ambiguous at three players. Add a line to the `3Players` rules section stating that glasses
-  reveal every other player's hand to all players — across all five locale files.
+  reveal every other player's hand to all players — across all five locale files. Worth a second
+  line that hands stay hidden when the deck runs out: the two-player reveal is undocumented
+  (`deckExhaustAnswer` never mentions it), so experienced players will expect it without having
+  read anywhere that it exists.
 
 **Phase 5 — jokers**, if in scope, as an independent `ruleVariants` flag. Larger than it looks:
 `convertIdToCard` requires exactly 2 characters and `suit` is 0–3 / `rank` 1–13, so two
@@ -841,7 +857,9 @@ Phase 3. Not twelve separate problems.
 - `resolve/six.js:19,37-38` (pairwise swap) and `resolve/ace.js:23-24` (wipes `p0`/`p1`
   explicitly) — already covered by 1b.
 - **`update-revealed-cards.js:32-69` — found by the per-file pass.** Pairwise-by-name throughout;
-  glasses, `publicIds` and the empty-deck branch all name `p0` and `p1`. Covered by 1e.
+  glasses, `publicIds` and the empty-deck branch all name `p0` and `p1`. Covered by 1e, with the
+  empty-deck branch gated by 1d. Its twin, `create-socket-events.js:97-101` (`deckIsEmpty`), must be
+  gated too — see 1f.
 - **`seven-discard/validate.js:69-73` — NEW.** A revealed double-jack may only be discarded when
   the jacks are unplayable, tested as *the opponent has a Queen or has no points*. At three
   players this must hold against **every** opponent: `opponents.every(o => hasQueen(o) ||
