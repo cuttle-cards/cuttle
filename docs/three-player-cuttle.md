@@ -24,7 +24,10 @@ Decided in design discussion; not all are derivable from `en.json`.
 
 | Topic | Decision |
 |---|---|
-| Glasses eight | Reveals **both** opponents' hands, but only to the player holding the glasses. |
+| Glasses eight | Reveals every other player's hand to **all** players, persisting until those cards leave the hand -- the 5.0.0 behaviour, reading "both players" as "all players". Identical to current behaviour at two players. |
+| Four's reveal | **Public** -- every player sees the cards a four's victim reveals. |
+| Empty-deck reveal | **Public** -- once the deck runs out, all hands are shown to all players, as in two-player. |
+| Hidden information | Consequently cutthroat has **no private knowledge**: revealed state stays one global `revealedCards` set, with no per-viewer structure. |
 | Counter priority | Clockwise (ascending pNum) from whoever last added to the stack. p0 casts → p1 may counter → if p1 declines, p2 may counter → if p2 counters, p0 may counter that, then p1, etc. Declines are cleared each time the stack grows. |
 | Stalemate | All three players passing consecutively (one full round). |
 | Concede | **Not allowed** in cutthroat. |
@@ -65,7 +68,7 @@ Decided in design discussion; not all are derivable from `en.json`.
 Of the 24 directories under `api/helpers/game-states/moves/`:
 
 - **4 are simply disabled** in cutthroat (`concede`, `stalemate-request`/`-accept`/`-reject`) —
-  a variant allow-list, not a fork.
+  a variant disallow-list (`disallowedMoveTypes`), not a fork.
 - **~2 genuinely differ**, and only in *priority*: `counter` and `resolve`.
 - **~18 are identical**, either outright or once the target player is made explicit.
 
@@ -608,11 +611,19 @@ Column names stay `p0*`/`p1*`/`p2*`; only the in-memory shape changes. The clien
 holds `players: Player[]` (`src/stores/game.js:100`), though `opponent` is
 `players[(myPNum + 1) % 2]` and is consumed widely.
 
+**Includes `update-revealed-cards.js`**, which the original sweep pattern missed (see the
+appendix). It destructures `{ p0, p1 }` and cross-references by name: p0's glasses reveal p1's hand
+and vice versa, `publicIds` reads `[ previousState.p0, previousState.p1 ]`, and the empty-deck branch
+reveals both hands. Rewrite it to iterate players, with each glasses holder revealing every *other*
+player's hand. Under the settled rule that is the complete three-player behaviour, and at two players
+it is byte-identical — so glasses need no Phase 3 rules work at all.
+
 **Acceptance criteria:** `GameState` exposes `players[]`; the ~25 `playedBy ? p1 : p0` lookup sites
 (sweep category "benign") become `players[playedBy]`; no helper derives a player *identity* from
 alternation except those explicitly deferred to Phase 3; stored column names are unchanged;
 existing suite passes; **a synthetic three-entry `players` array can be passed to any move helper
-without error** — this is what unblocks the 1b and 1c correctness tests.
+without error** — this is what unblocks the 1b and 1c correctness tests; `update-revealed-cards.js`
+iterates players, with glasses revealing every hand except the holder's.
 
 **Depends on:** nothing. **Ship early** — alongside 1a rather than after it. It is a pure
 two-player-safe refactor, and it is the enabler for proving 1b and 1c at all.
@@ -625,14 +636,20 @@ two-player-safe refactor, and it is the enabler for proving 1b and 1c at all.
 `{ p0State, p1State, spectatorState }`. Generalize to N+1. `join.js:51-62` hard-codes the p0→p1
 seat ladder.
 
-Note `create-socket-events.js:96-107` already computes hand visibility **per perspective** —
-`hideOpponentHand` checks whether *that* player holds a glasses eight and, if so, unhides every
-hand in that player's own payload only. The settled eights rule therefore requires no rules logic
-at all; it falls out of this item once `originalPlayers` has three entries.
+`broadcast-game-event.js:27-29` hard-codes the same three rooms for its pass-through events, so a
+p2 room would silently miss them; it is in scope here too.
+
+**The glasses rule does not live in this item.** `hideOpponentHand` (`create-socket-events.js:96-107`)
+unhides hands for a glasses holder in their own payload, but that only covers *live* visibility for
+the holder. Under the settled rule — glasses reveal to all players, persisting — the rule lives in
+`update-revealed-cards.js` and flows through the global `revealedCards` set; see 1e.
+`hideOpponentHand`'s holder-only unhide becomes redundant, since `move.js` publishes the state after
+`updateRevealedCards` runs, but it remains consistent. Leave it.
 
 **Acceptance criteria:** `createSocketEvents` returns one state per player plus a spectator state,
 derived from player count rather than a fixed `{ p0State, p1State, spectatorState }`;
-`publishGameState` broadcasts to N+1 rooms; `join.js` assigns seats by iteration rather than the
+`publishGameState` and `broadcastGameEvent` broadcast to N+1 rooms; `join.js` assigns seats by
+iteration rather than the
 p0 -> p1 ladder; `tests/unit/specs/sails/game-perspectives.spec.js`, which asserts room membership
 and per-perspective visibility, passes unchanged. That spec is the natural regression gate here.
 
@@ -647,6 +664,32 @@ and per-perspective visibility, passes unchanged. That spec is the natural regre
 (currently `game.p0 && game.p1`) / ready-up for N seats. Both migrations additive.
 `archive.js:26-28` checks membership against `[p0, p1]` only — p2 must be added, or the third
 player cannot dismiss their own abandoned game.
+
+**Seat enumeration — security-relevant.** Many controllers and helpers list the seats as `p0, p1`
+(sweep category C8). Most fail **closed** when a third seat appears: `move.js:36-44` throws
+"You are not a player in this game!" for an unlisted p2. Two fail **open**, into the most
+privileged view in the system:
+
+- `get-game.js:22-26` defaults `userRelationship` to `'spectator'` and only matches p0 and p1. A
+  seated p2 loading or refreshing their own live game would join `game_<id>_spectator`, and the
+  spectator payload is full visibility (`create-socket-events.js:190`) — every hand **and the deck
+  order**. That is the ordinary page-load path, not a crafted request.
+- `spectate/join.js:26` forbids spectating your own live game by checking `[ p0?.id, p1?.id ]`, so
+  p2 could explicitly spectate their own game with the same result.
+
+Resolve both with one `seatOf(game, userId) -> pNum | null` helper iterating the game's seats, used
+everywhere a session user is mapped to a seat, and by treating a seated player landing in the
+spectator room of a STARTED game as an error rather than a fallback. **Acceptance:** in a
+three-player live game, each seated player's game load joins their own perspective room, and
+`spectate/join` rejects all three.
+
+The fail-closed sites still need p2: `ready.js:13-31`, `leave-lobby.js:16-22`, `lock-game.js:46-47`
+(populate), `find-open-games.js:19-35` (lobby list), `get-history.js:15-47` (p2's games would be
+absent from their own history), `StatsController.js:13-14` (unique-player counts), and
+`load-fixture-gamestate.js`, which must accept p2 fields before any three-player e2e test can be
+staged. `set-is-ranked.js:8` checks membership too — but since cutthroat is casual-only, it should
+**reject** `isRanked` on three-player games outright, enforced server-side rather than by hiding
+the toggle.
 
 **Rematch under seat rotation.** `rematch.js` generalizes rather than forks, but has three
 reconciliation sites plus one hazard:
@@ -665,9 +708,12 @@ reconciliation sites plus one hazard:
    perspective room. That is an information leak, not a glitch. Cover it with an explicit test:
    after a rematch, every user's socket room matches their new seat.
 
-**Phase 3 — three-player rules.** Turn order + dealer rotation; counter priority with explicit
-state; cross-board targeting; board wipes across three fields; win table; hand limit 7; stalemate
-redefinition; concede and stalemate-request disabled via the allow-list.
+**Phase 3 — three-player rules.** Turn order (`turn % playerCount`; dealer rotation is handled by
+seat rotation on rematch); counter priority with explicit state; cross-board targeting; board wipes
+across three fields; win table; hand limit 7; stalemate redefinition; concede and stalemate-request
+disabled via the rule set's `disallowedMoveTypes`. The winner write in
+`check-game-state-for-win.js:66-69` maps the winning pNum to `game.p0.id`/`game.p1.id`, so a p2
+win needs a seat lookup (sweep C8).
 
 Cross-board targeting is where `targetPNum` enters the move request bodies for `jack`, `scuttle`,
 `one-off` and the `seven-*` equivalents, defaulting to the sole opponent at two players. Deferred
@@ -695,7 +741,9 @@ re-renders it. Fizzle parity (`twos.length % 2 === 1`) is unaffected at any play
 
 **Phase 4 — client.** Seat-based board component; `opponents[]` in the store; seat-scoped
 `data-cy` contract leaving the existing two-player selectors untouched; player picker in the
-jack / two / nine / four target dialogs.
+jack / two / nine / four target dialogs. `owner` reaches the client for free via
+`create-socket-events`, and is needed to attribute jacks per player — `GameView.vue:240` currently
+hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
 
 **Scoped down for the first user-facing release (decided):**
 
@@ -714,9 +762,10 @@ jack / two / nine / four target dialogs.
   `$router.push('/')`.
 - **Required by the above, not deferrable:** `find-current-games-for-user.js:45` derives the
   opponent by alternation (sweep category C5). Go Home is only an exit if the player can get back,
-  so the home-page current-games list must render three-player games in the first release. `owner` reaches the client for free via
-`create-socket-events`, and is needed to attribute jacks per player — `GameView.vue:240` currently
-hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
+  so the home-page current-games list must render three-player games in the first release.
+- **Rules page line for glasses.** `glassesDescription` reads "reveal your opponent's hand", which
+  is ambiguous at three players. Add a line to the `3Players` rules section stating that glasses
+  reveal every other player's hand to all players — across all five locale files.
 
 **Phase 5 — jokers**, if in scope, as an independent `ruleVariants` flag. Larger than it looks:
 `convertIdToCard` requires exactly 2 characters and `suit` is 0–3 / `rank` 1–13, so two
@@ -748,9 +797,16 @@ them as bugs.
 
 ## Appendix: two-player assumption sweep
 
-Exhaustive grep over `api/` and `src/` for the signature **a value that resolves to *a player*
-(rather than to a turn) via two-player alternation** — `playedBy ? p0 : p1`, `(x + 1) % 2`,
-`% 2`. Run before implementing 1a/1c so no further instances surface mid-change.
+Run before implementing 1a/1c so no further instances surface mid-change. Two passes:
+
+1. **Pattern grep** over `api/` and `src/` for **a value that resolves to *a player* (rather than to a
+   turn) via two-player alternation** — `playedBy ? p0 : p1`, `(x + 1) % 2`, `% 2`.
+2. **Per-file coverage check.** The pattern pass missed two shapes that contain no ternary or
+   modulo: *pairwise-by-name* (destructure `{ p0, p1 }`, then cross-reference by name, as in
+   `update-revealed-cards.js`) and *seat enumeration* (listing `p0, p1` as the seats that exist). So
+   every file in `api/` and `src/` that names `p0` or `p1` was checked against this document.
+   **Every such file is now classified below**; `src/plugins/sockets/inGameEvents.js` holds only
+   rematch flags and is deferred with rematch.
 
 ### Benign — no action beyond 1e
 
@@ -784,6 +840,8 @@ Phase 3. Not twelve separate problems.
 
 - `resolve/six.js:19,37-38` (pairwise swap) and `resolve/ace.js:23-24` (wipes `p0`/`p1`
   explicitly) — already covered by 1b.
+- **`update-revealed-cards.js:32-69` — found by the per-file pass.** Pairwise-by-name throughout;
+  glasses, `publicIds` and the empty-deck branch all name `p0` and `p1`. Covered by 1e.
 - **`seven-discard/validate.js:69-73` — NEW.** A revealed double-jack may only be discarded when
   the jacks are unplayable, tested as *the opponent has a Queen or has no points*. At three
   players this must hold against **every** opponent: `opponents.every(o => hasQueen(o) ||
@@ -809,7 +867,18 @@ Phase 3. Not twelve separate problems.
 `resolve/six.js:29` (1b), `your-turn-to-counter.js:25` with `src/stores/game.js:220,225`
 (Phase 3 counter priority).
 
+**C8 — seat enumeration. Phase 2.** Found by the per-file pass. Fails **open**, into full
+visibility: `get-game.js:22-26`, `spectate/join.js:26` — see the Phase 2 note. Fails closed or
+silently wrong: `move.js:36-44`, `ready.js:13-31`, `leave-lobby.js:16-22`, `lock-game.js:46-47`,
+`find-open-games.js:19-35`, `get-history.js:15-47`, `StatsController.js:13-14`,
+`set-is-ranked.js:8`, `load-fixture-gamestate.js`, `broadcast-game-event.js:27-29` (1f),
+`check-game-state-for-win.js:66-69` (Phase 3). Deferred with rematch: `get-casual-match.js:20-21`,
+`get-match-games.js:9-10`, `get-rematch-games.js:6-8`.
+
 ### Outcome
 
-No fourth instance of C3 exists, and C1 collapses to a single deferred item. The sweep's net new
-work is two sites: `seven-discard/validate.js` (C4, a rule-shape change) and `get-log.js` (C5).
+No fourth instance of C3 exists, and C1 collapses to a single deferred item. The pattern pass's net
+new work was two sites: `seven-discard/validate.js` (C4, a rule-shape change) and `get-log.js` (C5).
+The per-file pass added `update-revealed-cards.js` (1e) and the whole of C8, including the two
+fail-open seat checks — the most consequential finding of either pass, since they leak hidden
+information on the ordinary page-load path.
