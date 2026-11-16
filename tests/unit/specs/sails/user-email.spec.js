@@ -151,7 +151,11 @@ describe('User preferred email', () => {
     const { agent: firstAgent, userId: firstId } = await signup('firstUser');
     const { agent: secondAgent, userId: secondId } = await signup('secondUser');
     await firstAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
-    await secondAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    // Let the address's cooldown pass so the second account can be sent a code too
+    await UserEmail.updateOne({ user: firstId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+    const secondCode = await secondAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(secondCode.statusCode).toBe(200);
 
     await firstAgent.post('/api/user/email/verify').send({ code: await setKnownCode(firstId) });
     const res = await secondAgent.post('/api/user/email/verify').send({ code: await setKnownCode(secondId) });
@@ -196,6 +200,25 @@ describe('User preferred email', () => {
     expect(row.codeSentAt).toBeNull();
     const retry = await agent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
     expect(retry.statusCode).toBe(200);
+  });
+
+  it('Limits codes to an address across accounts', async () => {
+    const { agent: firstAgent, userId: firstId } = await signup('firstUser');
+    const { agent: secondAgent } = await signup('secondUser');
+    await firstAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+
+    // A different account can't send the same address another code during the cooldown
+    const blocked = await secondAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(blocked.statusCode).toBe(429);
+    const otherAddress = await secondAgent.post('/api/user/email/request-code').send({ email: 'other@example.com' });
+    expect(otherAddress.statusCode).toBe(200);
+
+    await UserEmail.updateOne({ user: firstId }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+    await UserEmail.updateOne({ user: { '!=': firstId } }).set({ codeSentAt: dayjs.utc().subtract(1, 'hour')
+      .toDate() });
+    const afterCooldown = await secondAgent.post('/api/user/email/request-code').send({ email: 'me@example.com' });
+    expect(afterCooldown.statusCode).toBe(200);
   });
 
   it('Sends only one code when requests race', async () => {

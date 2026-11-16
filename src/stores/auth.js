@@ -190,6 +190,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async verifyEmailCode(code) {
+      const { authVersion } = this;
       const response = await fetch('/api/user/email/verify', {
         method: 'POST',
         headers: new Headers({
@@ -201,6 +202,11 @@ export const useAuthStore = defineStore('auth', {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         throw new Error(data.message ?? 'emailPreference.error.verifyFailed');
+      }
+      // Don't apply the result to a different account if the user logged out or switched
+      // accounts while this was pending
+      if (authVersion !== this.authVersion) {
+        return;
       }
       this.email = data.email;
       this.promotional = data.promotional;

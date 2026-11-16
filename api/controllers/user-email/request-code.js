@@ -24,7 +24,16 @@ module.exports = async function (req, res) {
 
     // Limit how often a user can request a code
     const now = dayjs.utc();
-    if (userEmail?.codeSentAt && now.diff(dayjs.utc(userEmail.codeSentAt), 'second') < RESEND_COOLDOWN_SECONDS) {
+    const isCoolingDown = (row) => row.codeSentAt
+      && now.diff(dayjs.utc(row.codeSentAt), 'second') < RESEND_COOLDOWN_SECONDS;
+    if (userEmail && isCoolingDown(userEmail)) {
+      return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
+    }
+
+    // Also limit each address across all accounts, so new accounts can't be used to send it more
+    // than one code per cooldown
+    const pendingForAddress = await UserEmail.find({ pendingEmail: email, user: { '!=': userId } });
+    if (pendingForAddress.some(isCoolingDown)) {
       return res.status(429).json({ message: 'emailPreference.error.tooManyRequests' });
     }
 
