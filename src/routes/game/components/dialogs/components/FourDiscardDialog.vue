@@ -17,7 +17,7 @@
           :suit="card.suit"
           :rank="card.rank"
           :data-four-discard-card="`${card.rank}-${card.suit}`"
-          :class="{ 'is-selected': selectedIds.includes(card.id) }"
+          :class="{ 'is-selected': isSelected(card.id) }"
           @click="selectCard(card.id)"
         />
       </div>
@@ -37,12 +37,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '@/stores/game.js';
 import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+import { useSelectCards } from '@/composables/useSelectCards';
 
 const DISCARD_COUNT = 2;
 
@@ -59,31 +60,23 @@ const { t } = useI18n();
 const gameStore = useGameStore();
 const { fourRevealedCards } = storeToRefs(gameStore);
 
-const selectedIds = ref([]);
-
 const show = computed({
   get: () => props.modelValue,
   set: () => {},
 });
 
-const readyToDiscard = computed(() => selectedIds.value.length === DISCARD_COUNT);
-
-function selectCard(cardId) {
-  const idx = selectedIds.value.indexOf(cardId);
-  if (idx !== -1) {
-    selectedIds.value.splice(idx, 1);
-  } else {
-    selectedIds.value.push(cardId);
-    if (selectedIds.value.length > DISCARD_COUNT) {
-      selectedIds.value.splice(0, 1);
-    }
-  }
-}
+const {
+  selectedIds,
+  isSelected,
+  ready: readyToDiscard,
+  selectCard,
+  clear,
+} = useSelectCards(DISCARD_COUNT);
 
 function discard() {
   if (readyToDiscard.value) {
     emit('discard', [ ...selectedIds.value ]);
-    selectedIds.value = [];
+    clear();
   }
 }
 </script>
