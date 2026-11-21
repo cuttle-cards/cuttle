@@ -2,7 +2,7 @@
  * Convert the attachments attribute of a card object to its string representation
  *
  * @param { Card } card - the card object to convert
- * @param { 'p0' | 'p1' } cardOwner - which player owns the card
+ * @param { 'p0' | 'p1' } cardOwner - which player currently controls the card
  * @returns { String } string representation of the card atatchements attributs
  */
 function concatAttachtToId(card, cardOwner) {
@@ -10,12 +10,17 @@ function concatAttachtToId(card, cardOwner) {
     return '';
   }
 
+  // A card with jacks on it needs its controller to label them; guessing one would mislabel every jack
+  if (![ 'p0', 'p1' ].includes(cardOwner)) {
+    throw new Error(`Missing the player who controls ${card.id}, which has jacks attached`);
+  }
+
   // GameStateRow Format => (JH-p0,JC-p1,JD-p0)
 
   let opponent = cardOwner === 'p0' ? 'p1' : 'p0';
-  // First player on the string owns the main card
-  // => if card.attachments length is an odd number, start string construction with the opponent
-  let playerNum = card.attachments.length % 2 === 0 ? cardOwner : opponent;
+  // Jacks alternate between the players, and the last one was played by the card's controller
+  // => with an even number of jacks the first one belongs to the opponent, with an odd number to the controller
+  let playerNum = card.attachments.length % 2 === 0 ? opponent : cardOwner;
 
   const convertedCards = card.attachments.map((card) => {
     const cardInString = validateCardId(card.id) + '-' + playerNum;
@@ -56,18 +61,18 @@ module.exports = {
       description: 'card',
       required: true,
     },
-    playedBy: {
+    cardOwner: {
       type: 'string',
-      description: 'player',
+      description: 'Player who currently controls the card (p0 or p1); required when the card has jacks attached',
       required: false,
     },
   },
   sync: true,
 
-  fn: ({ card, playedBy }, exits) => {
+  fn: ({ card, cardOwner }, exits) => {
     try {
       const cardId = validateCardId(card.id);
-      const attachments = concatAttachtToId(card, playedBy);
+      const attachments = concatAttachtToId(card, cardOwner);
 
       return exits.success(cardId + attachments);
     } catch (err) {

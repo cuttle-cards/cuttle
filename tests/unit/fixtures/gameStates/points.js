@@ -6,7 +6,7 @@ import { gameFixture } from '../Game';
 
 const gameStateRow = {
   p0Hand: [ 'AS' ],
-  p0Points: [ 'TS', '8D(JS-p0,JC-p1)' ],
+  p0Points: [ 'TS', '8D(JS-p1,JC-p0)' ],
   p0FaceCards: [ 'KS' ],
   p1Hand: [ 'AH', 'AD' ],
   p1Points: [ 'TH', 'AC' ],
