@@ -11,10 +11,12 @@ independently valuable because it fixes two latent correctness bugs.
 Variant rules as written live in `src/translations/en.json` under `rules.3Players`.
 
 - [Settled rules decisions](#settled-rules-decisions)
+- [Stacks and jokers](#stacks-and-jokers)
 - [Architecture decisions](#architecture-decisions)
+- [Verification strategy](#verification-strategy)
 - [Phase 1 — two-player-safe groundwork](#phase-1--two-player-safe-groundwork)
-- [Phases 2–5 — outline](#phases-25--outline)
-- [Open questions](#open-questions)
+- [Phases 2–4 — outline](#phases-24--outline)
+- [Pending items](#pending-items)
 
 ---
 
@@ -24,10 +26,10 @@ Decided in design discussion; not all are derivable from `en.json`.
 
 | Topic | Decision |
 |---|---|
-| Glasses eight | Reveals every other player's hand to **all** players, persisting until those cards leave the hand -- the 5.0.0 behaviour, reading "both players" as "all players". Identical to current behaviour at two players. |
+| Glasses eight | Audience is **open**: either every other player's hand is revealed to all players, or only to the glasses' controller. Decide during Phase 1, before 1e is written — see [Pending items](#pending-items). Either way, revealed cards persist until they leave the hand, as under 5.0.0, and both options are identical at two players. |
 | Four's reveal | **Public** -- every player sees the cards a four's victim reveals. |
 | Empty-deck reveal | **Not revealed** in cutthroat. At two players the reveal is a convenience for information you could already deduce -- every card not on the field, in the scrap or in your hand must be in your opponent's. At three players only the *union* of the two opponents' hands is deducible, not the split, so revealing would add information the game never earned. Two-player behaviour is unchanged. |
-| Hidden information | Cutthroat has **no private knowledge**: every reveal that exists (glasses, a four, a seven) is public, so revealed state stays one global `revealedCards` set with no per-viewer structure. The guiding distinction: reveals that are deliberate card effects carry over to three players; reveals that are conveniences for deducible information carry over only if the deduction does. |
+| Hidden information | The four's and the seven's reveals are public. If glasses are public too, cutthroat has **no private knowledge** and revealed state stays one global `revealedCards` set; if glasses go private, they become the **only** source of private knowledge. The guiding distinction: reveals that are deliberate card effects carry over to three players; reveals that are conveniences for deducible information carry over only if the deduction does. |
 | Counter priority | Clockwise (ascending pNum) from whoever last added to the stack. p0 casts → p1 may counter → if p1 declines, p2 may counter → if p2 counters, p0 may counter that, then p1, etc. Declines are cleared each time the stack grows. |
 | Stalemate | All three players passing consecutively (one full round). |
 | Concede | **Not allowed** in cutthroat. |
@@ -35,14 +37,67 @@ Decided in design discussion; not all are derivable from `en.json`.
 | Win thresholds | 14 points / 9 with one King / 5 with two Kings / 0 with three Kings. |
 | Hand limit | 7 (vs 8 in two-player). |
 | Deal | 5 cards each; dealer rotates per game; play starts left of the dealer. **Confirmed intentional** -- unlike two-player's 5/6, later players get no extra card, since acting later in a 1v1v1 carries its own advantage. |
-| Jokers | **Out of scope** for the initial release. Tracked separately as an orthogonal rule variant. |
-| Buried jacks | The **top-jack-only** targeting restriction is kept. After 1a it is no longer required by the representation, so it stands as a deliberate rule. |
-| Targeting scope | `targetPNum` must be an **opponent, never yourself**. The Nine may hit any opponent's card. Applies equally to the Two, the Jack and scuttles. |
+| Jokers | **In scope at launch**, for balance: the lower win thresholds put a player in check after a single King, and jokers add answers to Royals. Two jokers, ids `XR`/`XB`, rank 14. Cutthroat's rule set turns them on; the `ruleVariants` flag is kept for a future 2v2 variant but not exposed as a toggle. See [Stacks and jokers](#stacks-and-jokers). |
+| Buried stealers | Only the **top** stealer of a stack (jack or joker) may be targeted, by anything. This keeps the existing top-jack-only rule and extends it to jokers. After 1a it is no longer required by the representation, so it stands as a deliberate rule. |
+| Targeting scope | `targetPNum` must be an **opponent, never yourself**. The Nine may hit any opponent's card. Applies equally to the Two, the Jack, the Joker and scuttles. |
 | Seven reveals | The top two cards are revealed to **every** player, not just the caster. |
 | Rematch agreement | **Unanimous** -- all N players must accept. Generalizes `p0Rematch && p1Rematch`. |
 | Leaving a game | A **Go Home** menu item replaces Concede/Stalemate in variants that disallow them. Plain navigation: the game persists and the player may return. |
 | Queen protection | A Queen protects her owner's board against **every** opponent's targeting effects -- Twos (both effects), Nines, Jacks, and Jokers. Not caster-scoped. |
 | Rematch / dealer rotation | **Seat rotation**, generalizing the existing two-player swap: `newSeats = [...seats.slice(1), seats[0]]`. Since p0 always starts, rotating by one advances the starter clockwise each game. No `firstPlayerPNum` column. |
+
+## Stacks and jokers
+
+Settled. Jokers are "Royals with the effect *steal target Royal*", and the attachment model is
+chosen so that **stacks never nest**: jacks and jokers are both *stealers* attached to the card
+being controlled.
+
+- **A stack is a base card plus an ordered list of stealers**, bottom to top.
+- **Bases** are point cards (in `points`) and Royals in `faceCards`: Kings, Queens and Glasses
+  eights.
+- **Stealers are never bases.** A jack always sits on a point card; a joker always sits on whatever
+  it stole. A joker played on a jack or on another joker attaches to *that stealer's base*. So if
+  p1 jacks p0's Ten of Hearts and p0 jokers that jack, p0 has stolen the Ten back:
+  `TH-p0(JH-p1)` in `p1Points` becomes `TH-p0(JH-p1,XR-p0)` in `p0Points`.
+- **Control** is the owner of the top stealer, or the base's own owner when there is none. The base
+  sits in its controller's array.
+- **A jack** steals a point card, including one whose stack already ends in a joker.
+- **A joker** must target a Royal: a Royal base, or the top stealer of any stack. An *unstolen*
+  point card cannot be jokered, since it is not a Royal and carries nothing Royal. An eight played
+  as points can be jacked but not jokered; an eight played as glasses is a Royal base.
+- **Ids `XR` and `XB`, rank 14.** Two characters, so they pass the existing length check; `X` is
+  not a rank letter and `R`/`B` are not suit letters. Rank 14 is deliberate: the points, scuttle,
+  face-card, one-off and jack validators all reject it (`rank > 10`, `rank >= 11`, the `[8, 12, 13]`
+  whitelist, the one-off `switch` default, `rank !== 11`), so a joker cannot be played as anything
+  else. A rank of 0 would pass the point checks. The exception is the counter validator, which
+  checks no rank at all — see [Found along the way](#found-along-the-way).
+
+Interactions (all confirmed):
+
+1. **Two on a stack.** Targeting the top stealer scraps it, and control drops to the next stealer
+   down, or to the base's owner. Targeting a Royal base (a stolen King) scraps the King and its
+   whole stack. Both are legal and have different outcomes.
+2. **Nine on a stack.** The top stealer goes on top of the deck and control drops a level. A Royal
+   base goes on top of the deck and its stealers are scrapped, as `nine.js` already does for point
+   and face-card targets.
+3. **Top-only targeting.** Only the top stealer can be targeted, by anything. For a joker this costs
+   nothing, since targeting any stealer in a stack would attach it to the same base.
+4. **Six.** It scraps every Royal, including jacks and jokers. Every face-card stack goes to the
+   scrap whole; every point stack loses its stealers and returns to `players[card.owner]`.
+5. **Ace.** It scraps all point cards along with their stealers, jokers included. Face-card stacks
+   are unaffected.
+6. **Queens.** The graded rule applies to jokers as to jacks: with one Queen, only she can be
+   targeted; with two, nothing on that board can. A lone Queen can be jokered, and once stolen she
+   protects the thief.
+7. **Kings.** A stolen King counts toward the thief's threshold and comes off the victim's. The win
+   check runs after the move, so jokering a King can win on the spot.
+8. **Glasses.** Revealing follows the array a card sits in, so stealing glasses shifts the reveal
+   automatically; already-revealed cards stay revealed. Who sees what depends on the open glasses
+   audience decision.
+9. **No counter window.** Playing a joker is a Royal play like a jack, not a one-off, so Twos cannot
+   counter it.
+10. **Sevens.** A revealed joker needs a new `sevenJoker` move, and `seven-discard`'s "both jacks are
+    unplayable" condition becomes "neither revealed card can legally be played".
 
 ---
 
@@ -82,9 +137,9 @@ belong in a **variant policy object**, e.g. `utils/variants/cutthroat.js`:
   playerCount: 3,
   handLimit: 7,
   winThresholds: { 0: 14, 1: 9, 2: 5, 3: 0 },
-  stalematePasses: 3,          // one full round -- NOT playerCount + 1, see 1d
   deal: [ 5, 5, 5 ],
-  deckIds: [ /* 52, or 54 with jokers */ ],
+  jokers: true,
+  deckIds: [ /* 54: the standard 52 plus XR and XB */ ],
   disallowedMoveTypes: [ 'concede', 'stalemateRequest', 'stalemateAccept', 'stalemateReject' ],
   revealHandsOnEmptyDeck: false, // true at two players -- see settled decisions
 }
@@ -177,9 +232,12 @@ configuration. Only a third distinct owner separates them.
 
 | Order | Item | Why |
 |---|---|---|
-| 1 | **1a**, **1e** (parallel) | Both independent. Together they unblock everything else. |
-| 2 | **1b**, **1c** | Need 1a; need 1e to be provable. |
+| 1 | **1a-read**, **1e** (parallel) | Both independent. Together they unblock everything else. |
+| 2 | **1b**, **1c** | Need 1a-read; need 1e to be provable. |
 | 3 | **1d**, **1f** | Independent throughout; cleaner after 1e. |
+| 4 | **1a-write** | Any time after 1a-read; must land before Phase 2 opens a third seat. Carries the archive sweep and the 5.0.1 bump. |
+
+The glasses audience decision should be made before 1e is written (see Pending items).
 
 ---
 
@@ -188,7 +246,7 @@ configuration. Only a third distinct owner separates them.
 Every item ships against two-player rules with the existing suite as the regression gate.
 Items **1a–1c** are specified in full. **1d–1f** are specified to issue granularity.
 
-### 1a. Make jack ownership authoritative in the storage format
+### 1a. Make stack ownership authoritative in the storage format
 
 **Problem.** Ownership is *positional*, not authoritative. Suffixes are generated by alternating
 between exactly two values at pack time (`convert-card-to-str.js:18-22`), and `is-top-jack.js`
@@ -202,7 +260,11 @@ participants, so a stack where two different opponents each jacked the same poin
 structurally inexpressible. A point card's original owner likewise stops being recoverable by
 parity once a third player can take it.
 
-This blocks 1b entirely.
+This blocks 1b entirely. Jokers widen it: face cards can now carry stacks too (see
+[Stacks and jokers](#stacks-and-jokers)), and those stacks mix jacks and jokers.
+
+1a ships as **two changes, 1a-read and 1a-write**, so that it can be rolled back at every step —
+see [Delivery](#delivery-1a-read-then-1a-write).
 
 **Also note:** `pack-gamestate.js:61-65` passes `attribute.player` — the *column* — into
 `convertCardToStr` under a comment reading "the cards owner is needed". The column is the
@@ -213,20 +275,27 @@ This blocks 1b entirely.
 ```
 cardStr    := cardId [ "-" pNum ] [ "(" attachment { "," attachment } ")" ]
 attachment := cardId "-" pNum
-cardId     := rank suit                  ; exactly 2 characters
+cardId     := rank suit                  ; exactly 2 characters, including XR and XB
 pNum       := "p" digit
 ```
 
-- The host card's `-pNum` is its **original owner** — the player who played it to their points.
-- Each attachment's `-pNum` is **that jack's controller** — the player who played that jack.
+- The host card's `-pNum` is the base's **original owner** — the player who played it to the field.
+  Bases live in `pXPoints` or `pXFaceCards`.
+- Each attachment's `-pNum` is **that stealer's controller** — the player who played that jack or
+  joker.
 - The suffix is written **whenever the owner is not recoverable from the column**:
-  - unstacked card in `pXPoints` -> recoverable (owner == column) -> **omit**, which keeps the
-    overwhelming majority of card strings byte-identical to today;
-  - stacked card in `pXPoints` -> the column is now the controller, not the owner -> **write**;
+  - unstacked card in `pXPoints` or `pXFaceCards` -> recoverable (owner == column) -> **omit**,
+    which keeps the overwhelming majority of card strings byte-identical to today;
+  - stacked card in either -> the column is now the controller, not the owner -> **write**;
   - card in `twos` -> there is no per-player column at all -> **always write** (e.g. `2H-p2`).
 
-Example: `TH-p0(JH-p2,JC-p1)` in `p1Points` — p0 played the Ten of Hearts, p2 jacked it, then
-p1 jacked it. Current controller is p1 (top jack); original owner is p0.
+Examples: `TH-p0(JH-p2,JC-p1)` in `p1Points` — p0 played the Ten of Hearts, p2 jacked it, then p1
+jacked it; controller p1, original owner p0. `KH-p0(XR-p1)` in `p1FaceCards` — p0's King, held by
+p1's joker.
+
+**The legacy grammar is a strict subset of this one.** No legacy row contains a face-card stack or
+a joker, so extending the grammar now changes nothing for stored rows — and accepting all of it in
+1a-read means the storage format changes exactly once.
 
 #### Reading legacy rows
 
@@ -236,7 +305,8 @@ The signal differs by column, because the suffix rule does:
 | Column | Legacy signal | Why unambiguous |
 |---|---|---|
 | `pXPoints`, card has attachments | no host suffix | the new format always writes one here, and pack throws rather than omitting it |
-| `pXPoints`, card unstacked | n/a | neither format writes a suffix, and both reconstructions agree (owner == column), so misclassification is harmless |
+| `pXPoints` / `pXFaceCards`, card unstacked | n/a | neither format writes a suffix, and both reconstructions agree (owner == column), so misclassification is harmless |
+| `pXFaceCards`, card has attachments | n/a | only the new format can produce a face-card stack |
 | `twos` | no suffix on any entry | the new format always writes one here; legacy owners reconstruct by alternation from the caster, `twos[i].owner = (caster + i + 1) % 2` |
 
 This is per-row rather than per-game, which matters given the deploy sweep cannot be atomic (see
@@ -248,7 +318,7 @@ the deploy note): a game can legitimately hold rows written on either side of th
 >   `Game`, so version-gated decoding would mean threading game metadata into the parser, against
 >   the context-free direction settled above. Structural detection is also self-checking: a bad
 >   migration cannot corrupt decoding.
-> - **Analysis** uses `rulesVersion`, bumped to **5.0.1** when 1a ships, with a
+> - **Analysis** uses `rulesVersion`, bumped to **5.0.1** when 1a-write ships, with a
 >   `VERSION HISTORY` entry in `utils/rulesVersion.js` recording that it is a storage-encoding
 >   change with no rules change. Recovering the encoding from a jsonb regex over `pXPoints` is a
 >   poor query experience, and a distinction never recorded cannot be retrofitted; collapsing two
@@ -256,11 +326,14 @@ the deploy note): a game can legitimately hold rows written on either side of th
 >
 > Patch, not major or minor: of the three tiers that file defines, only patch ("doesn't change
 > legal play") fits, and a major bump would assert a rules break that did not happen. Patch also
-> leaves `parseInt(game.rulesVersion, 10)` checks such as `get-log.js:124` undisturbed.
+> leaves `parseInt(game.rulesVersion, 10)` checks such as `get-log.js:124` undisturbed. Review
+> raised that 1a is not backwards-compatible and so arguably major. Backwards compatibility of the
+> *deploy* is a real concern, but it is not what this file versions; it is handled instead by
+> splitting 1a into a read change and a write change, which makes each step reversible.
 >
 > **A few straddling games are expected and acceptable.** Merges deploy automatically and
 > immediately, so there is no window to coordinate: the procedure is simply *sweep, then merge*
-> (see 1a's merge checklist). Games created between the sweep and the deploy finishing will hold
+> (see 1a-write's merge checklist). Games created between the sweep and the deploy finishing will hold
 > rows in both encodings under one creation-time stamp. That costs **analysis precision on a
 > handful of games, not correctness** — decoding is structural and per-row, so they render
 > correctly, and structural detection still yields their true per-row encoding if analysis ever
@@ -277,15 +350,15 @@ Add a single field to the Card object:
 owner: pNum | null   // the player who played this card onto the field; null off-field
 ```
 
-One definition, correct in both positions: for a host point card it is the original owner; for a
-jack in `attachments` it is that jack's controller. Control stops being stored and becomes a
-derivation:
+One definition, correct in both positions: for a base (point card or Royal) it is the original
+owner; for a stealer (jack or joker) in `attachments` it is that stealer's controller. Control stops
+being stored and becomes a derivation:
 
 ```js
-const controllerOf = (pointCard) => pointCard.attachments.at(-1)?.owner ?? pointCard.owner;
+const controllerOf = (base) => base.attachments.at(-1)?.owner ?? base.owner;
 ```
 
-**Do not add a separate `controller` field.** A jack *is* a card, so `Card` would then carry two
+**Do not add a separate `controller` field.** A stealer *is* a card, so `Card` would then carry two
 fields each meaningful in only one nesting position — reintroducing exactly the position-dependent
 meaning that caused this bug.
 
@@ -310,13 +383,42 @@ Set on entering the field, immutable while on it, cleared on leaving. Re-entry (
 hand → replayed by a different player) correctly re-establishes a new owner because it was
 cleared on exit.
 
-Moves do **not** set `owner`, with one exception: **moves that create an attachment must set it
-on the jack they play** — `jack/execute.js` and `seven-jack/execute.js`. That value is serialized
-on that very move and is unrecoverable afterward (the column yields the controller; a buried jack
-has no column signal at all). Everything else is hydrated by unpack and carried through
-`_.cloneDeep` by `execute`.
+Moves do **not** set `owner`, with two exceptions. Both write a value that is serialized on that
+very move and unrecoverable afterward:
 
-#### Pack must refuse to write legacy
+- **Moves that create an attachment set it on the stealer they play** — `jack/execute.js`,
+  `seven-jack/execute.js`, and the new `joker` and `sevenJoker` moves. The column yields the
+  controller, and a buried stealer has no column signal at all.
+- **`counter/execute.js` sets it on the Two it pushes onto `twos`**, which has no per-player column.
+
+Everything else is hydrated by unpack and carried through `_.cloneDeep` by `execute`.
+
+**A card freshly played to the field therefore has `owner: null` in memory until the next unpack.**
+That is harmless for serialization — pack omits an unstacked card's owner anyway — but
+`save-gamestate.js:18-20` validates the in-memory state *before* packing it, so validation must
+tolerate it. The invariant is therefore precise rather than blanket:
+
+- **stacked base:** `owner` is set, and `controllerOf(base)` equals the base's column;
+- **unstacked base:** `owner` is null or equals the column.
+
+Review caught the blanket version, `controllerOf(card) === X` for every card, which would have
+rejected every ordinary points move.
+
+#### Pack decides which suffixes to write, and refuses to write legacy
+
+**The serializer cannot decide on its own whether a suffix is needed.** An unstacked Two in
+`p0Points` and a counter Two in `twos` are identical in memory — `owner: 0`, no attachments — yet
+only the second must carry a suffix. Review caught this; an earlier draft of this spec made
+`convertCardToStr` responsible for the choice and said to delete pack's points branch. Instead:
+
+- `convertCardToStr` writes an owner suffix **whenever `card.owner` is set**, and nothing else. It
+  stays context-free.
+- `packGamestate`, the only layer that knows the column, makes the column-dependent choice: for an
+  unstacked card in `pXPoints` or `pXFaceCards` it passes the card with `owner` removed, since it is
+  derivable; stacked cards and every card in `twos` pass through as they are.
+
+This is consistent with the organizing principle — context lives at the pack/unpack boundary — and
+it corrects where the line was drawn, not the principle.
 
 Once pack reads `card.owner`, a card with attachments and a null owner would serialize as
 `TH(JH-p2,JC-p1)` — no suffix — which the reader then classifies as *legacy* and reconstructs by
@@ -333,51 +435,83 @@ breaking on the first three-player test.
 
 #### Changes
 
-- `api/helpers/game-states/convert-card-to-str.js` — read `card.owner`; drop the `playedBy`
-  parameter (the serializer becomes context-free); throw per above; `validateCardId` must accept
-  the suffix.
-- `api/helpers/game-states/convert-str-to-card.js` — **both edits are driven by the new format;
+Each change is tagged with the half it ships in.
+
+- **(write)** `api/helpers/game-states/convert-card-to-str.js` — write an owner suffix whenever
+  `card.owner` is set; drop the `playedBy` parameter (the serializer becomes context-free); throw
+  per above; `validateCardId` must accept the suffix and the joker ids.
+- **(read)** `api/helpers/game-states/convert-str-to-card.js` — **both edits are driven by the new format;
   the legacy path through this file is behaviourally unchanged.** `mainCardId` at line 113 strips
   parens and will now retain `-pN`, which `convertIdToCard` rejects (it requires exactly 2
   characters) — split the suffix off. Retain `content[1]` on attachments at line 128 instead of
   discarding it. Legacy strings yield a bare `TH` at line 113 and carry misaligned attachment
   suffixes that must continue to be ignored, so neither edit touches them. The parser stays
-  **context-free**, mirroring `convertCardToStr` — it never receives a column.
-- `api/helpers/game-states/unpack-gamestate.js` — owns all column-dependent hydration, using the
-  pNum already in scope from the name list at lines 30-35. Per card in `pXPoints`: if `owner` is
-  set (new format) leave it; if absent and the card has attachments, apply the legacy parity
-  reconstruction; if absent and unstacked, set `owner = X`.
-- `api/helpers/game-states/pack-gamestate.js` — delete the points-specific branch at lines 61-69;
-  points now serialize like every other column.
-- `api/helpers/game-states/moves/jack/execute.js`, `.../seven-jack/execute.js` — set `owner` on
-  the played jack.
-- `api/helpers/game-states/moves/resolve/nine.js:28` — add `owner: null` alongside
+  **context-free**, mirroring `convertCardToStr` — it never receives a column. Extend the rank and
+  suit maps so `XR`/`XB` parse (rank 14; suits outside 0–3), even though no game contains them yet.
+- **(read)** `api/helpers/game-states/unpack-gamestate.js` — owns all column-dependent hydration,
+  using the pNum already in scope from the name list at lines 30-35. Per base in `pXPoints` and
+  `pXFaceCards`: if `owner` is set (new format) leave it; if absent and the card has attachments,
+  apply the legacy parity reconstruction; if absent and unstacked, set `owner = X`. For `twos`
+  without suffixes, reconstruct owners by alternation from the caster.
+- **(write)** `api/helpers/game-states/pack-gamestate.js` — the points-specific branch at lines 61-69
+  **stays**, but its job changes: instead of passing the column into the serializer to compute
+  parity, it removes `owner` from unstacked cards and passes stacked cards through. Apply the same
+  to `pXFaceCards`.
+- **(read)** `api/helpers/game-states/moves/jack/execute.js`, `.../seven-jack/execute.js` — set
+  `owner` on the played jack; `counter/execute.js` — set `owner` on the played Two. Harmless under
+  the legacy writer, which ignores it.
+- **(read)** `api/helpers/game-states/moves/resolve/nine.js:28` — add `owner: null` alongside
   `attachments: []` when top-decking.
-- `api/helpers/game-states/validate-gamestate.js` — assert `controllerOf(card) === X` for every
-  card in `pXPoints`.
-- `utils/rulesVersion.js` — bump `CURRENT_RULES_VERSION` to `5.0.1` and add a `VERSION HISTORY`
+- **(read)** `api/helpers/game-states/validate-gamestate.js` — assert the precise invariant from
+  [Lifecycle](#lifecycle) for every base in `pXPoints` and `pXFaceCards`.
+- **(write)** `utils/rulesVersion.js` — bump `CURRENT_RULES_VERSION` to `5.0.1` and add a `VERSION HISTORY`
   entry recording a storage-encoding change with no rules change. Patch tier, per the rationale in
   [Reading legacy rows](#reading-legacy-rows).
-- `api/helpers/game-states/moves/one-off/validate.js:88-90` and `is-top-jack.js`'s
+- **(read)** `api/helpers/game-states/moves/one-off/validate.js:88-90` and `is-top-jack.js`'s
   `extendedDescription` — both justify the top-jack restriction *by the parity representation*,
   which this item removes. Reword to state it as a rule, or a later contributor will read the
   check as dead code and delete it. The restriction itself is kept -- see the
   settled-decisions table.
-- `api/models/GameStateRow.js:14-16`, `docs/game-state-api.md:145` — correct the format
+- **(read)** `api/models/GameStateRow.js:14-16`, `docs/game-state-api.md:145` — correct the format
   documentation (currently inverted) and state the grammar formally in one place.
-- `docs/game-state-api.md:117` — the `p0Hand: ['8D(JS-p0,...)']` example shows a stacked card in
+- **(read)** `docs/game-state-api.md:117` — the `p0Hand: ['8D(JS-p0,...)']` example shows a stacked card in
   a *hand*, which cannot occur. Remove.
+
+#### Delivery: 1a-read, then 1a-write
+
+**The rollback hazard.** The current reader strips the parentheses, so `TH-p0(...)` becomes
+`TH-p0`, which fails the two-character check at `convert-str-to-card.js:42` and throws; a suffixed
+Two in `twos` fails the same way. Because merges deploy immediately, reverting a combined 1a after
+any new-format row was written would break every game holding a stack or a pending counter.
+Review raised this. Splitting the change makes every step reversible:
+
+- **1a-read** teaches the reader the whole new grammar — suffixed bases, face-card stacks, joker
+  ids, suffixed Twos — hydrates `owner`, sets it in the jack and counter moves, and adds the
+  invariant. The writer is untouched and keeps emitting legacy strings. Reverting it is safe: no
+  new-format row exists yet.
+- **1a-write** switches the writer: the serializer reads `owner`, pack chooses suffixes by column,
+  the guard throws, and `rulesVersion` goes to 5.0.1. Reverting it is safe: 1a-read stays deployed
+  and still parses whatever 1a-write wrote.
+
+1a-write can land any time after 1a-read, and must land before Phase 2 opens a third seat — until
+then the legacy writer's parity output is exact. The archive sweep and the merge checklist belong
+to 1a-write, since that is when the encoding changes.
 
 #### Acceptance criteria
 
-- Full existing unit + e2e suite passes unchanged.
-- Round-trip: unstacked point card → `"TH"` → unpacks with `owner` = column.
-- Round-trip: `TH-p0(JH-p2,JC-p1)` in `p1Points` → identical object both directions.
-- A stored legacy row hydrates to the same object a newly written row would, for all of
+- Full existing unit + e2e suite passes unchanged, after each half.
+- **(read)** 1a-read parses every new-format shape — a stacked point card, a stacked face card,
+  joker ids, suffixed Twos — though nothing writes them yet. This is what makes reverting 1a-write
+  safe.
+- **(read)** A stored legacy row hydrates to the same object a newly written row would, for all of
   n = 1, 2, 3 attachments, both columns.
-- `convertCardToStr` throws on an attachment-bearing card with null `owner`.
-- Replay of a pre-change game renders identically.
-- **Migration continuity:** a game whose latest stored row is legacy format and contains a jacked
+- **(read)** Replay of a pre-change game renders identically.
+- **(write)** Round-trip: unstacked point card → `"TH"` → unpacks with `owner` = column.
+- **(write)** Round-trip: `TH-p0(JH-p2,JC-p1)` in `p1Points` and `KH-p0(XR-p1)` in `p1FaceCards` →
+  identical objects both directions.
+- **(write)** An unstacked Two in `p0Points` serializes as `2H`; a Two in `twos` as `2H-p0`.
+- **(write)** `convertCardToStr` throws on an attachment-bearing card with null `owner`.
+- **(write)** **Migration continuity:** a game whose latest stored row is legacy format and contains a jacked
   point card accepts a further move — unpack(legacy) → execute → pack succeeds and writes the new
   format. See the deploy note below: a sweep is planned to make this path rare in production, but
   it cannot make it impossible, so the path is still covered by test.
@@ -401,11 +535,11 @@ replay". It does **not** change the code, for two reasons:
 **Decided:** the sweep covers **all** in-progress games including ranked ones, and runs at a time
 of minimal-to-zero usage.
 
-**Timing: this is a step on 1a's merge, not separate infrastructure.** Merges deploy
+**Timing: this is a step on 1a-write's merge, not separate infrastructure.** Merges deploy
 automatically and immediately, so there is no window to orchestrate. The procedure is:
 
 1. Run the sweep at a time of minimal-to-zero usage.
-2. Merge 1a promptly afterwards.
+2. Merge 1a-write promptly afterwards.
 
 Games created between the two will straddle encodings under one creation-time `rulesVersion`.
 Accept them: decoding is structural and per-row, so they render correctly; only their analysis
@@ -427,10 +561,10 @@ Notes on performing it:
    same pair plays ranked again that week, and a fresh one is created at week rollover. The sweep
    archives games and stops.
 
-#### Merge checklist
+#### Merge checklist (1a-write)
 
-Deploys are automatic and immediate on merge, so these are steps on this PR rather than a separate
-task:
+Deploys are automatic and immediate on merge, so these are steps on 1a-write's PR rather than a
+separate task. 1a-read needs none of them.
 
 1. Run the archive sweep (see the deploy note) at minimal-to-zero usage.
 2. Merge promptly afterwards.
@@ -438,7 +572,7 @@ task:
    to 5.0.1 in this PR, which is the *rule-set* version. Two different version concepts; do not
    let one be "corrected" into the other in review.
 
-**Depends on:** nothing. Ship first.
+**Depends on:** 1a-read on nothing — ship it first. 1a-write on 1a-read.
 
 ---
 
@@ -467,13 +601,22 @@ player.points.push(
 
 Hands the card to the nine's **caster**. Correct at two players by parity. At three: p0 owns TH,
 p2 jacks it, p1 jacks it, p0 nines the top jack — the card should revert to **p2**, not p0.
+`resolve/two.js:29-65`, the Two's jack-target branch, has the same shape: it removes the jack and
+pushes the point card to the caster.
 
-**Change.** Both read `card.owner` / `controllerOf(card)` instead of inverting parity. `six.js`
-iterates all players rather than applying a pairwise swap.
+**Change.**
+
+- **Six: drop `scrapRoyalsAndSwapStolenPoints` entirely.** With `owner` stored, the Six is: scrap
+  every stealer and every face card, then put each remaining point card in
+  `players[card.owner].points`. No swap, no pairing, nothing to name. Review pointed out that an
+  unstolen card should end up with its owner without any extra work, and with `owner` it does.
+  This also covers joker-stolen Royals: they are Royals, so they are scrapped.
+- **Nine and Two:** after removing the top stealer, the base moves to `controllerOf(base)` — the
+  next stealer down, or its owner — instead of to the caster.
 
 **Acceptance criteria:** existing suite passes (no-regression gate); object-level unit tests over
-a **synthetic three-player** state prove the six returns a stolen card to its original owner and
-the nine reverts control to the next jack down.
+a **synthetic three-player** state prove the six returns a stolen card to its original owner, and
+that the nine and the two revert control to the next stealer down.
 
 > The three-player state is required, not a nicety. At two players parity and explicit ownership
 > agree in *every* configuration — TH owned by p0 and jacked p1 -> p0 -> p1 gives `jackCount = 3`,
@@ -481,7 +624,7 @@ the nine reverts control to the next jack down.
 > two-player test therefore **cannot distinguish the fix from the bug**. Three distinct owners are
 > the minimum that separates them. See [Verification strategy](#verification-strategy).
 
-**Depends on:** 1a, and **1e** — `players[]` is what gives a synthetic third player a natural
+**Depends on:** 1a-read, and **1e** — `players[]` is what gives a synthetic third player a natural
 shape. Without it the tests need an ad-hoc `p2` key and template-literal indexing.
 
 ---
@@ -538,6 +681,13 @@ card is in `oneOffTarget` and its owner is findable by searching every board, bu
 denormalized onto each countering row for the same reason. This completes that set rather than
 introducing a new pattern.
 
+**Legacy rows need a read rule.** 1c deploys separately from 1a-write's sweep, so a game paused
+mid-countering, or awaiting a Four's reveal or discard (`oneOff` stays set through both phases),
+will hold a row with `oneOff` set and `oneOffTargetPNum` null. Unpack fills it with the two-player
+answer, the non-caster `(activePlayer(turn) + 1) % 2` — exact, because every legacy row is
+two-player. Review caught this. See also the standing rule in
+[Pending items](#standing-rule-every-new-gamestate-column-declares-a-legacy-read-rule).
+
 No request-body change is needed — this item is fully implementable at two players with no API
 surface. Letting the caster *choose* among several opponents is deliberately **not** part of this
 item; see Phase 3.
@@ -546,9 +696,10 @@ item; see Phase 3.
 protecting player as `playedBy ? p0 : p1`. Queens block counters, and the relevant Queen belongs to
 whoever played **the top of the stack** -- which at two players is always "the opponent" only
 because counters strictly alternate. Under clockwise priority it is not: p0 casts, p1 declines, p2
-counters, and when p0 counters back the check consults p1 rather than p2. Resolve it as *the owner
-of the last two in `twos`, or the caster (`activePlayer(turn)`) when `twos` is empty*. The first
-half depends on 1a attributing owners to the `twos` stack.
+counters, and when p0 counters back the check consults p1 rather than p2. Resolve it with one
+function, `stackTopOwner(state)`: *the owner of the last Two in `twos`, or the caster
+(`activePlayer(turn)`) when `twos` is empty*. Phase 3's counter priority uses the same function.
+The first half depends on 1a-read attributing owners to the `twos` stack.
 
 Note this check is blanket (any queen blocks) rather than graded like `one-off/validate.js`,
 because the thing being countered is never itself a Queen, so the "may only target the queen
@@ -557,9 +708,11 @@ herself" exemption cannot apply. Keep it blanket.
 **Acceptance criteria:** existing suite passes; no resolve helper references `playedBy` to
 identify a victim or a caster; `oneOffTargetPNum` is populated on every state where `oneOff` is
 non-null and cleared wherever `oneOffTarget` is; the counter Queen check resolves its player from
-stack ownership rather than from `playedBy`.
+`stackTopOwner` rather than from `playedBy`; a test resumes a paused legacy one-off — in the
+countering phase and in the Four's reveal phase — after 1c deploys, and resolves it against the
+right victim.
 
-**Depends on:** **1a**, for the `twos` ownership the counter-Queen check needs. The
+**Depends on:** **1a-read**, for the `twos` ownership the counter-Queen check needs. The
 `oneOffTargetPNum` half is independent and could land first if the two are split further.
 Benefits from 1e for clean player indexing and for three-player tests, but does not require it:
 at two players the caster is `turn % 2`, so use that directly rather than blocking on the
@@ -580,8 +733,6 @@ Move the following out of hard-coded constants into the variant object:
 - **Win thresholds.** Currently duplicated in three places:
   `check-game-state-for-win-sync.js:22-38`, `GameView.vue:880-893`, `ScoreGoalToolTip.vue:72`.
 - **Hand limit.** `utils/GameConstants.json` is a single global.
-- **Stalemate threshold.** `check-game-state-for-win-sync.js:51` uses `numPasses >= 3`, with
-  `create-socket-events.js:37-48` scanning the 3 most recent rows.
 - **Empty-deck reveal.** A new `revealHandsOnEmptyDeck` flag, true at two players and false for
   cutthroat. It is implemented in **two independent places**, and both must read it:
   `update-revealed-cards.js:68`, which adds every hand to `revealedCards`, and
@@ -590,16 +741,18 @@ Move the following out of hard-coded constants into the variant object:
   still leak every hand at three players through the second. The client has no implementation of
   its own; it only renders the server's `isHidden` placeholders.
 
-> **Trap:** the two-player rule is `playerCount + 1` (three passes = one and a half rounds); the
-> cutthroat rule is `playerCount` (exactly one round). They coincide at 3 **by accident**. Do not
-> refactor to `numPasses >= playerCount` — that silently drops two-player stalemates to two
-> passes. Keep it an explicit per-variant constant with a comment explaining why the values are
-> equal but the rules are not. The `currentIndex - 2` slice window must track the same constant.
+**The stalemate threshold is deliberately not extracted.** It is three passes in both variants
+(review pointed out that nothing changes). The values coincide for different reasons — two-player's
+rule is three consecutive passes, cutthroat's is one full round of three — so leave
+`numPasses >= 3` at `check-game-state-for-win-sync.js:51` and the three-row window at
+`create-socket-events.js:37-48` as they are. Add a comment saying why 3 holds for both, and warning
+against rewriting it as `numPasses >= playerCount`, which would drop two-player stalemates to two
+passes. Extract it only when a variant actually differs, such as a future 2v2.
 
 **Acceptance criteria:** no literal win thresholds (`21`/`14`/`10`/`5`) remain in server or client
 code; `HAND_LIMIT` is read from the resolved rule set rather than imported from
-`GameConstants.json`; the stalemate threshold and the `create-socket-events.js` slice window read
-one shared constant; `GameView.vue` and `ScoreGoalToolTip.vue` derive their table from the same
+`GameConstants.json`; both empty-deck reveal sites read `revealHandsOnEmptyDeck`; `GameView.vue`
+and `ScoreGoalToolTip.vue` derive their table from the same
 source as `check-game-state-for-win-sync.js`; existing suite passes unchanged.
 
 **Depends on:** nothing. Note this spans server *and* client, since the win table is duplicated in
@@ -622,9 +775,10 @@ holds `players: Player[]` (`src/stores/game.js:100`), though `opponent` is
 **Includes `update-revealed-cards.js`**, which the original sweep pattern missed (see the
 appendix). It destructures `{ p0, p1 }` and cross-references by name: p0's glasses reveal p1's hand
 and vice versa, `publicIds` reads `[ previousState.p0, previousState.p1 ]`, and the empty-deck branch
-reveals both hands. Rewrite it to iterate players, with each glasses holder revealing every *other*
-player's hand. Under the settled rule that is the complete three-player behaviour for glasses, and at
-two players it is byte-identical — so glasses need no Phase 3 rules work at all. The empty-deck
+reveals both hands. Rewrite it to iterate players. For glasses, implement the audience decided in
+[Pending items](#pending-items). Both candidate rules are byte-identical at two players, so if the
+decision has not been made when 1e is written, implement the public version — each glasses holder
+reveals every other player's hand into the shared set — and Phase 3 adapts it. The empty-deck
 branch is different: it must be **gated** on `revealHandsOnEmptyDeck` (1d), not merely iterated,
 since cutthroat does not reveal on an empty deck.
 
@@ -633,7 +787,7 @@ since cutthroat does not reveal on an empty deck.
 alternation except those explicitly deferred to Phase 3; stored column names are unchanged;
 existing suite passes; **a synthetic three-entry `players` array can be passed to any move helper
 without error** — this is what unblocks the 1b and 1c correctness tests; `update-revealed-cards.js`
-iterates players, with glasses revealing every hand except the holder's.
+iterates players.
 
 **Depends on:** nothing. **Ship early** — alongside 1a rather than after it. It is a pure
 two-player-safe refactor, and it is the enabler for proving 1b and 1c at all.
@@ -651,10 +805,12 @@ p2 room would silently miss them; it is in scope here too.
 
 **The glasses rule does not live in this item.** `hideOpponentHand` (`create-socket-events.js:96-107`)
 unhides hands for a glasses holder in their own payload, but that only covers *live* visibility for
-the holder. Under the settled rule — glasses reveal to all players, persisting — the rule lives in
-`update-revealed-cards.js` and flows through the global `revealedCards` set; see 1e.
-`hideOpponentHand`'s holder-only glasses unhide becomes redundant, since `move.js` publishes the state
-after `updateRevealedCards` runs, but it remains consistent — leave that branch. Its `deckIsEmpty`
+the holder. Persistent reveals live in `update-revealed-cards.js`; see 1e. What happens to this
+branch depends on the open glasses decision. If glasses are public, the holder-only unhide becomes
+redundant — `move.js` publishes the state after `updateRevealedCards` runs — but stays consistent,
+so leave it. If glasses are private, it is the live half of the private rule and stays load-bearing,
+and marking revealed cards moves out of the shared pre-pass (lines 25-35) into each player's view.
+Its `deckIsEmpty`
 branch (lines 97-101) is **not** redundant and must not be left: it is a second, independent
 implementation of the empty-deck reveal and must read `revealHandsOnEmptyDeck` (1d), or it unhides
 every hand at three players even after `update-revealed-cards.js` is gated.
@@ -670,7 +826,7 @@ and per-perspective visibility, passes unchanged. That spec is the natural regre
 
 ---
 
-## Phases 2–5 — outline
+## Phases 2–4 — outline
 
 **Phase 2 — schema + lobby.** `Game.playerCount` / `ruleVariants` / `p2` / `p2Ready` /
 `p2Rematch`; `GameStateRow.p2*` nullable, `playedBy` relaxed. Create / join / `isGameFull`
@@ -723,8 +879,8 @@ reconciliation sites plus one hazard:
 
 **Phase 3 — three-player rules.** Turn order (`turn % playerCount`; dealer rotation is handled by
 seat rotation on rematch); counter priority with explicit state; cross-board targeting; board wipes
-across three fields; win table; hand limit 7; stalemate redefinition; concede and stalemate-request
-disabled via the rule set's `disallowedMoveTypes`. The winner write in
+across three fields; win table; hand limit 7; jokers; concede and stalemate-request disabled via
+the rule set's `disallowedMoveTypes`. The stalemate threshold needs no change (see 1d). The winner write in
 `check-game-state-for-win.js:66-69` maps the winning pNum to `game.p0.id`/`game.p1.id`, so a p2
 win needs a seat lookup (sweep C8).
 
@@ -744,9 +900,35 @@ the Nine, all of which are opponent-scoped by construction today.
 > rule — but do not add the flag until that variant is real; just keep the check in one place.
 
 Counter priority needs a new `passedPriority` column (`pNum[]`, jsonb, defaults `[]`), cleared
-whenever a two is played. Current holder = first player clockwise from `lastStackPlayer + 1` not
-in `passedPriority`; if none remain, the one-off resolves. This also reproduces two-player
-behavior exactly, so `your-turn-to-counter.js` can be reimplemented on it with no behavior change.
+whenever a two is played. The candidates are the N−1 players **other than** `stackTopOwner` (1c),
+taken clockwise from `stackTopOwner + 1`. The current holder is the first candidate not in
+`passedPriority`; once all N−1 have declined, the one-off resolves. `stackTopOwner` is never a
+candidate, so nobody is asked to counter their own card. Review caught that the earlier wording —
+search every seat for the first not in `passedPriority` — wraps back to the caster and never
+reaches "none remain". This also reproduces two-player behavior exactly, so
+`your-turn-to-counter.js` can be reimplemented on it with no behavior change.
+
+Acceptance includes the **end-of-round** case (p0 casts; p1 and p2 decline; it resolves) and the
+**re-open** case (p2 counters; p0 then p1 are asked, in that order). Legacy read rule: the default
+`[]` is exact for a two-player row, whose single candidate cannot yet have declined — a decline
+there is the resolve.
+
+**Jokers.** Settled in [Stacks and jokers](#stacks-and-jokers); the engine work:
+
+- New `joker` and `sevenJoker` MoveTypes. Validation: the target is a Royal base or the top stealer
+  of a stack, on an opponent's board, subject to the graded Queen rule. Execution: attach the joker
+  to the target's base and move the base to the joker player's array.
+- `seven-discard`: "both jacks are unplayable" becomes "neither revealed card can legally be
+  played", which also supersedes the sweep's C4 note.
+- `validate-all-cards.js`: a 54-card expected set from the rule set's `deckIds` rather than the
+  static `DeckIds`, and attachments allowed on face-card bases (it currently throws on any
+  non-point card with attachments).
+- `find-target-card.js` and `is-top-jack.js` search face-card stacks too; today both look only at
+  `player.points`.
+- `oneOffTargetType` (`GameStateRow.js:156`, `isIn: ['point', 'jack', 'faceCard']`) gains
+  `'joker'`, so Twos and Nines can target one. Additive: legacy rows keep `'jack'`.
+- Two, Nine, Six and Ace semantics per the interactions list. The win check needs no change: it
+  counts Kings in the controller's `faceCards`, where a stolen King already sits.
 
 COUNTERING then has three outcomes where it had two. Add an explicit `DECLINE_COUNTER` MoveType
 rather than overloading `resolve` with server-side inference — the log is player-facing and replay
@@ -776,36 +958,85 @@ hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
 - **Required by the above, not deferrable:** `find-current-games-for-user.js:45` derives the
   opponent by alternation (sweep category C5). Go Home is only an exit if the player can get back,
   so the home-page current-games list must render three-player games in the first release.
-- **Rules page lines for reveals.** `glassesDescription` reads "reveal your opponent's hand", which
-  is ambiguous at three players. Add a line to the `3Players` rules section stating that glasses
-  reveal every other player's hand to all players — across all five locale files. Worth a second
-  line that hands stay hidden when the deck runs out: the two-player reveal is undocumented
-  (`deckExhaustAnswer` never mentions it), so experienced players will expect it without having
-  read anywhere that it exists.
-
-**Phase 5 — jokers**, if in scope, as an independent `ruleVariants` flag. Larger than it looks:
-`convertIdToCard` requires exactly 2 characters and `suit` is 0–3 / `rank` 1–13, so two
-distinguishable jokers need an id scheme and every rank/suit switch audited. "Steal target Royal"
-is a new MoveType with its own questions (does a Queen stop it? can you steal a Queen? stealing a
-King shifts both players' win thresholds mid-turn). Plus card art.
+- **Jokers ship in the first release:** card art for `XR`/`XB`, and stacks drawn on face cards.
+  `GameView.vue` only draws attachments under point cards (lines 244-289).
+- **Rules page lines.** All in the `3Players` section, across all five locale files:
+  - **Glasses**, per the audience decision. `glassesDescription` reads "reveal your opponent's
+    hand", which is ambiguous at three players under either rule.
+  - **Empty deck:** hands stay hidden when the deck runs out. The two-player reveal is undocumented
+    (`deckExhaustAnswer` never mentions it), so experienced players will expect it without having
+    read anywhere that it exists.
+  - **Jokers:** a joker on a jack or another joker steals the card underneath. Rule 3 says only
+    "steal target Royal", which does not convey the stacking.
 
 ---
 
 ## Pending items
 
-**All rules questions are resolved** -- see the settled-decisions table. One non-rules item
-remains outstanding:
+One rules question and one non-rules item remain.
 
-1. **Rematch series name format.** `${p0.username} VS ${p1.username} ${w}-${l}-${s}` has no
-   obvious three-player form (Phase 2, rematch note). Deferred with rematch itself, which lands
-   after the first user-facing release, so this is not needed to ship.
+1. **Glasses audience — decide during Phase 1, before 1e is written.** 1e rewrites the glasses
+   branch of `update-revealed-cards.js`. Both options are identical at two players and neither
+   touches the card format, so a late decision blocks nothing: 1e would implement the public
+   version and Phase 3 would adapt it.
+
+   | | Public | Private to the controller |
+   |---|---|---|
+   | **Who sees** | Everyone sees every hand except the holder's | Only the holder sees the other two hands |
+   | **The card** | Smaller personal edge, more political: the holder sees two hands, each other player sees one | A strong personal edge — complete information about both opponents — and a prime target for jokers, Twos and Nines |
+   | **Jokering the glasses** | Shifts whose hand is hidden | Hands over the view: the thief at once sees both hands, including the former holder's |
+   | **Data** | One global `revealedCards` set; no change | A new additive column of per-player reveals, empty for legacy rows (exact) |
+   | **UI** | Every revealed card is known to everyone | Needs "only you know this" versus "everyone knows this" |
+
+   If private, the cost is contained: the new column; the glasses branch writing per holder;
+   per-view marking in `create-socket-events.js`, moving out of the shared pre-pass at lines 25-35;
+   `hideOpponentHand`'s glasses branch staying load-bearing; the client indicator; and synthetic
+   tests for glasses stolen by a joker, glasses scrapped, and a seen card leaving the hand. It also
+   needs one rule: the former holder keeps seeing what they saw, matching the 5.0.0 principle of
+   showing a player what they have legitimately seen.
+
+   *Recommendation: public.* At a table, three people around a face-up hand all see it, so public
+   is the faithful port of how the variant is played in person; it also keeps cutthroat free of
+   private knowledge. Private is viable if play shows public glasses to be too weak or too
+   political.
+
+2. **Rematch series name format.** `${p0.username} VS ${p1.username} ${w}-${l}-${s}` has no
+   obvious three-player form (Phase 2, rematch note). Options raised in review: alphabetical by
+   username, by user id, or `players.map((p) => p.username).join(' VS ')`. Note the last is not
+   stable: seat rotation reorders `players` every rematch, so names would reshuffle game to game.
+   First-game seating or alphabetical are stable, and the per-player win tally must follow the same
+   order. Deferred with rematch itself, so not needed to ship.
+
+### Standing rule: every new gamestate column declares a legacy read rule
+
+Each phase deploys separately, so a game can be paused on a row written before a column existed.
+Every new column must state how such a row reads, and come with a test that resumes a paused
+legacy game across the deploy:
+
+| Column or field | Legacy read rule |
+|---|---|
+| `owner` on bases | the column, or parity reconstruction for stacks (1a) |
+| `owner` on `twos` | alternation from the caster (1a) |
+| `oneOffTargetPNum` | the non-caster, when `oneOff` is set (1c) |
+| `passedPriority` | `[]`, exact for two players (Phase 3) |
+| per-player reveals, if glasses go private | empty, exact for two players (Phase 3) |
+
+### Found along the way
+
+**`counter/validate.js` never checks that the counter is a Two.** It checks the phase, that a
+one-off is pending, that the card is in hand, priority, and the Queen — but not the rank. A crafted
+request can counter with any card, which then sits in `twos` and flips fizzle parity. The client
+only offers Twos, so ordinary play never hits it. This is an existing two-player bug, independent
+of this plan; it is the one validator that does not reject a rank-14 joker. Worth a small
+standalone fix — `if (playedCard.rank !== 2)` — rather than folding it into a work item.
 
 ### A recurring pattern worth carrying into the issues
 
-Three separate findings in this plan share one shape: **something prevented by construction
+Four separate findings in this plan share one shape: **something prevented by construction
 becomes expressible, and must then be explicitly forbidden.** Buried jacks (parity made them
-unreachable), self-targeting (`find-target-card.js` takes a single player), and `twos` ownership
-(alternation made it unambiguous). When implementing 1a and Phase 3, enumerate what the new
+unreachable), self-targeting (`find-target-card.js` takes a single player), `twos` ownership
+(alternation made it unambiguous), and face-card stacks (only point cards could carry
+attachments). When implementing 1a and Phase 3, enumerate what the new
 representation makes *possible* and decide which of those stay impossible, rather than discovering
 them as bugs.
 
@@ -864,7 +1095,8 @@ Phase 3. Not twelve separate problems.
   the jacks are unplayable, tested as *the opponent has a Queen or has no points*. At three
   players this must hold against **every** opponent: `opponents.every(o => hasQueen(o) ||
   !o.points.length)`. This is a semantic generalization, not a lookup swap — the only site in the
-  sweep where the *rule* changes shape rather than the player reference.
+  sweep where the *rule* changes shape rather than the player reference. With jokers it generalizes
+  once more, to "neither revealed card can legally be played" (Phase 3).
 
 **C5 — presentation. Phase 4 or later; no correctness impact at two players.**
 
