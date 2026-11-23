@@ -13,7 +13,7 @@
           :cards="scrapWithoutThrees"
           data-selector-prefix="three-dialog"
           :selected-ids="selectedIds"
-          @select-card="selectCard"
+          @select-card="(card) => selectCard(card.id)"
         />
       </div>
     </template>
@@ -22,7 +22,7 @@
       <v-btn
         data-cy="three-resolve"
         color="base-light"
-        :disabled="selectedCard === null"
+        :disabled="!ready"
         variant="flat"
         @click="moveToHand"
       >
@@ -37,6 +37,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
+import { useSelectCards } from '@/composables/useSelectCards';
 
 defineOptions({ name: 'ThreeDialog' });
 
@@ -60,7 +61,12 @@ const { t } = useI18n();
 
 // eslint-disable-next-line no-unused-vars -- Preserve the existing inactive state.
 const choseToCounter = ref(false);
-const selectedCard = ref(null);
+const {
+  selectedIds,
+  ready,
+  selectCard,
+  clear,
+} = useSelectCards(1);
 
 const show = computed({
   get() {
@@ -71,29 +77,10 @@ const show = computed({
   },
 });
 const scrapWithoutThrees = computed(() => props.scrap.filter((card) => card.rank !== 3));
-const selectedIds = computed(() => {
-  const res = [];
-  if (selectedCard.value) {
-    res.push(selectedCard.value.id);
-  }
-  return res;
-});
 
 function moveToHand() {
-  emit('resolveThree', selectedCard.value.id);
-  clearSelection();
-}
-
-function selectCard(card) {
-  if (selectedCard.value && card.id === selectedCard.value.id) {
-    clearSelection();
-  } else {
-    selectedCard.value = card;
-  }
-}
-
-function clearSelection() {
-  selectedCard.value = null;
+  emit('resolveThree', selectedIds.value[0]);
+  clear();
 }
 </script>
 
