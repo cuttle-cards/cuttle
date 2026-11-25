@@ -87,7 +87,9 @@ export const points = {
   game: {
     ...gameFixture,
     gameStates: [ gameStateRow ],
+    // p0 won: the move endpoint records the winner (finishGame) before the socket event is created
     status: GameStatus.FINISHED,
+    winner: gameFixture.p0.id,
   },
 
   socket: {

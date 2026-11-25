@@ -12,7 +12,15 @@ module.exports = async function (req, res) {
     ///////////////////////////
     // Fetch and format data //
     ///////////////////////////
-    const { saveGamestate, publishGameState, unpackGamestate, updateRevealedCards } = sails.helpers.gameStates;
+    const {
+      saveGamestate,
+      publishGameState,
+      unpackGamestate,
+      updateRevealedCards,
+      countPasses,
+      checkGameStateForWin,
+      finishGame,
+    } = sails.helpers.gameStates;
     const { execute, validate } = sails.helpers.gameStates.moves[req.body.moveType];
     game = await sails.helpers.lockGame(req.params.gameId);
 
@@ -57,7 +65,13 @@ module.exports = async function (req, res) {
     const updatedState = updateRevealedCards(gameState, execute(gameState, req.body, playedBy, game.gameStates));
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
-    await publishGameState(game, { ...updatedState, id: gameStateRow.id });
+    const newGameState = { ...updatedState, id: gameStateRow.id };
+
+    // If this move ended the game, record it before publishing
+    const victory = checkGameStateForWin(newGameState, countPasses(game.gameStates, newGameState));
+    const currentMatch = victory.gameOver ? await finishGame(game, victory) : undefined;
+
+    await publishGameState(game, newGameState, currentMatch);
     await sails.helpers.unlockGame(game.lock);
 
     return res.ok();
