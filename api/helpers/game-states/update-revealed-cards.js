@@ -33,7 +33,7 @@ module.exports = {
     const hiddenCards = [ ...p0.hand, ...p1.hand, ...deck ];
 
     // A card that moves from the field or scrap into a hand or the deck was seen on its way there,
-    // e.g. picked from the scrap with a three or returned to the deck with a nine
+    // e.g. picked from the scrap with a three or returned to hand with a nine
     const publicIds = new Set([
       ...[ previousState.p0, previousState.p1 ].flatMap(({ points, faceCards }) => [
         ...points.flatMap((card) => [ card, ...(card.attachments ?? []) ]),

@@ -5,9 +5,5 @@
   "ENTER_FROM_UPPER_LEFT": "enter-from-upper-left",
   "ENTER_FROM_LEFT": "enter-from-left",
   "SLIDE_UP_DOWN": "slide-up-down",
-  "CARD_FLIP": "card-flip",
-  "TO_DECK_DOWN": "to-deck-down",
-  "TO_DECK_DOWN_LEFT": "to-deck-down-left",
-  "TO_DECK_UP_LEFT": "to-deck-up-left",
-  "TO_DECK_LEFT": "to-deck-left"
+  "CARD_FLIP": "card-flip"
 }
