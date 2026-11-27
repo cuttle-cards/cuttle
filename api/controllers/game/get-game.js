@@ -2,6 +2,12 @@ const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
 const GameStatus = require('../../../utils/GameStatus.json');
 
+// Whether the move that ended this game may have failed to finish recording it: the game is
+// still in progress, or it is ranked but was never added to a match
+function mayBeUnrecorded(game) {
+  return game.status === GameStatus.STARTED || (game.isRanked && !game.match);
+}
+
 module.exports = async function(req, res) {
   const { gameId } = req.params;
   try {
@@ -71,15 +77,29 @@ module.exports = async function(req, res) {
     // finished, so finish recording it here when its final state is loaded again
     let currentMatch;
     const isLatestGameState = packedGameState.id === game.gameStates.at(-1).id;
-    const mayBeUnrecorded = game.status === GameStatus.STARTED || (game.isRanked && !game.match);
-    if (isLatestGameState && mayBeUnrecorded) {
+    if (isLatestGameState && mayBeUnrecorded(game)) {
       const victory = checkGameStateForWin(gameState, countPasses(game.gameStates, gameState));
       if (victory.gameOver) {
+        let lockedGame;
         try {
-          currentMatch = await finishGame(game, victory);
+          // Take the game lock, as moves do, and re-check the reloaded game, so that another load
+          // or the winning move itself can't record the game at the same time
+          lockedGame = await sails.helpers.lockGame(game.id);
+          currentMatch = mayBeUnrecorded(lockedGame) ?
+            await finishGame(lockedGame, victory) :
+            await sails.helpers.getGameMatch(lockedGame);
         } catch (err) {
           // Still let the player load the game; the next load will try again
           sails.log.error(`Could not finish recording game ${game.id}`, err);
+        } finally {
+          if (lockedGame) {
+            try {
+              await sails.helpers.unlockGame(lockedGame.lock);
+            } catch (err) {
+              // Locks expire on their own, so loading the game can go on
+              sails.log.error(`Could not unlock game ${game.id}`, err);
+            }
+          }
         }
       }
     }

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import request from 'supertest';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -203,42 +203,63 @@ describe('Ending a game', () => {
  * get-game only accepts socket requests, so call the controller directly
  */
 async function loadGame(gameId, userId) {
-  const joinSpy = vi.spyOn(sails.sockets, 'join').mockImplementation(() => {});
   let response;
   const res = {
     ok: (body) => { response = { status: 200, body }; },
     serverError: (body) => { response = { status: 500, body }; },
     status: (status) => ({ json: (body) => { response = { status, body }; } }),
   };
-  try {
-    await getGame({ params: { gameId }, query: { gameStateIndex: -1 }, session: { usr: userId } }, res);
-  } finally {
-    joinSpy.mockRestore();
-  }
+  await getGame({ params: { gameId }, query: { gameStateIndex: -1 }, session: { usr: userId } }, res);
   return response;
+}
+
+/**
+ * Delays creating a Match, widening the window between findOrCreateCurrentMatch looking up the
+ * players' match and creating it, so concurrent requests would both create one
+ */
+function widenMatchCreationRace() {
+  const createMatch = Match.create.bind(Match);
+  return vi.spyOn(Match, 'create').mockImplementation((values) => ({
+    fetch: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return createMatch(values).fetch();
+    },
+  }));
+}
+
+/**
+ * Plays the winning move with adding the game to its match failing, so the game ends up
+ * finished but not in its match
+ */
+async function winWithoutRecordingMatch(game, player0) {
+  const addGameToMatchSpy = vi
+    .spyOn(sails.helpers, 'addGameToMatch')
+    .mockImplementation(() => Promise.reject(new Error('Simulated database failure')));
+  try {
+    await player0.agent
+      .post(`/api/game/${game.id}/move`)
+      .send({ moveType: MoveType.POINTS, cardId: Card.TEN_OF_SPADES.id })
+      .expect(500);
+  } finally {
+    addGameToMatchSpy.mockRestore();
+  }
 }
 
 describe('Re-opening a game whose end was not fully recorded', () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
+    // get-game joins the requesting socket to the game's room; these requests have no socket
+    vi.spyOn(sails.sockets, 'join').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('Adds a ranked game to its match if the winning move failed to', async () => {
     await createRunningSeason();
     const { game, player0 } = await setupGame({ isRanked: true });
-
-    // Adding the game to its match fails after the game has been marked finished
-    const addGameToMatchSpy = vi
-      .spyOn(sails.helpers, 'addGameToMatch')
-      .mockImplementation(() => Promise.reject(new Error('Simulated database failure')));
-    try {
-      await player0.agent
-        .post(`/api/game/${game.id}/move`)
-        .send({ moveType: MoveType.POINTS, cardId: Card.TEN_OF_SPADES.id })
-        .expect(500);
-    } finally {
-      addGameToMatchSpy.mockRestore();
-    }
+    await winWithoutRecordingMatch(game, player0);
 
     const partlyRecordedGame = await Game.findOne({ id: game.id });
     expect(partlyRecordedGame.status).toBe(GameStatus.FINISHED);
@@ -289,5 +310,55 @@ describe('Re-opening a game whose end was not fully recorded', () => {
       finishGameSpy.mockRestore();
     }
     expect(await Match.count()).toBe(1);
+  });
+
+  it('Adds the game to only one match when both players re-open it at once', async () => {
+    await createRunningSeason();
+    const { game, player0, player1 } = await setupGame({ isRanked: true });
+    await winWithoutRecordingMatch(game, player0);
+    widenMatchCreationRace();
+
+    const responses = await Promise.all([
+      loadGame(game.id, player0.user.id),
+      loadGame(game.id, player1.user.id),
+      loadGame(game.id, player0.user.id),
+    ]);
+
+    expect(responses.map(({ status }) => status)).toEqual([ 200, 200, 200 ]);
+    expect(await Match.count()).toBe(1);
+    const recordedGame = await Game.findOne({ id: game.id });
+    expect(recordedGame.lock).toBeNull();
+    for (const { body } of responses) {
+      expect(body.victory.currentMatch.id).toBe(recordedGame.match);
+    }
+  });
+
+  it('Adds the game to only one match when it is re-opened during the winning move', async () => {
+    await createRunningSeason();
+    const { game, player0, player1 } = await setupGame({ isRanked: true });
+    widenMatchCreationRace();
+
+    const movePromise = player0.agent
+      .post(`/api/game/${game.id}/move`)
+      .send({ moveType: MoveType.POINTS, cardId: Card.TEN_OF_SPADES.id })
+      .then((response) => response);
+    // Re-open the game once the winning state is saved, while the move is still recording it
+    await vi.waitFor(async () => {
+      expect(await GameStateRow.count({ gameId: game.id })).toBe(2);
+    }, { timeout: 5000, interval: 10 });
+    const loads = await Promise.all([
+      loadGame(game.id, player1.user.id),
+      loadGame(game.id, player0.user.id),
+    ]);
+    const moveResponse = await movePromise;
+
+    expect(moveResponse.status).toBe(200);
+    expect(loads.map(({ status }) => status)).toEqual([ 200, 200 ]);
+    expect(await Match.count()).toBe(1);
+    const recordedGame = await Game.findOne({ id: game.id });
+    expect(recordedGame.status).toBe(GameStatus.FINISHED);
+    expect(recordedGame.lock).toBeNull();
+    const match = await Match.findOne({ id: recordedGame.match }).populate('games');
+    expect(match.games.map(({ id }) => id)).toEqual([ game.id ]);
   });
 });
