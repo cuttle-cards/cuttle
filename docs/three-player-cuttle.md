@@ -159,7 +159,7 @@ affects stalemate dynamics.
 and lodash does not meaningfully clone functions, so function-valued config would silently
 degrade. Keep behaviour in free functions that *take* the rule set -- `activePlayer(state, ruleSet)`
 rather than `ruleSet.activePlayer(state)`. That also keeps it serializable, loggable and diffable,
-which matters for the analysis use case behind the 5.0.1 bump.
+which matters for the analysis use case behind the 6.0.0 bump.
 
 **Delivery: attach it in unpack and read it off `currentState`.** `pack-gamestate.js` iterates an
 explicit `attributesToConvert` list, so an extra `ruleSet` field is silently not serialized; and
@@ -233,7 +233,7 @@ configuration. Only a third distinct owner separates them.
 | 1 | **1a-read**, **1e** (parallel) | Both independent. Together they unblock everything else. |
 | 2 | **1b**, **1c** | Need 1a-read; need 1e to be provable. |
 | 3 | **1d**, **1f** | Independent throughout; cleaner after 1e. |
-| 4 | **1a-write** | Any time after 1a-read; must land before Phase 2 opens a third seat. Carries the archive sweep and the 5.0.1 bump. |
+| 4 | **1a-write** | Any time after 1a-read; must land before Phase 2 opens a third seat. Carries the archive sweep and the 6.0.0 bump. |
 
 The glasses audience decision should be made before 1e is written (see Pending items).
 
@@ -332,18 +332,18 @@ the deploy note): a game can legitimately hold rows written on either side of th
 >   `Game`, so version-gated decoding would mean threading game metadata into the parser, against
 >   the context-free direction settled above. Structural detection is also self-checking: a bad
 >   migration cannot corrupt decoding.
-> - **Analysis** uses `rulesVersion`, bumped to **5.0.1** when 1a-write ships, with a
+> - **Analysis** uses `rulesVersion`, bumped to **6.0.0** when 1a-write ships, with a
 >   `VERSION HISTORY` entry in `utils/rulesVersion.js` recording that it is a storage-encoding
->   change with no rules change. Recovering the encoding from a jsonb regex over `pXPoints` is a
+>   change with no change to legal play. Recovering the encoding from a jsonb regex over `pXPoints` is a
 >   poor query experience, and a distinction never recorded cannot be retrofitted; collapsing two
 >   versions later is trivial by comparison.
 >
-> Patch, not major or minor: of the three tiers that file defines, only patch ("doesn't change
-> legal play") fits, and a major bump would assert a rules break that did not happen. Patch also
-> leaves `parseInt(game.rulesVersion, 10)` checks such as `get-log.js:124` undisturbed. Review
-> raised that 1a is not backwards-compatible and so arguably major. Backwards compatibility of the
-> *deploy* is a real concern, but it is not what this file versions; it is handled instead by
-> splitting 1a into a read change and a write change, which makes each step reversible.
+> **Major: 6.0.0** (decided in review). No legal play changes, but the change is not
+> backwards-compatible: rows written after 1a-write cannot be read by code from before 1a-read.
+> A major bump marks that boundary for anyone analyzing or replaying games. The only code that
+> compares `rulesVersion`, `parseInt(game.rulesVersion, 10) === 3` at `get-log.js:124`, is
+> unaffected. Deploy safety is a separate concern, handled by splitting 1a into a read change and a
+> write change so that each step can be reverted.
 >
 > **A few straddling games are expected and acceptable.** Merges deploy automatically and
 > immediately, so there is no window to coordinate: the procedure is simply *sweep, then merge*
@@ -490,9 +490,9 @@ Each change is tagged with the half it ships in.
   writer, which ignores it.
 - **(read)** `api/helpers/game-states/validate-gamestate.js` — assert the invariant from
   [Lifecycle](#lifecycle) for every card on the field.
-- **(write)** `utils/rulesVersion.js` — bump `CURRENT_RULES_VERSION` to `5.0.1` and add a `VERSION HISTORY`
-  entry recording a storage-encoding change with no rules change. Patch tier, per the rationale in
-  [Reading legacy rows](#reading-legacy-rows).
+- **(write)** `utils/rulesVersion.js` — bump `CURRENT_RULES_VERSION` to `6.0.0` and add a `VERSION HISTORY`
+  entry recording a storage-encoding change with no change to legal play. Major, per the rationale
+  in [Reading legacy rows](#reading-legacy-rows).
 - **(read)** `api/helpers/game-states/moves/one-off/validate.js:88-90` and `is-top-jack.js`'s
   `extendedDescription` — both justify the top-jack restriction *by the parity representation*,
   which this item removes. Reword to state it as a rule, or a later contributor will read the
@@ -516,7 +516,7 @@ Review raised this. Splitting the change makes every step reversible:
   field, sets it in the Seven moves, and adds the invariant. The writer is untouched and keeps emitting legacy strings. Reverting it is safe: no
   new-format row exists yet.
 - **1a-write** switches the writer: the serializer reads `owner`, pack chooses suffixes by column,
-  the guard throws, and `rulesVersion` goes to 5.0.1. Reverting it is safe: 1a-read stays deployed
+  the guard throws, and `rulesVersion` goes to 6.0.0. Reverting it is safe: 1a-read stays deployed
   and still parses whatever 1a-write wrote.
 
 1a-write can land any time after 1a-read, and must land before Phase 2 opens a third seat — until
@@ -598,9 +598,9 @@ separate task. 1a-read needs none of them.
 
 1. Run the archive sweep (see the deploy note) at minimal-to-zero usage.
 2. Merge promptly afterwards.
-3. Confirm the package version label is **patch** — unrelated to the `CURRENT_RULES_VERSION` bump
-   to 5.0.1 in this PR, which is the *rule-set* version. Two different version concepts; do not
-   let one be "corrected" into the other in review.
+3. Choose the package version label on its own merits. It is unrelated to the
+   `CURRENT_RULES_VERSION` bump to 6.0.0 in this PR, which is the *rule-set* version. Two different
+   version concepts; do not let one be inferred from the other in review.
 
 **Depends on:** 1a-read on nothing — ship it first. 1a-write on 1a-read.
 
