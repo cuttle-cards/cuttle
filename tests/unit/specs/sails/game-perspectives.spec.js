@@ -47,6 +47,8 @@ describe('Game visibility and socket room membership', () => {
     });
     vi.spyOn(sails.sockets, 'join').mockReturnValue(true);
     vi.spyOn(sails.helpers.gameStates, 'unpackGamestate').mockReturnValue({ id: 'unpacked' });
+    vi.spyOn(sails.helpers.gameStates, 'countPasses').mockReturnValue(0);
+    vi.spyOn(sails.helpers.gameStates, 'checkGameStateForWin').mockReturnValue({ gameOver: false });
     vi.spyOn(sails.helpers.gameStates, 'createSocketEvents').mockResolvedValue(socketEvents);
     vi.spyOn(sails.helpers, 'broadcastGameEvent').mockReturnValue(undefined);
     vi.spyOn(sails.helpers, 'getMatchGames').mockResolvedValue([]);

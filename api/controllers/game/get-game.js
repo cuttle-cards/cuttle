@@ -47,7 +47,13 @@ module.exports = async function(req, res) {
       });
     }
 
-    const {  unpackGamestate, createSocketEvents } = sails.helpers.gameStates;
+    const {
+      unpackGamestate,
+      createSocketEvents,
+      countPasses,
+      checkGameStateForWin,
+      finishGame,
+    } = sails.helpers.gameStates;
 
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
@@ -59,7 +65,26 @@ module.exports = async function(req, res) {
     }
 
     const gameState = unpackGamestate(packedGameState);
-    const socketEvents = await createSocketEvents(game, gameState);
+
+    // The move that ends a game records it (finishGame), but can fail part-way, e.g. after
+    // marking it finished but before adding it to its match. Moves are rejected once a game is
+    // finished, so finish recording it here when its final state is loaded again
+    let currentMatch;
+    const isLatestGameState = packedGameState.id === game.gameStates.at(-1).id;
+    const mayBeUnrecorded = game.status === GameStatus.STARTED || (game.isRanked && !game.match);
+    if (isLatestGameState && mayBeUnrecorded) {
+      const victory = checkGameStateForWin(gameState, countPasses(game.gameStates, gameState));
+      if (victory.gameOver) {
+        try {
+          currentMatch = await finishGame(game, victory);
+        } catch (err) {
+          // Still let the player load the game; the next load will try again
+          sails.log.error(`Could not finish recording game ${game.id}`, err);
+        }
+      }
+    }
+
+    const socketEvents = await createSocketEvents(game, gameState, currentMatch);
 
     // Finished games reveal all cards, but players must stay in their player
     // rooms so a rematch sends them only their own perspective of the new game.

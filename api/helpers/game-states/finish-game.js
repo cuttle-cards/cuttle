@@ -4,7 +4,7 @@ module.exports = {
   friendlyName: 'Finish Game',
 
   description:
-    'Records the end of a game that a move just ended: marks it finished, sets its winner, and adds it to its match. Returns the match',
+    'Records the end of a game that a move just ended: marks it finished, sets its winner, and adds it to its match. Returns the match. Safe to call again on a game that is already (partly) recorded: get-game does so when a move failed part-way',
 
   inputs: {
     game: {
