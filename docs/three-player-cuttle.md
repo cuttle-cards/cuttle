@@ -1036,7 +1036,7 @@ reconciliation sites plus one hazard:
 ### Phase 3 — three-player rules
 
 Turn order (`turn % playerCount`; dealer rotation is handled by
-seat rotation on rematch); counter priority with explicit state; cross-board targeting; board wipes
+seat rotation on rematch); counter priority; cross-board targeting; board wipes
 across three fields; win table; hand limit 7; jokers; concede and stalemate-request disabled via
 the rule set's `disallowedMoveTypes`. The stalemate threshold needs no change (see 1d).
 
@@ -1069,23 +1069,43 @@ the Nine, all of which are opponent-scoped by construction today.
 
 #### 3c. Counter priority
 
-Counter priority needs a new `passedPriority` column (`pNum[]`, jsonb, defaults `[]`), cleared
-whenever a two is played. The candidates are the N−1 players **other than** `stackTopOwner` (1c),
-taken clockwise from `stackTopOwner + 1`. The current holder is the first candidate not in
-`passedPriority`; once all N−1 have declined, the one-off resolves. `stackTopOwner` is never a
-candidate, so nobody is asked to counter their own card. Review caught that the earlier wording —
-search every seat for the first not in `passedPriority` — wraps back to the caster and never
-reaches "none remain". This also reproduces two-player behavior exactly, so
-`your-turn-to-counter.js` can be reimplemented on it with no behavior change.
+**Priority is read from the current row; no new column.** The next player to act is the next one
+clockwise after whoever made the last move (the row's `playedBy`), skipping `stackTopOwner` (1c).
+If that next player *is* `stackTopOwner`, every other player has had their chance, so the current
+holder is the last in line and their decline resolves the one-off.
+
+This holds because candidates are asked in clockwise order, and every move during countering is
+made by the current holder: either `stackTopOwner` just added to the stack, or the holder just
+declined. Either way, the next in line is the next player clockwise after the last actor.
+`stackTopOwner` is never asked, so nobody counters their own card.
+
+| Last move | `playedBy` | `stackTopOwner` | Next to act |
+|---|---|---|---|
+| p0 casts | 0 | p0 | p1 |
+| p1 declines | 1 | p0 | p2, the last in line |
+| *or* p2 counters | 2 | p2 | p0 |
+| p0 declines | 0 | p2 | p1, the last in line, so p1's decline resolves |
+
+At two players the opponent is always the only one in line, so this reproduces today's behavior
+exactly. Reimplement `your-turn-to-counter.js` and the countering case of
+`get-active-player-p-num.js` on it; both receive only the state, which is all the rule needs. The
+client should stop recomputing priority from `twos` parity (`src/stores/game.js:220,225`) and use
+the `activePlayerPNum` the server already sends.
+
+An earlier draft stored declines in a `passedPriority` column, and review caught that its wording
+wrapped back to the caster. Reading priority from the current row needs no column, no legacy read
+rule, and no walk through prior states. It does rely on 1a's owners on `twos`: after a decline,
+`stackTopOwner` is not the row's `playedBy`, so it comes from the top Two's owner, or from the
+caster when no Two has been played.
 
 COUNTERING then has three outcomes where it had two. Add an explicit `DECLINE_COUNTER` MoveType
 rather than overloading `resolve` with server-side inference — the log is player-facing and replay
 re-renders it. Fizzle parity (`twos.length % 2 === 1`) is unaffected at any player count.
 
 Acceptance includes the **end-of-round** case (p0 casts; p1 and p2 decline; it resolves) and the
-**re-open** case (p2 counters; p0 then p1 are asked, in that order). Legacy read rule: the default
-`[]` is exact for a two-player row, whose single candidate cannot yet have declined — a decline
-there is the resolve.
+**re-open** case (p2 counters; p0 then p1 are asked, in that order). A two-player game paused
+mid-countering when this deploys reads correctly, since the rule gives the same answer as today's
+`twos` parity check.
 
 #### 3d. Jokers
 
@@ -1197,7 +1217,7 @@ One question remains.
 `validateGamestate` rebuilds the state from a fixed field list, and pack serializes from another;
 both silently drop anything they do not name. So every new field must be added in three places:
 unpack's field mapping, `validateGamestate`'s list, and pack's list. This applies to
-`oneOffTargetPNum` (1c), `passedPriority` (Phase 3), the per-player reveals if glasses go private,
+`oneOffTargetPNum` (1c), the per-player reveals if glasses go private,
 and the players themselves (1e converts `validateGamestate`'s `p0`/`p1` to `players[]`; Phase 2's
 third seat follows). Review found the rule set being dropped this way, which is why it is now
 passed alongside the state instead.
@@ -1214,7 +1234,6 @@ legacy game across the deploy:
 | `owner` on `twos` | alternation from the caster (1a) |
 | owners in snapshot slots | none — never reconstructed (1a) |
 | `oneOffTargetPNum` | the non-caster, when `oneOff` is set (1c) |
-| `passedPriority` | `[]`, exact for two players (Phase 3) |
 | per-player reveals, if glasses go private | empty, exact for two players (Phase 3) |
 
 ### Found along the way
