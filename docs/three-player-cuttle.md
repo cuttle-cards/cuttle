@@ -39,6 +39,7 @@ Decided in design discussion; not all are derivable from `en.json`.
 | Targeting scope | `targetPNum` must be an **opponent, never yourself**. The Nine may hit any opponent's card. Applies equally to the Two, the Jack, the Joker and scuttles. |
 | Seven reveals | The top two cards are revealed to **every** player, not just the caster. |
 | Rematch agreement | **Unanimous** -- all N players must accept. Generalizes `p0Rematch && p1Rematch`. |
+| Rematch series name | Players in **first-game seating order**, then each player's wins in that same order, then stalemates: `A VS B VS C 0-2-1-1` means A has 0 wins, B 2, C 1, with 1 stalemate. This is the current two-player name generalized, so two-player names are unchanged. |
 | Leaving a game | A **Go Home** menu item replaces Concede/Stalemate in variants that disallow them. Plain navigation: the game persists and the player may return. |
 | Queen protection | A Queen protects her owner's board against **every** opponent's targeting effects -- Twos (both effects), Nines, Jacks, and Jokers. Not caster-scoped. |
 | Rematch / dealer rotation | **Seat rotation**, generalizing the existing two-player swap: `newSeats = [...seats.slice(1), seats[0]]`. Since p0 always starts, rotating by one advances the starter clockwise each game. No `firstPlayerPNum` column. |
@@ -899,8 +900,13 @@ reconciliation sites plus one hazard:
 2. **Series score** (lines 58-67) — currently normalizes back to the first game's seating to keep
    the tally stable across the swap. Tally by **user id** rather than by seat and the
    reconciliation disappears; order the display by first-game seating.
-3. **Series name** (line 67) — `${p0.username} VS ${p1.username} ${w}-${l}-${s}` needs a
-   three-player format. Cosmetic, but pick a stable ordering (first-game seating).
+3. **Series name** (line 67) — decided: the players in first-game seating order, then each
+   player's wins in that same order, then stalemates, e.g. `A VS B VS C 0-2-1-1`. Today's
+   `${p0.username} VS ${p1.username} ${w}-${l}-${s}` is already first-game seating (lines 58-60)
+   with stalemates last, so this generalizes it: names joined with the existing `' VS '`, wins
+   joined with `-`, stalemates appended. Two-player names come out byte-identical. Build the order
+   from the first game's seats, not the current game's: seat rotation reorders `players` every
+   rematch, so `players.map(...)` on the current game would reshuffle names from game to game.
 4. **Hazard: room remap** (lines 96-97) — `addRoomMembersToRooms` must rotate in the *same*
    direction as the seat assignment. At two players it is a swap and self-evidently correct; a
    3-cycle has a plausible wrong direction, and reversing it places players in another player's
@@ -1003,7 +1009,7 @@ hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
 
 ## Pending items
 
-One rules question and one non-rules item remain.
+One question remains.
 
 1. **Glasses audience — decide during Phase 1, before 1e is written.** 1e rewrites the glasses
    branch of `update-revealed-cards.js`. Both options are identical at two players and neither
@@ -1029,13 +1035,6 @@ One rules question and one non-rules item remain.
    is the faithful port of how the variant is played in person; it also keeps cutthroat free of
    private knowledge. Private is viable if play shows public glasses to be too weak or too
    political.
-
-2. **Rematch series name format.** `${p0.username} VS ${p1.username} ${w}-${l}-${s}` has no
-   obvious three-player form (Phase 2, rematch note). Options raised in review: alphabetical by
-   username, by user id, or `players.map((p) => p.username).join(' VS ')`. Note the last is not
-   stable: seat rotation reorders `players` every rematch, so names would reshuffle game to game.
-   First-game seating or alphabetical are stable, and the per-player win tally must follow the same
-   order. Deferred with rematch itself, so not needed to ship.
 
 ### Standing rule: every new gamestate column declares a legacy read rule
 
