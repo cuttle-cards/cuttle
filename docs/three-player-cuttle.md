@@ -156,19 +156,36 @@ effective rule set**. `Game.playerCount` and `Game.ruleVariants` (e.g. `{ jokers
 single place composition and interaction rules live -- jokers change deck size, which in turn
 affects stalemate dynamics.
 
-**The rule set must be pure data.** Every execute helper opens with `_.cloneDeep(currentState)`,
-and lodash does not meaningfully clone functions, so function-valued config would silently
-degrade. Keep behaviour in free functions that *take* the rule set -- `activePlayer(state, ruleSet)`
-rather than `ruleSet.activePlayer(state)`. That also keeps it serializable, loggable and diffable,
-which matters for the analysis use case behind the 6.0.0 bump.
+**The rule set is pure data.** Keep behaviour in free functions that *take* the rule set --
+`activePlayer(state, ruleSet)` rather than `ruleSet.activePlayer(state)` -- so it stays
+serializable, loggable and diffable, which matters for the analysis use case behind the 6.0.0
+bump.
 
-**Delivery: attach it in unpack and read it off `currentState`.** `pack-gamestate.js` iterates an
-explicit `attributesToConvert` list, so an extra `ruleSet` field is silently not serialized; and
-every helper already receives `currentState`, so there is no signature churn across 48 helpers.
-`move.js` has `game` in scope, making `unpackGamestate(row, ruleSet)` a one-line call-site change.
-(The alternative -- an explicit extra input per helper, as `priorStates` was added -- is more
-honest about dependencies, but `handLimit` and `playerCount` are needed in most executes, so
-threading them individually buys little.)
+**Delivery: taken from the game, and passed alongside the state rather than on it.** The game is
+the source of truth: `Game.playerCount` and `Game.ruleVariants`, frozen at creation. Every caller
+that unpacks a state holds the game — `move.js`, `ai/ai-move.js`, `get-game.js`,
+`spectate/join.js` and `load-fixture-gamestate.js` — and so do the helpers that already take a
+`game` input, `createSocketEvents`, `publishGameState`, `checkGameStateForWin` and `dealCards`,
+which resolve it there.
+
+The move helpers are the one layer without the game: `validate` and `execute` receive only
+`currentState`, `requestedMove`, `playedBy` and `priorStates`. The rule set crosses that boundary
+the way `priorStates` already does — `move.js:52` and `:57` pass `game.gameStates` to every
+`validate` and `execute` — as one more argument resolved from the game. `updateRevealedCards` and
+`checkGameStateForWinSync` take it as an argument too, and every other caller of the move helpers,
+including the AI's search for legal moves, must pass it.
+
+It is **not** attached to the state. The state passes through two fixed field lists, in
+`validateGamestate` and in pack, and config riding on it can be silently dropped by either: review
+caught exactly that, since unpack's last step is `validateGamestate`, which rebuilds the state from
+a fixed list. Keeping config off the state also keeps the standing rule for new state fields (see
+[Pending items](#standing-rule-every-new-gamestate-field-goes-through-unpack-validation-and-pack))
+about state only.
+
+**The argument is optional, with a guard.** Existing callers and specs pass four arguments, e.g.
+`moves.resolve.validate(state, resolveMove, 1, [])`, so an omitted rule set defaults to the
+standard two-player rules. To stop a forgotten argument from silently applying two-player rules to
+a three-player game, a helper throws when the state's player count disagrees with the rule set's.
 
 **The parser stays variant-blind.** Jokers require extending the id alphabet -- `convertIdToCard`
 demands exactly 2 characters today -- but the parser never needs to know whether jokers are
@@ -398,7 +415,8 @@ nothing reads an owner there.
 #### Lifecycle
 
 **Owners come from position, not from moves.** Unpack fills them in for every card in a hand or
-on the field — from the column, or from suffixes where the column cannot tell — and pack writes
+on the field — from the column, or from suffixes where the column cannot tell — and so does
+`saveGamestate`, before it validates, through the same shared helper. Pack writes
 them only where the column cannot recover them. So moves never clear `owner`. A card that leaves a
 hand for the deck or the scrap mid-move may carry a stale owner in memory for the rest of that
 move, but nothing reads an owner there and pack writes none, so it is gone after the next unpack.
@@ -452,10 +470,16 @@ unpacks with null owners. Without the exemption, a game paused mid-countering on
 stacked point card would hold a legacy `oneOffTarget` such as `TH(JH-p0)`, and the next counter move
 would throw when it re-packed it.
 
-This matters concretely for `load-fixture-gamestate.js:83-84`, which packs the raw request body
-before re-unpacking. Any e2e fixture staging a jacked point card must supply `owner`; with the
-throw in place those fail loudly during migration rather than passing by parity coincidence and
-breaking on the first three-player test.
+**Hand-built states are filled in before the check.** Two paths save raw states that no unpack has
+touched: `load-fixture-gamestate.js:83-84`, behind the `loadGameFixture` command used by 28 e2e
+specs, and `game-state.spec.js`, which saves states built from `Card.*` constants (lines 19, 54,
+88). Their cards carry no `owner`, so the field check would reject even a plain point card. Review
+caught this. Both go through `saveGamestate`, so it fills owners from position before validating,
+with the same helper unpack uses: from the column for unstacked cards, and by parity
+reconstruction for a two-player stack without owners. Existing fixtures, including jacked point
+cards, keep working unchanged. A three-player fixture must supply its stealers' owners explicitly,
+since parity cannot recover them, and the check throws if they are missing. For states produced by
+moves, which arrive with owners already filled in, it is a no-op.
 
 #### Changes
 
@@ -481,7 +505,10 @@ Each change is tagged with the half it ships in.
   attachments, apply the legacy parity reconstruction; if absent and unstacked, set `owner = X`.
   For a new-format stack, set the top stealer's owner to `X`, and if a suffix was present, check it
   equals `X`. For `twos` without suffixes, reconstruct owners by alternation from the caster.
-  Snapshot slots are left as parsed.
+  Snapshot slots are left as parsed. Put this owner-filling in one shared helper.
+- **(read)** `api/helpers/game-states/save-gamestate.js` — call the same helper before
+  `validateGamestate`, so hand-built states from the fixture loader and the unit specs are filled
+  in before the check. Reconstruct ownerless stacks by parity only for two-player states.
 - **(write)** `api/helpers/game-states/pack-gamestate.js` — the points-specific branch at lines 61-69
   **stays**, but its job changes: instead of passing the column into the serializer to compute
   parity, it removes `owner` from every unstacked card outside `twos` and passes stacked cards and
@@ -527,6 +554,9 @@ to 1a-write, since that is when the encoding changes.
 #### Acceptance criteria
 
 - Full existing unit + e2e suite passes unchanged, after each half.
+- **(read)** Existing hand-built states save unchanged — the e2e fixture loader's and
+  `game-state.spec.js`'s, including jacked point cards — while a three-player fixture with an
+  ownerless stealer is rejected.
 - **(read)** 1a-read parses every new-format shape — a stacked point card, a stacked face card,
   joker ids, suffixed Twos, a top stealer with or without a suffix — though nothing writes them yet.
   This is what makes reverting 1a-write safe.
@@ -786,8 +816,10 @@ code; `HAND_LIMIT` is read from the resolved rule set rather than imported from
 and `ScoreGoalToolTip.vue` derive their table from the same
 source as `check-game-state-for-win-sync.js`; existing suite passes unchanged.
 
-**Depends on:** nothing. Note this spans server *and* client, since the win table is duplicated in
-both — worth calling out in the issue so it is not scoped as backend-only.
+**Depends on:** 1e for the server side, since the move helpers read these values from the rule set
+1e threads through to them; the client-side win table is independent. Note this spans server *and*
+client, since the win table is duplicated in both — worth calling out in the issue so it is not
+scoped as backend-only.
 
 ---
 
@@ -813,12 +845,23 @@ reveals every other player's hand into the shared set — and Phase 3 adapts it.
 branch is different: it must be **gated** on `revealHandsOnEmptyDeck` (1d), not merely iterated,
 since cutthroat does not reveal on an empty deck.
 
+**Threads the rule set to the move helpers.** The active-player helper that replaces `turn % 2`
+needs the player count, so every validator 1e rewrites gains the rule-set argument described in
+[Composing orthogonal variants](#composing-orthogonal-variants); executes that read the hand limit
+take it too. Doing it here costs almost nothing, since 1e already edits every one of those helpers.
+
+**Converts `validateGamestate` to `players[]`.** It rebuilds the state from a fixed field list that
+names `p0` and `p1` explicitly (`validatePlayerData(gameState.p0)`, `...p1`), so as written it would
+drop `players[]` and, later, a third seat on every load and save.
+
 **Acceptance criteria:** `GameState` exposes `players[]`; the ~25 `playedBy ? p1 : p0` lookup sites
 (sweep category "benign") become `players[playedBy]`; no helper derives a player *identity* from
 alternation except those explicitly deferred to Phase 3; stored column names are unchanged;
 existing suite passes; **a synthetic three-entry `players` array can be passed to any move helper
 without error** — this is what unblocks the 1b and 1c correctness tests; `update-revealed-cards.js`
-iterates players.
+iterates players; `validateGamestate` keeps every player; every move helper that reads a rule value
+takes the rule set as an optional argument, defaulting to two-player rules and throwing on a
+player-count mismatch; `move.js` and the AI's callers pass it, resolved from the game.
 
 **Depends on:** nothing. **Ship early** — alongside 1a rather than after it. It is a pure
 two-player-safe refactor, and it is the enabler for proving 1b and 1c at all.
@@ -1036,6 +1079,16 @@ One question remains.
    private knowledge. Private is viable if play shows public glasses to be too weak or too
    political.
 
+### Standing rule: every new gamestate field goes through unpack, validation and pack
+
+`validateGamestate` rebuilds the state from a fixed field list, and pack serializes from another;
+both silently drop anything they do not name. So every new field must be added in three places:
+unpack's field mapping, `validateGamestate`'s list, and pack's list. This applies to
+`oneOffTargetPNum` (1c), `passedPriority` (Phase 3), the per-player reveals if glasses go private,
+and the players themselves (1e converts `validateGamestate`'s `p0`/`p1` to `players[]`; Phase 2's
+third seat follows). Review found the rule set being dropped this way, which is why it is now
+passed alongside the state instead.
+
 ### Standing rule: every new gamestate column declares a legacy read rule
 
 Each phase deploys separately, so a game can be paused on a row written before a column existed.
@@ -1157,8 +1210,12 @@ visibility: `get-game.js:22-26`, `spectate/join.js:26` — see the Phase 2 note.
 silently wrong: `move.js:36-44`, `ready.js:13-31`, `leave-lobby.js:16-22`, `lock-game.js:46-47`,
 `find-open-games.js:19-35`, `get-history.js:15-47`, `StatsController.js:13-14`,
 `set-is-ranked.js:8`, `load-fixture-gamestate.js`, `broadcast-game-event.js:27-29` (1f),
-`check-game-state-for-win.js:66-69` (Phase 3). Deferred with rematch: `get-casual-match.js:20-21`,
-`get-match-games.js:9-10`, `get-rematch-games.js:6-8`.
+`check-game-state-for-win.js:66-69` (Phase 3), `validate-gamestate.js:74-75` (1e). Deferred with
+rematch: `get-casual-match.js:20-21`, `get-match-games.js:9-10`, `get-rematch-games.js:6-8`.
+
+`validate-gamestate.js` was found later, in review. The per-file pass counted a file as covered
+whenever this document mentioned it, and it did — but only for the ownership invariant, never for
+its `p0`/`p1` field list. A mention is not a classification.
 
 ### Outcome
 
