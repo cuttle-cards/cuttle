@@ -17,13 +17,13 @@
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
         <GameCard
-          v-for="(card, index) in hand"
+          v-for="card in hand"
           :key="card.id"
           :suit="card.suit"
           :rank="card.rank"
           :data-discard-card="`${card.rank}-${card.suit}`"
-          :class="{ 'is-selected': selectedIds.includes(card.id) }"
-          @click="selectCard(index)"
+          :class="{ 'is-selected': isSelected(card.id) }"
+          @click="selectCard(card.id)"
         />
       </div>
     </template>
@@ -42,11 +42,12 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+import { useSelectCards } from '@/composables/useSelectCards';
 
 defineOptions({ name: 'FourDialog' });
 
@@ -60,7 +61,13 @@ const emit = defineEmits([ 'discard' ]);
 const { t } = useI18n();
 const gameStore = useGameStore();
 
-const selectedIds = ref([]);
+const {
+  selectedIds,
+  isSelected,
+  ready,
+  selectCard,
+  clear,
+} = useSelectCards(2);
 
 const show = computed({
   get() {
@@ -71,28 +78,15 @@ const show = computed({
   },
 });
 const hand = computed(() => gameStore.player.hand);
+// Normally two cards, but one is enough when only one card is in hand
 const readyToDiscard = computed(
-  () => selectedIds.value.length === 2 || (selectedIds.value.length === 1 && hand.value.length === 1),
+  () => ready.value || (selectedIds.value.length === 1 && hand.value.length === 1),
 );
-
-function selectCard(handIndex) {
-  const cardId = hand.value[handIndex].id;
-  // If already selected, deselect
-  if (selectedIds.value.includes(cardId)) {
-    selectedIds.value.splice(selectedIds.value.indexOf(cardId), 1);
-  } else {
-    selectedIds.value.push(cardId);
-    // If three cards are selected, deselect 1st selection
-    if (selectedIds.value.length > 2) {
-      selectedIds.value.splice(0, 1);
-    }
-  }
-}
 
 function discard() {
   if (readyToDiscard.value) {
     emit('discard', [ ...selectedIds.value ]);
-    selectedIds.value = [];
+    clear();
   }
 }
 </script>
