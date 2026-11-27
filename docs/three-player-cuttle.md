@@ -1,8 +1,5 @@
 # Three-Player Cuttle (Cutthroat): Architecture & Phase 1 Spec
 
-**Status:** Draft for review. Destined for GitHub issues — each numbered work item below is
-intended to become one issue.
-
 **Scope of this document:** the architecture decisions for supporting a 1v1v1 "Cutthroat"
 variant, and a fully specified Phase 1. Phase 1 contains *no three-player behavior*. It is
 groundwork that ships against two-player rules, gated by the existing test suite, and is
