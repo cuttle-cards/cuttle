@@ -7,6 +7,7 @@ independently valuable because it fixes two latent correctness bugs.
 
 Variant rules as written live in `src/translations/en.json` under `rules.3Players`.
 
+- [Issue overview](#issue-overview)
 - [Settled rules decisions](#settled-rules-decisions)
 - [Stacks and jokers](#stacks-and-jokers)
 - [Architecture decisions](#architecture-decisions)
@@ -14,6 +15,71 @@ Variant rules as written live in `src/translations/en.json` under `rules.3Player
 - [Phase 1 — two-player-safe groundwork](#phase-1--two-player-safe-groundwork)
 - [Phases 2–4 — outline](#phases-24--outline)
 - [Pending items](#pending-items)
+
+---
+
+## Issue overview
+
+Each line is intended to become one GitHub issue, and links to its detailed section. Phase 1 changes
+nothing for two-player games. The first user-facing release needs everything below except 2d.
+
+### Phase 1 issues
+
+- [**1a-read** — read the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format): parse the new stack grammar and fill in
+  owners from position, while still writing the old format.
+- [**1a-write** — write the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format): switch the writer to the new format,
+  with the archive sweep and the `rulesVersion` 6.0.0 bump.
+- [**1b** — return stolen cards by owner](#1b-rewrite-six--nine--two-onto-controllerof): `six`, `nine` and `two` decide where a stolen
+  card goes from stored ownership instead of parity.
+- [**1c** — store the one-off's target player](#1c-store-the-one-offs-target-player-on-the-gamestate): record the target player at cast time,
+  and check counters against the Queens of whoever played the top of the stack.
+- [**1d** — variant-parameterized config](#1d-extract-variant-parameterized-config): read the win table, hand limit and empty-deck
+  reveal from the rule set instead of hard-coded constants.
+- [**1e** — `players[]` in `GameState`](#1e-move-gamestate-to-a-players-array): replace `p0`/`p1` with a players array, and
+  pass the rule set to the move helpers.
+- [**1f** — socket fan-out to N rooms](#1f-generalize-socket-fan-out-to-n-rooms): build one socket payload and room per player
+  instead of a fixed two.
+
+Before 1e is written, decide the [glasses audience](#pending-items).
+
+### Phase 2 issues
+
+- [**2a** — schema and lobby for N seats](#2a-schema-and-lobby-for-n-seats): add the third-seat columns, and let games be
+  created, joined and readied with three players.
+- [**2b** — seat lookup and fail-open seat checks](#2b-seat-lookup-and-the-fail-open-seat-checks): map users to seats through one
+  helper, closing two checks that would put a third player in the spectator room.
+- [**2c** — the remaining seat lists](#2c-the-remaining-seat-lists): add the third seat everywhere else seats are
+  listed, and reject ranked mode for three-player games.
+- [**2d** — rematch under seat rotation](#2d-rematch-under-seat-rotation): rematch by rotating seats, with unanimous
+  agreement. Lands after the first release.
+
+### Phase 3 issues
+
+- [**3a** — cutthroat rule set, dealing and win detection](#3a-cutthroat-rule-set-dealing-and-win-detection): define cutthroat's rule set,
+  deal 5/5/5 from a 54-card deck, and record a third player's win.
+- [**3b** — cross-board targeting](#3b-cross-board-targeting): let targeted moves name the opponent they target,
+  and reject targeting yourself.
+- [**3c** — counter priority](#3c-counter-priority): pass the chance to counter clockwise, resolving once every
+  other player declines.
+- [**3d** — jokers](#3d-jokers): add the joker moves, joker targeting, stacks on face cards and the
+  54-card deck to the engine.
+
+### Phase 4 issues
+
+- [**4a** — seat-based board and target picker](#4a-seat-based-board-and-target-picker): a three-seat board, and a picker for
+  choosing which opponent a targeted card hits.
+- [**4b** — simplified game-over dialog](#4b-simplified-game-over-dialog): game over offers Go Home only, with no rematch.
+- [**4c** — Go Home in the game menu](#4c-go-home-in-the-game-menu): replace concede and stalemate with Go Home.
+- [**4d** — three-player games in the current-games list](#4d-three-player-games-in-the-current-games-list): show three-player games on
+  the home page, so players can get back to them.
+- [**4e** — jokers on the board](#4e-jokers-on-the-board): joker card art, and stacks drawn on face cards.
+- [**4f** — rules page lines](#4f-rules-page-lines): explain glasses, the empty deck and jokers for cutthroat,
+  in all five locales.
+
+### Standalone issues
+
+- [**Counter validator accepts any card**](#found-along-the-way): reject a counter that
+  isn't a Two. An existing bug, independent of this plan.
 
 ---
 
@@ -902,13 +968,17 @@ and per-perspective visibility, passes unchanged. That spec is the natural regre
 
 ## Phases 2–4 — outline
 
-**Phase 2 — schema + lobby.** `Game.playerCount` / `ruleVariants` / `p2` / `p2Ready` /
+### Phase 2 — schema and lobby
+
+#### 2a. Schema and lobby for N seats
+
+`Game.playerCount` / `ruleVariants` / `p2` / `p2Ready` /
 `p2Rematch`; `GameStateRow.p2*` nullable, `playedBy` relaxed. Create / join / `isGameFull`
 (currently `game.p0 && game.p1`) / ready-up for N seats. Both migrations additive.
-`archive.js:26-28` checks membership against `[p0, p1]` only — p2 must be added, or the third
-player cannot dismiss their own abandoned game.
 
-**Seat enumeration — security-relevant.** Many controllers and helpers list the seats as `p0, p1`
+#### 2b. Seat lookup, and the fail-open seat checks
+
+**Security-relevant.** Many controllers and helpers list the seats as `p0, p1`
 (sweep category C8). Most fail **closed** when a third seat appears: `move.js:36-44` throws
 "You are not a player in this game!" for an unlisted p2. Two fail **open**, into the most
 privileged view in the system:
@@ -926,6 +996,11 @@ spectator room of a STARTED game as an error rather than a fallback. **Acceptanc
 three-player live game, each seated player's game load joins their own perspective room, and
 `spectate/join` rejects all three.
 
+#### 2c. The remaining seat lists
+
+`archive.js:26-28` checks membership against `[p0, p1]` only — p2 must be added, or the third
+player cannot dismiss their own abandoned game.
+
 The fail-closed sites still need p2: `ready.js:13-31`, `leave-lobby.js:16-22`, `lock-game.js:46-47`
 (populate), `find-open-games.js:19-35` (lobby list), `get-history.js:15-47` (p2's games would be
 absent from their own history), `StatsController.js:13-14` (unique-player counts), and
@@ -934,7 +1009,9 @@ staged. `set-is-ranked.js:8` checks membership too — but since cutthroat is ca
 **reject** `isRanked` on three-player games outright, enforced server-side rather than by hiding
 the toggle.
 
-**Rematch under seat rotation.** `rematch.js` generalizes rather than forks, but has three
+#### 2d. Rematch under seat rotation
+
+`rematch.js` generalizes rather than forks, but has three
 reconciliation sites plus one hazard:
 
 1. **Agreement gate** (line 36) — `p0Rematch && p1Rematch` becomes **unanimous** across all N
@@ -956,12 +1033,24 @@ reconciliation sites plus one hazard:
    perspective room. That is an information leak, not a glitch. Cover it with an explicit test:
    after a rematch, every user's socket room matches their new seat.
 
-**Phase 3 — three-player rules.** Turn order (`turn % playerCount`; dealer rotation is handled by
+### Phase 3 — three-player rules
+
+Turn order (`turn % playerCount`; dealer rotation is handled by
 seat rotation on rematch); counter priority with explicit state; cross-board targeting; board wipes
 across three fields; win table; hand limit 7; jokers; concede and stalemate-request disabled via
-the rule set's `disallowedMoveTypes`. The stalemate threshold needs no change (see 1d). The winner write in
-`check-game-state-for-win.js:66-69` maps the winning pNum to `game.p0.id`/`game.p1.id`, so a p2
+the rule set's `disallowedMoveTypes`. The stalemate threshold needs no change (see 1d).
+
+#### 3a. Cutthroat rule set, dealing and win detection
+
+Define cutthroat's rule set and its resolver, as described in
+[Composing orthogonal variants](#composing-orthogonal-variants): three players, a hand limit of 7,
+the 14/9/5/0 win table, a 5/5/5 deal from the 54-card deck, concede and stalemate requests
+disallowed, no empty-deck reveal, and jokers on. The resolver rejects invalid combinations when a
+game is created, and `ruleVariants` is frozen from then on. `deal-cards.js` deals by the rule set,
+and `move.js` enforces `disallowedMoveTypes`. The winner write in `check-game-state-for-win.js:66-69` maps the winning pNum to `game.p0.id`/`game.p1.id`, so a p2
 win needs a seat lookup (sweep C8).
+
+#### 3b. Cross-board targeting
 
 Cross-board targeting is where `targetPNum` enters the move request bodies for `jack`, `scuttle`,
 `one-off` and the `seven-*` equivalents, defaulting to the sole opponent at two players. Deferred
@@ -978,6 +1067,8 @@ the Nine, all of which are opponent-scoped by construction today.
 > yourself to hand to your partner. That makes self-targeting a `ruleSet` flag rather than a fixed
 > rule — but do not add the flag until that variant is real; just keep the check in one place.
 
+#### 3c. Counter priority
+
 Counter priority needs a new `passedPriority` column (`pNum[]`, jsonb, defaults `[]`), cleared
 whenever a two is played. The candidates are the N−1 players **other than** `stackTopOwner` (1c),
 taken clockwise from `stackTopOwner + 1`. The current holder is the first candidate not in
@@ -987,12 +1078,18 @@ search every seat for the first not in `passedPriority` — wraps back to the ca
 reaches "none remain". This also reproduces two-player behavior exactly, so
 `your-turn-to-counter.js` can be reimplemented on it with no behavior change.
 
+COUNTERING then has three outcomes where it had two. Add an explicit `DECLINE_COUNTER` MoveType
+rather than overloading `resolve` with server-side inference — the log is player-facing and replay
+re-renders it. Fizzle parity (`twos.length % 2 === 1`) is unaffected at any player count.
+
 Acceptance includes the **end-of-round** case (p0 casts; p1 and p2 decline; it resolves) and the
 **re-open** case (p2 counters; p0 then p1 are asked, in that order). Legacy read rule: the default
 `[]` is exact for a two-player row, whose single candidate cannot yet have declined — a decline
 there is the resolve.
 
-**Jokers.** Settled in [Stacks and jokers](#stacks-and-jokers); the engine work:
+#### 3d. Jokers
+
+Settled in [Stacks and jokers](#stacks-and-jokers); the engine work:
 
 - New `joker` and `sevenJoker` MoveTypes. Validation: the target is a Royal base or the top stealer
   of a stack, on an opponent's board, subject to the graded Queen rule. Execution: attach the joker
@@ -1009,44 +1106,60 @@ there is the resolve.
 - Two, Nine, Six and Ace semantics per the interactions list. The win check needs no change: it
   counts Kings in the controller's `faceCards`, where a stolen King already sits.
 
-COUNTERING then has three outcomes where it had two. Add an explicit `DECLINE_COUNTER` MoveType
-rather than overloading `resolve` with server-side inference — the log is player-facing and replay
-re-renders it. Fizzle parity (`twos.length % 2 === 1`) is unaffected at any player count.
+### Phase 4 — client
 
-**Phase 4 — client.** Seat-based board component; `opponents[]` in the store; seat-scoped
+The first user-facing release is deliberately scoped down (decided). 4a–4f together make up its
+client work.
+
+#### 4a. Seat-based board and target picker
+
+Seat-based board component; `opponents[]` in the store; seat-scoped
 `data-cy` contract leaving the existing two-player selectors untouched; player picker in the
 jack / two / nine / four target dialogs. `owner` reaches the client for free via
 `create-socket-events`, and is needed to attribute jacks per player — `GameView.vue:240` currently
 hardcodes `controlled-by="opponent"`, which is meaningless with two opponents.
 
-**Scoped down for the first user-facing release (decided):**
+#### 4b. Simplified game-over dialog
 
-- **Simplified game-over dialog — no rematch, Go Home only.** This deliberately sidesteps the
-  most two-player-coupled client code: `GameOverDialog.vue:195-219` reconciles against
-  `currentMatch?.games[0].p0` to pick `p1-wins-heading`/`p2-wins-heading`,
-  `gameOver/composables/playerData.js:17-21` keys off `ORIGINAL_P0`/`ORIGINAL_P1`, line 297 gates
-  on `p0Rematch && p1Rematch`, and `MatchScoreCounter`/`MatchStatusBanner`/
-  `MatchWonOrLostIndicator` are all match-shaped. None of it is needed to ship the mode.
-- **Go Home in the game menu.** `GameMenu.vue:22-43` already branches: spectators get a Go Home
-  item (`mdi-home`, `data-cy="stop-spectating"`, key `game.menus.gameMenu.home`), players get the
-  Concede/Stalemate `v-else`. Cutthroat allows neither, so the condition becomes
-  `isSpectating || !canConcede`. The i18n key already exists in every locale, so there is no
-  translation work. The handler needs a player variant: `stopSpectate()` calls
-  `gameStore.requestSpectateLeave()` first, which a player must not; theirs is a plain
-  `$router.push('/')`.
-- **Required by the above, not deferrable:** `find-current-games-for-user.js:45` derives the
-  opponent by alternation (sweep category C5). Go Home is only an exit if the player can get back,
-  so the home-page current-games list must render three-player games in the first release.
-- **Jokers ship in the first release:** card art for `XR`/`XB`, and stacks drawn on face cards.
-  `GameView.vue` only draws attachments under point cards (lines 244-289).
-- **Rules page lines.** All in the `3Players` section, across all five locale files:
-  - **Glasses**, per the audience decision. `glassesDescription` reads "reveal your opponent's
-    hand", which is ambiguous at three players under either rule.
-  - **Empty deck:** hands stay hidden when the deck runs out. The two-player reveal is undocumented
-    (`deckExhaustAnswer` never mentions it), so experienced players will expect it without having
-    read anywhere that it exists.
-  - **Jokers:** a joker on a jack or another joker steals the card underneath. Rule 3 says only
-    "steal target Royal", which does not convey the stacking.
+No rematch, Go Home only. This deliberately sidesteps the
+most two-player-coupled client code: `GameOverDialog.vue:195-219` reconciles against
+`currentMatch?.games[0].p0` to pick `p1-wins-heading`/`p2-wins-heading`,
+`gameOver/composables/playerData.js:17-21` keys off `ORIGINAL_P0`/`ORIGINAL_P1`, line 297 gates
+on `p0Rematch && p1Rematch`, and `MatchScoreCounter`/`MatchStatusBanner`/
+`MatchWonOrLostIndicator` are all match-shaped. None of it is needed to ship the mode.
+
+#### 4c. Go Home in the game menu
+
+`GameMenu.vue:22-43` already branches: spectators get a Go Home
+item (`mdi-home`, `data-cy="stop-spectating"`, key `game.menus.gameMenu.home`), players get the
+Concede/Stalemate `v-else`. Cutthroat allows neither, so the condition becomes
+`isSpectating || !canConcede`. The i18n key already exists in every locale, so there is no
+translation work. The handler needs a player variant: `stopSpectate()` calls
+`gameStore.requestSpectateLeave()` first, which a player must not; theirs is a plain
+`$router.push('/')`.
+
+#### 4d. Three-player games in the current-games list
+
+Required by 4c, and not deferrable: `find-current-games-for-user.js:45` derives the
+opponent by alternation (sweep category C5). Go Home is only an exit if the player can get back,
+so the home-page current-games list must render three-player games in the first release.
+
+#### 4e. Jokers on the board
+
+Jokers ship in the first release: card art for `XR`/`XB`, and stacks drawn on face cards.
+`GameView.vue` only draws attachments under point cards (lines 244-289).
+
+#### 4f. Rules page lines
+
+All in the `3Players` section, across all five locale files:
+
+- **Glasses**, per the audience decision. `glassesDescription` reads "reveal your opponent's
+  hand", which is ambiguous at three players under either rule.
+- **Empty deck:** hands stay hidden when the deck runs out. The two-player reveal is undocumented
+  (`deckExhaustAnswer` never mentions it), so experienced players will expect it without having
+  read anywhere that it exists.
+- **Jokers:** a joker on a jack or another joker steals the card underneath. Rule 3 says only
+  "steal target Royal", which does not convey the stacking.
 
 ---
 
@@ -1206,7 +1319,7 @@ Phase 3. Not twelve separate problems.
 (Phase 3 counter priority).
 
 **C8 — seat enumeration. Phase 2.** Found by the per-file pass. Fails **open**, into full
-visibility: `get-game.js:22-26`, `spectate/join.js:26` — see the Phase 2 note. Fails closed or
+visibility: `get-game.js:22-26`, `spectate/join.js:26` — see 2b. Fails closed or
 silently wrong: `move.js:36-44`, `ready.js:13-31`, `leave-lobby.js:16-22`, `lock-game.js:46-47`,
 `find-open-games.js:19-35`, `get-history.js:15-47`, `StatsController.js:13-14`,
 `set-is-ranked.js:8`, `load-fixture-gamestate.js`, `broadcast-game-event.js:27-29` (1f),
