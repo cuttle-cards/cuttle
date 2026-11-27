@@ -58,7 +58,8 @@ being controlled.
 - **Stealers are never bases.** A jack always sits on a point card; a joker always sits on whatever
   it stole. A joker played on a jack or on another joker attaches to *that stealer's base*. So if
   p1 jacks p0's Ten of Hearts and p0 jokers that jack, p0 has stolen the Ten back:
-  `TH-p0(JH-p1)` in `p1Points` becomes `TH-p0(JH-p1,XR-p0)` in `p0Points`.
+  `TH-p0(JH)` in `p1Points` becomes `TH-p0(JH-p1,XR)` in `p0Points`. (The top stealer carries no
+  suffix: its owner is the controller, which the column already says. See 1a.)
 - **Control** is the owner of the top stealer, or the base's own owner when there is none. The base
   sits in its controller's array.
 - **A jack** steals a point card, including one whose stack already ends in a joker.
@@ -274,24 +275,39 @@ see [Delivery](#delivery-1a-read-then-1a-write).
 
 ```
 cardStr    := cardId [ "-" pNum ] [ "(" attachment { "," attachment } ")" ]
-attachment := cardId "-" pNum
+attachment := cardId [ "-" pNum ]        ; the writer omits the suffix on the last attachment only
 cardId     := rank suit                  ; exactly 2 characters, including XR and XB
 pNum       := "p" digit
 ```
 
+**"Column" means a per-player column** — `pXHand`, `pXPoints`, `pXFaceCards` — whose name says
+which player holds or controls the cards in it. The shared columns (`deck`, `scrap`, `twos`, and
+the snapshot slots such as `targetCard` and `oneOffTarget`) say nothing about a player.
+
 - The host card's `-pNum` is the base's **original owner** — the player who played it to the field.
   Bases live in `pXPoints` or `pXFaceCards`.
-- Each attachment's `-pNum` is **that stealer's controller** — the player who played that jack or
-  joker.
-- The suffix is written **whenever the owner is not recoverable from the column**:
-  - unstacked card in `pXPoints` or `pXFaceCards` -> recoverable (owner == column) -> **omit**,
-    which keeps the overwhelming majority of card strings byte-identical to today;
-  - stacked card in either -> the column is now the controller, not the owner -> **write**;
-  - card in `twos` -> there is no per-player column at all -> **always write** (e.g. `2H-p2`).
+- Each attachment's `-pNum` is **that stealer's owner** — the player who played that jack or joker —
+  **except the top attachment's**, which the writer omits. The top stealer's owner is the
+  controller, and a stack sits in its controller's column, so the suffix would only repeat it.
+- In general a suffix is written **whenever the owner is not recoverable from the column**:
+  - unstacked card in a per-player column -> owner == column -> **omit**, which keeps the
+    overwhelming majority of card strings byte-identical to today;
+  - stacked card -> **write** the base's suffix and every stealer's except the top one's;
+  - card in `twos` -> no per-player column at all -> **always write** (e.g. `2H-p2`);
+  - unstacked card in the deck, the scrap or another shared slot -> **nothing written**; no owner
+    is needed there.
 
-Examples: `TH-p0(JH-p2,JC-p1)` in `p1Points` — p0 played the Ten of Hearts, p2 jacked it, then p1
-jacked it; controller p1, original owner p0. `KH-p0(XR-p1)` in `p1FaceCards` — p0's King, held by
-p1's joker.
+That is the minimum: n suffixes for n stealers, the base's plus all but the top stealer's. It is
+also exactly the count the legacy format writes — legacy is this scheme with every suffix sitting
+one card too high (see [Reading legacy rows](#reading-legacy-rows)).
+
+Examples: `TH-p0(JH-p2,JC)` in `p1Points` — p0 played the Ten of Hearts, p2 jacked it, then p1
+jacked it; controller p1 (the column), original owner p0. `KH-p0(XR)` in `p1FaceCards` — p0's King,
+held by p1's joker.
+
+**A stacked card in a snapshot slot** such as `targetCard` is written the same way. Its top
+stealer's owner cannot be recovered there, since the slot names no player — but nothing reads
+attachments or owners from snapshot slots, so it is simply left null.
 
 **The legacy grammar is a strict subset of this one.** No legacy row contains a face-card stack or
 a joker, so extending the grammar now changes nothing for stored rows — and accepting all of it in
@@ -304,9 +320,10 @@ The signal differs by column, because the suffix rule does:
 
 | Column | Legacy signal | Why unambiguous |
 |---|---|---|
-| `pXPoints`, card has attachments | no host suffix | the new format always writes one here, and pack throws rather than omitting it |
-| `pXPoints` / `pXFaceCards`, card unstacked | n/a | neither format writes a suffix, and both reconstructions agree (owner == column), so misclassification is harmless |
+| `pXPoints`, card has attachments | no host suffix | the new format always writes one on a stacked card, and pack throws rather than omitting it. A bare last attachment is a second signal: legacy suffixes every attachment |
+| `pXHand` / `pXPoints` / `pXFaceCards`, card unstacked | n/a | neither format writes a suffix, and owner == column either way, so misclassification is harmless |
 | `pXFaceCards`, card has attachments | n/a | only the new format can produce a face-card stack |
+| snapshot slots (`targetCard`, `oneOffTarget`) | n/a — never reconstructed | informational only: nothing reads attachments or owners from them, so a legacy snapshot simply unpacks with null owners. The pack guard does not apply to them |
 | `twos` | no suffix on any entry | the new format always writes one here; legacy owners reconstruct by alternation from the caster, `twos[i].owner = (caster + i + 1) % 2` |
 
 This is per-row rather than per-game, which matters given the deploy sweep cannot be atomic (see
@@ -347,12 +364,12 @@ the deploy note): a game can legitimately hold rows written on either side of th
 Add a single field to the Card object:
 
 ```
-owner: pNum | null   // the player who played this card onto the field; null off-field
+owner: pNum | null   // the player this card belongs to; null in the deck and the scrap
 ```
 
-One definition, correct in both positions: for a base (point card or Royal) it is the original
-owner; for a stealer (jack or joker) in `attachments` it is that stealer's controller. Control stops
-being stored and becomes a derivation:
+For a card in a hand, that is its holder. For a card on the field, it is the player who played it
+there: a base's original owner, or a stealer's controller. Control stops being stored and becomes a
+derivation:
 
 ```js
 const controllerOf = (base) => base.attachments.at(-1)?.owner ?? base.owner;
@@ -365,44 +382,46 @@ meaning that caused this bug.
 **The `twos` stack carries `owner` too.** `twos` is a bare `Array<Card>` serialized through the
 generic path in `pack-gamestate.js`, so nothing records who played each counter. At two players the
 owners are derivable by alternation from the caster; at three they are not -- the same failure as
-jack ownership, in a different column. Set `owner` when a two is played in `counter/execute.js`,
-and serialize it per the rule above. Audited against the other card-bearing fields: `deck` and
+jack ownership, in a different column. A counter Two arrives from its player's hand already
+carrying its owner (see below), and pack writes it per the rule above. Audited against the other
+card-bearing fields: `deck` and
 `scrap` need no owner, `oneOff`'s caster is derivable from `turn` (1c), and
 `oneOffTarget`/`fourRevealedCards` are covered by `oneOffTargetPNum` (1c). `twos` is the only
 remaining gap.
 
-**Do not populate `owner` for cards in hand, deck, or scrap.** There it would be identical to the
-column — zero information, never serialized, and no consumer (the four's reveals are contextual to
-`oneOffTargetPNum`; revealed-ness is a separate id set, `create-socket-events.js` does
-`revealedIds.has(card.id)`; the client renders hands out of `players[n].hand`). It would add a
-sync obligation at every zone transition for no benefit.
+**Hand cards carry `owner` too, filled in from their column by unpack.** Every move that puts a
+card on the field from a hand — points, Royals, jacks, jokers, counters — takes it from the
+player's *own* hand, so the card brings its owner with it and the move need not set it. An earlier
+draft left hand cards ownerless on the grounds that the value only repeats the column; but the play
+moves are its consumer, and leaving it null made every freshly played card ownerless until the
+next unpack, which review caught as a validation failure. The deck and the scrap stay ownerless:
+nothing reads an owner there.
 
 #### Lifecycle
 
-Set on entering the field, immutable while on it, cleared on leaving. Re-entry (scrap → three →
-hand → replayed by a different player) correctly re-establishes a new owner because it was
-cleared on exit.
+**Owners come from position, not from moves.** Unpack fills them in for every card in a hand or
+on the field — from the column, or from suffixes where the column cannot tell — and pack writes
+them only where the column cannot recover them. So moves never clear `owner`. A card that leaves a
+hand for the deck or the scrap mid-move may carry a stale owner in memory for the rest of that
+move, but nothing reads an owner there and pack writes none, so it is gone after the next unpack.
+Re-entry needs nothing special: a card a Three takes from the scrap is filled in as its new
+holder's at the next unpack.
 
-Moves do **not** set `owner`, with two exceptions. Both write a value that is serialized on that
-very move and unrecoverable afterward:
+Moves set `owner` in one case only: **the Seven moves that play from the deck** — `seven-points`,
+`seven-face-card`, `seven-jack` and, with jokers, `sevenJoker`. Those cards reach the field without
+passing through a hand, so there is no owner to inherit. Everything else is hydrated by unpack and
+carried through `_.cloneDeep` by `execute`.
 
-- **Moves that create an attachment set it on the stealer they play** — `jack/execute.js`,
-  `seven-jack/execute.js`, and the new `joker` and `sevenJoker` moves. The column yields the
-  controller, and a buried stealer has no column signal at all.
-- **`counter/execute.js` sets it on the Two it pushes onto `twos`**, which has no per-player column.
+The invariant covers cards on the field only. `validate-gamestate.js` checks it on the in-memory
+state, which `save-gamestate.js:18-20` validates *before* packing:
 
-Everything else is hydrated by unpack and carried through `_.cloneDeep` by `execute`.
+- every base has an `owner`;
+- an unstacked base's owner equals its column;
+- every stealer has an `owner`, and the top stealer's equals its base's column.
 
-**A card freshly played to the field therefore has `owner: null` in memory until the next unpack.**
-That is harmless for serialization — pack omits an unstacked card's owner anyway — but
-`save-gamestate.js:18-20` validates the in-memory state *before* packing it, so validation must
-tolerate it. The invariant is therefore precise rather than blanket:
-
-- **stacked base:** `owner` is set, and `controllerOf(base)` equals the base's column;
-- **unstacked base:** `owner` is null or equals the column.
-
-Review caught the blanket version, `controllerOf(card) === X` for every card, which would have
-rejected every ordinary points move.
+Review caught that an earlier blanket check would have rejected every ordinary points move,
+because freshly played cards then had a null owner. Filling in hand owners removes that null, so
+the strict check holds.
 
 #### Pack decides which suffixes to write, and refuses to write legacy
 
@@ -411,22 +430,29 @@ rejected every ordinary points move.
 only the second must carry a suffix. Review caught this; an earlier draft of this spec made
 `convertCardToStr` responsible for the choice and said to delete pack's points branch. Instead:
 
-- `convertCardToStr` writes an owner suffix **whenever `card.owner` is set**, and nothing else. It
-  stays context-free.
-- `packGamestate`, the only layer that knows the column, makes the column-dependent choice: for an
-  unstacked card in `pXPoints` or `pXFaceCards` it passes the card with `owner` removed, since it is
-  derivable; stacked cards and every card in `twos` pass through as they are.
+- `convertCardToStr` writes a base suffix **whenever the base's `owner` is set**, and a suffix on
+  every attachment **except the last**. Omitting the top stealer's suffix is structural — it needs
+  no column — so the serializer stays context-free.
+- `packGamestate`, the only layer that knows the column, makes the column-dependent choice: it
+  removes `owner` from every unstacked card outside `twos` — in hands, points, face cards, the
+  deck, the scrap and the other card slots — since there it is either derivable or unused. Stacked
+  cards and every card in `twos` pass through as they are.
 
 This is consistent with the organizing principle — context lives at the pack/unpack boundary — and
 it corrects where the line was drawn, not the principle.
 
-Once pack reads `card.owner`, a card with attachments and a null owner would serialize as
-`TH(JH-p2,JC-p1)` — no suffix — which the reader then classifies as *legacy* and reconstructs by
+Once pack reads `card.owner`, a stacked card whose base has a null owner would serialize as
+`TH(JH-p2,JC)` — no host suffix — which the reader then classifies as *legacy* and reconstructs by
 parity. At two players parity yields the right answer, so it passes silently; at three it is
 silently wrong.
 
-**`convertCardToStr` must throw on an attachment-bearing card with a null `owner`.** Legacy is a
-read-only format; nothing may ever write it.
+**`packGamestate` must throw** when a stacked card in a per-player column, or a card in `twos`,
+lacks a required owner: the base's, or any stealer's but the top one's. Legacy is a read-only
+format; nothing may ever write it. The check lives in pack rather than the serializer because it
+depends on the slot. **Snapshot slots are exempt**: they are informational, and a legacy snapshot
+unpacks with null owners. Without the exemption, a game paused mid-countering on a Nine aimed at a
+stacked point card would hold a legacy `oneOffTarget` such as `TH(JH-p0)`, and the next counter move
+would throw when it re-packed it.
 
 This matters concretely for `load-fixture-gamestate.js:83-84`, which packs the raw request body
 before re-unpacking. Any e2e fixture staging a jacked point card must supply `owner`; with the
@@ -437,9 +463,10 @@ breaking on the first three-player test.
 
 Each change is tagged with the half it ships in.
 
-- **(write)** `api/helpers/game-states/convert-card-to-str.js` — write an owner suffix whenever
-  `card.owner` is set; drop the `playedBy` parameter (the serializer becomes context-free); throw
-  per above; `validateCardId` must accept the suffix and the joker ids.
+- **(write)** `api/helpers/game-states/convert-card-to-str.js` — write a base suffix whenever the
+  base's `owner` is set, and a suffix on every attachment but the last; drop the `playedBy`
+  parameter (the serializer becomes context-free); `validateCardId` must accept the suffix and the
+  joker ids.
 - **(read)** `api/helpers/game-states/convert-str-to-card.js` — **both edits are driven by the new format;
   the legacy path through this file is behaviourally unchanged.** `mainCardId` at line 113 strips
   parens and will now retain `-pN`, which `convertIdToCard` rejects (it requires exactly 2
@@ -448,22 +475,24 @@ Each change is tagged with the half it ships in.
   suffixes that must continue to be ignored, so neither edit touches them. The parser stays
   **context-free**, mirroring `convertCardToStr` — it never receives a column. Extend the rank and
   suit maps so `XR`/`XB` parse (rank 14; suits outside 0–3), even though no game contains them yet.
+  An attachment suffix is optional: accept one on the top attachment too, and leave the owner null
+  when it is absent.
 - **(read)** `api/helpers/game-states/unpack-gamestate.js` — owns all column-dependent hydration,
-  using the pNum already in scope from the name list at lines 30-35. Per base in `pXPoints` and
-  `pXFaceCards`: if `owner` is set (new format) leave it; if absent and the card has attachments,
-  apply the legacy parity reconstruction; if absent and unstacked, set `owner = X`. For `twos`
-  without suffixes, reconstruct owners by alternation from the caster.
+  using the pNum already in scope from the name list at lines 30-35. Per card in `pXHand`,
+  `pXPoints` and `pXFaceCards`: if `owner` is set (new format) leave it; if absent and the card has
+  attachments, apply the legacy parity reconstruction; if absent and unstacked, set `owner = X`.
+  For a new-format stack, set the top stealer's owner to `X`, and if a suffix was present, check it
+  equals `X`. For `twos` without suffixes, reconstruct owners by alternation from the caster.
+  Snapshot slots are left as parsed.
 - **(write)** `api/helpers/game-states/pack-gamestate.js` — the points-specific branch at lines 61-69
   **stays**, but its job changes: instead of passing the column into the serializer to compute
-  parity, it removes `owner` from unstacked cards and passes stacked cards through. Apply the same
-  to `pXFaceCards`.
-- **(read)** `api/helpers/game-states/moves/jack/execute.js`, `.../seven-jack/execute.js` — set
-  `owner` on the played jack; `counter/execute.js` — set `owner` on the played Two. Harmless under
-  the legacy writer, which ignores it.
-- **(read)** `api/helpers/game-states/moves/resolve/nine.js:28` — add `owner: null` alongside
-  `attachments: []` when top-decking.
-- **(read)** `api/helpers/game-states/validate-gamestate.js` — assert the precise invariant from
-  [Lifecycle](#lifecycle) for every base in `pXPoints` and `pXFaceCards`.
+  parity, it removes `owner` from every unstacked card outside `twos` and passes stacked cards and
+  `twos` through. It also throws per above, for per-player columns and `twos` only.
+- **(read)** `seven-points`, `seven-face-card` and `seven-jack` execute helpers (and `sevenJoker`
+  when jokers land) — set `owner` on the card played from the deck. Harmless under the legacy
+  writer, which ignores it.
+- **(read)** `api/helpers/game-states/validate-gamestate.js` — assert the invariant from
+  [Lifecycle](#lifecycle) for every card on the field.
 - **(write)** `utils/rulesVersion.js` — bump `CURRENT_RULES_VERSION` to `5.0.1` and add a `VERSION HISTORY`
   entry recording a storage-encoding change with no rules change. Patch tier, per the rationale in
   [Reading legacy rows](#reading-legacy-rows).
@@ -486,8 +515,8 @@ any new-format row was written would break every game holding a stack or a pendi
 Review raised this. Splitting the change makes every step reversible:
 
 - **1a-read** teaches the reader the whole new grammar — suffixed bases, face-card stacks, joker
-  ids, suffixed Twos — hydrates `owner`, sets it in the jack and counter moves, and adds the
-  invariant. The writer is untouched and keeps emitting legacy strings. Reverting it is safe: no
+  ids, suffixed Twos, top stealers with or without a suffix — fills in `owner` for hands and the
+  field, sets it in the Seven moves, and adds the invariant. The writer is untouched and keeps emitting legacy strings. Reverting it is safe: no
   new-format row exists yet.
 - **1a-write** switches the writer: the serializer reads `owner`, pack chooses suffixes by column,
   the guard throws, and `rulesVersion` goes to 5.0.1. Reverting it is safe: 1a-read stays deployed
@@ -501,16 +530,20 @@ to 1a-write, since that is when the encoding changes.
 
 - Full existing unit + e2e suite passes unchanged, after each half.
 - **(read)** 1a-read parses every new-format shape — a stacked point card, a stacked face card,
-  joker ids, suffixed Twos — though nothing writes them yet. This is what makes reverting 1a-write
-  safe.
+  joker ids, suffixed Twos, a top stealer with or without a suffix — though nothing writes them yet.
+  This is what makes reverting 1a-write safe.
+- **(read)** A hand card unpacks with `owner` equal to its column, and a card played from the hand
+  reaches the field with that owner, so an ordinary points move passes the invariant.
 - **(read)** A stored legacy row hydrates to the same object a newly written row would, for all of
   n = 1, 2, 3 attachments, both columns.
 - **(read)** Replay of a pre-change game renders identically.
 - **(write)** Round-trip: unstacked point card → `"TH"` → unpacks with `owner` = column.
-- **(write)** Round-trip: `TH-p0(JH-p2,JC-p1)` in `p1Points` and `KH-p0(XR-p1)` in `p1FaceCards` →
+- **(write)** Round-trip: `TH-p0(JH-p2,JC)` in `p1Points` and `KH-p0(XR)` in `p1FaceCards` →
   identical objects both directions.
-- **(write)** An unstacked Two in `p0Points` serializes as `2H`; a Two in `twos` as `2H-p0`.
-- **(write)** `convertCardToStr` throws on an attachment-bearing card with null `owner`.
+- **(write)** An unstacked Two in `p0Points` serializes as `2H`; a Two in `twos` as `2H-p0`. Cards in
+  hands, the deck and the scrap serialize with no suffix, even when they carry an owner in memory.
+- **(write)** Pack throws on a stacked card in a per-player column whose base, or a stealer below the
+  top, lacks an owner — and does not throw when re-packing a legacy snapshot in `oneOffTarget`.
 - **(write)** **Migration continuity:** a game whose latest stored row is legacy format and contains a jacked
   point card accepts a further move — unpack(legacy) → execute → pack succeeds and writes the new
   format. See the deploy note below: a sweep is planned to make this path rare in production, but
@@ -1015,8 +1048,9 @@ legacy game across the deploy:
 
 | Column or field | Legacy read rule |
 |---|---|
-| `owner` on bases | the column, or parity reconstruction for stacks (1a) |
+| `owner` on hand and field cards | the column; parity reconstruction for legacy stacks (1a) |
 | `owner` on `twos` | alternation from the caster (1a) |
+| owners in snapshot slots | none — never reconstructed (1a) |
 | `oneOffTargetPNum` | the non-caster, when `oneOff` is set (1c) |
 | `passedPriority` | `[]`, exact for two players (Phase 3) |
 | per-player reveals, if glasses go private | empty, exact for two players (Phase 3) |
@@ -1025,10 +1059,15 @@ legacy game across the deploy:
 
 **`counter/validate.js` never checks that the counter is a Two.** It checks the phase, that a
 one-off is pending, that the card is in hand, priority, and the Queen — but not the rank. A crafted
-request can counter with any card, which then sits in `twos` and flips fizzle parity. The client
-only offers Twos, so ordinary play never hits it. This is an existing two-player bug, independent
+request can counter with any card, so a player can cancel any one-off without holding a Two,
+paying only the card they sacrifice. The client only offers Twos, so ordinary play never hits it. This is an existing two-player bug, independent
 of this plan; it is the one validator that does not reject a rank-14 joker. Worth a small
 standalone fix — `if (playedCard.rank !== 2)` — rather than folding it into a work item.
+
+**The column-less pack path writes `undefined` into suffixes.** `targetCard` and `oneOffTarget` are
+serialized through pack's generic path, which calls `convertCardToStr` without a column. For a card
+with exactly two attachments that produces `TH(JH-undefined,JC-p0)`. Harmless today, since the
+reader discards attachment suffixes, and 1a-write removes it.
 
 ### A recurring pattern worth carrying into the issues
 
