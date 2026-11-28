@@ -4,7 +4,7 @@ module.exports = {
   description: 'Determines whether the specified jack is the top of the stack attached to the point card it is stealing',
 
   extendedDescription:
-    'Only the top jack of a stack may be targeted. Each jack\'s owner is derived from its position in the stack (see convert-card-to-str.js), so removing a buried jack silently reassigns every jack above it -- and with it, control of the point card.',
+    'Only the top stealer of a stack may be targeted, by anything. This is a deliberate rule of the game, not a limitation of how stacks are stored -- do not remove the check because ownership is now recorded per card.',
 
   inputs: {
     targetId: {

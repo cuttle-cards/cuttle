@@ -8,15 +8,14 @@ const GamePhase = require('../../utils/GamePhase.json');
  * SUIT: ‘C’ (Clubs), ‘D’ (Diamonds), ‘H’ (Hearts), ‘S’ (Spades)
  * RANK: ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
  *
- * So ‘AC’ is the Ace of Clubs, ‘4D’ is the Four of Diamonds, and ‘TH’ is the Ten of Spades
+ * So ‘AC’ is the Ace of Clubs, ‘4D’ is the Four of Diamonds, and ‘TH’ is the Ten of Hearts
  *
- * Jacks that are attached to a card are represented as their id in parenthese,
- * followed by ‘-’ then either ‘p0’ or ‘p1’ depending on their controller
+ * Cards attached to a card (jacks) are listed in parentheses, bottom to top, and '-pN' suffixes
+ * record owners the column can't: e.g. ‘TH-p0(JH-p2,JC)’ in p1Points is p0's Ten of Hearts,
+ * jacked by p2 and then by p1. Rows written before this format use a legacy encoding
+ * (e.g. ‘TH(JH-p0,JC-p1)’), detected by the missing host suffix.
  *
- * @example p0Points: [‘3D’, ‘4S(JS-p0)’, ‘TH(JH-p0,JC-p1,JD-p0)’]
- *
- * P0 has 3 point cards: 3 of diamonds, 4 of spades, 10 of hearts,
- * with the jack of spades attached to the 4 of spades, and the other three jacks attached to the Ten of Hearts
+ * See 'Game State Array<String> Lists' in docs/game-state-api.md for the formal grammar
  */
 
 module.exports = {

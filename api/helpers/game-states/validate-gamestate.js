@@ -45,6 +45,39 @@ function validatePlayerData(player) {
   return data;
 }
 
+/**
+ * Every card on the field records who owns it: a base its original owner, a stealer whoever played it.
+ * The column a stack sits in is its controller, i.e. the owner of its top stealer
+ *
+ * @param { Player } player - the player whose points and face cards to check
+ * @param { Number } pNum - the player's number
+ */
+function validateFieldOwners(player, pNum) {
+  [ ...player.points, ...player.faceCards ].forEach((card) => {
+    if (card.owner === null || card.owner === undefined) {
+      throw new Error(`${card.id} in p${pNum}'s field has no owner`);
+    }
+
+    if (!card.attachments.length) {
+      if (card.owner !== pNum) {
+        throw new Error(`${card.id} in p${pNum}'s field is unstacked, but is owned by p${card.owner}`);
+      }
+      return;
+    }
+
+    card.attachments.forEach((stealer) => {
+      if (stealer.owner === null || stealer.owner === undefined) {
+        throw new Error(`${stealer.id} attached to ${card.id} has no owner`);
+      }
+    });
+
+    const topStealer = card.attachments.at(-1);
+    if (topStealer.owner !== pNum) {
+      throw new Error(`${topStealer.id} controls ${card.id} in p${pNum}'s field, but is owned by p${topStealer.owner}`);
+    }
+  });
+}
+
 module.exports = {
   friendlyName: 'Format and validate a GameState',
 
@@ -90,6 +123,8 @@ module.exports = {
       };
 
       sails.helpers.gameStates.validateAllCards(gameStateUpdated);
+      validateFieldOwners(gameStateUpdated.p0, 0);
+      validateFieldOwners(gameStateUpdated.p1, 1);
 
       return exits.success(gameStateUpdated);
     } catch (err) {

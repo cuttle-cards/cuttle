@@ -82,7 +82,9 @@ module.exports = {
         revealedCards: convertedData.revealedCards ?? null,
       };
 
-      const convertedGameState = sails.helpers.gameStates.validateGamestate(data);
+      // Owners the strings don't record are derived from the column each card sits in
+      const dataWithOwners = sails.helpers.gameStates.fillCardOwners(data);
+      const convertedGameState = sails.helpers.gameStates.validateGamestate(dataWithOwners);
 
       return exits.success(convertedGameState);
     } catch (err) {

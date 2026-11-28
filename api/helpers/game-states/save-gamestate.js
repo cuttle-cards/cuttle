@@ -14,8 +14,10 @@ module.exports = {
   fn: async ({ gameState }, exits) => {
 
     try {
+      // fill in owners for hand-built states (e.g. fixtures), which no unpack has touched
+      const gameStateWithOwners = sails.helpers.gameStates.fillCardOwners(gameState);
       // validate and format
-      const gameStateCleaned = sails.helpers.gameStates.validateGamestate(gameState);
+      const gameStateCleaned = sails.helpers.gameStates.validateGamestate(gameStateWithOwners);
       // convert
       const gameStateRowData = sails.helpers.gameStates.packGamestate(gameStateCleaned);
       // Save and fetch
