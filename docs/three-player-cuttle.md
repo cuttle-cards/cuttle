@@ -20,65 +20,66 @@ Variant rules as written live in `src/translations/en.json` under `rules.3Player
 
 ## Issue overview
 
-Each line is intended to become one GitHub issue, and links to its detailed section. Phase 1 changes
+Each line is a GitHub issue, labelled `three-player`, and links both to the issue and to its
+detailed section below. Phase 1 changes
 nothing for two-player games. The first user-facing release needs everything below except 2d.
 
 ### Phase 1 issues
 
-- [**1a-read** — read the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format): parse the new stack grammar and fill in
+- [**1a-read** — read the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format) ([#1494](https://github.com/cuttle-cards/cuttle/issues/1494)): parse the new stack grammar and fill in
   owners from position, while still writing the old format.
-- [**1a-write** — write the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format): switch the writer to the new format,
+- [**1a-write** — write the new storage format](#1a-make-stack-ownership-authoritative-in-the-storage-format) ([#1495](https://github.com/cuttle-cards/cuttle/issues/1495)): switch the writer to the new format,
   with the archive sweep and the `rulesVersion` 6.0.0 bump.
-- [**1b** — return stolen cards by owner](#1b-rewrite-six--nine--two-onto-controllerof): `six`, `nine` and `two` decide where a stolen
+- [**1b** — return stolen cards by owner](#1b-rewrite-six--nine--two-onto-controllerof) ([#1496](https://github.com/cuttle-cards/cuttle/issues/1496)): `six`, `nine` and `two` decide where a stolen
   card goes from stored ownership instead of parity.
-- [**1c** — store the one-off's target player](#1c-store-the-one-offs-target-player-on-the-gamestate): record the target player at cast time,
+- [**1c** — store the one-off's target player](#1c-store-the-one-offs-target-player-on-the-gamestate) ([#1497](https://github.com/cuttle-cards/cuttle/issues/1497)): record the target player at cast time,
   and check counters against the Queens of whoever played the top of the stack.
-- [**1d** — variant-parameterized config](#1d-extract-variant-parameterized-config): read the win table, hand limit and empty-deck
+- [**1d** — variant-parameterized config](#1d-extract-variant-parameterized-config) ([#1498](https://github.com/cuttle-cards/cuttle/issues/1498)): read the win table, hand limit and empty-deck
   reveal from the rule set instead of hard-coded constants.
-- [**1e** — `players[]` in `GameState`](#1e-move-gamestate-to-a-players-array): replace `p0`/`p1` with a players array, and
+- [**1e** — `players[]` in `GameState`](#1e-move-gamestate-to-a-players-array) ([#1493](https://github.com/cuttle-cards/cuttle/issues/1493)): replace `p0`/`p1` with a players array, and
   pass the rule set to the move helpers.
-- [**1f** — socket fan-out to N rooms](#1f-generalize-socket-fan-out-to-n-rooms): build one socket payload and room per player
+- [**1f** — socket fan-out to N rooms](#1f-generalize-socket-fan-out-to-n-rooms) ([#1499](https://github.com/cuttle-cards/cuttle/issues/1499)): build one socket payload and room per player
   instead of a fixed two.
 
 Before 1e is written, decide the [glasses audience](#pending-items).
 
 ### Phase 2 issues
 
-- [**2a** — schema and lobby for N seats](#2a-schema-and-lobby-for-n-seats): add the third-seat columns, and let games be
+- [**2a** — schema and lobby for N seats](#2a-schema-and-lobby-for-n-seats) ([#1500](https://github.com/cuttle-cards/cuttle/issues/1500)): add the third-seat columns, and let games be
   created, joined and readied with three players.
-- [**2b** — seat lookup and fail-open seat checks](#2b-seat-lookup-and-the-fail-open-seat-checks): map users to seats through one
+- [**2b** — seat lookup and fail-open seat checks](#2b-seat-lookup-and-the-fail-open-seat-checks) ([#1501](https://github.com/cuttle-cards/cuttle/issues/1501)): map users to seats through one
   helper, closing two checks that would put a third player in the spectator room.
-- [**2c** — the remaining seat lists](#2c-the-remaining-seat-lists): add the third seat everywhere else seats are
+- [**2c** — the remaining seat lists](#2c-the-remaining-seat-lists) ([#1502](https://github.com/cuttle-cards/cuttle/issues/1502)): add the third seat everywhere else seats are
   listed, and reject ranked mode for three-player games.
-- [**2d** — rematch under seat rotation](#2d-rematch-under-seat-rotation): rematch by rotating seats, with unanimous
+- [**2d** — rematch under seat rotation](#2d-rematch-under-seat-rotation) ([#1503](https://github.com/cuttle-cards/cuttle/issues/1503)): rematch by rotating seats, with unanimous
   agreement. Lands after the first release.
 
 ### Phase 3 issues
 
-- [**3a** — cutthroat rule set, dealing and win detection](#3a-cutthroat-rule-set-dealing-and-win-detection): define cutthroat's rule set,
+- [**3a** — cutthroat rule set, dealing and win detection](#3a-cutthroat-rule-set-dealing-and-win-detection) ([#1504](https://github.com/cuttle-cards/cuttle/issues/1504)): define cutthroat's rule set,
   deal 5/5/5 from a 54-card deck, and record a third player's win.
-- [**3b** — cross-board targeting](#3b-cross-board-targeting): let targeted moves name the opponent they target,
+- [**3b** — cross-board targeting](#3b-cross-board-targeting) ([#1505](https://github.com/cuttle-cards/cuttle/issues/1505)): let targeted moves name the opponent they target,
   and reject targeting yourself.
-- [**3c** — counter priority](#3c-counter-priority): pass the chance to counter clockwise, resolving once every
+- [**3c** — counter priority](#3c-counter-priority) ([#1506](https://github.com/cuttle-cards/cuttle/issues/1506)): pass the chance to counter clockwise, resolving once every
   other player declines.
-- [**3d** — jokers](#3d-jokers): add the joker moves, joker targeting, stacks on face cards and the
+- [**3d** — jokers](#3d-jokers) ([#1507](https://github.com/cuttle-cards/cuttle/issues/1507)): add the joker moves, joker targeting, stacks on face cards and the
   54-card deck to the engine.
 
 ### Phase 4 issues
 
-- [**4a** — seat-based board and target picker](#4a-seat-based-board-and-target-picker): a three-seat board, and a picker for
+- [**4a** — seat-based board and target picker](#4a-seat-based-board-and-target-picker) ([#1508](https://github.com/cuttle-cards/cuttle/issues/1508)): a three-seat board, and a picker for
   choosing which opponent a targeted card hits.
-- [**4b** — simplified game-over dialog](#4b-simplified-game-over-dialog): game over offers Go Home only, with no rematch.
-- [**4c** — Go Home in the game menu](#4c-go-home-in-the-game-menu): replace concede and stalemate with Go Home.
-- [**4d** — three-player games in the current-games list](#4d-three-player-games-in-the-current-games-list): show three-player games on
+- [**4b** — simplified game-over dialog](#4b-simplified-game-over-dialog) ([#1509](https://github.com/cuttle-cards/cuttle/issues/1509)): game over offers Go Home only, with no rematch.
+- [**4c** — Go Home in the game menu](#4c-go-home-in-the-game-menu) ([#1510](https://github.com/cuttle-cards/cuttle/issues/1510)): replace concede and stalemate with Go Home.
+- [**4d** — three-player games in the current-games list](#4d-three-player-games-in-the-current-games-list) ([#1511](https://github.com/cuttle-cards/cuttle/issues/1511)): show three-player games on
   the home page, so players can get back to them.
-- [**4e** — jokers on the board](#4e-jokers-on-the-board): joker card art, and stacks drawn on face cards.
-- [**4f** — rules page lines](#4f-rules-page-lines): explain glasses, the empty deck and jokers for cutthroat,
+- [**4e** — jokers on the board](#4e-jokers-on-the-board) ([#1512](https://github.com/cuttle-cards/cuttle/issues/1512)): joker card art, and stacks drawn on face cards.
+- [**4f** — rules page lines](#4f-rules-page-lines) ([#1513](https://github.com/cuttle-cards/cuttle/issues/1513)): explain glasses, the empty deck and jokers for cutthroat,
   in all five locales.
 
 ### Standalone issues
 
-- [**Counter validator accepts any card**](#found-along-the-way): reject a counter that
+- [**Counter validator accepts any card**](#found-along-the-way) ([#1514](https://github.com/cuttle-cards/cuttle/issues/1514)): reject a counter that
   isn't a Two. An existing bug, independent of this plan.
 
 ---
