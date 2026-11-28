@@ -86,9 +86,8 @@ module.exports = {
             throw new BadRequestError('Twos can only target royals or glasses');
           }
 
-          // Only the top attachment can be targeted. Each jack's owner is derived from its
-          // position in the stack, so removing a buried one silently reassigns the jacks above
-          // it -- and with them, control of the point card.
+          // Only the top attachment can be targeted. This is a rule of the game, not a limitation of
+          // the storage format: each stealer's owner is recorded, so keep this check deliberately.
           if (
             requestedMove.targetType === 'jack' &&
             !sails.helpers.gameStates.isTopJack(requestedMove.targetId, opponent)

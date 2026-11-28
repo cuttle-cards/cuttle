@@ -247,3 +247,25 @@ export const points = {
     },
   },
 };
+
+// Unpacking fills in the owner of every card in a hand or on the field from its column
+export const pointsUnpackedGameState = {
+  ...points.gameState,
+  p0: {
+    hand: [ { ...Card.ACE_OF_SPADES, owner: 0 } ],
+    points: [
+      { ...Card.TEN_OF_SPADES, owner: 0 },
+      {
+        ...Card.EIGHT_OF_DIAMONDS,
+        owner: 0,
+        attachments: [ { ...Card.JACK_OF_SPADES, owner: 1 }, { ...Card.JACK_OF_CLUBS, owner: 0 } ],
+      },
+    ],
+    faceCards: [ { ...Card.KING_OF_SPADES, owner: 0 } ],
+  },
+  p1: {
+    hand: [ { ...Card.ACE_OF_HEARTS, owner: 1 }, { ...Card.ACE_OF_DIAMONDS, owner: 1 } ],
+    points: [ { ...Card.TEN_OF_HEARTS, owner: 1 }, { ...Card.ACE_OF_CLUBS, owner: 1 } ],
+    faceCards: [],
+  },
+};

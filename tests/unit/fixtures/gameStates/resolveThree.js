@@ -195,3 +195,18 @@ export const resolveThree = {
     },
   },
 };
+
+// Unpacking fills in the owner of every card in a hand or on the field from its column
+export const resolveThreeUnpackedGameState = {
+  ...resolveThree.gameState,
+  p0: {
+    hand: [ { ...Card.TEN_OF_HEARTS, owner: 0 } ],
+    points: [],
+    faceCards: [],
+  },
+  p1: {
+    hand: [ { ...Card.TEN_OF_DIAMONDS, owner: 1 } ],
+    points: [ { ...Card.ACE_OF_HEARTS, owner: 1 } ],
+    faceCards: [],
+  },
+};

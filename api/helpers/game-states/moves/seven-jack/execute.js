@@ -48,6 +48,8 @@ module.exports = {
 
     // Remove card from the deck
     const [ playedCard ] = result.deck.splice(cardIndex, 1);
+    // Cards played from the deck reach the field without passing through a hand, so record the owner here
+    playedCard.owner = playedBy;
 
     // Remove target card from opponent's points
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);

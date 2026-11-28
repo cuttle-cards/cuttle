@@ -114,9 +114,8 @@ A GameState record represents one move made by a player and the resulting game s
 * revealedCards: `Array<String>` \- cards in a hand or the deck that both players have seen, e.g. picked from the scrap with a three, returned to the deck with a nine, shown by a seven or four, or seen through glasses. A card drops off the list when it leaves the hands and deck  
 * p0Hand: `Array<String>`  
    * Specially formatted string representing the list of cards in p0’s hand. See [‘Game State Array\<String\> Lists](#game-state-array\<string\>-lists) below for full explanation  
-   * ex) `[‘AC’, ‘5H’, ‘8D(JS-p0,JD-p1,JH-p0)’]`  
+   * ex) `[‘AC’, ‘5H’, ‘8D’]`  
       * P0 hand has the Ace of Clubs, 5 of Hearts, 8 of Diamonds  
-         * 8 of diamonds has the jack of spades, jack of diamonds, and jack of hearts on it  
 * p1Hand: `Array<String>`: Cards in p1 hand  
 * p0Points: `Array<String>`: Cards in p0 points  
 * p1Points: `Array<String>`  
@@ -134,28 +133,47 @@ A GameState record represents one move made by a player and the resulting game s
 ## Game State Array\<String\> Lists {#game-state-array<string>-lists}
 
 Several columns on the `GameStateRow` table describe a list of cards in a specific place:   
-`p0Hand`, `p0Points`, `p0FaceCards`, `p1Hand`, `p1Points`, `p1FaceCards`, `scrap`, and `deck`.   
-Each of these columns contains a list of strings that specify which cards appear in which order in that list, and which cards, if any, are attached to each of those cards. Each card is specified by a `String` id that describes the cards suit and rank, as follows:
+`p0Hand`, `p0Points`, `p0FaceCards`, `p1Hand`, `p1Points`, `p1FaceCards`, `scrap`, `deck` and `twos`.   
+Each of these columns contains a list of strings that specify which cards appear in which order in that list, who owns them where that can't be told from the column, and which cards, if any, are attached to each of those cards. Each card is specified by a `String` id that describes the cards suit and rank, as follows:
 
 **Suit**: ‘C’ (Clubs), ‘D’ (Diamonds), ‘H’ (Hearts), ‘S’ (Spades)  
-**Rank:** ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
+**Rank:** ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)  
+**Jokers:** ‘XR’ and ‘XB’ (rank 14). The parser accepts them, though no game contains them yet
 
-So ‘AC’ is the Ace of Clubs, ‘4D’ is the Four of Diamonds, and ‘TH’ is the Ten of Spades.
+So ‘AC’ is the Ace of Clubs, ‘4D’ is the Four of Diamonds, and ‘TH’ is the Ten of Hearts.
 
-Jacks that are attached to a card are represented with parenthese, where each attach card is listed as the card id (same pattern as above), and then ‘-’ followed by either ‘p0’ or ‘p1’ depending on who controls the card. So for example:
+### Grammar
 
-`p0Points: [‘3D’, ‘4S(JS-p0)’, ‘TH(JH-p0,JC-p1,JD-p0)’]`  
-Indicates that player 0 has 3 point cards:
+This is the single formal statement of the card string format. See `docs/three-player-cuttle.md` (item 1a) for the rationale.
 
-* Three of Diamonds  
-* Four of Spades  
-  * Has the Jack of Spades (controlled by p0) attached to it  
-* Ten of Hearts  
-  * Jack of Hearts (p0’s-bottom jack)  
-  * Jack of Clubs (p1’s)  
-  * Jack of Diamonds (p0’s-top jack)
+```
+cardStr    := cardId [ "-" pNum ] [ "(" attachment { "," attachment } ")" ]
+attachment := cardId [ "-" pNum ]        ; the writer omits the suffix on the last attachment only
+cardId     := rank suit                  ; exactly 2 characters, including XR and XB
+pNum       := "p" digit
+```
 
-Jacks are listed from bottom to top order, meaning that the last jack in the list is always the last one played and the one that determines who ultimately controls the point card.
+A "column" here means a per-player column (`pXHand`, `pXPoints`, `pXFaceCards`), whose name says which player holds or controls its cards. A stack is a base card plus its stealers (jacks, and later jokers), listed bottom to top. The stack sits in its controller's column, and the controller is the owner of the top stealer.
+
+* The base's `-pN` is its **original owner**: the player who played it to the field
+* Each attachment's `-pN` is the owner of **that stealer**: the player who played it. The top stealer's suffix is omitted, since its owner is the column
+* A suffix is written only where the owner can't be recovered from the column:
+  * an unstacked card in a per-player column: omitted (owner is the column)
+  * a stacked card: written on the base and on every stealer except the top one
+  * a card in `twos`: always written, e.g. `2H-p0`
+  * unstacked cards in the deck, the scrap and the snapshot slots (`targetCard`, `oneOffTarget`, etc.): never written
+
+For example, `TH-p0(JH-p2,JC)` in `p1Points` means p0 played the Ten of Hearts, p2 jacked it, and then p1 jacked it, so p1 controls it.
+
+### Legacy format
+
+**The writer still emits the legacy format**; the reader accepts both, and the writer switches to the format above in a later change (see item 1a-write in `docs/three-player-cuttle.md`). Rows written before that switch use a different meaning for the same characters. A stacked card has **no host suffix**, and every attachment carries a suffix that is shifted one card too high (and in `targetCard` / `oneOffTarget` may read `-undefined`). Suffixes in `twos` are absent.
+
+`p0Points: [‘3D’, ‘4S(JS-p0)’, ‘TH(JH-p0,JC-p1,JD-p0)’]` is a legacy row in which p0 controls all three point cards.
+
+The format is detected per card string, never from a version field: a stacked card with no host suffix is legacy. The reader ignores a legacy string's attachment suffixes without validating them, and `unpack-gamestate` reconstructs owners from the column instead: the top jack belongs to the column's player and ownership alternates down the stack. Legacy `twos` are reconstructed by alternation starting with the caster's opponent. Every legacy row is two-player, so this is exact.
+
+Stealers are listed from bottom to top order, meaning that the last one in the list is always the last one played and the one that determines who controls the card.
 
 # Backend Processing Layer
 
@@ -164,8 +182,9 @@ Jacks are listed from bottom to top order, meaning that the last jack in the lis
 Represents a single card, in its object format.
 
 * id: `String` (same format as the gameStateRow cards e.g. ‘AS’ for Ace of Spades)  
-* suit: `0 | 1 | 2 | 3`  
-* rank: `[1- 13]`  
+* suit: `0 | 1 | 2 | 3` (`4 | 5` for the jokers `XR` / `XB`)  
+* rank: `[1- 13]` (14 for jokers)  
+* owner: `Number | null` \- the player this card belongs to: its holder for a card in a hand, and the player who played it for a card on the field (a base's original owner, or a stealer's owner). Filled in by `unpack-gamestate` and `save-gamestate` for hands, the field and `twos`; null in the deck and the scrap. A stack's controller is not stored: it is `attachments.at(-1)?.owner ?? owner`  
 * isFrozen: `Boolean` \- whether the card is currently frozen and can’t be played this turn. No effect currently freezes a card; retained pending the outcome of the topdeck-nines beta
 
 ## Player

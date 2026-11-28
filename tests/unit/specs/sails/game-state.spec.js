@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { points } from '../../fixtures/gameStates/points';
-import { resolveThree } from '../../fixtures/gameStates/resolveThree';
-import { resolveNine } from '../../fixtures/gameStates/resolveNine';
+import { points, pointsUnpackedGameState } from '../../fixtures/gameStates/points';
+import { resolveThree, resolveThreeUnpackedGameState } from '../../fixtures/gameStates/resolveThree';
+import { resolveNine, resolveNineUnpackedGameState } from '../../fixtures/gameStates/resolveNine';
 import { duplicateCard, missingCard, scrapAttachments, invalidCard } from '../../fixtures/gameStates/cardValidationErrors';
 
 // remove attributes added while creating the entry in the database
@@ -31,7 +31,7 @@ describe('Converting GameState\'s and GameStateRow\'s and emitting sockets for P
 
   it('Converts GameStateRow to GameState (unpacking)', () => {
     const gameState = sails.helpers.gameStates.unpackGamestate(points.gameStateRow);
-    expect(points.gameState).toEqual(gameState);
+    expect(gameState).toEqual(pointsUnpackedGameState);
   });
 
   it('Creates and Publishes socket event', async () => {
@@ -66,7 +66,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   it('Converts GameStateRow to GameState (unpacking)', async () => {
     const gameState = await sails.helpers.gameStates.unpackGamestate(resolveThree.gameStateRow);
     stripDbAttributes(gameState);
-    expect(gameState).toEqual(resolveThree.gameState);
+    expect(gameState).toEqual(resolveThreeUnpackedGameState);
   });
 
   it('Creates and Publishes socket event', async () => {
@@ -100,7 +100,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   it('Converts GameStateRow to GameState (unpacking)', async () => {
     const gameState = await sails.helpers.gameStates.unpackGamestate(resolveNine.gameStateRow);
     stripDbAttributes(gameState);
-    expect(gameState).toEqual(resolveNine.gameState);
+    expect(gameState).toEqual(resolveNineUnpackedGameState);
   });
 
   it('Creates and Publishes socket event', async () => {

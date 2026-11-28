@@ -39,6 +39,8 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
     const [ playedCard ] = result.deck.splice(cardIndex, 1);
+    // Cards played from the deck reach the field without passing through a hand, so record the owner here
+    playedCard.owner = playedBy;
     const { oneOff } = result;
     player.points.push(playedCard);
     result.scrap.push(oneOff);
