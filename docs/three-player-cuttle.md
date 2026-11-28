@@ -391,9 +391,22 @@ held by p1's joker.
 stealer's owner cannot be recovered there, since the slot names no player — but nothing reads
 attachments or owners from snapshot slots, so it is simply left null.
 
-**The legacy grammar is a strict subset of this one.** No legacy row contains a face-card stack or
-a joker, so extending the grammar now changes nothing for stored rows — and accepting all of it in
-1a-read means the storage format changes exactly once.
+**Legacy strings are mostly valid in this grammar, but never read by it.** No legacy row contains a
+face-card stack or a joker — `validate-all-cards.js` rejects attachments on any non-point card — and
+nearly every legacy string also parses under this grammar. It is not a strict subset, though, on two
+counts:
+
+- **Syntactically:** pack's column-less path has written suffixes like `JH-undefined` into
+  `targetCard` and `oneOffTarget` (see [Found along the way](#found-along-the-way)), which don't
+  match `pNum`.
+- **Semantically:** a legacy string that does parse still *means* something else, because legacy
+  suffixes sit one card too high.
+
+So **the reader classifies a string as legacy first — a stacked card with no host suffix — and then
+ignores its attachment suffixes without validating them**, exactly as today's reader does. That
+handles `-undefined` with no special case, and is why no data migration is needed: the legacy reader
+is permanent for replay anyway, and 1a-write stops the column-less path producing new ones.
+Accepting the whole grammar in 1a-read still means the storage format changes exactly once.
 
 #### Reading legacy rows
 
@@ -565,7 +578,8 @@ Each change is tagged with the half it ships in.
   **context-free**, mirroring `convertCardToStr` — it never receives a column. Extend the rank and
   suit maps so `XR`/`XB` parse (rank 14; suits outside 0–3), even though no game contains them yet.
   An attachment suffix is optional: accept one on the top attachment too, and leave the owner null
-  when it is absent.
+  when it is absent. Classify the string before reading any attachment suffix: for a legacy string
+  (stacked, no host suffix), skip them entirely, without validating them.
 - **(read)** `api/helpers/game-states/unpack-gamestate.js` — owns all column-dependent hydration,
   using the pNum already in scope from the name list at lines 30-35. Per card in `pXHand`,
   `pXPoints` and `pXFaceCards`: if `owner` is set (new format) leave it; if absent and the card has
@@ -632,6 +646,8 @@ to 1a-write, since that is when the encoding changes.
 - **(read)** A stored legacy row hydrates to the same object a newly written row would, for all of
   n = 1, 2, 3 attachments, both columns.
 - **(read)** Replay of a pre-change game renders identically.
+- **(read)** Replaying a legacy row whose `targetCard` is `TH(JH-undefined,JC-p0)` succeeds: legacy
+  attachment suffixes are ignored, never validated.
 - **(write)** Round-trip: unstacked point card → `"TH"` → unpacks with `owner` = column.
 - **(write)** Round-trip: `TH-p0(JH-p2,JC)` in `p1Points` and `KH-p0(XR)` in `p1FaceCards` →
   identical objects both directions.
@@ -1248,8 +1264,11 @@ standalone fix — `if (playedCard.rank !== 2)` — rather than folding it into 
 
 **The column-less pack path writes `undefined` into suffixes.** `targetCard` and `oneOffTarget` are
 serialized through pack's generic path, which calls `convertCardToStr` without a column. For a card
-with exactly two attachments that produces `TH(JH-undefined,JC-p0)`. Harmless today, since the
-reader discards attachment suffixes, and 1a-write removes it.
+with an even number of attachments that produces suffixes like `TH(JH-undefined,JC-p0)`, and stored
+rows almost certainly contain them: any jack played on a card that already carries one jack writes
+one. Harmless today, since the reader discards attachment suffixes. The new reader tolerates them the
+same way, by ignoring legacy suffixes (see 1a's grammar), so no migration is planned; 1a-write stops
+new ones.
 
 ### A recurring pattern worth carrying into the issues
 
