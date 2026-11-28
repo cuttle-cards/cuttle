@@ -52,6 +52,10 @@ module.exports = {
         throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
+      if (playedCard.rank !== 2) {
+        throw new BadRequestError('Can only counter with a Two');
+      }
+      
       // Must be your chance to counter
       const yourTurnToCounter = sails.helpers.gameStates.yourTurnToCounter(currentState, playedBy);
       if (!yourTurnToCounter) {
