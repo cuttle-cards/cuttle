@@ -2,6 +2,12 @@ const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
 const GameStatus = require('../../../utils/GameStatus.json');
 
+// Whether the move that ended this game may have failed to finish recording it: the game is
+// still in progress, or it is ranked but was never added to a match
+function mayBeUnrecorded(game) {
+  return game.status === GameStatus.STARTED || (game.isRanked && !game.match);
+}
+
 module.exports = async function(req, res) {
   const { gameId } = req.params;
   try {
@@ -47,7 +53,13 @@ module.exports = async function(req, res) {
       });
     }
 
-    const {  unpackGamestate, createSocketEvents } = sails.helpers.gameStates;
+    const {
+      unpackGamestate,
+      createSocketEvents,
+      countPasses,
+      checkGameStateForWin,
+      finishGame,
+    } = sails.helpers.gameStates;
 
     let gameStateIndex = Number(req.query.gameStateIndex);
     const isValidGameStateIndex = Number.isInteger(gameStateIndex) && gameStateIndex >= -1;
@@ -59,7 +71,40 @@ module.exports = async function(req, res) {
     }
 
     const gameState = unpackGamestate(packedGameState);
-    const socketEvents = await createSocketEvents(game, gameState);
+
+    // The move that ends a game records it (finishGame), but can fail part-way, e.g. after
+    // marking it finished but before adding it to its match. Moves are rejected once a game is
+    // finished, so finish recording it here when its final state is loaded again
+    let currentMatch;
+    const isLatestGameState = packedGameState.id === game.gameStates.at(-1).id;
+    if (isLatestGameState && mayBeUnrecorded(game)) {
+      const victory = checkGameStateForWin(gameState, countPasses(game.gameStates, gameState));
+      if (victory.gameOver) {
+        let lockedGame;
+        try {
+          // Take the game lock, as moves do, and re-check the reloaded game, so that another load
+          // or the winning move itself can't record the game at the same time
+          lockedGame = await sails.helpers.lockGame(game.id);
+          currentMatch = mayBeUnrecorded(lockedGame) ?
+            await finishGame(lockedGame, victory) :
+            await sails.helpers.getGameMatch(lockedGame);
+        } catch (err) {
+          // Still let the player load the game; the next load will try again
+          sails.log.error(`Could not finish recording game ${game.id}`, err);
+        } finally {
+          if (lockedGame) {
+            try {
+              await sails.helpers.unlockGame(lockedGame.lock);
+            } catch (err) {
+              // Locks expire on their own, so loading the game can go on
+              sails.log.error(`Could not unlock game ${game.id}`, err);
+            }
+          }
+        }
+      }
+    }
+
+    const socketEvents = await createSocketEvents(game, gameState, currentMatch);
 
     // Finished games reveal all cards, but players must stay in their player
     // rooms so a rematch sends them only their own perspective of the new game.

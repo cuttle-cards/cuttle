@@ -8,7 +8,15 @@ const GameStatus = require('../../../../utils/GameStatus.json');
 
 module.exports = async function (req, res) {
   let game;
-  const { saveGamestate, publishGameState, unpackGamestate, updateRevealedCards } = sails.helpers.gameStates;
+  const {
+    saveGamestate,
+    publishGameState,
+    unpackGamestate,
+    updateRevealedCards,
+    countPasses,
+    checkGameStateForWin,
+    finishGame,
+  } = sails.helpers.gameStates;
   try {
     ///////////////////////////
     // Fetch and format data //
@@ -59,7 +67,13 @@ module.exports = async function (req, res) {
     const updatedState = updateRevealedCards(gameState, aiState);
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);
-    await publishGameState(game, { ...updatedState, id: gameStateRow.id });
+    const newGameState = { ...updatedState, id: gameStateRow.id };
+
+    // If this move ended the game, record it before publishing
+    const victory = checkGameStateForWin(newGameState, countPasses(game.gameStates, newGameState));
+    const currentMatch = victory.gameOver ? await finishGame(game, victory) : undefined;
+
+    await publishGameState(game, newGameState, currentMatch);
 
     //////////////////////////
     // Unlock & Respond 200 //

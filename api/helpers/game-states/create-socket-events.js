@@ -17,9 +17,15 @@ module.exports = {
       description: 'Game state object',
       required: true,
     },
+    currentMatch: {
+      type: 'ref',
+      description:
+        'Match returned by finishGame when the move that produced this game state ended the game. Looked up (read-only) when omitted',
+      required: false,
+    },
   },
 
-  fn: async function ({ game, gameState }, exits) {
+  fn: async function ({ game, gameState, currentMatch }, exits) {
     try {
       // Flag the hand and deck cards both players have seen, so they stay face up and are shown as public
       const revealedIds = new Set((gameState.revealedCards ?? []).map(({ id }) => id));
@@ -34,21 +40,14 @@ module.exports = {
 
       const players = [ p0, p1 ];
 
-      const countPasses = (function () {
-        let numPasses = 0;
-        const currentIndex = game.gameStates.findIndex(gs => gs.id === gameState.id);
-        const threeMostRecentGameStates = game.gameStates.slice(Math.max(0, currentIndex - 2), currentIndex + 1);
+      const { countPasses, checkGameStateForWin } = sails.helpers.gameStates;
+      const numPasses = countPasses(game.gameStates, gameState);
+      const victory = checkGameStateForWin(gameState, numPasses);
 
-        for (const gameState of threeMostRecentGameStates) {
-          if (gameState.moveType !== MoveType.PASS) {
-            return numPasses;
-          }
-          numPasses++;
-        }
-        return numPasses;
-      })();
-
-      const victory = await sails.helpers.gameStates.checkGameStateForWin(game, gameState, countPasses);
+      // Recording the end of the game is up to the endpoint that made the move, so only read the match here
+      if (victory.gameOver) {
+        victory.currentMatch = currentMatch ?? await sails.helpers.getGameMatch(game);
+      }
 
       const fullLog = sails.helpers.gameStates.getLog(game);
 
@@ -144,7 +143,7 @@ module.exports = {
         winner: victory.winner,
         match: victory.currentMatch,
         log: fullLog,
-        passes: countPasses,
+        passes: numPasses,
         turn: gameState.turn,
         phase: gameState.phase,
         deck,

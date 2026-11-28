@@ -1,17 +1,12 @@
-const GameStatus = require('../../../utils/GameStatus.json');
 const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Check Game State for win',
 
-  description: 'Determines if the game has winner and updates game status and winner if so',
+  description:
+    'Determines if the game has a winner, without side effects. Recording the end of a game is left to the endpoints that make moves (see finishGame)',
 
   inputs: {
-    game: {
-      type: 'ref',
-      description: 'Game object',
-      required: true,
-    },
     gameState: {
       type: 'ref',
       description: 'GameState object',
@@ -23,8 +18,8 @@ module.exports = {
       required: true,
     },
   },
-
-  fn: async function ({ game, gameState, numPasses }, exits) {
+  sync: true,
+  fn: function ({ gameState, numPasses }, exits) {
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
       const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
@@ -58,29 +53,14 @@ module.exports = {
 
     if (p0Wins || p1Wins || stalemate) {
       res.gameOver = true;
-      const gameUpdates = {};
-      gameUpdates.status = GameStatus.FINISHED;
 
       if (p0Wins) {
         res.winner = 0;
-        gameUpdates.winner = game.p0.id;
       } else if (p1Wins) {
         res.winner = 1;
-        gameUpdates.winner = game.p1.id;
       }
-
-      // Update game and add it to its match if this hasn't yet been done
-      if (game.status === GameStatus.STARTED) {
-        await Game.updateOne({ id: game.id }).set(gameUpdates);
-      }
-
-      game = {
-        ...game,
-        ...gameUpdates,
-      };
-
-      res.currentMatch = await sails.helpers.addGameToMatch(game);
     }
+
     return exits.success(res);
   },
 };

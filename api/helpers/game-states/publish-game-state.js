@@ -14,12 +14,17 @@ module.exports = {
       description: 'Game state object (unpacked)',
       required: true,
     },
+    currentMatch: {
+      type: 'ref',
+      description: 'Match returned by finishGame when the move that produced this game state ended the game',
+      required: false,
+    },
   },
 
-  fn: async function ({ game, gameState }, exits) {
+  fn: async function ({ game, gameState, currentMatch }, exits) {
     try {
       // Create the three socket events using the createSocketEvents helper
-      const socketEvents = await sails.helpers.gameStates.createSocketEvents(game, gameState);
+      const socketEvents = await sails.helpers.gameStates.createSocketEvents(game, gameState, currentMatch);
 
       // Extract the three states
       const { p0State, p1State, spectatorState } = socketEvents;
